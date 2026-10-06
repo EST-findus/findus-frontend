@@ -101,7 +101,7 @@ export default function TipModal({ person, returnFocusTo, onClose, onSubmitted }
             aria-invalid={invalidDetails}
             aria-describedby={error ? "tip-error" : undefined}
             placeholder="착용 의상, 인상착의, 이동 방향, 동행인 여부 등을 자세히 적어주세요."
-            className={`${INPUT} min-h-[90px] resize-y`}
+            className={`${INPUT} min-h-22.5 resize-y`}
           />
         </div>
 

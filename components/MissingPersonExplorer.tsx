@@ -62,13 +62,13 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
       <Header />
       <section className="bg-hero px-4 pt-12 pb-10">
         <Intro total={persons.length} />
-        <div className="mx-auto mt-7 max-w-[660px]">
+        <div className="mx-auto mt-7 max-w-165">
           <SearchBar value={query} onChange={setQuery} />
           <FilterChips value={filter} onChange={setFilter} />
         </div>
       </section>
 
-      <main className="mx-auto mt-10 max-w-[1240px] px-6 max-sm:px-4">
+      <main className="mx-auto mt-10 max-w-310 px-6 max-sm:px-4">
         <ResultBar count={results.length} sort={sort} onSortChange={setSort} />
         {results.length > 0 ? (
           <section

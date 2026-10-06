@@ -75,7 +75,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none"
+      className="fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -86,7 +86,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="relative max-h-[90vh] w-full max-w-[680px] animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none max-sm:px-5"
+        className="relative max-h-[90vh] w-full max-w-170 animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none max-sm:px-5"
       >
         <button
           type="button"

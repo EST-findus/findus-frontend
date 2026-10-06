@@ -35,7 +35,7 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
             inputRef.current?.focus();
           }}
           aria-label="검색어 지우기"
-          className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-surface text-[12px] font-bold text-muted hover:bg-line focus-visible:outline-2 focus-visible:outline-navy"
+          className="flex h-6.5 w-6.5 shrink-0 items-center justify-center rounded-full bg-surface text-[12px] font-bold text-muted hover:bg-line focus-visible:outline-2 focus-visible:outline-navy"
         >
           ✕
         </button>

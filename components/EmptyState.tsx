@@ -1,6 +1,6 @@
 export default function EmptyState() {
   return (
-    <div className="rounded-2xl border border-dashed border-line bg-surface px-5 py-[70px] text-center">
+    <div className="rounded-2xl border border-dashed border-line bg-surface px-5 py-17.5 text-center">
       <p className="text-[36px]" aria-hidden="true">
         🔎
       </p>

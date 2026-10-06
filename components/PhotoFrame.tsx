@@ -23,7 +23,7 @@ export default function PhotoFrame({ label, ariaLabel, onClick, ...content }: Ph
       type="button"
       onClick={onClick}
       aria-label={ariaLabel}
-      className="group relative block aspect-[3/4] w-full cursor-pointer overflow-hidden rounded-lg border border-line bg-surface transition hover:border-navy hover:ring-3 hover:ring-navy/10 focus-visible:border-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+      className="group relative block aspect-3/4 w-full cursor-pointer overflow-hidden rounded-lg border border-line bg-surface transition hover:border-navy hover:ring-3 hover:ring-navy/10 focus-visible:border-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
     >
       <PhotoContent {...content} />
       <span

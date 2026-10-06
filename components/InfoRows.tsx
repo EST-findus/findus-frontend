@@ -10,7 +10,7 @@ interface InfoRowsProps {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex gap-3">
-      <dt className="w-[96px] shrink-0 text-[13px] font-medium text-muted">{label}</dt>
+      <dt className="w-24 shrink-0 text-[13px] font-medium text-muted">{label}</dt>
       <dd className="font-medium break-keep text-ink">{children}</dd>
     </div>
   );

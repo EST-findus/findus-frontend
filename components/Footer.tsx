@@ -9,7 +9,7 @@ const LINKS = [
 export default function Footer() {
   return (
     <footer className="mt-20 bg-surface">
-      <div className="mx-auto max-w-[1240px] px-6 py-9 text-[13px] text-muted max-sm:px-4">
+      <div className="mx-auto max-w-310 px-6 py-9 text-[13px] text-muted max-sm:px-4">
         <nav aria-label="관련 링크" className="mb-3 flex flex-wrap gap-x-3 gap-y-1">
           {LINKS.map((link, i) => {
             const external = link.href.startsWith("http");
