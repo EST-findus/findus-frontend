@@ -50,3 +50,5 @@ desktop.ini
 !.vscode/settings.json
 *.swp
 scripts
+
+docs/research/*
