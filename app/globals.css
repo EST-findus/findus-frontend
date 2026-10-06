@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-page: #ffffff;
+  --color-card: #ffffff;
+  --color-ink: #111827;
+  --color-muted: #6b7280;
+  --color-subtle: #9ca3af;
+  --color-line: #e5e7eb;
+  --color-surface: #f4f6f9;
+  --color-hero: #eaf0f8;
+  --color-navy: #1f3a6b;
+  --color-navy-dark: #162c54;
+  --color-navy-soft: #e3eaf5;
+  --color-red: #dc2626;
+  --color-red-dark: #b91c1c;
+  --color-red-soft: #fef2f2;
+  --color-red-line: #fecaca;
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-card-hover: 0 10px 28px rgba(16, 24, 40, 0.08);
+  --shadow-search: 0 8px 24px rgba(31, 58, 107, 0.08);
+  --shadow-modal: 0 24px 48px rgba(16, 24, 40, 0.18);
+  --shadow-float: 0 8px 20px rgba(220, 38, 38, 0.3);
+
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-modal-in: modal-in 0.2s ease-out;
+  --animate-toast-in: toast-in 0.25s ease-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 12px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+@theme inline {
+  --font-sans:
+    var(--font-pretendard), var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+body {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+}
