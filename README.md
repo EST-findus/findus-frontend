@@ -139,6 +139,28 @@ BACKEND_URL=https://<배포된 백엔드 주소>
 > `BACKEND_URL`은 **빌드할 때** 프록시 설정에 고정됩니다. 값을 바꿨다면 반드시 **Redeploy** 해야 반영됩니다.
 > 백엔드는 인터넷에서 접근 가능한 주소여야 합니다 (`localhost`는 Vercel에서 접근할 수 없음).
 
+### 아이콘과 공유 이미지
+
+- `public/images/findus-logo.png`: 원본 로고 및 헤더 아이콘
+- `app/favicon.ico`, `app/icon.png`: 브라우저 탭 아이콘
+- `app/apple-icon.png`: iOS 홈 화면 아이콘 (180×180)
+- `public/images/findus-share.png`: 카카오톡 링크 미리보기 및 Open Graph·Twitter 공유 이미지 (1200×630)
+
+로고를 교체한 뒤 `npm run generate:brand`를 실행하면 아이콘과 공유 이미지가 다시 생성됩니다.
+생성된 이미지도 함께 저장소에 반영해야 합니다.
+
+공유 이미지의 절대 주소는 `NEXT_PUBLIC_SITE_URL`을 기준으로 생성합니다.
+커스텀 도메인을 쓰거나 Vercel 외 환경에 배포한다면 프로토콜을 포함한 운영 주소를 설정하세요.
+
+```env
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+
+미설정 시 Vercel 운영 도메인(`VERCEL_PROJECT_PRODUCTION_URL`), 배포 주소(`VERCEL_URL`),
+`http://localhost:3000` 순서로 사용합니다. 주소를 변경하면 다시 빌드·배포해야 합니다.
+이미지가 이미 공유된 적 있다면 [카카오 공유 디버거](https://developers.kakao.com/tool/debugger/sharing)에서
+해당 URL의 미리보기 캐시를 초기화한 뒤 확인하세요.
+
 ---
 
 ## 6. 폴더 구조

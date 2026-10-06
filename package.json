@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "generate:brand": "node scripts/generate-brand-assets.mjs",
     "vercel:link": "vercel link",
     "vercel:env": "vercel env pull .env.local",
     "deploy:preview": "vercel",
