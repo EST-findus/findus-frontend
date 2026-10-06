@@ -97,6 +97,8 @@ npm run dev
 | `npm test` | 테스트 실행 (vitest) |
 | `npm run build` | 프로덕션 빌드 |
 | `npm start` | 빌드 결과 실행 (`build` 후 사용) |
+| `npm run deploy:preview` | Vercel 미리보기(Preview) 배포 |
+| `npm run deploy` | Vercel 운영(Production) 배포 |
 
 **커밋 전에 `lint`, `typecheck`, `test`가 모두 통과해야 합니다.**
 
@@ -106,7 +108,40 @@ npm run lint && npm run typecheck && npm test
 
 ---
 
-## 5. 폴더 구조
+## 5. 배포하기 (Vercel)
+
+`main` 브랜치에 push하면 Vercel이 자동으로 운영 배포하고, PR마다 미리보기 배포가 만들어집니다.
+직접 배포하고 싶을 때만 아래처럼 CLI를 사용하세요. Vercel CLI는 devDependency로 설치되어 있어 `npm install`만 하면 됩니다.
+
+### 처음 한 번만
+
+```bash
+npx vercel login      # 브라우저로 Vercel 계정 로그인
+npm run vercel:link   # 이 폴더를 Vercel 프로젝트와 연결 (.vercel/ 폴더 생성, Git에 올라가지 않음)
+npm run vercel:env    # (선택) Vercel 환경 변수를 .env.local로 내려받기
+```
+
+### 배포
+
+```bash
+npm run deploy:preview  # 미리보기 배포 → 임시 URL 발급
+npm run deploy          # 운영 배포
+```
+
+### 환경 변수
+
+Vercel 대시보드의 **Settings → Environment Variables**에 `BACKEND_URL`을 등록합니다.
+
+```env
+BACKEND_URL=https://<배포된 백엔드 주소>
+```
+
+> `BACKEND_URL`은 **빌드할 때** 프록시 설정에 고정됩니다. 값을 바꿨다면 반드시 **Redeploy** 해야 반영됩니다.
+> 백엔드는 인터넷에서 접근 가능한 주소여야 합니다 (`localhost`는 Vercel에서 접근할 수 없음).
+
+---
+
+## 6. 폴더 구조
 
 ```
 app/          # 페이지와 레이아웃 (App Router)
@@ -118,7 +153,7 @@ next.config.ts  # /backend/* 프록시 설정
 
 ---
 
-## 6. 자주 겪는 문제
+## 7. 자주 겪는 문제
 
 **`npm` 또는 `node`를 찾을 수 없다고 나와요**
 → Node.js를 설치한 뒤 터미널(VS Code 포함)을 완전히 껐다가 다시 여세요.
@@ -139,7 +174,7 @@ npm run dev -- -p 3001
 
 ---
 
-## 7. 커밋 규칙
+## 8. 커밋 규칙
 
 `<type>: <한글 요약>` 형식(Conventional Commits)을 따릅니다. 자세한 규칙은 [AGENTS.md](AGENTS.md)를 참고하세요.
 
