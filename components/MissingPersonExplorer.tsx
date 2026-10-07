@@ -50,16 +50,20 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
     setTipPerson(person);
   };
 
-  const handleTipSubmitted = () => {
-    setTipPerson(null);
-    setToast(TIP_DONE_MESSAGE);
+  const showToast = (message: string) => {
+    setToast(message);
     clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), TOAST_MS);
   };
 
+  const handleTipSubmitted = () => {
+    setTipPerson(null);
+    showToast(TIP_DONE_MESSAGE);
+  };
+
   return (
     <>
-      <Header />
+      <Header onLogin={() => showToast("로그인 기능은 준비 중입니다.")} />
       <section className="bg-hero px-4 pt-12 pb-10">
         <Intro total={persons.length} />
         <div className="mx-auto mt-7 max-w-165">
