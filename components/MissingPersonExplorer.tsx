@@ -63,7 +63,7 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
 
   return (
     <>
-      <Header onLogin={() => showToast("로그인 기능은 준비 중입니다.")} />
+      <Header />
       <section className="bg-hero px-4 pt-12 pb-10">
         <Intro total={persons.length} />
         <div className="mx-auto mt-7 max-w-165">
