@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import GuideSteps from "@/components/GuideSteps";
 import { ArrowUpRightIcon, PlusIcon } from "@/components/Icons";
+import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 import { MISSING_CHILD_CENTER_URL } from "@/lib/links";
 
@@ -37,21 +38,21 @@ const FAQ = [
 
 export default function GuidePage() {
   return (
-    <main className="mx-auto max-w-310 px-6 pt-14 max-sm:px-4 max-sm:pt-10">
-      <section>
-        <SectionHeading
-          as="h1"
-          eyebrow="The next step"
-          title="기억이 떠올랐다면, 다음은 이렇게."
-          description="상황에 맞는 공식 절차를 차근차근 안내해 드려요."
-        />
+    <main>
+      <PageHero
+        overlap
+        eyebrow="제보·상담 안내"
+        title="기억이 떠올랐다면, 다음은 이렇게."
+        description="목격한 사람인지, 혹시 내가 실종아동인지에 따라 공식 절차가 달라요. 상황을 고르면 차근차근 안내해 드려요."
+      />
+
+      <div className="page-container">
         <GuideSteps />
-      </section>
 
       <section
         id="families"
         aria-labelledby="families-title"
-        className="mt-20 grid scroll-mt-40 gap-8 rounded-3xl bg-hero p-10 md:grid-cols-2 max-sm:p-6"
+        className="mt-24 grid scroll-mt-28 items-center gap-10 rounded-3xl bg-hero p-12 md:grid-cols-2 max-md:p-8 max-sm:mt-16 max-sm:gap-8 max-sm:p-6"
       >
         <div>
           <SectionHeading
@@ -70,42 +71,43 @@ export default function GuidePage() {
             href={MISSING_CHILD_CENTER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-1.5 rounded-xl border border-brand bg-card px-4 py-2.5 text-[14px] font-bold text-brand transition-colors hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className="mt-7 inline-flex h-12 items-center gap-1.5 rounded-xl border border-brand bg-card px-5 text-[15px] font-bold text-brand transition-colors hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             실종아동전문기관 안내 <ArrowUpRightIcon size={15} strokeWidth={2.2} />
           </a>
         </div>
-        <ol className="flex flex-col justify-center gap-5">
+        <ol className="flex flex-col gap-3">
           {FAMILY_STEPS.map((step, i) => (
-            <li key={step.title} className="flex gap-4">
-              <span className="text-[18px] font-extrabold text-brand">
+            <li key={step.title} className="flex gap-4 rounded-2xl bg-card p-5 shadow-card">
+              <span className="text-[18px] leading-tight font-extrabold text-brand">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div>
-                <p className="text-[15.5px] font-bold">{step.title}</p>
-                <p className="mt-0.5 text-[13.5px] break-keep text-muted">{step.text}</p>
+                <p className="text-[16px] leading-tight font-bold">{step.title}</p>
+                <p className="mt-1 text-[14px] leading-relaxed break-keep text-muted">{step.text}</p>
               </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <section id="faq" aria-labelledby="faq-title" className="mt-20 scroll-mt-40">
+      <section id="faq" aria-labelledby="faq-title" className="mt-24 scroll-mt-28 max-sm:mt-16">
         <SectionHeading id="faq-title" eyebrow="Help & answers" title="자주 묻는 질문" />
-        <div className="mt-6 border-t border-line">
+        <div className="mt-8 border-t border-line">
           {FAQ.map((item) => (
             <details key={item.q} className="group border-b border-line">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-[15.5px] font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5.5 text-[16px] font-bold break-keep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
                 {item.q}
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface text-muted transition group-open:rotate-45 group-open:bg-brand-soft group-open:text-brand motion-reduce:transition-none">
                   <PlusIcon size={16} strokeWidth={2.2} />
                 </span>
               </summary>
-              <p className="pb-5 text-[14px] leading-relaxed break-keep text-muted">{item.a}</p>
+              <p className="max-w-200 pr-12 pb-6 text-[15px] leading-[1.7] break-keep text-muted max-sm:pr-0">{item.a}</p>
             </details>
           ))}
         </div>
       </section>
+      </div>
     </main>
   );
 }

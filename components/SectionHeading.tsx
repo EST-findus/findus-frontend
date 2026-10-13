@@ -5,6 +5,7 @@ interface SectionHeadingProps {
   /** 페이지 최상단 제목이면 h1 */
   as?: "h1" | "h2";
   id?: string;
+  align?: "left" | "center";
 }
 
 export default function SectionHeading({
@@ -13,18 +14,25 @@ export default function SectionHeading({
   description,
   as: Tag = "h2",
   id,
+  align = "left",
 }: SectionHeadingProps) {
   return (
-    <div>
-      <p className="mb-2 text-[12px] font-bold tracking-[1.5px] text-brand uppercase">{eyebrow}</p>
+    <div className={align === "center" ? "text-center" : undefined}>
+      <p className="mb-3 text-[13px] font-bold tracking-[0.12em] text-brand uppercase">{eyebrow}</p>
       <Tag
         id={id}
-        className="text-[28px] leading-snug font-extrabold tracking-[-0.6px] break-keep max-sm:text-[23px]"
+        className="text-[32px] leading-[1.3] font-extrabold tracking-[-0.02em] break-keep max-sm:text-[24px]"
       >
         {title}
       </Tag>
       {description && (
-        <p className="mt-2 text-[15px] break-keep text-muted max-sm:text-[14px]">{description}</p>
+        <p
+          className={`mt-3 max-w-160 text-[16px] leading-[1.65] break-keep text-muted max-sm:text-[15px] ${
+            align === "center" ? "mx-auto" : ""
+          }`}
+        >
+          {description}
+        </p>
       )}
     </div>
   );

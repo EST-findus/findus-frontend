@@ -53,14 +53,14 @@ function Select<T extends string>({
   const id = useId();
   return (
     <div className="min-w-0">
-      <label htmlFor={id} className="mb-1.5 block text-[12.5px] font-semibold text-muted">
+      <label htmlFor={id} className="mb-2 block text-[13px] font-semibold text-muted">
         {label}
       </label>
       <select
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
-        className={`w-full rounded-lg border border-line bg-card px-3 py-2.5 text-[14px] font-medium ${FOCUS_RING}`}
+        className={`h-11 w-full rounded-lg border border-line bg-card px-3 text-[15px] font-medium transition-colors hover:border-subtle ${FOCUS_RING}`}
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -86,7 +86,7 @@ export default function SearchPanel({
     onFiltersChange({ ...filters, [key]: value });
 
   return (
-    <div className="rounded-2xl border border-line bg-card p-5 shadow-card max-sm:p-4">
+    <div className="rounded-2xl border border-line bg-card p-6 shadow-panel max-sm:p-4">
       <form
         role="search"
         // 입력할 때마다 즉시 걸러지므로 제출은 결과 목록으로 이동만 한다.
@@ -94,9 +94,9 @@ export default function SearchPanel({
           e.preventDefault();
           onSubmit();
         }}
-        className="flex gap-2"
+        className="flex gap-2.5 max-sm:gap-2"
       >
-        <div className="relative flex min-w-0 flex-1 items-center rounded-xl border border-line bg-surface transition-shadow focus-within:border-brand focus-within:ring-3 focus-within:ring-brand/15">
+        <div className="relative flex h-13 min-w-0 flex-1 items-center rounded-xl border border-line bg-surface transition-shadow focus-within:border-brand focus-within:ring-3 focus-within:ring-brand/15">
           <SearchIcon
             size={19}
             strokeWidth={2.2}
@@ -110,7 +110,7 @@ export default function SearchPanel({
             placeholder="이름이나 실종 지역을 입력해주세요"
             aria-label="실종아동 검색"
             autoComplete="off"
-            className="min-w-0 flex-1 bg-transparent py-3 pr-3 pl-11 text-[15px] font-medium outline-none placeholder:text-subtle [&::-webkit-search-cancel-button]:hidden"
+            className="h-full min-w-0 flex-1 bg-transparent pr-3 pl-11 text-[16px] font-medium outline-none placeholder:text-subtle [&::-webkit-search-cancel-button]:hidden"
           />
           {query && (
             <button
@@ -128,13 +128,13 @@ export default function SearchPanel({
         </div>
         <button
           type="submit"
-          className={`shrink-0 rounded-xl bg-brand px-6 text-[15px] font-bold text-white transition-colors hover:bg-brand-dark max-sm:px-4 ${FOCUS_RING}`}
+          className={`h-13 shrink-0 rounded-xl bg-brand px-8 text-[16px] font-bold text-white transition-colors hover:bg-brand-dark max-sm:px-4.5 ${FOCUS_RING}`}
         >
           검색하기
         </button>
       </form>
 
-      <div className="mt-4 grid grid-cols-2 items-end gap-3 md:grid-cols-[repeat(4,1fr)_auto]">
+      <div className="mt-5 grid grid-cols-2 items-end gap-3 border-t border-line pt-5 md:grid-cols-[repeat(4,1fr)_auto] max-sm:mt-4 max-sm:pt-4">
         <Select label="성별" value={filters.gender} options={GENDER_OPTIONS} onChange={set("gender")} />
         <Select
           label="실종 지역"
@@ -155,7 +155,7 @@ export default function SearchPanel({
         <button
           type="button"
           onClick={onReset}
-          className={`col-span-2 flex items-center justify-center gap-1 rounded-lg px-3 py-2.5 text-[13.5px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand md:col-span-1 ${FOCUS_RING}`}
+          className={`col-span-2 flex h-11 items-center justify-center gap-1 rounded-lg px-4 text-[14px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand md:col-span-1 ${FOCUS_RING}`}
         >
           <ResetIcon size={15} strokeWidth={2.2} /> 초기화
         </button>

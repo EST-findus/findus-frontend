@@ -18,10 +18,10 @@ export default function ResultBar({ count, sort, onSortChange }: ResultBarProps)
       <h2
         id="results"
         tabIndex={-1}
-        className="scroll-mt-40 text-[15px] font-bold outline-none"
+        className="scroll-mt-32 text-[20px] font-extrabold tracking-[-0.01em] outline-none max-sm:text-[18px]"
         aria-live="polite"
       >
-        검색 결과 <span className="text-brand">{count}</span>건
+        검색 결과 <span className="text-brand">{count}</span>명
       </h2>
       <div className="flex items-center gap-2">
         <label htmlFor="sort-select" className="text-[13px] font-semibold text-muted">
@@ -31,7 +31,7 @@ export default function ResultBar({ count, sort, onSortChange }: ResultBarProps)
           id="sort-select"
           value={sort}
           onChange={(e) => onSortChange(e.target.value as SortKey)}
-          className="rounded-lg border border-line bg-card px-3 py-2 text-[13.5px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="h-10 rounded-lg border border-line bg-card px-3 text-[14px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           {SORT_OPTIONS.map((opt) => (
             <option key={opt.key} value={opt.key}>

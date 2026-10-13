@@ -7,10 +7,10 @@ import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
 import DetailModal from "./DetailModal";
 import EmptyState from "./EmptyState";
 import { ArrowUpRightIcon } from "./Icons";
+import PageHero from "./PageHero";
 import PersonCard from "./PersonCard";
 import ResultBar from "./ResultBar";
 import SearchPanel from "./SearchPanel";
-import SectionHeading from "./SectionHeading";
 import TipModal from "./TipModal";
 import Toast from "./Toast";
 
@@ -41,6 +41,11 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
     setDetailPerson(person);
   }, []);
 
+  const openTip = useCallback((person: MissingPerson, el: HTMLElement) => {
+    setTrigger(el);
+    setTipPerson(person);
+  }, []);
+
   const reset = () => {
     setQuery("");
     setFilters(DEFAULT_FILTERS);
@@ -66,35 +71,13 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
 
   return (
     <>
-      <section className="mx-auto max-w-310 px-6 pt-14 max-sm:px-4 max-sm:pt-10">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <SectionHeading
-            as="h1"
-            eyebrow="Find someone"
-            title="기억 속 그 아이를 찾고 있나요?"
-            description="이름을 몰라도 괜찮아요. 기억나는 정보부터 찾아보세요."
-          />
-          <a
-            href={SAFE182_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-0.5 text-[13.5px] font-bold text-brand hover:underline"
-          >
-            공식 실종정보 확인 <ArrowUpRightIcon size={14} strokeWidth={2.2} />
-          </a>
-        </div>
-
-        <p className="mt-5 flex items-start gap-2 text-[12.5px] break-keep text-muted">
-          <span className="shrink-0 rounded bg-gold-soft px-1.5 py-0.5 font-bold text-gold">
-            사진 안내
-          </span>
-          <span className="pt-0.5">
-            실종 당시 원본과 AI 예상 모습, 스타일 변형 3장을 함께 비교해 보세요. 현재 목록은 시연용
-            예시 데이터입니다.
-          </span>
-        </p>
-
-        <div className="mt-4">
+      <PageHero
+        compact
+        eyebrow="장기 실종아동 찾기"
+        title="기억 속 그 아이를 찾고 있나요?"
+        description="이름을 몰라도 괜찮아요. 성별, 실종 지역, 연도처럼 기억나는 정보부터 찾아보세요."
+      >
+        <div className="mt-8 max-sm:mt-6">
           <SearchPanel
             query={query}
             onQueryChange={setQuery}
@@ -105,14 +88,35 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
             onSubmit={goToResults}
           />
         </div>
-      </section>
+      </PageHero>
 
-      <section aria-labelledby="results" className="mx-auto mt-10 max-w-310 px-6 max-sm:px-4">
+      <section aria-labelledby="results" className="page-container mt-12 max-sm:mt-8">
         <ResultBar count={results.length} sort={sort} onSortChange={setSort} />
+
+        <p className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl bg-gold-soft px-4 py-3 text-[13.5px] leading-normal break-keep text-ink/80">
+          <span className="font-bold text-gold-ink">사진 안내</span>
+          <span className="min-w-0 flex-1 basis-72">
+            AI 예상 모습은 실제와 다를 수 있는 참고 자료예요. 현재 목록은 시연용 예시 데이터입니다.
+          </span>
+          <a
+            href={SAFE182_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center gap-0.5 font-bold text-brand hover:underline"
+          >
+            공식 실종정보 확인 <ArrowUpRightIcon size={14} strokeWidth={2.2} />
+          </a>
+        </p>
+
         {results.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {results.map((person) => (
-              <PersonCard key={person.id} person={person} onOpenDetail={openDetail} />
+              <PersonCard
+                key={person.id}
+                person={person}
+                onOpenDetail={openDetail}
+                onReport={openTip}
+              />
             ))}
           </div>
         ) : (

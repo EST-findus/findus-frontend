@@ -140,3 +140,35 @@ export const PlusIcon = (p: IconProps) => (
     <path d="M12 5v14M5 12h14" />
   </Svg>
 );
+
+export const PencilIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M15.5 5.5 18.5 8.5 9 18H6v-3Z" />
+    <path d="m13.5 7.5 3 3" />
+  </Svg>
+);
+
+export const MessageIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h11A1.5 1.5 0 0 1 19 6.5v8a1.5 1.5 0 0 1-1.5 1.5H11l-4 3v-3h-.5A1.5 1.5 0 0 1 5 14.5Z" />
+  </Svg>
+);
+
+export const EyeIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M3.5 12S6.5 6.5 12 6.5 20.5 12 20.5 12 17.5 17.5 12 17.5 3.5 12 3.5 12Z" />
+    <circle cx="12" cy="12" r="2.5" />
+  </Svg>
+);
+
+export const ChevronLeftIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="m14.5 6-6 6 6 6" />
+  </Svg>
+);
+
+export const ChevronRightIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="m9.5 6 6 6-6 6" />
+  </Svg>
+);

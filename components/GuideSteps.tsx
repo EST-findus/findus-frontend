@@ -42,8 +42,8 @@ const GUIDES = [
     Icon: HeartIcon,
     tone: {
       art: "bg-gold-soft text-gold",
-      badge: "bg-gold text-white",
-      text: "text-gold",
+      badge: "bg-gold-ink text-white",
+      text: "text-gold-ink",
       ring: "hover:border-gold",
     },
     steps: [
@@ -73,31 +73,29 @@ const focusRing =
 export default function GuideSteps() {
   return (
     <>
-      <nav aria-label="상황 선택" className="mt-8 grid gap-5 md:grid-cols-2">
+      <nav aria-label="상황 선택" className="relative -mt-14 grid gap-4 md:grid-cols-2">
         {GUIDES.map(({ id, tag, title, summary, Icon, tone }) => (
           <a
             key={id}
             href={`#${id}`}
-            className={`group flex flex-col overflow-hidden rounded-3xl border-2 border-line bg-card shadow-card transition-all hover:-translate-y-1 hover:shadow-card-hover ${tone.ring} ${focusRing}`}
+            className={`group flex items-start gap-5 rounded-2xl border border-line bg-card p-7 shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none max-sm:gap-4 max-sm:p-5 ${tone.ring} ${focusRing}`}
           >
-            <div
+            <span
               aria-hidden="true"
-              className={`flex h-56 items-center justify-center max-sm:h-40 ${tone.art}`}
+              className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl transition-transform group-hover:scale-105 max-sm:h-13 max-sm:w-13 ${tone.art}`}
             >
-              <span className="flex h-32 w-32 items-center justify-center rounded-full bg-card shadow-card transition-transform group-hover:scale-105 max-sm:h-24 max-sm:w-24">
-                <Icon size={64} strokeWidth={1.5} className="max-sm:h-12 max-sm:w-12" />
-              </span>
-            </div>
-            <div className="flex flex-1 flex-col p-7 max-sm:p-5">
+              <Icon size={32} strokeWidth={1.7} className="max-sm:h-6.5 max-sm:w-6.5" />
+            </span>
+            <span className="flex min-w-0 flex-1 flex-col">
               <span className={`text-[13px] font-bold ${tone.text}`}>{tag}</span>
-              <span className="mt-1 text-[28px] font-extrabold tracking-[-0.6px] max-sm:text-[24px]">
+              <span className="mt-0.5 text-[24px] leading-tight font-extrabold tracking-[-0.02em] max-sm:text-[20px]">
                 {title}
               </span>
-              <span className="mt-2 text-[14.5px] leading-relaxed break-keep text-muted">
+              <span className="mt-2 text-[15px] leading-relaxed break-keep text-muted max-sm:text-[14px]">
                 {summary}
               </span>
               <span
-                className={`mt-5 inline-flex items-center gap-1.5 text-[14.5px] font-bold ${tone.text}`}
+                className={`mt-4 inline-flex items-center gap-1.5 text-[15px] font-bold ${tone.text}`}
               >
                 절차 보기
                 <ArrowRightIcon
@@ -106,7 +104,7 @@ export default function GuideSteps() {
                   className="rotate-90 transition-transform group-hover:translate-y-0.5"
                 />
               </span>
-            </div>
+            </span>
           </a>
         ))}
       </nav>
@@ -116,12 +114,12 @@ export default function GuideSteps() {
           key={id}
           id={id}
           aria-labelledby={`${id}-title`}
-          className="mt-20 scroll-mt-24"
+          className="mt-24 scroll-mt-28 max-sm:mt-16"
         >
           <div className="flex items-center gap-4">
             <span
               aria-hidden="true"
-              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${tone.art}`}
+              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl max-sm:h-12 max-sm:w-12 ${tone.art}`}
             >
               <Icon size={28} strokeWidth={1.8} />
             </span>
@@ -129,34 +127,45 @@ export default function GuideSteps() {
               <p className={`text-[13px] font-bold ${tone.text}`}>{tag}</p>
               <h2
                 id={`${id}-title`}
-                className="text-[28px] font-extrabold tracking-[-0.6px] max-sm:text-[24px]"
+                className="text-[32px] leading-[1.3] font-extrabold tracking-[-0.02em] max-sm:text-[24px]"
               >
                 {title}
               </h2>
             </div>
           </div>
-          <p className="mt-3 text-[15px] leading-relaxed break-keep text-muted">{summary}</p>
+          <p className="mt-4 text-[16px] leading-[1.65] break-keep text-muted max-sm:text-[15px]">
+            {summary}
+          </p>
 
-          <ol className="mt-8 grid gap-5 md:grid-cols-3">
+          <ol className="mt-8 grid gap-4 md:grid-cols-3 md:gap-5">
             {steps.map((step, i) => (
-              <li key={step.title} className="rounded-2xl border border-line bg-card p-6 shadow-card">
+              <li
+                key={step.title}
+                className="flex gap-4 rounded-2xl border border-line bg-card p-6 shadow-card md:flex-col md:gap-0 max-sm:p-5"
+              >
                 <span
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-[15px] font-extrabold ${tone.badge}`}
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[15px] font-extrabold ${tone.badge}`}
                 >
                   {i + 1}
                 </span>
-                <p className="mt-4 text-[17px] font-bold break-keep">{step.title}</p>
-                <p className="mt-1.5 text-[14px] leading-relaxed break-keep text-muted">{step.text}</p>
+                <div className="min-w-0 md:mt-5">
+                  <p className="text-[17px] leading-snug font-bold break-keep max-sm:pt-2">
+                    {step.title}
+                  </p>
+                  <p className="mt-1.5 text-[14.5px] leading-relaxed break-keep text-muted">
+                    {step.text}
+                  </p>
+                </div>
               </li>
             ))}
           </ol>
 
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-surface p-6 max-sm:p-5">
-            <p className="text-[14.5px] font-bold break-keep">{actions.note}</p>
-            <div className="flex flex-wrap items-center gap-4">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 rounded-2xl bg-surface px-7 py-6 max-sm:p-5">
+            <p className="min-w-0 flex-1 basis-80 text-[15px] font-bold break-keep">{actions.note}</p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
               <a
                 href="tel:182"
-                className={`flex items-center gap-2 rounded-xl bg-brand px-4 py-3 text-[15px] font-bold text-white transition-colors hover:bg-brand-dark ${focusRing}`}
+                className={`flex h-12 items-center gap-2 rounded-xl bg-brand px-5 text-[15px] font-bold text-white transition-colors hover:bg-brand-dark ${focusRing}`}
               >
                 <PhoneIcon size={17} strokeWidth={2.2} />
                 경찰청 182 전화하기
@@ -165,7 +174,7 @@ export default function GuideSteps() {
                 href={actions.link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-0.5 text-[14px] font-bold text-brand hover:underline"
+                className="flex items-center gap-0.5 text-[14.5px] font-bold text-brand hover:underline"
               >
                 {actions.link.label} <ArrowUpRightIcon size={14} strokeWidth={2.2} />
               </a>

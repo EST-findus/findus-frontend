@@ -130,14 +130,14 @@ export default function TipModal({ person, returnFocusTo, onClose, onSubmitted }
           <button
             type="submit"
             disabled={submitting}
-            className="flex-1 rounded-lg bg-brand px-3.5 py-3 text-white transition-colors hover:bg-brand-dark disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className="flex-1 h-12 rounded-xl bg-brand px-3.5 text-white transition-colors hover:bg-brand-dark disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             {submitting ? "전송 중…" : "제보 전송"}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="flex-[0.4] rounded-lg border border-line bg-card px-3.5 py-3 transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className="flex-[0.4] h-12 rounded-xl border border-line bg-card px-3.5 transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             취소
           </button>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRightIcon,
@@ -10,6 +9,8 @@ import {
   PhoneIcon,
   SearchIcon,
 } from "@/components/Icons";
+import LogoMark from "@/components/LogoMark";
+import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
 
 export const metadata: Metadata = {
@@ -60,49 +61,50 @@ const FEATURES = [
 export default function AboutPage() {
   return (
     <main>
-      <section className="bg-hero">
-        <div className="mx-auto grid max-w-310 items-center gap-10 px-6 py-16 md:grid-cols-[1fr_auto] max-sm:px-4 max-sm:py-12">
-          <div>
-            <p className="mb-4 flex items-center gap-2 text-[13px] font-bold text-brand">
-              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-brand" />
-              장기 실종아동 찾기 지원 서비스
-            </p>
-            <h1 className="text-[44px] leading-tight font-extrabold tracking-[-1.2px] break-keep max-sm:text-[32px]">
-              기억을 잇고,
-              <br />
-              다시 만날 수 있도록.
-            </h1>
-            <p className="mt-4 text-[16px] leading-relaxed break-keep text-muted max-sm:text-[15px]">
-              시간이 흘러도, 기다림은 이어집니다.
-              <br />
-              작은 관심과 오래된 기억이 가족을 잇는 단서가 됩니다.
-            </p>
-            <Link
-              href="/"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-[15px] font-bold text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-            >
-              실종아동 정보 찾아보기 <ArrowRightIcon size={17} strokeWidth={2.2} />
-            </Link>
-          </div>
+      <PageHero
+        overlap
+        eyebrow="장기 실종아동 찾기 지원 서비스"
+        title={
+          <>
+            기억을 잇고,
+            <br />
+            다시 만날 수 있도록.
+          </>
+        }
+        description={
+          <>
+            시간이 흘러도, 기다림은 이어집니다.
+            <br />
+            작은 관심과 오래된 기억이 가족을 잇는 단서가 됩니다.
+          </>
+        }
+        aside={
           <div
             aria-hidden="true"
-            className="flex h-64 w-64 items-center justify-center rounded-full bg-card shadow-card max-md:hidden"
+            className="flex h-72 w-72 items-center justify-center justify-self-end rounded-full bg-card shadow-panel max-lg:hidden"
           >
-            <Image src="/images/findus-logo.png" alt="" width={140} height={140} />
+            <LogoMark size={128} className="drop-shadow-[0_12px_24px_rgba(34,89,74,0.25)]" />
           </div>
-        </div>
-      </section>
+        }
+      >
+        <Link
+          href="/"
+          className="mt-8 inline-flex h-13 items-center gap-2 rounded-xl bg-brand px-6 text-[16px] font-bold text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          실종아동 정보 찾아보기 <ArrowRightIcon size={17} strokeWidth={2.2} />
+        </Link>
+      </PageHero>
 
-      <div className="mx-auto max-w-310 px-6 max-sm:px-4">
+      <div className="page-container">
         <nav
           aria-label="상황별 안내"
-          className="-mt-8 grid gap-3 rounded-2xl border border-line bg-card p-3 shadow-card md:grid-cols-3"
+          className="relative -mt-14 grid gap-2 rounded-2xl border border-line bg-card p-3 shadow-panel md:grid-cols-3"
         >
           {QUICK_LINKS.map(({ icon: Icon, ...item }) => (
             <Link
               key={item.href}
               href={item.href}
-              className="group flex items-center gap-3.5 rounded-xl p-4 transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              className="group flex items-center gap-4 rounded-xl p-4.5 transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               <span
                 aria-hidden="true"
@@ -111,8 +113,8 @@ export default function AboutPage() {
                 <Icon size={21} />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-bold">{item.title}</span>
-                <span className="block text-[12.5px] break-keep text-muted">{item.text}</span>
+                <span className="block text-[16px] font-bold">{item.title}</span>
+                <span className="mt-0.5 block text-[13.5px] break-keep text-muted">{item.text}</span>
               </span>
               <ArrowUpRightIcon
                 size={17}
@@ -122,21 +124,21 @@ export default function AboutPage() {
           ))}
         </nav>
 
-        <section aria-labelledby="features-title" className="mt-20">
+        <section aria-labelledby="features-title" className="mt-24 max-sm:mt-16">
           <SectionHeading
             id="features-title"
             eyebrow="What we do"
             title="FindUs는 이렇게 도와요"
             description="흐려진 기억도 다시 단서가 될 수 있도록, 찾기와 제보를 쉽게 만듭니다."
           />
-          <ul className="mt-8 grid gap-5 md:grid-cols-3">
+          <ul className="mt-10 grid gap-5 md:grid-cols-3 max-sm:mt-8">
             {FEATURES.map(({ icon: Icon, ...f }) => (
-              <li key={f.title} className="rounded-2xl border border-line bg-card p-6 shadow-card">
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-soft text-brand">
-                  <Icon size={22} />
+              <li key={f.title} className="rounded-2xl border border-line bg-card p-7 shadow-card max-sm:p-6">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-soft text-brand">
+                  <Icon size={24} />
                 </span>
-                <p className="mt-4 text-[16.5px] font-bold">{f.title}</p>
-                <p className="mt-1.5 text-[14px] leading-relaxed break-keep text-muted">{f.text}</p>
+                <p className="mt-5 text-[18px] font-bold">{f.title}</p>
+                <p className="mt-2 text-[15px] leading-[1.65] break-keep text-muted">{f.text}</p>
               </li>
             ))}
           </ul>

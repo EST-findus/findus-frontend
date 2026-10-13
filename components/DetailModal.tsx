@@ -64,14 +64,14 @@ export default function DetailModal({ person, returnFocusTo, onClose, onReport }
         <button
           type="button"
           onClick={() => onReport(person)}
-          className="flex-2 rounded-lg bg-brand px-3.5 py-3 text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="flex-2 h-12 rounded-xl bg-brand px-3.5 text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           목격 제보하기
         </button>
         <button
           type="button"
           onClick={onClose}
-          className="flex-1 rounded-lg border border-line bg-card px-3.5 py-3 transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="flex-1 h-12 rounded-xl border border-line bg-card px-3.5 transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           닫기
         </button>
