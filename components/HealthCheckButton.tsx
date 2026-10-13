@@ -43,9 +43,9 @@ export default function HealthCheckButton() {
       onClick={check}
       disabled={status === "loading"}
       title={HEALTH_URL}
-      className="ml-auto inline-flex items-center gap-2 rounded-full border border-line bg-white px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:bg-surface disabled:cursor-wait"
+      className="inline-flex items-center gap-1.5 font-semibold transition-colors hover:text-brand disabled:cursor-wait"
     >
-      <span aria-hidden="true" className={`h-2 w-2 rounded-full ${DOT[status]}`} />
+      <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${DOT[status]}`} />
       <span aria-live="polite">{LABEL[status]}</span>
     </button>
   );

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Noto_Sans_KR } from "next/font/google";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -17,9 +19,9 @@ const notoSansKr = Noto_Sans_KR({
   preload: false,
 });
 
-const title = "findus | 실종자 찾기 및 AI 예상 몽타주 시스템";
+const title = "FindUs | 장기 실종아동 찾기";
 const description =
-  "실종 당시 사진과 AI가 예측한 현재 모습을 비교하고 목격 정보를 제보할 수 있는 실종자 검색 서비스";
+  "실종 당시 사진과 AI가 추정한 현재 모습을 비교하고 목격 정보를 제보할 수 있는 장기 실종아동 찾기 서비스";
 const deploymentHost = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -35,7 +37,7 @@ const shareImage = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: "findus",
-  title,
+  title: { default: title, template: "%s | FindUs" },
   description,
   alternates: { canonical: "/" },
   openGraph: {
@@ -61,7 +63,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body
         className={`${pretendard.variable} ${notoSansKr.variable} bg-page font-sans text-ink antialiased`}
       >
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
