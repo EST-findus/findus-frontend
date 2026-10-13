@@ -1,8 +1,8 @@
 import type { SortKey } from "@/lib/types";
 
 const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "recent", label: "최근 실종순" },
-  { key: "longterm", label: "오래된 실종순" },
+  { key: "recent", label: "실종 연도 최신순" },
+  { key: "oldest", label: "실종 연도 오래된순" },
   { key: "name", label: "이름순" },
 ];
 
@@ -14,10 +14,15 @@ interface ResultBarProps {
 
 export default function ResultBar({ count, sort, onSortChange }: ResultBarProps) {
   return (
-    <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-      <p className="text-[18px] font-extrabold tracking-[-0.3px]" aria-live="polite">
-        조회된 실종자 <span className="text-navy">{count}</span>명
-      </p>
+    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <h2
+        id="results"
+        tabIndex={-1}
+        className="scroll-mt-40 text-[15px] font-bold outline-none"
+        aria-live="polite"
+      >
+        검색 결과 <span className="text-brand">{count}</span>건
+      </h2>
       <div className="flex items-center gap-2">
         <label htmlFor="sort-select" className="text-[13px] font-semibold text-muted">
           정렬
@@ -26,7 +31,7 @@ export default function ResultBar({ count, sort, onSortChange }: ResultBarProps)
           id="sort-select"
           value={sort}
           onChange={(e) => onSortChange(e.target.value as SortKey)}
-          className="rounded-lg border border-line bg-card px-3 py-2 text-[14px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+          className="rounded-lg border border-line bg-card px-3 py-2 text-[13.5px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           {SORT_OPTIONS.map((opt) => (
             <option key={opt.key} value={opt.key}>

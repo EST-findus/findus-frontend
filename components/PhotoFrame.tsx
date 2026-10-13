@@ -12,28 +12,29 @@ export function PhotoContent({ src, alt, sizes }: PhotoContentProps) {
 }
 
 interface PhotoFrameProps extends PhotoContentProps {
-  label: string;
+  /** 사진 하단에 겹치는 작은 배지 */
+  badge: string;
+  /** AI 생성 사진은 브랜드 색 배지 */
+  ai?: boolean;
   ariaLabel: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function PhotoFrame({ label, ariaLabel, onClick, ...content }: PhotoFrameProps) {
+export default function PhotoFrame({ badge, ai, ariaLabel, onClick, ...content }: PhotoFrameProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-label={ariaLabel}
-      className="group relative block aspect-3/4 w-full cursor-pointer overflow-hidden rounded-lg border border-line bg-surface transition hover:border-navy hover:ring-3 hover:ring-navy/10 focus-visible:border-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+      className="group relative block aspect-3/4 w-full cursor-pointer overflow-hidden rounded-lg bg-surface transition hover:ring-3 hover:ring-brand/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
     >
       <PhotoContent {...content} />
       <span
-        aria-hidden="true"
-        className="absolute top-1.5 right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-white text-[11px] opacity-0 shadow-card transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+        className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[10.5px] font-semibold whitespace-nowrap text-white ${
+          ai ? "bg-brand/85" : "bg-ink/60"
+        }`}
       >
-        🔍
-      </span>
-      <span className="absolute inset-x-0 bottom-0 bg-navy/80 px-1 py-1 text-center text-[11px] leading-tight font-semibold tracking-[-0.3px] break-keep text-white">
-        {label}
+        {badge}
       </span>
     </button>
   );

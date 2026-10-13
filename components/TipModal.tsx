@@ -14,7 +14,7 @@ interface TipModalProps {
 
 const LABEL = "mb-1.5 block text-[13.5px] font-bold";
 const INPUT =
-  "w-full rounded-lg border border-line bg-card px-3 py-2.5 text-[14px] transition-shadow placeholder:text-subtle focus-visible:border-navy focus-visible:ring-3 focus-visible:ring-navy/15 focus-visible:outline-none aria-[invalid=true]:border-red";
+  "w-full rounded-lg border border-line bg-card px-3 py-2.5 text-[14px] transition-shadow placeholder:text-subtle focus-visible:border-brand focus-visible:ring-3 focus-visible:ring-brand/15 focus-visible:outline-none aria-[invalid=true]:border-red";
 
 export default function TipModal({ person, returnFocusTo, onClose, onSubmitted }: TipModalProps) {
   const [sighting, setSighting] = useState("");
@@ -130,14 +130,14 @@ export default function TipModal({ person, returnFocusTo, onClose, onSubmitted }
           <button
             type="submit"
             disabled={submitting}
-            className="flex-1 rounded-lg bg-navy px-3.5 py-3 text-white transition-colors hover:bg-navy-dark disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+            className="flex-1 rounded-lg bg-brand px-3.5 py-3 text-white transition-colors hover:bg-brand-dark disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             {submitting ? "전송 중…" : "제보 전송"}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="flex-[0.4] rounded-lg border border-line bg-card px-3.5 py-3 transition-colors hover:border-navy hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+            className="flex-[0.4] rounded-lg border border-line bg-card px-3.5 py-3 transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             취소
           </button>

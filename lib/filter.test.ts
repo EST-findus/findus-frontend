@@ -1,9 +1,15 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { getMissingPersons } from "./data";
-import { filterPersons, isLongTerm, matchesQuery, sortPersons, type FilterOptions } from "./filter";
-import type { MissingPerson } from "./types";
+import {
+  DEFAULT_FILTERS,
+  filterPersons,
+  listRegions,
+  matchesQuery,
+  sortPersons,
+  type FilterOptions,
+} from "./filter";
+import type { MissingPerson, SearchFilters } from "./types";
 
-const TODAY = new Date(2026, 9, 6); // 2026-10-06
 const names = (list: MissingPerson[]) => list.map((p) => p.name);
 
 let persons: MissingPerson[] = [];
@@ -11,31 +17,37 @@ beforeAll(async () => {
   persons = await getMissingPersons();
 });
 
-const run = (opts: Partial<FilterOptions> = {}) =>
-  filterPersons(persons, { query: "", filter: "all", sort: "recent", today: TODAY, ...opts });
+const run = ({ filters, ...opts }: Partial<Omit<FilterOptions, "filters">> & {
+  filters?: Partial<SearchFilters>;
+} = {}) =>
+  filterPersons(persons, {
+    query: "",
+    sort: "recent",
+    ...opts,
+    filters: { ...DEFAULT_FILTERS, ...filters },
+  });
 
 describe("검색", () => {
   it("빈 검색어는 전체를 반환한다", () => {
-    expect(run()).toHaveLength(4);
+    expect(run()).toHaveLength(6);
   });
 
   it("지역으로 검색한다", () => {
     expect(names(run({ query: "부산" }))).toEqual(["이서연"]);
   });
 
-  it("나이 문자열로 검색한다", () => {
-    expect(names(run({ query: "28세" }))).toEqual(["김민준"]);
-    expect(names(run({ query: "현재 만 80세" }))).toEqual(["최순자"]);
+  it("실종 당시 나이로 검색한다", () => {
+    expect(names(run({ query: "9세" }))).toEqual(["박준영"]);
   });
 
   it("공백을 무시한다", () => {
-    const minjun = persons.find((p) => p.id === "MP-2001-0812")!;
+    const minjun = persons.find((p) => p.id === "MC-2001-0812")!;
     expect(matchesQuery(minjun, "  김 민준 ")).toBe(true);
-    expect(matchesQuery(minjun, "만5세")).toBe(true);
+    expect(matchesQuery(minjun, "5 세")).toBe(true);
   });
 
   it("특징으로 검색한다", () => {
-    expect(names(run({ query: "보행기" }))).toEqual(["최순자"]);
+    expect(names(run({ query: "보조개" }))).toEqual(["정우진"]);
   });
 
   it("일치하지 않으면 빈 배열", () => {
@@ -43,40 +55,69 @@ describe("검색", () => {
   });
 });
 
-describe("칩", () => {
-  it("카테고리로 거른다", () => {
-    expect(names(run({ filter: "child" }))).toEqual(["김민준", "이서연"]);
-    expect(names(run({ filter: "senior" }))).toEqual(["최순자"]);
-    expect(names(run({ filter: "disabled" }))).toEqual(["박준영"]);
+describe("필터", () => {
+  it("성별로 거른다", () => {
+    expect(names(run({ filters: { gender: "여" } }))).toEqual(["한지민", "오하은", "이서연"]);
   });
 
-  it("장기실종은 기준일로부터 10년 이상", () => {
-    expect(names(run({ filter: "longterm" }))).toEqual(["박준영", "김민준", "이서연"]);
+  it("지역으로 거른다", () => {
+    expect(names(run({ filters: { region: "경기" } }))).toEqual(["박준영"]);
   });
 
-  it("장기실종 경계: 정확히 10년 전은 포함, 하루 모자라면 제외", () => {
-    const base = persons[0];
-    expect(isLongTerm({ ...base, missingDate: "2016-10-06" }, TODAY)).toBe(true);
-    expect(isLongTerm({ ...base, missingDate: "2016-10-07" }, TODAY)).toBe(false);
+  it("실종 연도 구간으로 거른다 (경계: 2000년은 2000년대)", () => {
+    expect(names(run({ filters: { period: "before2000" } }))).toEqual(["이서연", "정우진"]);
+    expect(names(run({ filters: { period: "2000s" } }))).toEqual(["한지민", "오하은", "김민준"]);
+    expect(run({ filters: { period: "after2020" } })).toEqual([]);
   });
 
-  it("검색과 칩은 AND로 적용된다", () => {
-    expect(names(run({ filter: "longterm", query: "서울" }))).toEqual(["김민준"]);
-    expect(run({ filter: "senior", query: "부산" })).toEqual([]);
+  it("실종 당시 나이 구간으로 거른다", () => {
+    expect(names(run({ filters: { ageGroup: "0-3" } }))).toEqual(["한지민", "오하은"]);
+    expect(names(run({ filters: { ageGroup: "7-9" } }))).toEqual(["박준영", "이서연"]);
+    expect(run({ filters: { ageGroup: "10+" } })).toEqual([]);
+  });
+
+  it("검색어와 필터는 AND로 적용된다", () => {
+    expect(names(run({ query: "광역시", filters: { gender: "남" } }))).toEqual(["정우진"]);
+    expect(run({ query: "부산", filters: { gender: "남" } })).toEqual([]);
+  });
+
+  it("지역 목록은 중복 없이 가나다순", () => {
+    expect(listRegions(persons)).toEqual(["경기", "광주", "대구", "부산", "서울", "인천"]);
   });
 });
 
 describe("정렬", () => {
-  it("최근 실종순", () => {
-    expect(names(run({ sort: "recent" }))).toEqual(["최순자", "박준영", "김민준", "이서연"]);
+  it("실종 연도 최신순", () => {
+    expect(names(run({ sort: "recent" }))).toEqual([
+      "박준영",
+      "한지민",
+      "오하은",
+      "김민준",
+      "이서연",
+      "정우진",
+    ]);
   });
 
-  it("오래된 실종순", () => {
-    expect(names(run({ sort: "longterm" }))).toEqual(["이서연", "김민준", "박준영", "최순자"]);
+  it("오래된순", () => {
+    expect(names(run({ sort: "oldest" }))).toEqual([
+      "정우진",
+      "이서연",
+      "김민준",
+      "오하은",
+      "한지민",
+      "박준영",
+    ]);
   });
 
   it("이름순", () => {
-    expect(names(run({ sort: "name" }))).toEqual(["김민준", "박준영", "이서연", "최순자"]);
+    expect(names(run({ sort: "name" }))).toEqual([
+      "김민준",
+      "박준영",
+      "오하은",
+      "이서연",
+      "정우진",
+      "한지민",
+    ]);
   });
 
   it("원본 배열을 변경하지 않는다", () => {
