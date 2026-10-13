@@ -1,48 +1,52 @@
-import type { FilterKey, MissingPerson, SortKey } from "./types";
+import type { AgeGroupKey, MissingPerson, PeriodKey, SearchFilters, SortKey } from "./types";
 
-export const LONG_TERM_YEARS = 10;
+export const DEFAULT_FILTERS: SearchFilters = {
+  gender: "all",
+  region: "all",
+  period: "all",
+  ageGroup: "all",
+};
+
+/** [이상, 미만) 실종 연도 */
+const PERIOD_RANGES: Record<Exclude<PeriodKey, "all">, [number, number]> = {
+  before2000: [0, 2000],
+  "2000s": [2000, 2010],
+  "2010s": [2010, 2020],
+  after2020: [2020, Infinity],
+};
+
+/** [이상, 이하] 실종 당시 만 나이 */
+const AGE_RANGES: Record<Exclude<AgeGroupKey, "all">, [number, number]> = {
+  "0-3": [0, 3],
+  "4-6": [4, 6],
+  "7-9": [7, 9],
+  "10+": [10, Infinity],
+};
 
 const normalize = (s: string) => s.replace(/\s+/g, "").toLowerCase();
-
-const pad = (n: number) => String(n).padStart(2, "0");
-
-/** 로컬 날짜 기준 "YYYY-MM-DD" */
-export function toIsoDate(date: Date): string {
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
 
 export function matchesQuery(person: MissingPerson, query: string): boolean {
   const q = normalize(query);
   if (!q) return true;
-  const haystack = [
-    person.name,
-    person.missingLocation,
-    person.features,
-    `만 ${person.ageAtMissing}세`,
-    `현재 만 ${person.currentAge}세`,
-  ]
+  const haystack = [person.name, person.missingLocation, person.features, `${person.ageAtMissing}세`]
     .map(normalize)
     .join("|");
   return haystack.includes(q);
 }
 
-/** 실종일로부터 LONG_TERM_YEARS년 이상 지났는지 (today 기준) */
-export function isLongTerm(person: MissingPerson, today: Date): boolean {
-  const threshold = toIsoDate(
-    new Date(today.getFullYear() - LONG_TERM_YEARS, today.getMonth(), today.getDate()),
-  );
-  return person.missingDate <= threshold;
-}
-
-export function matchesFilter(person: MissingPerson, filter: FilterKey, today: Date): boolean {
-  switch (filter) {
-    case "all":
-      return true;
-    case "longterm":
-      return isLongTerm(person, today);
-    default:
-      return person.category === filter;
+export function matchesFilters(person: MissingPerson, filters: SearchFilters): boolean {
+  if (filters.gender !== "all" && person.gender !== filters.gender) return false;
+  if (filters.region !== "all" && person.region !== filters.region) return false;
+  if (filters.period !== "all") {
+    const year = Number(person.missingDate.slice(0, 4));
+    const [from, to] = PERIOD_RANGES[filters.period];
+    if (year < from || year >= to) return false;
   }
+  if (filters.ageGroup !== "all") {
+    const [min, max] = AGE_RANGES[filters.ageGroup];
+    if (person.ageAtMissing < min || person.ageAtMissing > max) return false;
+  }
+  return true;
 }
 
 export function sortPersons(persons: MissingPerson[], sort: SortKey): MissingPerson[] {
@@ -50,28 +54,29 @@ export function sortPersons(persons: MissingPerson[], sort: SortKey): MissingPer
   switch (sort) {
     case "recent":
       return sorted.sort((a, b) => b.missingDate.localeCompare(a.missingDate));
-    case "longterm":
+    case "oldest":
       return sorted.sort((a, b) => a.missingDate.localeCompare(b.missingDate));
     case "name":
       return sorted.sort((a, b) => a.name.localeCompare(b.name, "ko"));
   }
 }
 
-export interface FilterOptions {
-  query: string;
-  filter: FilterKey;
-  sort: SortKey;
-  /** 장기실종 판정 기준일 (기본: 오늘) */
-  today?: Date;
+/** 데이터에 있는 시·도만 가나다순으로 */
+export function listRegions(persons: MissingPerson[]): string[] {
+  return [...new Set(persons.map((p) => p.region))].sort((a, b) => a.localeCompare(b, "ko"));
 }
 
-/** 검색 AND 칩 필터 → 정렬 */
+export interface FilterOptions {
+  query: string;
+  filters: SearchFilters;
+  sort: SortKey;
+}
+
+/** 검색어 AND 드롭다운 필터 → 정렬 */
 export function filterPersons(
   persons: MissingPerson[],
-  { query, filter, sort, today = new Date() }: FilterOptions,
+  { query, filters, sort }: FilterOptions,
 ): MissingPerson[] {
-  const matched = persons.filter(
-    (p) => matchesQuery(p, query) && matchesFilter(p, filter, today),
-  );
+  const matched = persons.filter((p) => matchesQuery(p, query) && matchesFilters(p, filters));
   return sortPersons(matched, sort);
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
+import { CloseIcon } from "./Icons";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -92,9 +93,9 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
           type="button"
           onClick={onClose}
           aria-label="닫기"
-          className="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full text-[22px] leading-none text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+          className="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
-          ×
+          <CloseIcon size={20} />
         </button>
         <h2 id={titleId} className="mb-5 pr-10 text-[20px] font-extrabold tracking-[-0.3px] break-keep">
           {title}

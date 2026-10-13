@@ -1,16 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { filterPersons } from "@/lib/filter";
-import type { FilterKey, MissingPerson, SortKey } from "@/lib/types";
+import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
+import { SAFE182_URL } from "@/lib/links";
+import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
 import DetailModal from "./DetailModal";
 import EmptyState from "./EmptyState";
-import FilterChips from "./FilterChips";
-import Header from "./Header";
-import Intro from "./Intro";
+import { ArrowUpRightIcon } from "./Icons";
+import PageHero from "./PageHero";
 import PersonCard from "./PersonCard";
 import ResultBar from "./ResultBar";
-import SearchBar from "./SearchBar";
+import SearchPanel from "./SearchPanel";
 import TipModal from "./TipModal";
 import Toast from "./Toast";
 
@@ -19,7 +19,7 @@ const TIP_DONE_MESSAGE = "소중한 목격 제보가 접수되었습니다. 따�
 
 export default function MissingPersonExplorer({ persons }: { persons: MissingPerson[] }) {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<FilterKey>("all");
+  const [filters, setFilters] = useState<SearchFilters>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortKey>("recent");
   const [detailPerson, setDetailPerson] = useState<MissingPerson | null>(null);
   const [tipPerson, setTipPerson] = useState<MissingPerson | null>(null);
@@ -28,9 +28,10 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
+  const regions = useMemo(() => listRegions(persons), [persons]);
   const results = useMemo(
-    () => filterPersons(persons, { query, filter, sort }),
-    [persons, query, filter, sort],
+    () => filterPersons(persons, { query, filters, sort }),
+    [persons, query, filters, sort],
   );
 
   useEffect(() => () => clearTimeout(toastTimer.current), []);
@@ -44,6 +45,17 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
     setTrigger(el);
     setTipPerson(person);
   }, []);
+
+  const reset = () => {
+    setQuery("");
+    setFilters(DEFAULT_FILTERS);
+  };
+
+  const goToResults = () => {
+    const heading = document.getElementById("results");
+    heading?.scrollIntoView({ behavior: "smooth", block: "start" });
+    heading?.focus({ preventScroll: true });
+  };
 
   const reportFromDetail = (person: MissingPerson) => {
     setDetailPerson(null);
@@ -59,35 +71,58 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
 
   return (
     <>
-      <Header />
-      <section className="bg-hero px-4 pt-12 pb-10">
-        <Intro total={persons.length} />
-        <div className="mx-auto mt-7 max-w-165">
-          <SearchBar value={query} onChange={setQuery} />
-          <FilterChips value={filter} onChange={setFilter} />
+      <PageHero
+        compact
+        eyebrow="장기 실종아동 찾기"
+        title="기억 속 그 아이를 찾고 있나요?"
+        description="이름을 몰라도 괜찮아요. 성별, 실종 지역, 연도처럼 기억나는 정보부터 찾아보세요."
+      >
+        <div className="mt-8 max-sm:mt-6">
+          <SearchPanel
+            query={query}
+            onQueryChange={setQuery}
+            filters={filters}
+            onFiltersChange={setFilters}
+            regions={regions}
+            onReset={reset}
+            onSubmit={goToResults}
+          />
         </div>
-      </section>
+      </PageHero>
 
-      <main className="mx-auto mt-10 max-w-310 px-6 max-sm:px-4">
+      <section aria-labelledby="results" className="page-container mt-12 max-sm:mt-8">
         <ResultBar count={results.length} sort={sort} onSortChange={setSort} />
-        {results.length > 0 ? (
-          <section
-            aria-label="실종자 목록"
-            className="grid grid-cols-1 gap-6 lg:grid-cols-2"
+
+        <p className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl bg-gold-soft px-4 py-3 text-[13.5px] leading-normal break-keep text-ink/80">
+          <span className="font-bold text-gold-ink">사진 안내</span>
+          <span className="min-w-0 flex-1 basis-72">
+            AI 예상 모습은 실제와 다를 수 있는 참고 자료예요. 현재 목록은 시연용 예시 데이터입니다.
+          </span>
+          <a
+            href={SAFE182_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center gap-0.5 font-bold text-brand hover:underline"
           >
+            공식 실종정보 확인 <ArrowUpRightIcon size={14} strokeWidth={2.2} />
+          </a>
+        </p>
+
+        {results.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {results.map((person) => (
               <PersonCard
                 key={person.id}
                 person={person}
                 onOpenDetail={openDetail}
-                onOpenTip={openTip}
+                onReport={openTip}
               />
             ))}
-          </section>
+          </div>
         ) : (
-          <EmptyState />
+          <EmptyState onReset={reset} />
         )}
-      </main>
+      </section>
 
       {detailPerson && (
         <DetailModal
@@ -105,12 +140,6 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
           onSubmitted={handleTipSubmitted}
         />
       )}
-      <a
-        href="tel:182"
-        className="fixed right-6 bottom-6 z-40 flex items-center gap-1.5 rounded-full bg-red px-5 py-3 text-[14px] font-bold text-white shadow-float transition-colors hover:bg-red-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy max-sm:right-4 max-sm:bottom-4"
-      >
-        <span aria-hidden="true">☎</span> 182 신고
-      </a>
       <Toast message={toast} />
     </>
   );
