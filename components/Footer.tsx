@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SOURCE_API, SOURCE_LABEL } from "@/lib/attribution";
 import { MISSING_CHILD_CENTER_URL, SAFE182_URL } from "@/lib/links";
 import { Logo } from "./Header";
 import { ArrowRightIcon, ArrowUpRightIcon } from "./Icons";
@@ -107,7 +108,22 @@ export default function Footer() {
             ))}
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[13px]">
+          <div className="mt-8 text-[13px] leading-relaxed break-keep">
+            <p className="font-bold text-ink/80">{SOURCE_LABEL}</p>
+            <p>
+              실종 정보 및 원본 사진:{" "}
+              <a
+                href={SAFE182_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-ink/75 hover:text-brand"
+              >
+                {SOURCE_API}
+              </a>
+            </p>
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[13px]">
             <p className="break-keep">
               실종 신고와 수사는 경찰청(112·182)을 통해 진행됩니다. © 2026 FindUs
             </p>
