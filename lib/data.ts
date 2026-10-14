@@ -1,4 +1,4 @@
-import type { MissingPerson, TipPayload } from "./types";
+import type { MissingPerson } from "./types";
 
 // 데이터 접근은 이 파일에만 둔다. 백엔드(Spring Boot)가 준비되면 아래 함수 내부만 fetch로 교체한다.
 
@@ -142,9 +142,4 @@ const MOCK_PERSONS: MissingPerson[] = [
 
 export async function getMissingPersons(): Promise<MissingPerson[]> {
   return MOCK_PERSONS;
-}
-
-/** 목업: 실제 전송 없이 resolve 한다. */
-export async function submitTip(tip: TipPayload): Promise<void> {
-  void tip;
 }
