@@ -143,3 +143,7 @@ const MOCK_PERSONS: MissingPerson[] = [
 export async function getMissingPersons(): Promise<MissingPerson[]> {
   return MOCK_PERSONS;
 }
+
+export async function getMissingPersonById(id: string): Promise<MissingPerson | undefined> {
+  return MOCK_PERSONS.find((p) => p.id === id);
+}
