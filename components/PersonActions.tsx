@@ -1,9 +1,9 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useState } from "react";
 import type { MissingPerson } from "@/lib/types";
 import { ShareIcon } from "./Icons";
-import SharePanel from "./SharePanel";
+import ShareModal from "./ShareModal";
 
 const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
@@ -16,10 +16,9 @@ interface PersonActionsProps {
   secondary: React.ReactNode;
 }
 
-/** 상세정보 하단 버튼 줄: 목격 제보하기 · 공유하기(누르면 공유 옵션이 펼쳐짐) · 보조 버튼 */
+/** 상세정보 하단 버튼 줄: 목격 제보하기 · 공유하기(공유 모달) · 보조 버튼 */
 export default function PersonActions({ person, onReport, secondary }: PersonActionsProps) {
   const [shareOpen, setShareOpen] = useState(false);
-  const panelId = useId();
 
   return (
     <div className="mt-6">
@@ -33,17 +32,16 @@ export default function PersonActions({ person, onReport, secondary }: PersonAct
         </button>
         <button
           type="button"
-          onClick={() => setShareOpen((v) => !v)}
-          aria-expanded={shareOpen}
-          aria-controls={panelId}
-          className={`${SECONDARY_ACTION} gap-1.5 ${shareOpen ? "border-brand! text-brand!" : ""}`}
+          onClick={() => setShareOpen(true)}
+          aria-haspopup="dialog"
+          className={`${SECONDARY_ACTION} gap-1.5`}
         >
           <ShareIcon size={17} strokeWidth={2.1} />
           공유하기
         </button>
         {secondary}
       </div>
-      {shareOpen && <SharePanel id={panelId} person={person} />}
+      {shareOpen && <ShareModal person={person} onClose={() => setShareOpen(false)} />}
     </div>
   );
 }

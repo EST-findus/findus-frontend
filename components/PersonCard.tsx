@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
-import { ArrowRightIcon } from "./Icons";
+import { ArrowRightIcon, ShareIcon } from "./Icons";
 import PhotoFrame from "./PhotoFrame";
 import StyleTabs from "./StyleTabs";
 
@@ -11,13 +11,14 @@ interface PersonCardProps {
   person: MissingPerson;
   onOpenDetail: (person: MissingPerson, trigger: HTMLElement) => void;
   onReport: (person: MissingPerson, trigger: HTMLElement) => void;
+  onShare: (person: MissingPerson, trigger: HTMLElement) => void;
 }
 
 const SIZES = "(min-width: 1024px) 180px, 30vw";
 const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
-export default function PersonCard({ person, onOpenDetail, onReport }: PersonCardProps) {
+export default function PersonCard({ person, onOpenDetail, onReport, onShare }: PersonCardProps) {
   const [styleIndex, setStyleIndex] = useState(0);
   const style = person.photos.styles[styleIndex];
   const openDetail = (e: React.MouseEvent<HTMLButtonElement>) =>
@@ -113,7 +114,7 @@ export default function PersonCard({ person, onOpenDetail, onReport }: PersonCar
         <dd className="font-semibold">{formatGender(person.gender)}</dd>
       </dl>
 
-      <div className="mt-auto grid grid-cols-2 gap-2.5 pt-5 text-[15px] font-bold max-sm:pt-4">
+      <div className="mt-auto grid grid-cols-[1fr_1fr_auto] gap-2.5 pt-5 text-[15px] font-bold max-sm:gap-2 max-sm:pt-4">
         <button
           type="button"
           onClick={openDetail}
@@ -132,6 +133,16 @@ export default function PersonCard({ person, onOpenDetail, onReport }: PersonCar
           className={`flex h-12 items-center justify-center rounded-xl bg-brand text-white transition-colors hover:bg-brand-dark ${FOCUS_RING}`}
         >
           목격 제보하기
+        </button>
+        <button
+          type="button"
+          onClick={(e) => onShare(person, e.currentTarget)}
+          aria-haspopup="dialog"
+          aria-label={`${person.name} 정보 공유하기`}
+          title="공유하기"
+          className={`flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-card transition-colors hover:border-brand hover:text-brand ${FOCUS_RING}`}
+        >
+          <ShareIcon size={19} strokeWidth={2} />
         </button>
       </div>
     </article>

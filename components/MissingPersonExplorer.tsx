@@ -12,6 +12,7 @@ import PersonCard from "./PersonCard";
 import ReportGuideModal from "./ReportGuideModal";
 import ResultBar from "./ResultBar";
 import SearchPanel from "./SearchPanel";
+import ShareModal from "./ShareModal";
 
 export default function MissingPersonExplorer({ persons }: { persons: MissingPerson[] }) {
   const [query, setQuery] = useState("");
@@ -19,6 +20,7 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
   const [sort, setSort] = useState<SortKey>("recent");
   const [detailPerson, setDetailPerson] = useState<MissingPerson | null>(null);
   const [tipPerson, setTipPerson] = useState<MissingPerson | null>(null);
+  const [sharePerson, setSharePerson] = useState<MissingPerson | null>(null);
   // 상세 → 제보 안내로 이어져도 최종적으로는 처음 누른 카드 버튼으로 포커스를 돌려준다.
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
 
@@ -36,6 +38,11 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
   const openTip = useCallback((person: MissingPerson, el: HTMLElement) => {
     setTrigger(el);
     setTipPerson(person);
+  }, []);
+
+  const openShare = useCallback((person: MissingPerson, el: HTMLElement) => {
+    setTrigger(el);
+    setSharePerson(person);
   }, []);
 
   const reset = () => {
@@ -101,6 +108,7 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
                 person={person}
                 onOpenDetail={openDetail}
                 onReport={openTip}
+                onShare={openShare}
               />
             ))}
           </div>
@@ -122,6 +130,13 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
           person={tipPerson}
           returnFocusTo={trigger}
           onClose={() => setTipPerson(null)}
+        />
+      )}
+      {sharePerson && (
+        <ShareModal
+          person={sharePerson}
+          returnFocusTo={trigger}
+          onClose={() => setSharePerson(null)}
         />
       )}
     </>
