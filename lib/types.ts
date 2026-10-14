@@ -45,10 +45,3 @@ export interface MissingPerson {
   /** 상세 모달 "AI 알고리즘 분석" 문구 */
   aiNote: string;
 }
-
-export interface TipPayload {
-  personId: string;
-  sighting: string;
-  details: string;
-  contact?: string;
-}

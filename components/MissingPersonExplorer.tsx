@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
 import { SAFE182_URL } from "@/lib/links";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
@@ -9,13 +9,10 @@ import EmptyState from "./EmptyState";
 import { ArrowUpRightIcon } from "./Icons";
 import PageHero from "./PageHero";
 import PersonCard from "./PersonCard";
+import ReportGuideModal from "./ReportGuideModal";
 import ResultBar from "./ResultBar";
 import SearchPanel from "./SearchPanel";
-import TipModal from "./TipModal";
-import Toast from "./Toast";
-
-const TOAST_MS = 3000;
-const TIP_DONE_MESSAGE = "소중한 목격 제보가 접수되었습니다. 따뜻한 관심에 감사드립니다.";
+import ShareModal from "./ShareModal";
 
 export default function MissingPersonExplorer({ persons }: { persons: MissingPerson[] }) {
   const [query, setQuery] = useState("");
@@ -23,18 +20,15 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
   const [sort, setSort] = useState<SortKey>("recent");
   const [detailPerson, setDetailPerson] = useState<MissingPerson | null>(null);
   const [tipPerson, setTipPerson] = useState<MissingPerson | null>(null);
-  const [toast, setToast] = useState<string | null>(null);
-  // 상세 → 제보로 이어져도 최종적으로는 처음 누른 카드 버튼으로 포커스를 돌려준다.
+  const [sharePerson, setSharePerson] = useState<MissingPerson | null>(null);
+  // 상세 → 제보 안내로 이어져도 최종적으로는 처음 누른 카드 버튼으로 포커스를 돌려준다.
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
-  const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const regions = useMemo(() => listRegions(persons), [persons]);
   const results = useMemo(
     () => filterPersons(persons, { query, filters, sort }),
     [persons, query, filters, sort],
   );
-
-  useEffect(() => () => clearTimeout(toastTimer.current), []);
 
   const openDetail = useCallback((person: MissingPerson, el: HTMLElement) => {
     setTrigger(el);
@@ -44,6 +38,11 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
   const openTip = useCallback((person: MissingPerson, el: HTMLElement) => {
     setTrigger(el);
     setTipPerson(person);
+  }, []);
+
+  const openShare = useCallback((person: MissingPerson, el: HTMLElement) => {
+    setTrigger(el);
+    setSharePerson(person);
   }, []);
 
   const reset = () => {
@@ -60,13 +59,6 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
   const reportFromDetail = (person: MissingPerson) => {
     setDetailPerson(null);
     setTipPerson(person);
-  };
-
-  const handleTipSubmitted = () => {
-    setTipPerson(null);
-    setToast(TIP_DONE_MESSAGE);
-    clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(null), TOAST_MS);
   };
 
   return (
@@ -116,6 +108,7 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
                 person={person}
                 onOpenDetail={openDetail}
                 onReport={openTip}
+                onShare={openShare}
               />
             ))}
           </div>
@@ -133,14 +126,19 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
         />
       )}
       {tipPerson && (
-        <TipModal
+        <ReportGuideModal
           person={tipPerson}
           returnFocusTo={trigger}
           onClose={() => setTipPerson(null)}
-          onSubmitted={handleTipSubmitted}
         />
       )}
-      <Toast message={toast} />
+      {sharePerson && (
+        <ShareModal
+          person={sharePerson}
+          returnFocusTo={trigger}
+          onClose={() => setSharePerson(null)}
+        />
+      )}
     </>
   );
 }

@@ -4,6 +4,9 @@ import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "./Icons";
 
+// 모달 위에 모달(상세 → 공유)이 열릴 수 있어, Esc·Tab은 맨 위 모달만 처리한다.
+const openStack: symbol[] = [];
+
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -23,6 +26,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
   const titleId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
+  const tokenRef = useRef(Symbol("modal"));
 
   useEffect(() => {
     onCloseRef.current = onClose;
@@ -31,6 +35,8 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
   useEffect(() => {
     const box = boxRef.current;
     if (!box) return;
+    const token = tokenRef.current;
+    openStack.push(token);
     const restoreTarget = returnFocusTo ?? (document.activeElement as HTMLElement | null);
 
     const focusables = () => Array.from(box.querySelectorAll<HTMLElement>(FOCUSABLE));
@@ -41,6 +47,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (openStack.at(-1) !== token) return;
       if (e.key === "Escape") {
         e.preventDefault();
         onCloseRef.current();
@@ -67,6 +74,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      openStack.splice(openStack.indexOf(token), 1);
       document.body.style.overflow = prevOverflow;
       if (restoreTarget?.isConnected) restoreTarget.focus();
     };

@@ -172,3 +172,41 @@ export const ChevronRightIcon = (p: IconProps) => (
     <path d="m9.5 6 6 6-6 6" />
   </Svg>
 );
+
+export const ShareIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 4v11M7.5 8.5 12 4l4.5 4.5" />
+    <path d="M6 12.5V18a1.5 1.5 0 0 0 1.5 1.5h9A1.5 1.5 0 0 0 18 18v-5.5" />
+  </Svg>
+);
+
+export const LinkIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M10 14a4 4 0 0 0 5.7 0l2.8-2.8a4 4 0 0 0-5.7-5.7L11.5 6.8" />
+    <path d="M14 10a4 4 0 0 0-5.7 0l-2.8 2.8a4 4 0 0 0 5.7 5.7l1.3-1.3" />
+  </Svg>
+);
+
+export const QrIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="4.5" y="4.5" width="5.5" height="5.5" rx="1" />
+    <rect x="14" y="4.5" width="5.5" height="5.5" rx="1" />
+    <rect x="4.5" y="14" width="5.5" height="5.5" rx="1" />
+    <path d="M14 14h2.5v2.5H14ZM19.5 14v.01M17 19.5h2.5V17" />
+  </Svg>
+);
+
+export const ImageIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="6.5" y="3.5" width="11" height="17" rx="2" />
+    <circle cx="12" cy="9" r="2" />
+    <path d="M6.5 16.5 10 13.5l2.5 2 2-1.5 3 2.5" />
+  </Svg>
+);
+
+export const DownloadIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 4.5v10M7.5 10.5 12 15l4.5-4.5" />
+    <path d="M5 19.5h14" />
+  </Svg>
+);

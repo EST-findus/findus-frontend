@@ -54,7 +54,7 @@ const FEATURES = [
   {
     icon: PhoneIcon,
     title: "공식 제보로 연결",
-    text: "목격 제보를 남기거나 경찰청 182·안전Dream으로 바로 이어집니다.",
+    text: "제보 방법을 안내하고 경찰청 182·안전Dream으로 바로 이어집니다.",
   },
 ];
 
