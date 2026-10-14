@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { SOURCE_API, SOURCE_LABEL } from "@/lib/attribution";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
 import { SAFE182_URL } from "@/lib/links";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
@@ -84,6 +85,10 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
 
       <section aria-labelledby="results" className="page-container mt-12 max-sm:mt-8">
         <ResultBar count={results.length} sort={sort} onSortChange={setSort} />
+
+        <p className="-mt-2 mb-3 text-[12.5px] font-medium text-muted">
+          {SOURCE_LABEL} · {SOURCE_API}
+        </p>
 
         <p className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl bg-gold-soft px-4 py-3 text-[13.5px] leading-normal break-keep text-ink/80">
           <span className="font-bold text-gold-ink">사진 안내</span>
