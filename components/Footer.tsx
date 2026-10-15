@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SOURCE_API, SOURCE_LABEL } from "@/lib/attribution";
+import { MOCK_PHOTO_LABEL } from "@/lib/attribution";
 import { MISSING_CHILD_CENTER_URL, SAFE182_URL } from "@/lib/links";
 import { Logo } from "./Header";
 import { ArrowRightIcon, ArrowUpRightIcon } from "./Icons";
@@ -109,16 +109,16 @@ export default function Footer() {
           </div>
 
           <div className="mt-8 text-[13px] leading-relaxed break-keep">
-            <p className="font-bold text-ink/80">{SOURCE_LABEL}</p>
+            <p className="font-bold text-ink/80">{MOCK_PHOTO_LABEL}</p>
             <p>
-              실종 정보 및 원본 사진:{" "}
+              현재 목록은 시연용 예시입니다. 공식 실종 정보:{" "}
               <a
                 href={SAFE182_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-ink/75 hover:text-brand"
               >
-                {SOURCE_API}
+                경찰청 안전Dream
               </a>
             </p>
           </div>

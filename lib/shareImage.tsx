@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import QRCode from "qrcode";
+import { MOCK_PHOTO_LABEL } from "./attribution";
 import { formatDate, formatGender } from "./format";
 import { personUrl } from "./share";
 import type { MissingPerson } from "./types";
@@ -49,9 +50,13 @@ function loadLogo() {
   return logoPromise;
 }
 
-/** 원격 사진을 미리 받아 둔다. 실패해도 이미지 전체가 깨지지 않게 null을 돌려 빈 칸으로 그린다. */
+/** 로컬 목업과 원격 사진을 읽는다. 실패하면 null을 돌려 빈 칸으로 그린다. */
 async function fetchPhoto(src: string): Promise<string | null> {
   try {
+    if (/^\/images\/mock-persons\/MC-\d{4}-\d{4}\/[a-z-]+\.jpg$/.test(src)) {
+      const data = await readFile(join(process.cwd(), "public", src));
+      return `data:image/jpeg;base64,${data.toString("base64")}`;
+    }
     const res = await fetch(src);
     if (!res.ok) return null;
     const type = res.headers.get("content-type") ?? "image/jpeg";
@@ -170,6 +175,9 @@ export async function renderOgImage(person: MissingPerson) {
             <div style={{ marginTop: 10, fontSize: 26, fontWeight: 500, color: C.muted, lineHeight: 1.4 }}>
               {person.missingLocation}
             </div>
+            <div style={{ display: "flex", marginTop: 16, fontSize: 20, fontWeight: 500, color: C.muted }}>
+              {MOCK_PHOTO_LABEL} · 시연용 이미지
+            </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <Brand logo={logo} size={48} />
@@ -252,7 +260,7 @@ export async function renderStoryImage(person: MissingPerson, origin: string) {
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginTop: 12, fontSize: 26, fontWeight: 500, color: C.muted }}>
-          AI 예상 모습은 실제와 다를 수 있는 참고 자료입니다
+          {MOCK_PHOTO_LABEL} · 시연용 이미지입니다
         </div>
 
         <div
