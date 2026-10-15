@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { SOURCE_API, SOURCE_LABEL } from "@/lib/attribution";
+import { MOCK_PHOTO_LABEL } from "@/lib/attribution";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
 import { SAFE182_URL } from "@/lib/links";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
@@ -87,13 +87,13 @@ export default function MissingPersonExplorer({ persons }: { persons: MissingPer
         <ResultBar count={results.length} sort={sort} onSortChange={setSort} />
 
         <p className="-mt-2 mb-3 text-[12.5px] font-medium text-muted">
-          {SOURCE_LABEL} · {SOURCE_API}
+          시연용 예시 정보 · {MOCK_PHOTO_LABEL}
         </p>
 
         <p className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl bg-gold-soft px-4 py-3 text-[13.5px] leading-normal break-keep text-ink/80">
           <span className="font-bold text-gold-ink">사진 안내</span>
           <span className="min-w-0 flex-1 basis-72">
-            AI 예상 모습은 실제와 다를 수 있는 참고 자료예요. 현재 목록은 시연용 예시 데이터입니다.
+            현재 목록의 사진은 모두 AI로 만든 가상 인물입니다. 어린 시절 → 성인 예상 모습 → 스타일 변형을 비교하는 시연용 예시예요.
           </span>
           <a
             href={SAFE182_URL}
