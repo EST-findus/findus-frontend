@@ -16,13 +16,14 @@ interface ModalProps {
   /** 닫힌 뒤 포커스를 돌려줄 요소. 없으면 열릴 때 포커스된 요소로 돌아간다. */
   returnFocusTo?: HTMLElement | null;
   children: React.ReactNode;
+  mobileFullscreen?: boolean;
 }
 
 /**
  * 마운트되어 있는 동안 열린 상태다. 부모에서 조건부 렌더링으로 열고 닫는다.
  * 첫 포커스는 [data-autofocus] 요소, 없으면 첫 포커스 가능 요소.
  */
-export default function Modal({ title, onClose, returnFocusTo, children }: ModalProps) {
+export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false }: ModalProps) {
   const titleId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
@@ -84,7 +85,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
 
   return createPortal(
     <div
-      className="fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none"
+      className={`fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none ${mobileFullscreen ? "max-sm:p-0" : ""}`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -95,7 +96,7 @@ export default function Modal({ title, onClose, returnFocusTo, children }: Modal
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="relative max-h-[90vh] w-full max-w-170 animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none max-sm:px-5"
+        className={`relative max-h-[90vh] w-full max-w-170 animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none max-sm:px-5 ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""}`}
       >
         <button
           type="button"

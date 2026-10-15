@@ -1,3 +1,4 @@
+import DnaGuideButton from "@/components/DnaGuideButton";
 import type { Metadata } from "next";
 import GuideSteps from "@/components/GuideSteps";
 import { ArrowUpRightIcon, PlusIcon } from "@/components/Icons";
@@ -31,8 +32,20 @@ const FAQ = [
     a: "검색어나 조건을 줄이거나 초기화해서 다시 찾아보세요. 경찰청 안전Dream에서도 공식 실종 정보를 확인할 수 있습니다.",
   },
   {
+    q: "부모와 자녀가 함께 DNA 검사를 받아야 하나요?",
+    a: "같은 날 검체를 채취할 필요는 없습니다. 서로 다른 시점에 확보된 정보도 대조할 수 있어요. 자녀를 찾는 부모님은 자녀가 발견되기 전에도 채취 절차를 문의할 수 있습니다. 먼저 182에 대상 여부와 방문 방법을 확인해 주세요.",
+  },
+  {
+    q: "실종 예방 사전등록과 DNA 검사는 다른가요?",
+    a: "네. 사전등록은 지문·사진·보호자 정보 등을 미리 등록하는 제도이고, 실종아동 관련 DNA 검사는 유전자정보를 분석·대조하는 별도 절차입니다. 사전등록만으로 DNA 등록이 되는 것은 아닙니다.",
+  },
+  {
+    q: "DNA를 등록하면 바로 가족을 찾을 수 있나요?",
+    a: "DNA 등록만으로 가족 확인이 보장되지는 않습니다. 대조할 상대 정보가 없거나 추가 신원 확인이 필요할 수 있어요. 결과와 이후 절차는 담당 기관의 안내를 따라 주세요.",
+  },
+  {
     q: "내 얼굴 사진을 올려서 가족을 찾을 수 있나요?",
-    a: "현재는 지원하지 않습니다. 가족을 찾고 싶다면 가까운 경찰서에서 유전자(DNA) 등록 등 공식 절차를 안내받아 주세요.",
+    a: "현재는 지원하지 않습니다. 가족을 찾고 싶다면 먼저 182에 유전자(DNA) 검사 대상 여부와 방문 절차를 문의해 주세요.",
   },
 ];
 
@@ -67,6 +80,10 @@ export default function GuidePage() {
             }
             description="공개 정보를 확인하고, 필요한 사람에게 전달하세요. 정보 수정과 상담은 공식 기관의 안내를 따라 주세요."
           />
+          <div className="mt-6">
+            <p className="mb-3 text-[14px] leading-relaxed break-keep text-muted">자녀를 기다리는 부모님을 위한 DNA 채취 절차도 확인해 보세요.</p>
+            <DnaGuideButton initialAudience="parent" />
+          </div>
           <a
             href={MISSING_CHILD_CENTER_URL}
             target="_blank"

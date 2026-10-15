@@ -1,7 +1,12 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Modal from "./Modal";
+import DnaGuideButton from "./DnaGuideButton";
 import { MISSING_CHILD_CENTER_URL, SAFE182_URL } from "@/lib/links";
 import { ArrowRightIcon, ArrowUpRightIcon, HeartIcon, PhoneIcon, ScanFaceIcon } from "./Icons";
 
-// 상황별 안내. 상단의 큰 선택 카드를 누르면 해당 섹션(#know, #me)으로 스크롤한다.
+// 상황별 안내 카드는 팝업을 연다. 기존 #know, #me 링크도 같은 안내로 연결한다.
 const GUIDES = [
   {
     id: "know",
@@ -56,8 +61,8 @@ const GUIDES = [
         text: "실종 당시 사진과 점·흉터 같은 신체 특징을 지금의 나와 비교해 보세요.",
       },
       {
-        title: "가까운 경찰서에 상담",
-        text: "경찰서에서 실종아동 유전자(DNA) 등록과 가족 찾기 절차를 안내받을 수 있어요.",
+        title: "182에 먼저 상담",
+        text: "먼저 182에 검사 대상 여부와 경찰서 방문 절차를 문의해 보세요. 담당 부서와 준비물도 안내받을 수 있어요.",
       },
     ],
     actions: {
@@ -71,14 +76,61 @@ const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
 export default function GuideSteps() {
+  const [selected, setSelected] = useState<(typeof GUIDES)[number] | null>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const cardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  useEffect(() => {
+    const openFromHash = () => {
+      const guide = GUIDES.find((item) => `#${item.id}` === window.location.hash);
+      if (guide) {
+        returnFocusRef.current = cardRefs.current[guide.id];
+        setSelected(guide);
+      }
+    };
+    openFromHash();
+    // Next.js의 같은 페이지 링크는 hashchange 없이 이동할 수 있다.
+    const openFromLink = (event: MouseEvent) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a[href]") : null;
+      if (!link || (link.target && link.target !== "_self")) return;
+      const url = new URL(link.href, window.location.href);
+      const guide = GUIDES.find((item) => `#${item.id}` === url.hash);
+      if (!guide || url.origin !== window.location.origin || url.pathname !== window.location.pathname) return;
+      event.preventDefault();
+      returnFocusRef.current = link;
+      setSelected(guide);
+    };
+    window.addEventListener("hashchange", openFromHash);
+    document.addEventListener("click", openFromLink, true);
+    return () => {
+      window.removeEventListener("hashchange", openFromHash);
+      document.removeEventListener("click", openFromLink, true);
+    };
+  }, []);
+
+  const closeGuide = () => {
+    setSelected(null);
+    if (GUIDES.some((item) => `#${item.id}` === window.location.hash)) {
+      window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
+    }
+  };
+
   return (
     <>
-      <nav aria-label="상황 선택" className="relative -mt-14 grid gap-4 md:grid-cols-2">
+      <div role="group" aria-label="상황 선택" className="relative -mt-14 grid gap-4 md:grid-cols-2">
         {GUIDES.map(({ id, tag, title, summary, Icon, tone }) => (
-          <a
+          <button
             key={id}
-            href={`#${id}`}
-            className={`group flex items-start gap-5 rounded-2xl border border-line bg-card p-7 shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none max-sm:gap-4 max-sm:p-5 ${tone.ring} ${focusRing}`}
+            id={id}
+            ref={(element) => { cardRefs.current[id] = element; }}
+            type="button"
+            aria-haspopup="dialog"
+            onClick={(event) => {
+              returnFocusRef.current = event.currentTarget;
+              setSelected(GUIDES.find((item) => item.id === id) ?? null);
+            }}
+            className={`group flex w-full cursor-pointer items-start gap-5 text-left rounded-2xl border border-line bg-card p-7 shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none max-sm:gap-4 max-sm:p-5 ${tone.ring} ${focusRing}`}
           >
             <span
               aria-hidden="true"
@@ -101,87 +153,48 @@ export default function GuideSteps() {
                 <ArrowRightIcon
                   size={16}
                   strokeWidth={2.2}
-                  className="rotate-90 transition-transform group-hover:translate-y-0.5"
+                  className="transition-transform group-hover:translate-x-0.5"
                 />
               </span>
             </span>
-          </a>
+          </button>
         ))}
-      </nav>
+      </div>
 
-      {GUIDES.map(({ id, tag, title, summary, Icon, tone, steps, actions }) => (
-        <section
-          key={id}
-          id={id}
-          aria-labelledby={`${id}-title`}
-          className="mt-24 scroll-mt-28 max-sm:mt-16"
-        >
-          <div className="flex items-center gap-4">
-            <span
-              aria-hidden="true"
-              className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl max-sm:h-12 max-sm:w-12 ${tone.art}`}
-            >
-              <Icon size={28} strokeWidth={1.8} />
+      {selected && (
+        <Modal title={selected.title} onClose={closeGuide} returnFocusTo={returnFocusRef.current} mobileFullscreen>
+          <div className="mb-4 flex items-center gap-3">
+            <span aria-hidden="true" className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${selected.tone.art}`}>
+              <selected.Icon size={25} strokeWidth={1.8} />
             </span>
-            <div>
-              <p className={`text-[13px] font-bold ${tone.text}`}>{tag}</p>
-              <h2
-                id={`${id}-title`}
-                className="text-[32px] leading-[1.3] font-extrabold tracking-[-0.02em] max-sm:text-[24px]"
-              >
-                {title}
-              </h2>
-            </div>
+            <p className={`text-[13px] font-bold ${selected.tone.text}`}>{selected.tag}</p>
           </div>
-          <p className="mt-4 text-[16px] leading-[1.65] break-keep text-muted max-sm:text-[15px]">
-            {summary}
-          </p>
-
-          <ol className="mt-8 grid gap-4 md:grid-cols-3 md:gap-5">
-            {steps.map((step, i) => (
-              <li
-                key={step.title}
-                className="flex gap-4 rounded-2xl border border-line bg-card p-6 shadow-card md:flex-col md:gap-0 max-sm:p-5"
-              >
-                <span
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[15px] font-extrabold ${tone.badge}`}
-                >
-                  {i + 1}
-                </span>
-                <div className="min-w-0 md:mt-5">
-                  <p className="text-[17px] leading-snug font-bold break-keep max-sm:pt-2">
-                    {step.title}
-                  </p>
-                  <p className="mt-1.5 text-[14.5px] leading-relaxed break-keep text-muted">
-                    {step.text}
-                  </p>
+          <p className="text-[15px] leading-relaxed break-keep text-muted">{selected.summary}</p>
+          <ol className="mt-6 flex flex-col gap-4">
+            {selected.steps.map((step, i) => (
+              <li key={step.title} className="flex gap-4 rounded-2xl border border-line bg-card p-5 max-sm:p-4">
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[14px] font-extrabold ${selected.tone.badge}`}>{i + 1}</span>
+                <div className="min-w-0">
+                  <h3 className="text-[16px] leading-snug font-bold break-keep">{step.title}</h3>
+                  <p className="mt-1.5 text-[14px] leading-relaxed break-keep text-muted">{step.text}</p>
                 </div>
               </li>
             ))}
           </ol>
-
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 rounded-2xl bg-surface px-7 py-6 max-sm:p-5">
-            <p className="min-w-0 flex-1 basis-80 text-[15px] font-bold break-keep">{actions.note}</p>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-              <a
-                href="tel:182"
-                className={`flex h-12 items-center gap-2 rounded-xl bg-brand px-5 text-[15px] font-bold text-white transition-colors hover:bg-brand-dark ${focusRing}`}
-              >
-                <PhoneIcon size={17} strokeWidth={2.2} />
-                경찰청 182 전화하기
+          {selected.id === "me" && <div className="mt-5"><DnaGuideButton /></div>}
+          <div className="mt-5 rounded-2xl bg-surface p-5">
+            <p className="text-[14px] leading-relaxed font-bold break-keep">{selected.actions.note}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <a href="tel:182" className={`flex min-h-12 items-center gap-2 rounded-xl bg-brand px-5 py-3 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark ${focusRing}`}>
+                <PhoneIcon size={17} strokeWidth={2.2} />경찰청 182 전화하기
               </a>
-              <a
-                href={actions.link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-0.5 text-[14.5px] font-bold text-brand hover:underline"
-              >
-                {actions.link.label} <ArrowUpRightIcon size={14} strokeWidth={2.2} />
+              <a href={selected.actions.link.href} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-0.5 text-[14px] font-bold text-brand hover:underline ${focusRing}`}>
+                {selected.actions.link.label} <ArrowUpRightIcon size={14} strokeWidth={2.2} />
               </a>
             </div>
           </div>
-        </section>
-      ))}
+        </Modal>
+      )}
     </>
   );
 }
