@@ -1,4 +1,4 @@
-import { SOURCE_LABEL } from "@/lib/attribution";
+import { MOCK_PHOTO_LABEL } from "@/lib/attribution";
 import type { MissingPerson } from "@/lib/types";
 import InfoRows from "./InfoRows";
 import { PhotoContent } from "./PhotoFrame";
@@ -7,7 +7,7 @@ const SIZES = "(min-width: 680px) 150px, 30vw";
 
 /**
  * 사진 비교 + 정보 목록. 상세 모달과 공유용 상세 페이지(/missing/[id])가 함께 쓴다.
- * 경찰청 제공 원본 사진과 FindUs AI 생성 이미지를 영역부터 나눠 혼동하지 않게 한다.
+ * 어린 시절 예시와 성인 예상 이미지를 영역부터 나눠 비교한다.
  */
 export default function PersonDetailBody({ person }: { person: MissingPerson }) {
   const aiPhotos: { title: string; src: string; alt: string }[] = [
@@ -34,7 +34,7 @@ export default function PersonDetailBody({ person }: { person: MissingPerson }) 
                 <PhotoContent src={person.photos.past} alt={`${person.name} 실종 당시 사진`} sizes={SIZES} />
               </div>
               <figcaption className="mt-2 text-center text-[11.5px] font-semibold text-muted">
-                {SOURCE_LABEL}
+                {MOCK_PHOTO_LABEL}
               </figcaption>
             </figure>
           </div>

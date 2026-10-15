@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     "/missing/**": [
       "./node_modules/pretendard/dist/web/static/woff/Pretendard-{Medium,Bold,ExtraBold}.woff",
       "./public/images/findus-mark.svg",
+      "./public/images/mock-persons/**/*.jpg",
     ],
   },
   // 브라우저에서 백엔드를 직접 호출하면 CORS(403)로 막히므로 같은 오리진으로 프록시한다.
