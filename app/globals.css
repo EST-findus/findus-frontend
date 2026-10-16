@@ -14,6 +14,7 @@
   --color-brand-soft: #e6efe9;
   --color-gold: #c99a3c;
   --color-gold-soft: #fbf3e2;
+  --color-gold-faint: #fdfcf8;
   /* gold는 흰 배경 위 글자 대비가 부족해, 글자에는 이 색을 쓴다 */
   --color-gold-ink: #8a6418;
   --color-red: #dc2626;

@@ -9,6 +9,8 @@ interface PageHeroProps {
   aside?: React.ReactNode;
   /** 검색 화면처럼 바로 아래 내용이 중요할 때 위아래 여백을 줄인다 */
   compact?: boolean;
+  /** 정보 마당 탭 안에서는 작은 제목으로 표시한다 */
+  embedded?: boolean;
   /** 다음 요소가 히어로 하단에 겹쳐 올라올 때 아래 여백을 더 준다 */
   overlap?: boolean;
 }
@@ -21,8 +23,23 @@ export default function PageHero({
   children,
   aside,
   compact = false,
+  embedded = false,
   overlap = false,
 }: PageHeroProps) {
+  if (embedded) {
+    return (
+      <section className="page-container grid max-w-5xl items-center gap-7 pt-7 pb-6 lg:grid-cols-[1.05fr_1fr] max-sm:pt-5">
+        <div className={aside ? "min-w-0" : "min-w-0 lg:col-span-2"}>
+          <p className="text-[13px] font-bold text-brand">{eyebrow}</p>
+          <h2 className="mt-2 text-[26px] leading-snug font-extrabold break-keep max-sm:text-[22px]">{title}</h2>
+          {description && <p className="mt-3 max-w-180 text-[15px] leading-relaxed break-keep text-muted">{description}</p>}
+          {children}
+        </div>
+        {aside}
+      </section>
+    );
+  }
+
   const top = compact ? "pt-14 max-sm:pt-10" : "pt-20 max-sm:pt-12";
   const bottom = overlap
     ? "pb-24 max-sm:pb-20"

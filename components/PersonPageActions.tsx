@@ -16,7 +16,7 @@ export default function PersonPageActions({ person }: { person: MissingPerson })
         person={person}
         onReport={() => setReportOpen(true)}
         secondary={
-          <Link href="/" className={SECONDARY_ACTION}>
+          <Link href="/search" className={SECONDARY_ACTION}>
             목록으로
           </Link>
         }

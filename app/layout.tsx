@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Noto_Sans_KR } from "next/font/google";
 import Footer from "@/components/Footer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import Header from "@/components/Header";
 import "./globals.css";
 
@@ -61,11 +62,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} ${notoSansKr.variable} bg-page font-sans text-ink antialiased`}
+        className={`${pretendard.variable} ${notoSansKr.variable} flex min-h-dvh flex-col bg-page font-sans text-ink antialiased`}
       >
         <Header />
         {children}
         <Footer />
+        <MobileBottomNav />
       </body>
     </html>
   );

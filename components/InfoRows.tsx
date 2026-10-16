@@ -3,7 +3,8 @@ import type { MissingPerson } from "@/lib/types";
 
 interface InfoRowsProps {
   person: MissingPerson;
-  /** 마지막 강조 행 (AI 분석 문구) */
+  compact?: boolean;
+  /** 마지막 안내 행 (AI 분석 문구) */
   note?: { label: string; text: string };
 }
 
@@ -16,12 +17,12 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
-export default function InfoRows({ person, note }: InfoRowsProps) {
+export default function InfoRows({ person, note, compact = false }: InfoRowsProps) {
   return (
-    <dl className="flex flex-col gap-1.5 text-[14px] leading-normal">
+    <dl className={compact ? "flex flex-col gap-1 text-[13px] leading-[1.4] [&>div]:gap-2 [&>div>dt]:w-14 [&>div>dt]:text-[12px] [&_dd]:break-normal" : "flex flex-col gap-1.5 text-[14px] leading-normal"}>
       <Row label="나이">
         <span className="font-bold text-brand">
-          실종 당시 {person.ageAtMissing}세 · 현재 추정 {person.currentAge}세
+          {compact ? "당시" : "실종 당시"} {person.ageAtMissing}세 · 현재 추정 {person.currentAge}세
         </span>
       </Row>
       <Row label="실종 일자">{formatDate(person.missingDate)}</Row>
@@ -30,9 +31,9 @@ export default function InfoRows({ person, note }: InfoRowsProps) {
       <Row label="특징">{person.features}</Row>
       <Row label="관리번호">{person.id}</Row>
       {note && (
-        <div className="mt-2 rounded-lg bg-surface px-3.5 py-3">
-          <dt className="mb-1 text-[13px] font-bold text-brand">{note.label}</dt>
-          <dd className="text-[13.5px] break-keep text-muted">{note.text}</dd>
+        <div className="mt-3 border-l-2 border-brand/45 pl-3 text-[13px] leading-relaxed break-keep">
+          <dt className="inline font-bold text-brand">{note.label} : </dt>
+          <dd className="inline text-muted">{note.text}</dd>
         </div>
       )}
     </dl>

@@ -7,7 +7,7 @@ const photo = (id: string, variant: string) =>
   `/images/mock-persons/${id}/${variant}.jpg`;
 
 const AI_NOTE =
-  "가상 인물의 어린 시절, 성인 예상 모습, 스타일 변형을 AI로 생성한 시연용 예시입니다. 실제 실종아동의 사진이나 실제 연령 예측 결과가 아닙니다.";
+  "AI로 만든 가상 인물 예시입니다. 실제 실종아동 사진·연령 예측 결과가 아닙니다.";
 
 const MOCK_PERSONS: MissingPerson[] = [
   {

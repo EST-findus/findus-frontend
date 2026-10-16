@@ -1,0 +1,56 @@
+.link {
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.title {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.link:focus-visible {
+  color: var(--color-brand);
+  background-color: var(--color-brand-soft);
+}
+
+.link:focus-visible .title {
+  text-decoration-line: underline;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    color: var(--color-brand);
+    background-color: var(--color-brand-soft);
+  }
+
+  .link:hover .title {
+    text-decoration-line: underline;
+  }
+}
+
+.link:active {
+  color: var(--color-brand-dark);
+  background-color: #d5e4dc;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .arrow {
+    transition: transform 150ms ease;
+  }
+
+  .link:focus-visible .arrow {
+    transform: translate(2px, -2px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover .arrow {
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

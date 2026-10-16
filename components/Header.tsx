@@ -1,5 +1,9 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SAFE182_URL } from "@/lib/links";
+import { useCurrentUser } from "@/lib/useCurrentUser";
 import HealthCheckButton from "./HealthCheckButton";
 import HeaderAuth from "./HeaderAuth";
 import HeaderNav from "./HeaderNav";
@@ -19,9 +23,11 @@ export function Logo() {
 }
 
 export default function Header() {
+  const onMyPage = usePathname() === "/mypage";
+  const user = useCurrentUser();
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur">
-      <div className="border-b border-line bg-surface">
+    <header className={`sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
+      <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""}`}>
         <div className="page-container flex items-center gap-4 py-1.5 text-[12px] text-muted">
           <p className="break-keep max-sm:hidden">오래된 기억도, 다시 단서가 되도록</p>
           <div className="ml-auto flex items-center gap-4">
@@ -38,12 +44,15 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="page-container flex h-16 items-center gap-6 max-lg:h-auto max-lg:flex-wrap max-lg:gap-y-1 max-lg:pt-3">
+      <div className={`page-container flex h-16 items-center gap-6 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
         <Link
-          href="/"
-          aria-label="FindUs 홈"
-          className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+          href={user ? "/" : "/about"}
+          aria-label={user ? "FindUs 홈" : "FindUs 서비스 소개"}
+          className="hidden rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:inline-flex"
         >
+          <Logo />
+        </Link>
+        <Link href="/" aria-label="FindUs 홈" className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:hidden">
           <Logo />
         </Link>
         <HeaderNav />
@@ -51,9 +60,9 @@ export default function Header() {
           <a
             href="tel:182"
             aria-label="공식 제보 182 전화"
-            className="flex shrink-0 items-center gap-1.5 rounded-full border border-line py-1.5 pr-4 pl-1.5 text-[13px] font-semibold transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:pr-3 lg:max-xl:pr-3"
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-line py-1.5 pr-4 pl-1.5 text-[13px] font-semibold transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:px-3 lg:max-xl:pr-3"
           >
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-soft text-brand">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-soft text-brand max-sm:hidden">
               <PhoneIcon size={13} strokeWidth={2.2} />
             </span>
             <span className="max-sm:hidden lg:max-xl:hidden">공식 제보</span>

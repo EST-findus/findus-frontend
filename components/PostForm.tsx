@@ -27,7 +27,7 @@ export default function PostForm() {
   if (!user) {
     return (
       <div className="rounded-3xl bg-card p-10 shadow-panel max-md:p-6 max-sm:p-5">
-        <LoginRequired message="커뮤니티에 글을 쓰려면 로그인이 필요해요." />
+        <LoginRequired message="정보 마당에 글을 쓰려면 로그인이 필요해요." />
       </div>
     );
   }
@@ -135,7 +135,7 @@ function PostFormFields({ user }: { user: User }) {
       </div>
 
       <p className="rounded-xl bg-gold-soft px-4 py-3 text-[13px] leading-relaxed break-keep text-gold-ink">
-        실종아동·가족의 연락처, 주소 같은 개인정보는 올리지 말아 주세요. 목격 제보는 커뮤니티가 아닌{" "}
+        실종아동·가족의 연락처, 주소 같은 개인정보는 올리지 말아 주세요. 목격 제보는 정보 마당가 아닌{" "}
         <strong>112</strong> 또는 <strong>182</strong>로 바로 알려 주세요.
       </p>
 
