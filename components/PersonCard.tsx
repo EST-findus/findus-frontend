@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import { ArrowRightIcon, ShareIcon } from "./Icons";
+import FavoriteButton from "./FavoriteButton";
 import PhotoFrame from "./PhotoFrame";
 import StyleTabs from "./StyleTabs";
 
 interface PersonCardProps {
   person: MissingPerson;
+  headerAction?: ReactNode;
+  variant?: "default" | "compact";
   onOpenDetail: (person: MissingPerson, trigger: HTMLElement) => void;
   onReport: (person: MissingPerson, trigger: HTMLElement) => void;
   onShare: (person: MissingPerson, trigger: HTMLElement) => void;
@@ -18,7 +21,8 @@ const SIZES = "(min-width: 1024px) 180px, 30vw";
 const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
-export default function PersonCard({ person, onOpenDetail, onReport, onShare }: PersonCardProps) {
+export default function PersonCard({ person, onOpenDetail, onReport, onShare, headerAction, variant = "default" }: PersonCardProps) {
+  const compact = variant === "compact";
   const [styleIndex, setStyleIndex] = useState(0);
   const style = person.photos.styles[styleIndex];
   const openDetail = (e: React.MouseEvent<HTMLButtonElement>) =>
@@ -58,7 +62,7 @@ export default function PersonCard({ person, onOpenDetail, onReport, onShare }: 
       aria-labelledby={`person-${person.id}`}
       className="flex flex-col rounded-2xl border border-line bg-card p-6 shadow-card transition-shadow duration-200 hover:shadow-card-hover max-sm:p-4"
     >
-      <header className="flex items-start justify-between gap-3">
+      <header className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h3
             id={`person-${person.id}`}
@@ -66,24 +70,32 @@ export default function PersonCard({ person, onOpenDetail, onReport, onShare }: 
           >
             {person.name}
           </h3>
-          <p className="mt-1.5 flex items-center gap-1.5 text-[14px] font-semibold text-muted">
+          {!compact && <p className="mt-1.5 flex items-center gap-1.5 text-[14px] font-semibold text-muted">
             당시 {person.ageAtMissing}세
             <ArrowRightIcon size={14} strokeWidth={2.2} className="text-subtle" />
             <span className="font-bold text-brand">현재 추정 {person.currentAge}세</span>
-          </p>
+          </p>}
         </div>
-        <span className="shrink-0 rounded-md bg-surface px-2 py-1 text-[12px] font-semibold text-muted">
-          {missingYear}년 실종
-        </span>
+        <div className="ml-auto flex shrink-0 flex-col items-end gap-2">
+          <div className="flex items-center gap-1.5">
+            {headerAction}
+            <FavoriteButton personId={person.id} name={person.name} />
+          </div>
+          {!compact && <span className="rounded-md bg-surface px-2 py-1 text-[12px] font-semibold text-muted">{missingYear}년 실종</span>}
+        </div>
       </header>
+      {compact && <p className="mt-2 flex flex-wrap items-center gap-1.5 text-[13px] font-semibold text-muted">
+        당시 {person.ageAtMissing}세 <ArrowRightIcon size={13} className="text-subtle" />
+        <span className="text-brand">현재 추정 {person.currentAge}세</span>
+      </p>}
 
-      <div className="mt-5 grid grid-cols-3 gap-3 max-sm:mt-4 max-sm:gap-2">
-        {columns.map((col) => (
+      <div className={compact ? "mx-auto mt-4 grid w-full max-w-72 grid-cols-2 gap-3" : "mt-5 grid grid-cols-3 gap-3 max-sm:mt-4 max-sm:gap-2"}>
+        {(compact ? columns.slice(0, 2) : columns).map((col) => (
           <figure key={col.title} className="min-w-0">
             <PhotoFrame
               src={col.src}
               alt={col.alt}
-              sizes={SIZES}
+              sizes={compact ? "144px" : SIZES}
               badge={col.badge}
               ai={col.ai}
               ariaLabel={frameLabel}
@@ -91,12 +103,13 @@ export default function PersonCard({ person, onOpenDetail, onReport, onShare }: 
             />
             <figcaption className="mt-2 break-keep">
               <span className="block text-[13.5px] font-bold max-sm:text-[12.5px]">{col.title}</span>
-              <span className="block text-[12px] text-muted max-sm:text-[11.5px]">{col.sub}</span>
+              {!compact && <span className="block text-[12px] text-muted max-sm:text-[11.5px]">{col.sub}</span>}
             </figcaption>
           </figure>
         ))}
       </div>
 
+      {!compact && <>
       <StyleTabs
         name={person.name}
         styles={person.photos.styles}
@@ -113,20 +126,23 @@ export default function PersonCard({ person, onOpenDetail, onReport, onShare }: 
         <dt className="text-muted">성별</dt>
         <dd className="font-semibold">{formatGender(person.gender)}</dd>
       </dl>
+      </>}
+      {compact && <p className="mt-4 text-center text-[13px] font-semibold text-muted">{missingYear}년 실종 · {person.region}</p>}
 
-      <div className="mt-auto grid grid-cols-[1fr_1fr_auto] gap-2.5 pt-5 text-[15px] font-bold max-sm:gap-2 max-sm:pt-4">
+      <div className={compact ? "mt-auto pt-4 text-[14px] font-bold" : "mt-auto grid grid-cols-[1fr_1fr_auto] gap-2.5 pt-5 text-[15px] font-bold max-sm:gap-2 max-sm:pt-4 max-sm:text-[13px]"}>
         <button
           type="button"
           onClick={openDetail}
-          className={`group flex h-12 items-center justify-center gap-1 rounded-xl border border-line bg-card transition-colors hover:border-brand hover:text-brand ${FOCUS_RING}`}
+          className={`group flex ${compact ? "h-10 w-full bg-brand-soft text-brand" : "h-12 bg-card"} items-center justify-center gap-1 rounded-xl border border-line transition-colors hover:border-brand hover:text-brand ${FOCUS_RING}`}
         >
           상세정보 보기
           <ArrowRightIcon
             size={16}
             strokeWidth={2.2}
-            className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+            className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none max-sm:hidden"
           />
         </button>
+        {!compact && <>
         <button
           type="button"
           onClick={(e) => onReport(person, e.currentTarget)}
@@ -144,6 +160,7 @@ export default function PersonCard({ person, onOpenDetail, onReport, onShare }: 
         >
           <ShareIcon size={19} strokeWidth={2} />
         </button>
+        </>}
       </div>
     </article>
   );

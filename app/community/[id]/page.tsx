@@ -11,7 +11,7 @@ const findSeed = (id: string) => getSeedPosts().find((p) => p.id === id);
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   return {
-    title: findSeed(id)?.title ?? "커뮤니티",
+    title: findSeed(id)?.title ?? "정보 마당",
     alternates: { canonical: `/community/${id}` },
   };
 }

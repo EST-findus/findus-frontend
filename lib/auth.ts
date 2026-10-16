@@ -74,7 +74,7 @@ export async function hashPassword(password: string, salt: string): Promise<stri
 
 /** 로그인 후 돌아갈 주소. 외부 주소로의 이동은 막는다. */
 export function safeNextPath(next: string | null | undefined, fallback = "/"): string {
-  return next && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
+  return next && next.startsWith("/") && !next.startsWith("//") && !/[\\\x00-\x20]/.test(next) ? next : fallback;
 }
 
 // ───────────────────────── 저장소 ─────────────────────────

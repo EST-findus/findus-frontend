@@ -1,3 +1,4 @@
+import HomeEntry from "@/components/HomeEntry";
 import MissingPersonExplorer from "@/components/MissingPersonExplorer";
 import { getMissingPersons } from "@/lib/data";
 
@@ -6,7 +7,7 @@ export default async function Home() {
 
   return (
     <main>
-      <MissingPersonExplorer persons={persons} />
+      <HomeEntry><MissingPersonExplorer persons={persons} /></HomeEntry>
     </main>
   );
 }

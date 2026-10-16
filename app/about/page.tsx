@@ -9,9 +9,9 @@ import {
   PhoneIcon,
   SearchIcon,
 } from "@/components/Icons";
-import LogoMark from "@/components/LogoMark";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
+import ServiceInfoContent from "@/components/ServiceInfoContent";
 
 export const metadata: Metadata = {
   title: "서비스 소개",
@@ -60,7 +60,19 @@ const FEATURES = [
 
 export default function AboutPage() {
   return (
-    <main>
+    <main className="md:pb-12">
+      <header className="hidden border-b border-line md:block">
+        <div className="page-container max-w-5xl pt-8 pb-6">
+          <p className="text-[13px] font-bold text-brand">서비스 소개</p>
+          <h1 className="mt-2 text-[32px] leading-snug font-extrabold tracking-tight">기억을 잇고, 다시 만날 수 있도록.</h1>
+          <p className="mt-3 text-[15px] leading-relaxed text-muted">시간이 흘러도, 기다림은 이어집니다. 작은 관심과 오래된 기억이 가족을 잇는 단서가 됩니다.</p>
+          <Link href="/search" className="mt-5 inline-flex h-11 items-center gap-2 rounded-xl bg-brand px-5 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+            실종아동 정보 찾아보기 <ArrowRightIcon size={16} strokeWidth={2.2} />
+          </Link>
+        </div>
+      </header>
+
+      <div className="md:hidden">
       <PageHero
         overlap
         eyebrow="장기 실종아동 찾기 지원 서비스"
@@ -78,33 +90,27 @@ export default function AboutPage() {
             작은 관심과 오래된 기억이 가족을 잇는 단서가 됩니다.
           </>
         }
-        aside={
-          <div
-            aria-hidden="true"
-            className="flex h-72 w-72 items-center justify-center justify-self-end rounded-full bg-card shadow-panel max-lg:hidden"
-          >
-            <LogoMark size={128} className="drop-shadow-[0_12px_24px_rgba(34,89,74,0.25)]" />
-          </div>
-        }
+
       >
         <Link
-          href="/"
+          href="/search"
           className="mt-8 inline-flex h-13 items-center gap-2 rounded-xl bg-brand px-6 text-[16px] font-bold text-white transition-colors hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           실종아동 정보 찾아보기 <ArrowRightIcon size={17} strokeWidth={2.2} />
         </Link>
       </PageHero>
+      </div>
 
-      <div className="page-container">
+      <div className="page-container md:max-w-5xl">
         <nav
           aria-label="상황별 안내"
-          className="relative -mt-14 grid gap-2 rounded-2xl border border-line bg-card p-3 shadow-panel md:grid-cols-3"
+          className="relative -mt-14 grid gap-2 rounded-2xl border border-line bg-card p-3 shadow-panel md:mt-6 md:grid-cols-3 md:gap-3 md:border-0 md:p-0 md:shadow-none"
         >
           {QUICK_LINKS.map(({ icon: Icon, ...item }) => (
             <Link
               key={item.href}
               href={item.href}
-              className="group flex items-center gap-4 rounded-xl p-4.5 transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              className="group flex items-center gap-4 rounded-xl p-4.5 transition-colors md:gap-3 md:border md:border-line md:p-4 hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
             >
               <span
                 aria-hidden="true"
@@ -124,16 +130,16 @@ export default function AboutPage() {
           ))}
         </nav>
 
-        <section aria-labelledby="features-title" className="mt-24 max-sm:mt-16">
+        <section aria-labelledby="features-title" className="mt-24 rounded-3xl bg-gold-soft p-10 max-lg:p-8 max-sm:mt-16 max-sm:p-5 md:mt-10 md:rounded-2xl md:bg-gold-faint md:p-6 md:[&_h2]:text-[24px] md:[&_h2]:leading-snug md:[&_h2]:tracking-tight">
           <SectionHeading
             id="features-title"
-            eyebrow="What we do"
+            eyebrow="주요 기능"
             title="FindUs는 이렇게 도와요"
             description="흐려진 기억도 다시 단서가 될 수 있도록, 찾기와 제보를 쉽게 만듭니다."
           />
-          <ul className="mt-10 grid gap-5 md:grid-cols-3 max-sm:mt-8">
+          <ul className="mt-10 grid gap-5 md:mt-6 md:grid-cols-3 md:gap-4 max-sm:mt-8">
             {FEATURES.map(({ icon: Icon, ...f }) => (
-              <li key={f.title} className="rounded-2xl border border-line bg-card p-7 shadow-card max-sm:p-6">
+              <li key={f.title} className="rounded-2xl border border-line bg-card p-7 shadow-card md:p-5 md:shadow-none max-sm:p-6">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-soft text-brand">
                   <Icon size={24} />
                 </span>
@@ -142,6 +148,11 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section id="service-info" aria-labelledby="service-info-title" className="mt-10 mb-8 rounded-2xl border border-line bg-white p-5 md:hidden">
+          <h2 id="service-info-title" className="mb-3 text-[20px] font-bold">서비스 정보</h2>
+          <ServiceInfoContent />
         </section>
       </div>
     </main>

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { hashPassword, safeNextPath, validateLogIn, validateSignUp } from "./auth";
 
 const valid = {
@@ -56,5 +56,53 @@ describe("로그인 후 이동 주소", () => {
     expect(safeNextPath("//evil.com")).toBe("/");
     expect(safeNextPath("https://evil.com")).toBe("/");
     expect(safeNextPath(null, "/community")).toBe("/community");
+  });
+});
+
+
+describe("새로고침 후 로그인 유지", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  function browserStorage() {
+    const values = new Map<string, string>();
+    const events = new EventTarget();
+    vi.stubGlobal("window", {
+      localStorage: {
+        getItem: (key: string) => values.get(key) ?? null,
+        setItem: (key: string, value: string) => values.set(key, value),
+        removeItem: (key: string) => values.delete(key),
+      },
+      dispatchEvent: events.dispatchEvent.bind(events),
+      addEventListener: events.addEventListener.bind(events),
+      removeEventListener: events.removeEventListener.bind(events),
+    });
+  }
+
+  it("모듈을 다시 읽어도 저장된 회원을 복원하고, 로그아웃은 유지된다", async () => {
+    browserStorage();
+    const auth = await import("./auth");
+    expect(auth.getCurrentUser()).toBeNull();
+    const user = await auth.signUp(valid);
+    vi.resetModules();
+    const refreshed = await import("./auth");
+    expect(refreshed.getCurrentUser()).toEqual(user);
+    refreshed.logOut();
+    vi.resetModules();
+    expect((await import("./auth")).getCurrentUser()).toBeNull();
+  });
+
+  it("재로그인 시 로그인 상태 변경을 알리고 회원 정보를 복원한다", async () => {
+    browserStorage();
+    const auth = await import("./auth");
+    const user = await auth.signUp(valid);
+    auth.logOut();
+    const changed = vi.fn();
+    const unsubscribe = auth.subscribeAuth(changed);
+    await auth.logIn({ email: valid.email, password: valid.password });
+    expect(changed).toHaveBeenCalledOnce();
+    expect(auth.getCurrentUser()).toEqual(user);
+    unsubscribe();
+    auth.logOut();
+    expect(changed).toHaveBeenCalledOnce();
   });
 });

@@ -75,7 +75,7 @@ const GUIDES = [
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
-export default function GuideSteps() {
+export default function GuideSteps({ overlap = true }: { overlap?: boolean }) {
   const [selected, setSelected] = useState<(typeof GUIDES)[number] | null>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const cardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -118,10 +118,10 @@ export default function GuideSteps() {
 
   return (
     <>
-      <div role="group" aria-label="상황 선택" className="relative -mt-14 grid gap-4 md:grid-cols-2">
+      <div role="group" aria-label="상황 선택" className={`relative ${overlap ? "-mt-14" : ""} grid items-stretch gap-4 md:grid-cols-2`}>
         {GUIDES.map(({ id, tag, title, summary, Icon, tone }) => (
+          <div key={id} className={`min-w-0 rounded-2xl border border-line bg-card shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none ${tone.ring}`}>
           <button
-            key={id}
             id={id}
             ref={(element) => { cardRefs.current[id] = element; }}
             type="button"
@@ -130,7 +130,7 @@ export default function GuideSteps() {
               returnFocusRef.current = event.currentTarget;
               setSelected(GUIDES.find((item) => item.id === id) ?? null);
             }}
-            className={`group flex w-full cursor-pointer items-start gap-5 text-left rounded-2xl border border-line bg-card p-7 shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none max-sm:gap-4 max-sm:p-5 ${tone.ring} ${focusRing}`}
+            className={`group flex w-full cursor-pointer items-start gap-5 rounded-2xl p-7 text-left focus-visible:outline-none max-sm:gap-4 max-sm:p-5`}
           >
             <span
               aria-hidden="true"
@@ -147,7 +147,7 @@ export default function GuideSteps() {
                 {summary}
               </span>
               <span
-                className={`mt-4 inline-flex items-center gap-1.5 text-[15px] font-bold ${tone.text}`}
+                className={`mt-4 inline-flex w-fit items-center gap-1.5 rounded-sm text-[15px] font-bold group-focus-visible:ring-2 group-focus-visible:ring-brand group-focus-visible:ring-offset-4 ${tone.text}`}
               >
                 절차 보기
                 <ArrowRightIcon
@@ -158,6 +158,12 @@ export default function GuideSteps() {
               </span>
             </span>
           </button>
+          {id === "me" && (
+            <div className="px-7 pb-7 max-sm:px-5 max-sm:pb-5">
+              <DnaGuideButton variant="followup" />
+            </div>
+          )}
+          </div>
         ))}
       </div>
 

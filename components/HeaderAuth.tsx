@@ -1,8 +1,8 @@
 "use client";
 
+import { UserIcon } from "./Icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { logOut } from "@/lib/auth";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const FOCUS_RING =
@@ -14,24 +14,10 @@ export default function HeaderAuth() {
 
   if (user) {
     return (
-      <div className="flex shrink-0 items-center gap-2">
-        <span className="flex items-center gap-2 text-[14px] font-bold">
-          <span
-            aria-hidden="true"
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-soft text-[13px] font-extrabold text-brand"
-          >
-            {user.nickname.slice(0, 1)}
-          </span>
-          <span className="max-w-24 truncate max-sm:sr-only">{user.nickname}님</span>
-        </span>
-        <button
-          type="button"
-          onClick={logOut}
-          className={`h-9 rounded-lg px-3 text-[14px] font-bold text-muted transition-colors hover:bg-surface hover:text-brand ${FOCUS_RING}`}
-        >
-          로그아웃
-        </button>
-      </div>
+      <Link href="/mypage" aria-label={`${user.nickname}님의 마이페이지`} className={`flex h-9 items-center gap-1.5 rounded-lg border border-brand/15 bg-brand-soft px-2.5 text-[13px] font-bold text-brand transition-colors hover:border-brand/30 hover:bg-brand/15 max-sm:px-2 ${pathname === "/mypage" ? "max-md:hidden" : ""} ${FOCUS_RING}`}>
+        <UserIcon size={20} className="shrink-0" />
+        <span className="max-sm:hidden">마이페이지</span>
+      </Link>
     );
   }
 
@@ -43,7 +29,7 @@ export default function HeaderAuth() {
     <div className="flex shrink-0 items-center gap-1.5">
       <Link
         href={`/login${query}`}
-        className={`inline-flex h-9 items-center rounded-lg px-3 text-[14px] font-bold text-ink/80 transition-colors hover:bg-surface hover:text-brand ${FOCUS_RING}`}
+        className={`inline-flex h-9 items-center rounded-lg px-3 text-[14px] font-bold text-ink/80 transition-colors hover:bg-surface hover:text-brand max-sm:px-2 max-sm:text-[13px] ${FOCUS_RING}`}
       >
         로그인
       </Link>

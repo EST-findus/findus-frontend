@@ -7,3 +7,12 @@ import { getCurrentUser, subscribeAuth, type User } from "./auth";
 export function useCurrentUser(): User | null {
   return useSyncExternalStore(subscribeAuth, getCurrentUser, () => null);
 }
+
+const subscribeReady = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
+
+/** 저장된 로그인 상태를 읽기 전에는 다른 첫 화면을 잠깐 노출하지 않는다. */
+export function useAuthReady(): boolean {
+  return useSyncExternalStore(subscribeReady, clientReady, serverReady);
+}

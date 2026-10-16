@@ -17,13 +17,15 @@ interface ModalProps {
   returnFocusTo?: HTMLElement | null;
   children: React.ReactNode;
   mobileFullscreen?: boolean;
+  mobileCompact?: boolean;
+  size?: "default" | "wide";
 }
 
 /**
  * 마운트되어 있는 동안 열린 상태다. 부모에서 조건부 렌더링으로 열고 닫는다.
  * 첫 포커스는 [data-autofocus] 요소, 없으면 첫 포커스 가능 요소.
  */
-export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false }: ModalProps) {
+export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false, mobileCompact = false, size = "default" }: ModalProps) {
   const titleId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
@@ -40,7 +42,7 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
     openStack.push(token);
     const restoreTarget = returnFocusTo ?? (document.activeElement as HTMLElement | null);
 
-    const focusables = () => Array.from(box.querySelectorAll<HTMLElement>(FOCUSABLE));
+    const focusables = () => Array.from(box.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((el) => el.getClientRects().length > 0);
     const initial = box.querySelector<HTMLElement>("[data-autofocus]") ?? focusables()[0] ?? box;
     initial.focus();
 
@@ -85,7 +87,7 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none ${mobileFullscreen ? "max-sm:p-0" : ""}`}
+      className={`fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none ${mobileCompact ? "max-md:p-0" : mobileFullscreen ? "max-sm:p-0" : ""}`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -96,17 +98,17 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`relative max-h-[90vh] w-full max-w-170 animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none max-sm:px-5 ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""}`}
+        className={`relative max-h-[90vh] w-full animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none ${mobileCompact ? "max-md:flex max-md:h-dvh max-md:max-h-dvh max-md:flex-col max-md:overflow-hidden max-md:rounded-none max-md:border-0 max-md:p-0" : "max-sm:px-5"} ${size === "wide" ? "max-w-240" : "max-w-170"} ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""}`}
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="닫기"
-          className="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className={`absolute top-5 right-5 ${mobileCompact ? "z-10 max-md:top-3 max-md:right-4" : ""} flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand`}
         >
           <CloseIcon size={20} />
         </button>
-        <h2 id={titleId} className="mb-5 pr-10 text-[20px] font-extrabold tracking-[-0.3px] break-keep">
+        <h2 id={titleId} className={`mb-5 pr-10 text-[20px] font-extrabold tracking-[-0.3px] break-keep ${mobileCompact ? "max-md:mb-0 max-md:shrink-0 max-md:border-b max-md:border-line max-md:px-5 max-md:py-4 max-md:pr-16" : ""}`}>
           {title}
         </h2>
         {children}
