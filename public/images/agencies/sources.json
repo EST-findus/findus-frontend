@@ -1,0 +1,10 @@
+{
+  "safety-dream.gif": {
+    "source": "https://www.safe182.go.kr/static/home/images/main/lo_logo.gif",
+    "page": "https://www.safe182.go.kr/ext/main/main.do"
+  },
+  "ncrc.png": {
+    "source": "https://www.ncrc.or.kr/images/web/ncrc/layout/hd_logo_new.png",
+    "page": "https://www.ncrc.or.kr/ncrc/main.do"
+  }
+}
