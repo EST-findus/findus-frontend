@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import MissingPersonExplorer from "@/components/MissingPersonExplorer";
+import PublicSearchExplorer from "@/components/PublicSearchExplorer";
 import { getMissingPersons } from "@/lib/data";
 
 export const metadata: Metadata = { title: "실종아동 찾기" };
 
 export default async function SearchPage() {
   const persons = await getMissingPersons();
-  return <main><MissingPersonExplorer persons={persons} /></main>;
+  return <main><PublicSearchExplorer persons={persons} /></main>;
 }

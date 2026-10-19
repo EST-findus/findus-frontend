@@ -5,14 +5,15 @@ import Link from "next/link";
 import { SAFE182_URL } from "@/lib/links";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import HealthCheckButton from "./HealthCheckButton";
+import searchStyles from "./PublicSearch.module.css";
 import HeaderAuth from "./HeaderAuth";
 import HeaderNav from "./HeaderNav";
 import LogoMark from "./LogoMark";
 import { ArrowUpRightIcon, PhoneIcon } from "./Icons";
 
-export function Logo() {
+export function Logo({ blue = false }: { blue?: boolean }) {
   return (
-    <span className="flex items-center gap-2">
+    <span className={`flex items-center gap-2 ${blue ? searchStyles.searchLogo : ""}`}>
       <LogoMark size={30} className="shrink-0" />
       <span className="text-[21px] font-extrabold tracking-[-0.4px]">
         <span className="text-brand">Find</span>
@@ -23,11 +24,13 @@ export function Logo() {
 }
 
 export default function Header() {
-  const onMyPage = usePathname() === "/mypage";
+  const pathname = usePathname();
+  const onMyPage = pathname === "/mypage";
+  const onPublicPage = pathname === "/search" || pathname === "/";
   const user = useCurrentUser();
   return (
-    <header className={`sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
-      <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""}`}>
+    <header className={`${onPublicPage ? searchStyles.palette : ""} sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
+      <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""} ${onPublicPage ? "md:hidden" : ""}`}>
         <div className="page-container flex items-center gap-4 py-1.5 text-[12px] text-muted">
           <p className="break-keep max-sm:hidden">오래된 기억도, 다시 단서가 되도록</p>
           <div className="ml-auto flex items-center gap-4">
@@ -50,10 +53,10 @@ export default function Header() {
           aria-label={user ? "FindUs 홈" : "FindUs 서비스 소개"}
           className="hidden rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:inline-flex"
         >
-          <Logo />
+          <Logo blue={onPublicPage} />
         </Link>
         <Link href="/" aria-label="FindUs 홈" className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:hidden">
-          <Logo />
+          <Logo blue={onPublicPage} />
         </Link>
         <HeaderNav />
         <div className="ml-auto flex shrink-0 items-center gap-3 lg:order-last lg:ml-0 max-sm:gap-1.5">
