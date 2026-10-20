@@ -71,14 +71,6 @@
  .comparisonCard.comparisonCard figure > [role="img"] { height:175px; }
  .comparisonCard.comparisonCard > div:last-child { grid-template-columns:minmax(0,1fr) 36px; }
 }
-/* Warm coral accents for home interest controls. */
-.cards [aria-label*="관심 아동"] { background:#FFF0ED; color:#963D32; }
-.cards [aria-label*="관심 아동"] svg { color:#FF7867; }
-.cards [aria-label*="관심 아동"]:hover { background:#FFE3DE; }
-.cards [aria-pressed="true"] { background:#FF7867; color:#57251E; }
-.cards [aria-pressed="true"] svg { color:#57251E; }
-.cards [aria-pressed="true"]:hover { background:#FF8C7E; }
-
 /* One primary action, followed by quiet report and share controls. */
 .comparisonCard.comparisonCard > div:last-child { grid-template-columns:minmax(0,1fr) 44px; gap:2px 8px; padding-bottom:10px; }
 .comparisonCard.comparisonCard > div:last-child > button { min-height:44px; border-color:transparent; background:transparent; color:#5C6F86; }

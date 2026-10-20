@@ -49,7 +49,7 @@ export default function GuideContent({ embedded = false }: { embedded?: boolean 
 
       <div className={embedded ? "flow-root pb-4" : "flow-root bg-hero pb-8"}>
         <div className={`page-container ${embedded ? "max-w-5xl" : ""}`}>
-          <GuideSteps overlap={!embedded} />
+          <GuideSteps overlap={!embedded} compact={embedded} />
         </div>
       </div>
 

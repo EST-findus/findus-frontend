@@ -1,6 +1,7 @@
 "use client";
 
 import { UserIcon } from "./Icons";
+import actionStyles from "./HeaderActions.module.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCurrentUser } from "@/lib/useCurrentUser";
@@ -14,9 +15,9 @@ export default function HeaderAuth() {
 
   if (user) {
     return (
-      <Link href="/mypage" aria-label={`${user.nickname}님의 관심 아동`} className={`flex h-9 items-center gap-1.5 rounded-lg border border-brand/15 bg-brand-soft px-2.5 text-[13px] font-bold text-brand transition-colors hover:border-brand/30 hover:bg-brand/15 max-sm:px-2 ${pathname === "/mypage" ? "max-md:hidden" : ""} ${FOCUS_RING}`}>
+      <Link href="/mypage" aria-label={`${user.nickname}님의 관심 아동`} className={`${actionStyles.boxedAction} ${actionStyles.favorite} ${pathname === "/mypage" ? "max-md:hidden" : ""} ${FOCUS_RING}`}>
         <UserIcon size={20} className="shrink-0" />
-        <span className="max-sm:hidden">관심 아동</span>
+        <span className={actionStyles.label}>관심 아동</span>
       </Link>
     );
   }
