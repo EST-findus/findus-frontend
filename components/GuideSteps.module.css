@@ -1,0 +1,20 @@
+/* Compact situation cards in the community guide tab. */
+.compact > div { border-radius:14px; box-shadow:0 1px 3px rgb(23 59 112 / 4%); }
+.compact > div > button { gap:14px; padding:20px; border-radius:14px; }
+.compact > div > button > span:first-child { width:48px; height:48px; border-radius:12px; }
+.compact > div > button > span:first-child > svg { width:25px; height:25px; }
+.compact > div > button > span:last-child > span:nth-child(1) { font-size:12px; }
+.compact > div > button > span:last-child > span:nth-child(2) { font-size:20px; }
+.compact > div > button > span:last-child > span:nth-child(3) { margin-top:6px; font-size:13px; line-height:1.6; }
+.compact > div > button > span:last-child > span:nth-child(4) { margin-top:10px; font-size:13px; }
+.compact > div > div { padding:0 16px 16px; }
+.compact [id="families"] { min-height:72px; padding:10px 12px; gap:10px; border-radius:12px; box-shadow:none; }
+.compact [id="families"] > span:first-child { width:34px; height:34px; border-radius:10px; }
+.compact [id="families"] > span:nth-child(2) > span:first-child { font-size:10px; }
+.compact [id="families"] > span:nth-child(2) > span:nth-child(2) { margin-top:2px; font-size:16px; }
+.compact [id="families"] > span:nth-child(2) > span:nth-child(3) { margin-top:2px; font-size:11px; }
+@media(width<640px) {
+ .compact > div > button { padding:16px; gap:12px; }
+ .compact > div > button > span:first-child { width:42px; height:42px; }
+ .compact > div > div { padding-inline:14px; padding-bottom:14px; }
+}

@@ -7,9 +7,11 @@ import { useCurrentUser } from "@/lib/useCurrentUser";
 import HealthCheckButton from "./HealthCheckButton";
 import searchStyles from "./PublicSearch.module.css";
 import HeaderAuth from "./HeaderAuth";
+import actionStyles from "./HeaderActions.module.css";
+import coralStyles from "./CoralAction.module.css";
 import HeaderNav from "./HeaderNav";
 import LogoMark from "./LogoMark";
-import { ArrowUpRightIcon, PhoneIcon } from "./Icons";
+import { ArrowUpRightIcon, PhoneIcon, HeartIcon } from "./Icons";
 
 export function Logo({ blue = false }: { blue?: boolean }) {
   return (
@@ -47,8 +49,9 @@ export default function Header() {
           </div>
         </div>
       </div>
-}
-      <div className={`page-container flex h-16 items-center gap-6 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
+
+}
+      <div className={`page-container flex h-16 items-center gap-5 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
         <Link
           href={user ? "/" : "/about"}
           aria-label={user ? "FindUs 홈" : "FindUs 서비스 소개"}
@@ -60,7 +63,7 @@ export default function Header() {
           <Logo blue={onPublicPage} />
         </Link>
         <HeaderNav />
-        <div className="ml-auto flex shrink-0 items-center gap-3 lg:order-last lg:ml-0 max-sm:gap-1.5">
+        <div className="ml-auto flex shrink-0 items-center gap-2 lg:order-last lg:ml-0 max-sm:gap-1.5">
           <a
             href="tel:182"
             aria-label="공식 제보 182 전화"
@@ -73,6 +76,10 @@ export default function Header() {
             <span className="text-[15px] font-extrabold text-brand">182</span>
           </a>
           <HeaderAuth />
+          <a href="https://tumblbug.com/" target="_blank" rel="noopener noreferrer" aria-label="후원하기 · 텀블벅 (새 창)" className={`${actionStyles.boxedAction} ${coralStyles.soft}`}>
+            <HeartIcon size={20} />
+            <span className={actionStyles.label}>후원하기</span>
+          </a>
         </div>
       </div>
     </header>

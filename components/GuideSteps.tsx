@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import DnaGuideButton from "./DnaGuideButton";
+import styles from "./GuideSteps.module.css";
 import { MISSING_CHILD_CENTER_URL, SAFE182_URL } from "@/lib/links";
 import { ArrowRightIcon, ArrowUpRightIcon, HeartIcon, PhoneIcon, ScanFaceIcon } from "./Icons";
 
@@ -75,7 +76,7 @@ const GUIDES = [
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
-export default function GuideSteps({ overlap = true }: { overlap?: boolean }) {
+export default function GuideSteps({ overlap = true, compact = false }: { overlap?: boolean; compact?: boolean }) {
   const [selected, setSelected] = useState<(typeof GUIDES)[number] | null>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const cardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -118,7 +119,7 @@ export default function GuideSteps({ overlap = true }: { overlap?: boolean }) {
 
   return (
     <>
-      <div role="group" aria-label="상황 선택" className={`relative ${overlap ? "-mt-14" : ""} grid items-stretch gap-4 md:grid-cols-2`}>
+      <div role="group" aria-label="상황 선택" className={`relative ${overlap ? "-mt-14" : ""} grid items-stretch gap-4 md:grid-cols-2 ${compact ? styles.compact : ""}`}>
         {GUIDES.map(({ id, tag, title, summary, Icon, tone }) => (
           <div key={id} className={`min-w-0 rounded-2xl border border-line bg-card shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none ${tone.ring}`}>
           <button

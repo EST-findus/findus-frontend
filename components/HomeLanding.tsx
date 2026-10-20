@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { MissingPerson } from "@/lib/types";
-import { ArrowRightIcon, HeartIcon, SearchIcon, PhoneIcon, LayersIcon, ShieldIcon, EyeIcon } from "./Icons";
+import { ArrowRightIcon, ArrowUpRightIcon, HeartIcon, SearchIcon, PhoneIcon, LayersIcon, ShieldIcon, PencilIcon } from "./Icons";
 import HomeChildren from "./HomeChildren";
 import styles from "./HomeLanding.module.css";
+import coralStyles from "./CoralAction.module.css";
 
 const services = [
   { title:"실종아동 찾기", description:"기억나는 얼굴과 정보를 살펴보세요.", href:"/search", Icon:SearchIcon },
@@ -14,10 +15,10 @@ const services = [
   { title:"실종 예방 안내", description:"사전등록과 예방 정보를 확인하세요.", href:"/guide#faq", Icon:ShieldIcon },
 ];
 const steps = [
-  { title:"정보를 살펴봐요", text:"사진과 실종 지역, 신체 특징을 함께 확인해요.", Icon:SearchIcon },
-  { title:"기억을 정리해요", text:"목격 장소와 시간 등 기억나는 단서를 메모해요.", Icon:EyeIcon },
-  { title:"공식 기관에 전해요", text:"112·182 또는 안전Dream에 정보를 전해요.", Icon:PhoneIcon },
-  { title:"관심을 이어가요", text:"확인된 정보를 살펴보고, 안전하게 함께 나눠요.", Icon:HeartIcon },
+  { title:"정보를 살펴봐요.", text:"사진과 실종 지역, 신체 특징을 함께 확인해요.", Icon:SearchIcon },
+  { title:"기억을 정리해요.", text:"목격 장소와 시간 등 기억나는 단서를 메모해요.", Icon:PencilIcon },
+  { title:"공식 기관에 전해요.", text:"112·182 또는 안전Dream에 정보를 전해요.", Icon:PhoneIcon },
+  { title:"관심을 이어가요.", text:"확인된 정보를 살펴보고, 안전하게 함께 나눠요.", Icon:HeartIcon },
 ];
 
 export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
@@ -58,7 +59,7 @@ export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
           <p className={styles.supportCardLabel}><HeartIcon size={17} fill="currentColor" />함께 만드는 프로젝트</p>
           <h3>후원 프로젝트 준비 중</h3>
           <p className={styles.supportCardDescription}>오래 기다린 가족과 아이들의 재회를 돕는<br />의미 있는 프로젝트를 준비하고 있습니다.</p>
-          <a href="https://tumblbug.com/" target="_blank" rel="noopener noreferrer" aria-label="텀블벅 둘러보기 (새 창)" className={styles.supportButton}>텀블벅 둘러보기</a>
+          <a href="https://tumblbug.com/" target="_blank" rel="noopener noreferrer" aria-label="텀블벅 둘러보기 (새 창)" className={`${styles.supportButton} ${coralStyles.soft}`}>텀블벅 둘러보기</a>
           <p className={styles.supportCardNote}>현재 텀블벅 홈페이지로 연결됩니다.</p>
         </aside>
         <span className={styles.supportArtNote}>AI로 제작한 캠페인 이미지</span>
@@ -70,26 +71,42 @@ export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
       <div className={`page-container ${styles.videoCampaignInner}`}>
         <header className={styles.videoCampaignHeading}>
           <div className={styles.videoCampaignCopy}>
-            <p className={styles.eyebrow}><span />함께 기억하는 캠페인</p>
+            <p className={styles.eyebrow}><span />함께 기억하는 캠페인 영상</p>
             <h2 id="home-campaign-title">사진으로 기억하는 <em>실종아동네컷</em></h2>
             <p className={styles.videoCampaignDescription}>한 번 더 얼굴을 살펴보는 작은 관심. 아이와 가족을 기억하는 마음을 함께 나눠주세요.</p>
           </div>
           <Link href="/guide#know" className={styles.videoCampaignLink}>목격 제보 안내 <ArrowRightIcon size={16} /></Link>
         </header>
-        <div className={styles.videoPlaceholder} role="img" aria-label="캠페인 영상이 들어갈 자리입니다. 영상은 아직 연결되지 않았습니다.">
-          <svg width="44" height="44" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="3" /><path d="M4 11h24M10 5l4 6M19 5l4 6M13 16l7 4-7 4z" /></svg>
-          <strong>캠페인 영상 준비 중</strong>
-          <p>사진으로 기억하는 실종아동네컷</p>
-          <span>영상 연결 예정</span>
-        </div>
+        <figure className={styles.videoEmbed}>
+          <div className={styles.videoPlayer}>
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/xvB02ibSPiU?autoplay=0&playsinline=1&rel=0"
+              title="2024 인생네컷 실종아동네컷 캠페인(KOR) · YouTube"
+              width="560"
+              height="315"
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+          <figcaption className={styles.videoCredit}>
+            <p>영상: 2024_인생네컷_실종아동네컷 캠페인(KOR)</p>
+            <div>
+              <span>업로드: <a href="https://www.youtube.com/@projectxt6732" target="_blank" rel="noopener noreferrer">HYO JIN KIM<span className="sr-only"> (새 창)</span></a></span>
+              <a href="https://www.youtube.com/watch?v=xvB02ibSPiU" target="_blank" rel="noopener noreferrer" className={styles.videoOriginal}>YouTube 원본 보기 <ArrowUpRightIcon size={14} /><span className="sr-only"> (새 창)</span></a>
+            </div>
+            <p className={styles.videoCreditNote}>외부 캠페인 영상을 소개합니다. 재생이 제한되면 YouTube 원본으로 시청해 주세요.</p>
+          </figcaption>
+        </figure>
       </div>
     </section>
     <section className={styles.stepsScene} aria-labelledby="home-steps-title">
       <Image src="/images/home-family-walk.png" alt="" fill sizes="(min-width: 1200px) 1200px, 100vw" className={styles.stepsBackground} />
       <div className={styles.stepsVeil} />
       <div className={`page-container ${styles.section} ${styles.stepsContent}`}>
-      <header className={styles.centerHeading}><p className={styles.eyebrow}>누구나 함께할 수 있어요</p><h2 id="home-steps-title">관심을 전하는 네 걸음</h2><p>살펴보고, 기억하고, 공식 기관에 전해주세요.</p></header>
-      <ol className={styles.steps}>{steps.map(({title,text,Icon},i)=><li key={title}><div className={styles.stepTop}><span>0{i+1}</span><Icon size={26} /></div><h3>{title}</h3><p>{text}</p>{i<3 && <ArrowRightIcon className={styles.stepArrow} size={20} />}</li>)}</ol>
+      <header className={styles.stepsHeading}><p className={styles.eyebrow}><span aria-hidden="true" />누구나 함께할 수 있어요</p><h2 id="home-steps-title">관심을 전하는 <em>네 걸음</em></h2><p>살펴보고, 기억하고, 공식 기관에 전해주세요.</p></header>
+      <ol className={styles.steps}>{steps.map(({title,text,Icon},i)=><li key={title}><div className={styles.stepTop}><span>0{i+1}</span><span className={styles.stepIcon} aria-hidden="true"><Icon size={21} strokeWidth={1.8} /></span></div><h3>{title}</h3><p>{text}</p>{i<3 && <ArrowRightIcon className={styles.stepArrow} size={20} />}</li>)}</ol>
       <p className={styles.stepNote}>FindUs는 직접 신고를 접수하지 않습니다. 제보 확인과 신원 확인은 담당 기관의 안내에 따라 진행됩니다.</p>
       </div>
     </section>
