@@ -1,5 +1,6 @@
 "use client";
 
+import LiveShareModal from "./LiveShareModal";
 import { useEffect, useId, useRef, useState } from "react";
 import {
   missingSummary,
@@ -45,7 +46,11 @@ interface ShareModalProps {
 }
 
 /** 공유 방법(링크·스토리 이미지·QR)마다 실제로 공유될 화면을 미리 보여주고 공유한다. */
-export default function ShareModal({ person, onClose, returnFocusTo }: ShareModalProps) {
+export default function ShareModal(props: ShareModalProps) {
+  return props.person.source === "api" ? <LiveShareModal {...props}/> : <DemoShareModal {...props}/>;
+}
+
+function DemoShareModal({ person, onClose, returnFocusTo }: ShareModalProps) {
   // 모달은 클릭 후에만 마운트되므로 window를 바로 써도 된다.
   const url = personUrl(window.location.origin, person.id);
   const canNativeShare = typeof navigator.share === "function";

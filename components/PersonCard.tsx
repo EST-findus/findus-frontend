@@ -1,5 +1,6 @@
 "use client";
 
+import ChildComparisonCard from "./ChildComparisonCard";
 import { useState, type ReactNode } from "react";
 import { formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
@@ -24,6 +25,7 @@ const FOCUS_RING =
 export default function PersonCard({ person, onOpenDetail, onReport, onShare, headerAction, variant = "default" }: PersonCardProps) {
   const compact = variant === "compact";
   const [styleIndex, setStyleIndex] = useState(0);
+  if (person.source === "api") return <ChildComparisonCard person={person} onOpenDetail={onOpenDetail} onReport={onReport} onShare={onShare}/>;
   const style = person.photos.styles[styleIndex];
   const openDetail = (e: React.MouseEvent<HTMLButtonElement>) =>
     onOpenDetail(person, e.currentTarget);

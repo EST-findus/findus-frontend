@@ -14,10 +14,10 @@ import { ArrowUpRightIcon, PhoneIcon } from "./Icons";
 export function Logo({ blue = false }: { blue?: boolean }) {
   return (
     <span className={`flex items-center gap-2 ${blue ? searchStyles.searchLogo : ""}`}>
-      <LogoMark size={30} className="shrink-0" />
+      <LogoMark size={36} className="shrink-0" />
       <span className="text-[21px] font-extrabold tracking-[-0.4px]">
-        <span className="text-brand">Find</span>
-        <span className="text-gold">Us</span>
+        <span style={{ color: "#173B70" }}>Find</span>
+        <span style={{ color: "#2468C5" }}>Us</span>
       </span>
     </span>
   );
@@ -26,11 +26,12 @@ export function Logo({ blue = false }: { blue?: boolean }) {
 export default function Header() {
   const pathname = usePathname();
   const onMyPage = pathname === "/mypage";
+  const hideUtilityBar = pathname === "/about" || pathname === "/community" || onMyPage;
   const onPublicPage = pathname === "/search" || pathname === "/";
   const user = useCurrentUser();
   return (
     <header className={`${onPublicPage ? searchStyles.palette : ""} sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
-      <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""} ${onPublicPage ? "md:hidden" : ""}`}>
+      {!hideUtilityBar && <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""} ${onPublicPage ? "md:hidden" : ""}`}>
         <div className="page-container flex items-center gap-4 py-1.5 text-[12px] text-muted">
           <p className="break-keep max-sm:hidden">오래된 기억도, 다시 단서가 되도록</p>
           <div className="ml-auto flex items-center gap-4">
@@ -46,7 +47,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-
+}
       <div className={`page-container flex h-16 items-center gap-6 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
         <Link
           href={user ? "/" : "/about"}

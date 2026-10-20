@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { getMissingPersons } from "@/lib/data";
 import MyPage from "@/components/MyPage";

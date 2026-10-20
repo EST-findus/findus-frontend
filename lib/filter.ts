@@ -40,11 +40,11 @@ export function matchesFilters(person: MissingPerson, filters: SearchFilters): b
   if (filters.period !== "all") {
     const year = Number(person.missingDate.slice(0, 4));
     const [from, to] = PERIOD_RANGES[filters.period];
-    if (year < from || year >= to) return false;
+    if (!person.missingDate || year < from || year >= to) return false;
   }
   if (filters.ageGroup !== "all") {
     const [min, max] = AGE_RANGES[filters.ageGroup];
-    if (person.ageAtMissing < min || person.ageAtMissing > max) return false;
+    if (person.ageAtMissing === null || person.ageAtMissing < min || person.ageAtMissing > max) return false;
   }
   return true;
 }

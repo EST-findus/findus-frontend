@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import HomeLanding from "@/components/HomeLanding";
 import { getMissingPersons } from "@/lib/data";

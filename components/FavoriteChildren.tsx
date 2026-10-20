@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { MOCK_PHOTO_LABEL } from "@/lib/attribution";
 import { selectFavoritePersons, setOwnChild } from "@/lib/favorites";
 import { useFavorites } from "@/lib/useFavorites";
 import type { MissingPerson } from "@/lib/types";
@@ -31,7 +30,7 @@ export default function FavoriteChildren({ userId, persons }: { userId: string; 
           <h2 id="favorite-children" className="flex items-center gap-2 text-[21px] font-extrabold max-md:text-[18px]"><HeartIcon className="text-brand" size={22} />관심 아동 <span className="text-[14px] text-brand">{saved.length}명</span></h2>
           <details className="static">
             <summary aria-label="관심 아동 이용 안내" className={`flex h-7 w-7 cursor-pointer list-none items-center justify-center rounded-full text-[18px] text-muted hover:bg-white/70 ${FOCUS} [&::-webkit-details-marker]:hidden`}>ⓘ</summary>
-            <p className="absolute top-full left-0 z-10 mt-2 w-56 max-w-[calc(100vw-80px)] rounded-xl border border-line bg-card p-4 text-[13px] leading-relaxed text-muted shadow-panel">관심 등록한 아동을 바로 확인하세요. 카드의 ‘내 아이’를 누르면 맨 앞에 고정됩니다.</p>
+            <p className="absolute top-full left-0 z-10 mt-2 w-56 max-w-[calc(100vw-80px)] rounded-xl border border-line bg-card p-4 text-[13px] leading-relaxed text-muted shadow-panel">관심 목록은 이 브라우저에만 저장됩니다. 관심 등록한 아동을 바로 확인하세요. 카드의 ‘내 아이’를 누르면 맨 앞에 고정됩니다.</p>
           </details>
         </div>
         <Link href="/search" aria-label="관심 아동 추가하기" className={`inline-flex items-center gap-1 rounded-lg px-2 py-2 text-[13px] font-bold text-brand hover:bg-white/60 ${FOCUS}`}><span className="max-sm:hidden">아동</span> 추가 <ArrowRightIcon size={16} className="max-sm:hidden" /></Link>
@@ -46,7 +45,7 @@ export default function FavoriteChildren({ userId, persons }: { userId: string; 
         </div>
       ) : (
         <>
-          <p data-mock-label className="mt-3 text-[12px] text-muted max-md:sr-only">시연용 예시 정보 · {MOCK_PHOTO_LABEL}</p>
+          <p data-mock-label className="mt-3 text-[12px] text-muted max-md:sr-only">자료 출처: 경찰청 · 관심 목록은 이 브라우저에만 저장됩니다.</p>
           <div data-favorite-grid className="mt-3 grid grid-cols-1 gap-5 max-md:mt-2">
             {saved.map((person) => {
               const own = favorites.ownChildId === person.id;

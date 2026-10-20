@@ -14,7 +14,7 @@ import {
 } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
 import SectionHeading from "@/components/SectionHeading";
-import { getMissingPersons } from "@/lib/data";
+import { getMissingPersons } from "@/lib/demoData";
 
 
 
@@ -257,7 +257,7 @@ export default async function AiContent({ embedded = false }: { embedded?: boole
               <ul className="mt-4 flex flex-col gap-3">
                 {CANNOT.map((t) => (
                   <li key={t} className="flex gap-3 text-[14.5px] break-keep text-muted">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#f2d58a] text-gold-ink">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/20 text-gold-ink">
                       <CloseIcon size={13} strokeWidth={2.6} />
                     </span>
                     {t}

@@ -1,4 +1,4 @@
-export type Gender = "남" | "여";
+export type Gender = "남" | "여" | "미상";
 export type SortKey = "recent" | "oldest" | "name";
 
 export type GenderFilter = "all" | Gender;
@@ -22,12 +22,18 @@ export interface StylePhoto {
 export interface MissingPerson {
   /** 관리번호 */
   id: string;
+  source?: "api";
+  sourceId?: string;
+  images?: {id:string;url:string;sortOrder:number}[];
+  clothing?: string;
+  lastSyncedAt?: string;
+  attribution?: string;
   name: string;
   gender: Gender;
   /** 만 나이 */
-  ageAtMissing: number;
+  ageAtMissing: number | null;
   /** 만 나이 */
-  currentAge: number;
+  currentAge: number | null;
   /** ISO "YYYY-MM-DD" (정렬용). 화면에는 "YYYY. MM. DD." */
   missingDate: string;
   /** 시·도 약칭 (지역 필터용) */
@@ -40,7 +46,7 @@ export interface MissingPerson {
     /** AI 예상 모습 (현재 나이 기준) */
     aged: string;
     /** 스타일 변형 (첫 번째가 기본 선택) */
-    styles: [StylePhoto, ...StylePhoto[]];
+    styles: StylePhoto[];
   };
   /** 상세 모달 "AI 알고리즘 분석" 문구 */
   aiNote: string;

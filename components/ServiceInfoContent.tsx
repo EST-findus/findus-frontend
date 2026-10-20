@@ -1,4 +1,3 @@
-import { MOCK_PHOTO_LABEL } from "@/lib/attribution";
 import { MISSING_CHILD_CENTER_URL, SAFE182_URL } from "@/lib/links";
 import { ArrowUpRightIcon } from "./Icons";
 
@@ -15,7 +14,7 @@ export default function ServiceInfoContent() {
         <a href="tel:112" className="rounded-xl border border-line px-3 py-3 focus-visible:outline-2 focus-visible:outline-brand">긴급 신고 <span className="text-brand">112</span></a>
         <a href="tel:182" className="rounded-xl border border-line px-3 py-3 focus-visible:outline-2 focus-visible:outline-brand">실종 상담 <span className="text-brand">182</span></a>
       </div>
-      <p className="mt-5 text-[12px] leading-relaxed text-muted">현재 목록은 {MOCK_PHOTO_LABEL}입니다. 실종 신고·상담은 경찰청(112·182)을 이용해 주세요.</p>
+      <p className="mt-5 text-[12px] leading-relaxed text-muted">아동 정보 자료 출처: 경찰청. 실종 신고·상담은 경찰청(112·182)을 이용해 주세요.</p>
       <p className="mt-3 text-[11px] text-muted">개인정보처리방침은 준비 중입니다.</p>
       <p className="mt-2 text-[11px] text-muted">© 2026 FindUs</p>
     </>

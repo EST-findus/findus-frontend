@@ -1,5 +1,6 @@
 "use client";
 
+import PersonPhotoGallery from "./PersonPhotoGallery";
 import Image from "next/image";
 import { useState } from "react";
 import type { MissingPerson } from "@/lib/types";
@@ -13,6 +14,10 @@ const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visi
 export default function MobilePersonDetail({ person, onReport, embedded = false }: { person: MissingPerson; onReport: (trigger: HTMLElement) => void; embedded?: boolean }) {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [shareOpen, setShareOpen] = useState(false);
+  if (person.source === 'api') return <div className={embedded ? 'space-y-4' : 'flex min-h-0 flex-1 flex-col overflow-y-auto p-4 md:hidden'}>
+    <div className="grid gap-4 min-[600px]:grid-cols-2"><PersonPhotoGallery key={person.id} person={person}/><InfoRows compact person={person}/></div>
+    <div className="mt-4 flex gap-3 border-t border-line pt-3"><button type="button" onClick={e=>onReport(e.currentTarget)} className="flex-1 rounded-xl bg-brand px-3 py-3 font-bold text-white">목격 제보 안내</button><button type="button" onClick={()=>setShareOpen(true)} className="flex-1 rounded-xl border border-line px-3 py-3 font-bold">링크 공유</button></div>
+    {shareOpen && <ShareModal person={person} onClose={()=>setShareOpen(false)}/>}</div>;
   const choices = [{ label: "기본", src: person.photos.aged }, ...person.photos.styles];
   const selectedPhoto = choices[photoIndex];
 

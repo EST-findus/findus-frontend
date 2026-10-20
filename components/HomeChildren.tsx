@@ -85,9 +85,9 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
     return () => window.clearTimeout(timer);
   }, [playing,reducedMotion,hovered,focused,inView,visible,detail,report,share,pages,outgoing,current,move]);
 
-  const renderCard = (person: MissingPerson) => <ChildComparisonCard key={person.id} person={person} className={styles.comparisonCard} onOpenDetail={(person,element)=>{setTrigger(element);setDetail(person);}} onReport={(person,element)=>{setTrigger(element);setReport(person);}} onShare={(person,element)=>{setTrigger(element);setShare(person);}} />;
+  const renderCard = (person: MissingPerson) => <ChildComparisonCard key={person.id} person={person} comparison actionVariant="home" className={styles.comparisonCard} onOpenDetail={(person,element)=>{setTrigger(element);setDetail(person);}} onReport={(person,element)=>{setTrigger(element);setReport(person);}} onShare={(person,element)=>{setTrigger(element);setShare(person);}} />;
   return <section className={styles.section} aria-labelledby="home-children-title">
-    <div className="page-container">
+    <div className={`page-container ${styles.sectionBox}`}>
       <header className={styles.heading}>
         <div><p className={styles.eyebrow}><span />함께 찾는 마음</p><h2 id="home-children-title">지금, 우리가 함께 찾고 있는 아이들</h2><p className={styles.description}>기억 속 얼굴을 다시 살펴보세요. 작은 관심이 소중한 단서가 될 수 있습니다.</p></div>
         <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={17} /></Link>
@@ -109,7 +109,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
           {!reducedMotion && <button type="button" className={styles.rotationControl} aria-label={playing ? "자동 넘김 일시정지" : "자동 넘김 시작"} aria-pressed={!playing} onClick={()=>setPlaying(!playing)}><span aria-hidden="true">{playing ? "Ⅱ" : "▷"}</span><span>{playing ? "일시정지" : "자동 넘김"}</span></button>}
         </nav>}
       </div>
-      <p className={styles.demo}><span>시연용 안내</span><span>가상 인물·AI 생성 예시이며 실제 실종아동 정보가 아닙니다. AI 예상 모습은 실제 모습과 다를 수 있습니다.</span></p>
+      <p className={styles.demo}><span>자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
     </div>
     {detail && <DetailModal person={detail} returnFocusTo={trigger} onClose={()=>setDetail(null)} onReport={person=>{setDetail(null);setReport(person);}} />}
     {report && <ReportGuideModal person={report} returnFocusTo={trigger} onClose={()=>setReport(null)} />}
