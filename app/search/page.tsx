@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import PublicSearchExplorer from "@/components/PublicSearchExplorer";
 import { getMissingPersons } from "@/lib/data";

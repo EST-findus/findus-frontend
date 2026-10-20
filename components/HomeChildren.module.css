@@ -1,32 +1,32 @@
-.section { background:#f7f9fc; padding:48px 0 32px; border-bottom:1px solid #e7edf4; }
+.section { background:#FFFFFF; padding:48px 0 32px; border-bottom:1px solid #e7edf4; }
 .heading { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:25px; }
-.eyebrow { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; color:#5f7f9f; letter-spacing:.3px; }
-.eyebrow > span { width:5px; height:5px; background:#d78072; border-radius:50%; }
+.eyebrow { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; color:#5C6F86; letter-spacing:.3px; }
+.eyebrow > span { width:5px; height:5px; background:#FF7867; border-radius:50%; }
 .heading h2 { margin-top:10px; font-size:28px; font-weight:800; line-height:1.4; letter-spacing:-.9px; word-break:keep-all; }
-.description { margin-top:11px; color:#7b8ba0; font-size:13px; line-height:1.8; word-break:keep-all; }
-.allLink { display:flex; align-items:center; gap:10px; padding:10px 0; color:#4b709a; font-size:12px; font-weight:700; white-space:nowrap; }
-.allLink:hover { color:#245bb5; }
+.description { margin-top:11px; color:#62748C; font-size:13px; line-height:1.8; word-break:keep-all; }
+.allLink { display:flex; align-items:center; gap:10px; padding:10px 0; color:#5C6F86; font-size:12px; font-weight:700; white-space:nowrap; }
+.allLink:hover { color:#2468C5; }
 .toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px solid #dfe7f0; padding:15px 0; }
-.toolbar > p { color:#8795a6; font-size:12px; }
-.toolbar strong { color:#315e92; font-size:14px; margin-right:2px; }
+.toolbar > p { color:#62748C; font-size:12px; }
+.toolbar strong { color:#173B70; font-size:14px; margin-right:2px; }
 .toolbar > div { display:flex; align-items:center; gap:9px; }
-.toolbar label { font-size:11px; color:#8897a9; }
-.toolbar select { height:35px; padding:0 28px 0 11px; border:1px solid #dce5ef; background:white; border-radius:6px; font-size:12px; color:#536c89; }
+.toolbar label { font-size:11px; color:#62748C; }
+.toolbar select { height:35px; padding:0 28px 0 11px; border:1px solid #dce5ef; background:white; border-radius:6px; font-size:12px; color:#5C6F86; }
 .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
 .comparisonCard { border-color:#e0e7ef; border-radius:12px; box-shadow:0 2px 3px #213e6103; }
 .comparisonCard:hover { box-shadow:none; border-color:#b7cce4; }
 .comparisonCard h3 { font-size:23px; }
 .pagination { display:flex; align-items:center; justify-content:center; gap:19px; margin-top:20px; }
-.pagination button { width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#416c9b; background:white; border:1px solid #dce6f1; border-radius:50%; cursor:pointer; }
-.pagination button:hover:not(:disabled) { border-color:#9bb8d9; background:#edf4fc; }
+.pagination button { width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#5C6F86; background:white; border:1px solid #dce6f1; border-radius:50%; cursor:pointer; }
+.pagination button:hover:not(:disabled) { border-color:#9bb8d9; background:#EAF4FF; }
 .pagination button:disabled { opacity:.35; cursor:default; }
-.pagination p { min-width:70px; text-align:center; color:#6b8098; font-size:12px; }
-.pagination strong { color:#2c577f; font-weight:750; }
-.pagination p > span { color:#8a99ab; }
-.demo { display:flex; align-items:baseline; justify-content:center; gap:9px; margin-top:17px; font-size:10px; line-height:1.8; color:#8a98a9; }
+.pagination p { min-width:70px; text-align:center; color:#62748C; font-size:12px; }
+.pagination strong { color:#173B70; font-weight:750; }
+.pagination p > span { color:#62748C; }
+.demo { display:flex; align-items:baseline; justify-content:center; gap:9px; margin-top:17px; font-size:10px; line-height:1.8; color:#62748C; }
 .demo > span:first-child { flex-shrink:0; color:#6e8197; font-weight:650; }
 .empty { padding:50px 20px; text-align:center; color:#6c7f94; font-size:14px; }
-.section a:focus-visible,.section button:focus-visible,.section select:focus-visible { outline:2px solid #245bb5; outline-offset:3px; }
+.section a:focus-visible,.section button:focus-visible,.section select:focus-visible { outline:2px solid #2468C5; outline-offset:3px; }
 @media(width<900px) { .heading { flex-wrap:wrap; gap:9px; }.heading h2 { font-size:26px; }.cards { gap:15px; } }
 @media(width<640px) { .section { padding:30px 0 25px; }.heading { margin-bottom:15px; }.heading h2 { font-size:23px; line-height:1.45; margin-top:7px; }.description { font-size:12px; margin-top:8px; }.eyebrow { font-size:11px; }.allLink { padding:4px 0; font-size:12px; }.toolbar { gap:9px; padding:12px 0; }.toolbar > p { font-size:10px; }.toolbar strong { font-size:12px; }.toolbar label { display:none; }.toolbar select { font-size:11px; max-width:145px; }.cards { grid-template-columns:1fr; }.comparisonCard h3 { font-size:21px; }.pagination { margin-top:16px; }.pagination button { width:44px; height:44px; }.demo { text-align:left; align-items:flex-start; gap:7px; margin-top:15px; font-size:10px; } }
 
@@ -54,3 +54,43 @@
 .comparisonCard > div:last-child > button:first-child { grid-column:1/-1; }
 @media (640px <= width < 1100px) { .cards { grid-template-columns:repeat(2,minmax(0,1fr)); }.comparisonCard figure > button { height:200px; } }
 @media(width<640px) { .comparisonCard figure > button { height:185px; }.comparisonCard > div:last-child { grid-template-columns:1fr 44px; } }
+
+/* Compact home comparison cards match the paired-photo reference. */
+.comparisonCard.comparisonCard { border-color:#dce5ef; border-radius:12px; }
+.comparisonCard.comparisonCard > div:first-child { padding:14px; }
+.comparisonCard.comparisonCard figure > button,
+.comparisonCard.comparisonCard figure > [role="img"] { height:175px; }
+.comparisonCard.comparisonCard > div:last-child { grid-template-columns:minmax(0,1fr) 36px; padding:0 14px 14px; gap:8px; }
+.comparisonCard.comparisonCard > div:last-child > button:first-child { grid-column:1/-1; }
+@media (640px <= width < 1100px) {
+ .comparisonCard.comparisonCard figure > button,
+ .comparisonCard.comparisonCard figure > [role="img"] { height:200px; }
+}
+@media(width<640px) {
+ .comparisonCard.comparisonCard figure > button,
+ .comparisonCard.comparisonCard figure > [role="img"] { height:175px; }
+ .comparisonCard.comparisonCard > div:last-child { grid-template-columns:minmax(0,1fr) 36px; }
+}
+/* Warm coral accents for home interest controls. */
+.cards [aria-label*="관심 아동"] { background:#FFF0ED; color:#963D32; }
+.cards [aria-label*="관심 아동"] svg { color:#FF7867; }
+.cards [aria-label*="관심 아동"]:hover { background:#FFE3DE; }
+.cards [aria-pressed="true"] { background:#FF7867; color:#57251E; }
+.cards [aria-pressed="true"] svg { color:#57251E; }
+.cards [aria-pressed="true"]:hover { background:#FF8C7E; }
+
+/* One primary action, followed by quiet report and share controls. */
+.comparisonCard.comparisonCard > div:last-child { grid-template-columns:minmax(0,1fr) 44px; gap:2px 8px; padding-bottom:10px; }
+.comparisonCard.comparisonCard > div:last-child > button { min-height:44px; border-color:transparent; background:transparent; color:#5C6F86; }
+.comparisonCard.comparisonCard > div:last-child > button:first-child { background:#2468C5; border-color:#2468C5; color:#FFFFFF; font-size:13px; font-weight:700; }
+.comparisonCard.comparisonCard > div:last-child > button:first-child:hover { background:#173B70; border-color:#173B70; }
+.comparisonCard.comparisonCard > div:last-child > button:nth-child(2) { justify-content:flex-start; padding-inline:0; font-size:12px; }
+.comparisonCard.comparisonCard > div:last-child > button:nth-child(2):hover { color:#2468C5; }
+.comparisonCard.comparisonCard > div:last-child > button:last-child:hover { color:#2468C5; background:#EAF4FF; }
+/* Light section frame shared visually with the home campaign. */
+.section { padding:28px 0 16px; border-bottom:0; }
+.sectionBox { width:calc(100% - 32px); padding-block:28px; border:1px solid #E3EAF3; border-radius:16px; background:#FFFFFF; }
+@media(width<640px) {
+ .section { padding-block:20px 12px; }
+ .sectionBox { padding:22px 14px; border-radius:12px; }
+}

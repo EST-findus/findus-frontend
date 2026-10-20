@@ -43,25 +43,47 @@ export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
       {services.map(({title,description,href,Icon},i) => <Link key={title} href={href}><span className={`${styles.serviceIcon} ${i===1 ? styles.coralIcon : ""}`}><Icon size={25} /></span><div><strong>{title}</strong><p>{description}</p></div><ArrowRightIcon size={16} /></Link>)}
     </nav>
 
+    <section className={styles.supportSection} aria-labelledby="home-support-title">
+
+        <Image src="/images/support-children-background.png" alt="" fill sizes="100vw" className={styles.supportPhoto} />
+      <div className={styles.supportShade} aria-hidden="true" />
+      <div className={`page-container ${styles.supportBanner}`}>
+        <div className={styles.supportCopy}>
+          <div className={styles.supportEyebrow}><span>FINDUS CAMPAIGN</span><span className={styles.supportBadge}>프로젝트 준비 중</span></div>
+          <h2 id="home-support-title">오랜 기다림이 끝나고,<br /><em>다시 가족의 품으로.</em></h2>
+          <p>장기 실종아동이 안전하게 집으로 돌아오는 날을 위해,<br />작은 관심을 하나의 희망으로 잇습니다.</p>
+          <span className={styles.supportMessage}>잊지 않고 기억하는 마음이, 다시 만날 내일을 만듭니다.</span>
+        </div>
+        <aside className={styles.supportCard} aria-label="후원 프로젝트 안내">
+          <p className={styles.supportCardLabel}><HeartIcon size={17} fill="currentColor" />함께 만드는 프로젝트</p>
+          <h3>후원 프로젝트 준비 중</h3>
+          <p className={styles.supportCardDescription}>오래 기다린 가족과 아이들의 재회를 돕는<br />의미 있는 프로젝트를 준비하고 있습니다.</p>
+          <a href="https://tumblbug.com/" target="_blank" rel="noopener noreferrer" aria-label="텀블벅 둘러보기 (새 창)" className={styles.supportButton}>텀블벅 둘러보기</a>
+          <p className={styles.supportCardNote}>현재 텀블벅 홈페이지로 연결됩니다.</p>
+        </aside>
+        <span className={styles.supportArtNote}>AI로 제작한 캠페인 이미지</span>
+      </div>
+    </section>
     <HomeChildren persons={persons} />
 
     <section className={styles.videoCampaign} aria-labelledby="home-campaign-title">
       <div className={`page-container ${styles.videoCampaignInner}`}>
+        <header className={styles.videoCampaignHeading}>
+          <div className={styles.videoCampaignCopy}>
+            <p className={styles.eyebrow}><span />함께 기억하는 캠페인</p>
+            <h2 id="home-campaign-title">사진으로 기억하는 <em>실종아동네컷</em></h2>
+            <p className={styles.videoCampaignDescription}>한 번 더 얼굴을 살펴보는 작은 관심. 아이와 가족을 기억하는 마음을 함께 나눠주세요.</p>
+          </div>
+          <Link href="/guide#know" className={styles.videoCampaignLink}>목격 제보 안내 <ArrowRightIcon size={16} /></Link>
+        </header>
         <div className={styles.videoPlaceholder} role="img" aria-label="캠페인 영상이 들어갈 자리입니다. 영상은 아직 연결되지 않았습니다.">
           <svg width="44" height="44" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="3" /><path d="M4 11h24M10 5l4 6M19 5l4 6M13 16l7 4-7 4z" /></svg>
           <strong>캠페인 영상 준비 중</strong>
           <p>사진으로 기억하는 실종아동네컷</p>
           <span>영상 연결 예정</span>
         </div>
-        <div className={styles.videoCampaignCopy}>
-          <p className={styles.eyebrow}><span />함께 기억하는 캠페인</p>
-          <h2 id="home-campaign-title">사진으로 기억하는<br /><em>실종아동네컷</em></h2>
-          <p className={styles.videoCampaignDescription}>한 번 더 얼굴을 살펴보는 작은 관심.<br />아이와 가족을 기억하는 마음을 함께 나눠주세요.</p>
-          <div className={styles.videoCampaignAction}><Link href="/guide#know">목격 제보 안내 <ArrowRightIcon size={16} /></Link><p>기억나는 작은 단서도 소중합니다.</p></div>
-        </div>
       </div>
     </section>
-
     <section className={styles.stepsScene} aria-labelledby="home-steps-title">
       <Image src="/images/home-family-walk.png" alt="" fill sizes="(min-width: 1200px) 1200px, 100vw" className={styles.stepsBackground} />
       <div className={styles.stepsVeil} />
@@ -72,12 +94,5 @@ export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
       </div>
     </section>
 
-    <section className={`page-container ${styles.learnSection}`} aria-labelledby="home-learn-title">
-      <header className={styles.learnHeading}><div><p className={styles.eyebrow}>처음 방문하셨나요?</p><h2 id="home-learn-title">FindUs를 조금 더 알아보세요.</h2></div><p>기능 안내부터 함께 나누는 이야기까지,<br />궁금한 내용을 골라 확인하세요.</p></header>
-      <div className={styles.learnGrid}>
-        <Link href="/community"><HeartIcon size={24} /><span className={styles.learnTag}>시민 이야기</span><h3>함께 나누는 정보와<br /> 따뜻한 응원을 만나요.</h3><p>서로에게 도움이 되는 이야기와 질문을 나눠요.</p><span className={styles.learnAction}>정보 마당 둘러보기 <ArrowRightIcon size={16} /></span></Link>
-        <Link href="/ai"><ShieldIcon size={24} /><span className={styles.learnTag}>AI 안내</span><h3>AI 예상 모습,<br /> 어떻게 확인하나요?</h3><p>예상 이미지의 의미와 사용 원칙을 알아보세요.</p><span className={styles.learnAction}>AI 사용 원칙 보기 <ArrowRightIcon size={16} /></span></Link>
-      </div>
-    </section>
   </div>;
 }

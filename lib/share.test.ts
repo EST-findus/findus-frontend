@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { getMissingPersonById, getMissingPersons } from "./data";
+import { getMissingPersonById, getMissingPersons } from "./demoData";
 import {
   missingSummary,
   personPath,

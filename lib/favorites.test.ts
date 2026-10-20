@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { getMissingPersons } from "./data";
+import { getMissingPersons } from "./demoData";
 import { getFavorites, selectFavoritePersons, setOwnChild, subscribeFavorites, toggleFavorite } from "./favorites";
 
 let storage: Map<string, string>;

@@ -23,7 +23,7 @@ export default function FavoriteButton({ personId, name }: { personId: string; n
 
   return (
     <div>
-      <button type="button" aria-label={`${name} 관심 아동 ${selected ? "해제" : "등록"}`} aria-pressed={selected} onClick={() => {
+      <button type="button" title="관심 목록은 이 브라우저에만 저장됩니다" aria-label={`${name} 관심 아동 ${selected ? "해제" : "등록"}`} aria-pressed={selected} onClick={() => {
         try { toggleFavorite(user.id, personId); setError(null); }
         catch (err) { setError(err instanceof Error ? err.message : "다시 시도해 주세요."); }
       }} className={`${BUTTON} ${selected ? "bg-red-soft text-red-dark hover:bg-red-100" : "bg-surface text-muted hover:bg-red-soft hover:text-red-dark"}`}><HeartIcon size={16} fill={selected ? "currentColor" : "none"} />{selected ? "관심 아동" : "관심 등록"}</button>

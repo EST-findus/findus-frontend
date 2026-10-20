@@ -39,7 +39,7 @@ export default function ReportGuideModal({ person, returnFocusTo, onClose }: Rep
 
       <div className="mb-5 rounded-xl bg-surface px-4 py-3 text-[14px]">
         <p className="font-bold">
-          {person.name} <span className="font-semibold text-muted">· 관리번호 {person.id}</span>
+          {person.name} <span className="font-semibold text-muted">· 관리번호 {person.sourceId ?? person.id}</span>
         </p>
         <p className="mt-1 text-[13.5px] break-keep text-muted">{person.features}</p>
       </div>
