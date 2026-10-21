@@ -233,3 +233,62 @@
     margin-top: 4px;
   }
 }
+
+/* Compact saved-child comparison with readable detail text. */
+.layout [data-favorite-api-body] { width:100%; max-width:840px; margin-inline:auto; align-items:center; padding-block:16px 8px; gap:40px; }
+.layout [data-favorite-api-body] > dl { font-size:16px; line-height:1.5; gap:7px; }
+.layout [data-favorite-api-body] > dl > div { gap:16px; }
+.layout [data-favorite-api-body] > dl > div > dt { width:92px; font-size:14px; line-height:1.7; }
+.layout [data-favorite-api-body] > dl dd { min-width:0; overflow-wrap:anywhere; }
+@media(min-width:768px) {
+ .layout [data-favorite-api-body] { grid-template-columns:320px minmax(0,1fr); }
+ .layout [data-favorite-card] > div > [data-embedded-actions] { margin-top:10px; padding-top:10px; }
+ .layout [data-favorite-card] > div > [data-embedded-actions] button { padding-block:10px; }
+}
+@media(600px <= width < 768px) {
+ .layout [data-favorite-api-body] { grid-template-columns:280px minmax(0,1fr); gap:16px; }
+}
+@media(width<768px) {
+ .layout [data-favorite-api-body] > dl { font-size:15px; gap:6px; }
+ .layout [data-favorite-api-body] > dl > div > dt { width:84px; font-size:13px; }
+}
+@media(width<600px) {
+ .layout [data-favorite-api-body] > section { width:100%; max-width:320px; justify-self:center; }
+}
+
+@media(min-width:768px) {
+ .layout [data-favorite-api-body] > dl { padding-left:24px; border-left:1px solid #E3EAF3; }
+}
+@media(width<768px) {
+ .layout [data-favorite-api-body] { padding-block:12px 4px; gap:20px; }
+ .layout [data-favorite-api-body] > dl > div { gap:12px; }
+}
+@media(width<600px) {
+ .layout [data-favorite-api-body] > dl { padding:16px 4px 0; border-top:1px solid #E3EAF3; }
+}
+
+/* Slightly smaller saved-child card while retaining readable details. */
+@media(min-width:768px) {
+ .layout [data-favorite-card] { width:100%; max-width:900px; justify-self:center; padding:10px 16px; }
+ .layout [data-favorite-api-body] { max-width:800px; grid-template-columns:300px minmax(0,1fr); gap:32px; padding-block:10px 0; }
+ .layout [data-favorite-card] > div > [data-embedded-actions] { margin-top:8px; padding-top:8px; }
+ .layout [data-favorite-card] > div > [data-embedded-actions] button { padding-block:9px; }
+}
+
+/* Align each child's name with the comparison panel below it. */
+@media(min-width:768px) {
+ .layout [data-favorite-card] > header { display:grid; grid-template-columns:300px minmax(0,1fr); gap:32px; width:100%; max-width:800px; margin-inline:auto; }
+ .layout [data-favorite-card] > header h3 { text-align:left; }
+ .layout [data-favorite-card] > header > div { justify-self:end; }
+}
+/* Give the supporting stories the same centered frame as the child card. */
+.layout [data-reunion-panel] { width:100%; max-width:900px; margin-inline:auto; margin-top:12px; }
+.layout [data-reunion-panel] > div { padding:12px 8px 8px; }
+.layout [data-reunion-panel] > div > section { padding:0 18px; }
+.layout [data-reunion-panel] li a { font-size:14px; line-height:1.5; padding-block:2px; }
+.layout [data-reunion-panel] > h2 { justify-content:center; margin:0 24px; padding:8px 0 10px; border-top:1px solid #E3EAF3; text-align:center; font-size:13px; line-height:1.5; }
+@media(width<600px) {
+ .layout [data-reunion-panel] > div { grid-template-columns:1fr; gap:12px; padding:14px 8px 10px; }
+ .layout [data-reunion-panel] > div > section { border:0; padding:0 8px; }
+ .layout [data-reunion-panel] > h2 { margin-inline:16px; font-size:12px; }
+}

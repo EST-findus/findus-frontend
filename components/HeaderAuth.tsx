@@ -15,9 +15,8 @@ export default function HeaderAuth() {
 
   if (user) {
     return (
-      <Link href="/mypage" aria-label={`${user.nickname}님의 관심 아동`} className={`${actionStyles.boxedAction} ${actionStyles.favorite} ${pathname === "/mypage" ? "max-md:hidden" : ""} ${FOCUS_RING}`}>
+      <Link href="/mypage" aria-label="마이페이지" title="마이페이지" className={`${actionStyles.boxedAction} ${actionStyles.account} ${pathname === "/mypage" ? "max-md:hidden" : ""} ${FOCUS_RING}`}>
         <UserIcon size={20} className="shrink-0" />
-        <span className={actionStyles.label}>관심 아동</span>
       </Link>
     );
   }

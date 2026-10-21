@@ -91,12 +91,12 @@ export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
             />
           </div>
           <figcaption className={styles.videoCredit}>
-            <p>영상: 2024_인생네컷_실종아동네컷 캠페인(KOR)</p>
+            <p>2024 인생네컷 · 실종아동네컷 캠페인</p>
             <div>
-              <span>업로드: <a href="https://www.youtube.com/@projectxt6732" target="_blank" rel="noopener noreferrer">HYO JIN KIM<span className="sr-only"> (새 창)</span></a></span>
+              <span>영상 출처 · <a href="https://www.youtube.com/@projectxt6732" target="_blank" rel="noopener noreferrer">HYO JIN KIM<span className="sr-only"> (새 창)</span></a></span>
               <a href="https://www.youtube.com/watch?v=xvB02ibSPiU" target="_blank" rel="noopener noreferrer" className={styles.videoOriginal}>YouTube 원본 보기 <ArrowUpRightIcon size={14} /><span className="sr-only"> (새 창)</span></a>
             </div>
-            <p className={styles.videoCreditNote}>외부 캠페인 영상을 소개합니다. 재생이 제한되면 YouTube 원본으로 시청해 주세요.</p>
+            <p className={styles.videoCreditNote}>재생이 제한되면 YouTube 원본에서 시청해 주세요.</p>
           </figcaption>
         </figure>
       </div>

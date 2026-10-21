@@ -15,8 +15,8 @@ export default function MobilePersonDetail({ person, onReport, embedded = false 
   const [photoIndex, setPhotoIndex] = useState(0);
   const [shareOpen, setShareOpen] = useState(false);
   if (person.source === 'api') return <div className={embedded ? 'space-y-4' : 'flex min-h-0 flex-1 flex-col overflow-y-auto p-4 md:hidden'}>
-    <div className="grid gap-4 min-[600px]:grid-cols-2"><PersonPhotoGallery key={person.id} person={person}/><InfoRows compact person={person}/></div>
-    <div className="mt-4 flex gap-3 border-t border-line pt-3"><button type="button" onClick={e=>onReport(e.currentTarget)} className="flex-1 rounded-xl bg-brand px-3 py-3 font-bold text-white">목격 제보 안내</button><button type="button" onClick={()=>setShareOpen(true)} className="flex-1 rounded-xl border border-line px-3 py-3 font-bold">링크 공유</button></div>
+    <div data-favorite-api-body={embedded || undefined} className="grid gap-4 min-[600px]:grid-cols-2"><PersonPhotoGallery key={person.id} person={person} comparison={embedded}/><InfoRows compact person={person}/></div>
+    <div data-embedded-actions={embedded || undefined} className="mt-4 flex gap-3 border-t border-line pt-3"><button type="button" onClick={e=>onReport(e.currentTarget)} className="flex-1 rounded-xl bg-brand px-3 py-3 font-bold text-white">목격 제보 안내</button><button type="button" onClick={()=>setShareOpen(true)} className="flex-1 rounded-xl border border-line px-3 py-3 font-bold">링크 공유</button></div>
     {shareOpen && <ShareModal person={person} onClose={()=>setShareOpen(false)}/>}</div>;
   const choices = [{ label: "기본", src: person.photos.aged }, ...person.photos.styles];
   const selectedPhoto = choices[photoIndex];

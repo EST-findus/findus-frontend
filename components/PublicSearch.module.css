@@ -6,26 +6,26 @@
 .searchLogo { --color-gold:#547fc6; }
 .searchLogo svg > rect { fill:#2468C5; }
 .searchLogo svg > g { fill:#bfd6f2; }
-.searchFooter { background:linear-gradient(180deg,#fafcff,white); color:#5d718b; border-top:1px solid #edf2f8; padding:18px 0 12px; }
-.footerRow { display:grid; grid-template-columns:1.25fr 1fr auto; gap:25px; align-items:center; }
-.footerBrand { display:flex; align-items:center; gap:17px; }
+.searchFooter { background:linear-gradient(180deg,#fafcff,white); color:#5d718b; border-top:1px solid #edf2f8; padding:10px 0 6px; }
+.footerRow { display:grid; grid-template-columns:1.25fr 1fr auto; gap:18px; align-items:center; }
+.footerBrand { display:flex; align-items:center; gap:12px; }
 .footerLogo { display:inline-flex; align-items:center; gap:7px; flex-shrink:0; color:#173B70; }
 .footerLogo strong { font-size:18px; font-weight:800; letter-spacing:-.5px; }
 .footerBrand > p { max-width:220px; font-size:11px; line-height:1.7; word-break:keep-all; color:#62748C; }
 .footerNotice { display:flex; align-items:flex-start; gap:8px; }
 .footerNotice > svg { flex-shrink:0; color:#2e6cb1; margin-top:2px; }
 .footerNotice strong { font-size:12px; font-weight:750; color:#365674; }
-.footerNotice p { font-size:10px; line-height:1.8; color:#62748C; margin-top:2px; }
+.footerNotice p { font-size:10px; line-height:1.5; color:#62748C; margin-top:1px; }
 .footerNotice p a { color:#466a94; font-weight:700; }
 .footerAgencies { display:flex; align-items:center; gap:20px; }
 .footerAgencies a { display:block; padding:4px 0; }
 .footerAgencies strong { display:flex; align-items:center; gap:4px; font-size:12px; font-weight:750; color:#375c8c; white-space:nowrap; }
 .footerAgencies small { display:block; margin-top:4px; color:#62748C; font-size:9px; }
 .footerAgencies a:hover strong { color:#2468C5; }
-.footerCopyright { display:flex; justify-content:space-between; gap:12px; margin-top:14px; padding-top:9px; border-top:1px solid #f0f3f8; color:#62748C; font-size:10px; }
+.footerCopyright { display:flex; justify-content:space-between; gap:12px; margin-top:6px; padding-top:5px; border-top:1px solid #f0f3f8; color:#62748C; font-size:10px; }
 .searchFooter a:focus-visible { outline:2px solid #2468C5; outline-offset:4px; }
-@media(width<1100px) { .footerRow { grid-template-columns:1fr 1fr; gap:18px; }.footerAgencies { grid-column:1/-1; justify-content:flex-end; }.footerBrand { gap:12px; } }
-@media(width<640px) { .searchFooter { padding:18px 0 92px; }.footerRow { grid-template-columns:1fr; gap:18px; }.footerAgencies { grid-column:auto; justify-content:flex-start; gap:24px; }.footerBrand > p { max-width:none; font-size:10px; }.footerLogo strong { font-size:17px; }.footerCopyright { margin-top:14px; font-size:9px; } }
+@media(width<1000px) { .footerRow { grid-template-columns:1fr 1fr; gap:10px; }.footerAgencies { grid-column:1/-1; justify-content:flex-end; }.footerBrand { gap:12px; } }
+@media(width<640px) { .searchFooter { padding:12px 0 84px; }.footerRow { grid-template-columns:1fr; gap:10px; }.footerAgencies { grid-column:auto; justify-content:flex-start; gap:24px; }.footerBrand > p { max-width:none; font-size:10px; }.footerLogo strong { font-size:17px; }.footerCopyright { margin-top:6px; font-size:9px; } }
 .page { background:linear-gradient(#EAF4FF 0,white 700px); padding-bottom:17px; }
 .campaignLayout { padding-top:0; }
 .mainRail { min-width:0; }
@@ -77,7 +77,7 @@
 .aiPortrait figcaption { color:#5C6F86; }
 .aiPortrait figcaption span { border-radius:4px; background:#e6ebf1; padding:1px 5px; font-size:10px; }
 .photo { display:block; position:relative; width:100%; height:215px; border-radius:7px; overflow:hidden; cursor:pointer; background:transparent; }
-.photo img { object-fit:contain; object-position:center; }
+.photo img { object-fit:cover; object-position:center; }
 .portraitPair figure > p { margin-top:8px; text-align:center; color:#6a7d93; font-size:12px; line-height:1.5; }
 .portraitPair strong { color:#345574; font-weight:750; }
 .aiCaution { text-align:right; color:#62748C; font-size:11px; line-height:1.6; margin:8px 0 12px; }
@@ -191,9 +191,9 @@
 
 /* Official institution marks retain their original colors and proportions. */
 .footerAgencies { gap:20px; }
-.footerAgencies a { min-height:44px; display:flex; align-items:center; }
-.safetyDreamMark { width:155px; height:auto; object-fit:contain; }
-.ncrcMark { width:200px; height:auto; object-fit:contain; }
+.footerAgencies a { min-height:32px; display:flex; align-items:center; }
+.safetyDreamMark { width:140px; height:auto; object-fit:contain; }
+.ncrcMark { width:175px; height:auto; object-fit:contain; }
 @media(width<640px) { .footerAgencies { flex-wrap:wrap; gap:10px 20px; }.safetyDreamMark { width:140px; }.ncrcMark { width:170px; } }
 
 /* Search result cards: paired portraits and a single row of actions. */
