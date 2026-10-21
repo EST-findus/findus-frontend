@@ -339,3 +339,41 @@
  .stepsScene .stepTop > .stepIcon { top:-1px; width:34px; height:34px; border-radius:11px; }
  .stepIcon > svg { width:19px; height:19px; }
 }
+/* Provided campaign poster stays intact behind a soft reading veil. */
+.videoCampaignInner { background-color:#FBFCFD; background-image:linear-gradient(90deg,rgba(255,255,255,.88),rgba(255,255,255,.78)),url('/images/home-four-frame-campaign-full.png'); background-size:cover; background-position:center,center 54%; background-repeat:no-repeat; }
+@media(width<640px) {
+ .videoCampaignInner { background-image:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.90)),url('/images/home-four-frame-campaign-full.png'); background-position:center,center 54%; }
+}
+
+/* Source details sit beside the player without covering the campaign artwork. */
+.videoEmbed { display:grid; grid-template-columns:minmax(0,560px) minmax(0,1fr); align-items:end; gap:32px; max-width:none; }
+.videoCredit { justify-self:end; width:100%; max-width:360px; margin:0; padding:16px 18px; border:1px solid rgba(220,229,240,.8); border-radius:10px; background:rgba(255,255,255,.88); }
+.videoCredit > p:first-child { color:#42617F; font-size:12px; font-weight:700; }
+.videoCredit > div { margin-top:6px; gap:4px 12px; }
+.videoCredit .videoCreditNote { margin-top:6px; }
+@media(width<900px) {
+ .videoEmbed { grid-template-columns:minmax(0,1fr); gap:16px; }
+ .videoPlayer { width:100%; max-width:560px; }
+ .videoCredit { max-width:400px; }
+}
+@media(width<640px) {
+ .videoCredit { max-width:none; padding:12px 14px; }
+}
+
+/* Keep the four step icons light, without colored tiles. */
+.stepsScene .stepTop > .stepIcon,
+.stepsScene .steps li:last-child .stepIcon { background:transparent; border:0; box-shadow:none; }
+
+/* A tighter participation section with the same readable four-step layout. */
+.stepsScene .stepsContent { padding-block:36px; }
+.stepsScene .steps { margin-top:24px; }
+.stepsScene .steps li { padding:13px 17px; }
+.stepsScene .stepTop { padding-bottom:10px; }
+.stepsScene .steps h3 { margin-top:12px; }
+.stepsScene .stepNote { margin-top:20px; }
+@media(width<640px) {
+ .stepsScene .stepsContent { padding-block:26px; }
+ .stepsScene .steps { margin-top:20px; gap:18px; }
+ .stepsScene .steps li { padding:12px; }
+ .stepsScene .stepNote { margin-top:16px; }
+}

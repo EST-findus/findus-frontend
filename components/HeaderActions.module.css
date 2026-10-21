@@ -1,7 +1,7 @@
 .boxedAction { display:inline-flex; flex-shrink:0; align-items:center; justify-content:center; gap:6px; width:104px; height:36px; padding:0 10px; border:1px solid; border-radius:8px; font-size:13px; font-weight:700; line-height:1; white-space:nowrap; transition:background-color .18s,border-color .18s; }
 .boxedAction > svg { flex-shrink:0; }
-.favorite { border-color:#2468C526; background:#EAF4FF; color:#2468C5; }
-.favorite:hover { border-color:#2468C54D; background:#DFEEFF; }
+.account { width:36px; padding:0; border-color:#2468C526; background:#EAF4FF; color:#2468C5; }
+.account:hover { border-color:#2468C54D; background:#DFEEFF; }
 .boxedAction:focus-visible { outline:2px solid #2468C5; outline-offset:3px; }
 @media(width<640px) {
  .boxedAction { width:36px; padding:0; }
