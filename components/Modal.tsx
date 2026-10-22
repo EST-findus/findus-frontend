@@ -18,7 +18,9 @@ interface ModalProps {
   children: React.ReactNode;
   mobileFullscreen?: boolean;
   mobileCompact?: boolean;
-  size?: "default" | "wide";
+  size?: "default" | "wide" | "narrow";
+  /** 작은 화면에서 아래에서 올라오는 시트로 연다 */
+  mobileSheet?: boolean;
   accent?: "brand" | "gold";
   eyebrow?: string;
 }
@@ -27,7 +29,7 @@ interface ModalProps {
  * 마운트되어 있는 동안 열린 상태다. 부모에서 조건부 렌더링으로 열고 닫는다.
  * 첫 포커스는 [data-autofocus] 요소, 없으면 첫 포커스 가능 요소.
  */
-export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false, mobileCompact = false, size = "default", accent, eyebrow }: ModalProps) {
+export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false, mobileCompact = false, mobileSheet = false, size = "default", accent, eyebrow }: ModalProps) {
   const titleId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
@@ -89,7 +91,7 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none ${mobileCompact ? "max-md:p-0" : mobileFullscreen ? "max-sm:p-0" : ""}`}
+      className={`fixed inset-0 z-100 flex animate-fade-in items-center justify-center bg-ink/50 p-4 backdrop-blur-[2px] motion-reduce:animate-none ${mobileCompact ? "max-md:p-0" : mobileFullscreen ? "max-sm:p-0" : mobileSheet ? "max-sm:items-end max-sm:p-0" : ""}`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -100,8 +102,9 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`relative max-h-[90vh] w-full animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none ${mobileCompact ? "max-md:flex max-md:h-dvh max-md:max-h-dvh max-md:flex-col max-md:overflow-hidden max-md:rounded-none max-md:border-0 max-md:p-0" : "max-sm:px-5"} ${size === "wide" ? "max-w-240" : "max-w-170"} ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""}`}
+        className={`relative max-h-[90vh] w-full animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card p-7 shadow-modal outline-none motion-reduce:animate-none ${mobileCompact ? "max-md:flex max-md:h-dvh max-md:max-h-dvh max-md:flex-col max-md:overflow-hidden max-md:rounded-none max-md:border-0 max-md:p-0" : "max-sm:px-5"} ${size === "wide" ? "max-w-240" : size === "narrow" ? "max-w-110" : "max-w-170"} ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""} ${mobileSheet ? "max-sm:max-h-[88dvh] max-sm:animate-sheet-in max-sm:motion-reduce:animate-none max-sm:rounded-t-3xl max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0 max-sm:px-5 max-sm:pt-8 max-sm:pb-[max(20px,env(safe-area-inset-bottom))]" : ""}`}
       >
+        {mobileSheet && <span aria-hidden="true" className="absolute top-2.5 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-line sm:hidden" />}
         <button
           type="button"
           onClick={onClose}

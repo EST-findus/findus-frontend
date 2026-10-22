@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
       "./public/images/mock-persons/**/*.jpg",
     ],
   },
+  // 서비스 소개는 실종아동 찾기로, 제보·AI 안내는 이용 안내(/help)로 합쳤다. 예전 주소로 들어와도 이어지게 한다.
+  async redirects() {
+    return [
+      { source: "/about", destination: "/search", permanent: false },
+      { source: "/guide", destination: "/help", permanent: false },
+      { source: "/ai", destination: "/help?tab=ai", permanent: false },
+    ];
+  },
   // 브라우저에서 백엔드를 직접 호출하면 CORS(403)로 막히므로 같은 오리진으로 프록시한다.
   async rewrites() {
     return [{ source: "/backend/:path*", destination: `${BACKEND_URL}/:path*` }];
