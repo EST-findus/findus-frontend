@@ -1,0 +1,90 @@
+/* 펀딩 목록(F01)과 상세 상단의 아이 카드. 색은 Funding.module.css의 .page 안에서 쓰는 토큰을 따른다. */
+
+/* ───────── 목록 머리말 ───────── */
+.intro { padding-block:48px 8px; }
+.introTitle { margin-top:10px; color:var(--color-navy); font-size:36px; font-weight:800; line-height:1.3; letter-spacing:-.9px; word-break:keep-all; }
+.introLead { max-width:620px; margin-top:14px; color:var(--color-muted); font-size:16px; line-height:1.75; word-break:keep-all; }
+.introNote { display:inline-flex; align-items:center; gap:6px; margin-top:18px; padding:9px 14px; border-radius:10px; background:var(--color-brand-soft); color:var(--color-navy); font-size:13px; line-height:1.5; word-break:keep-all; }
+.introNote svg { flex-shrink:0; color:var(--color-brand); }
+
+/* ───────── 카드 목록 ───────── */
+.group { padding-block:32px 8px; }
+.groupTitle { display:flex; align-items:center; gap:8px; font-size:20px; font-weight:800; }
+.groupTitle span { padding:2px 9px; border-radius:999px; background:var(--color-surface); color:var(--color-muted); font-size:13px; font-weight:700; }
+.grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:18px; }
+.empty { margin-top:16px; padding:32px; border:1px dashed var(--color-line); border-radius:16px; color:var(--color-muted); text-align:center; }
+
+.card { display:flex; flex-direction:column; height:100%; overflow:hidden; border:1px solid var(--color-line); border-radius:18px; background:#fff; transition:border-color .2s, box-shadow .25s, translate .25s; }
+.card:hover { border-color:#C9D6E6; box-shadow:0 14px 34px rgb(23 59 112 / 10%); translate:0 -3px; }
+.card:focus-visible { outline:2px solid var(--color-brand); outline-offset:3px; }
+
+/* 카드 윗부분: 얼굴을 꽉 채우지 않고, 종이 배경 위에 액자 사진처럼 놓는다. */
+.cardCover { position:relative; display:flex; align-items:center; gap:18px; padding:24px 22px 22px; overflow:hidden; background:radial-gradient(circle at 88% 12%, rgb(255 120 103 / 14%), transparent 55%), radial-gradient(circle at 8% 100%, rgb(23 59 112 / 7%), transparent 50%), var(--story-paper); }
+.cardCover::after { content:""; position:absolute; inset:auto 0 0; height:1px; background:var(--story-sand); }
+.cardFrame { flex-shrink:0; width:clamp(118px, 42%, 168px); padding:7px 7px 0; border-radius:6px; background:#fff; box-shadow:0 1px 2px rgb(37 48 59 / 10%), 0 10px 22px rgb(37 48 59 / 12%); rotate:-2.5deg; transition:rotate .35s cubic-bezier(.2,.8,.2,1), translate .35s cubic-bezier(.2,.8,.2,1); }
+.card:hover .cardFrame { rotate:0deg; translate:0 -2px; }
+.cardFrame .childPhoto { aspect-ratio:3/4; border-radius:3px; }
+.cardFrame .childPhotoCredit { right:4px; bottom:4px; padding:1px 5px; border-radius:4px; font-size:9px; }
+.cardFrame .exampleBadge { display:none; }
+.cardFrameName { padding:7px 2px 8px; color:var(--story-ink); font-size:13px; font-weight:800; text-align:center; letter-spacing:.02em; }
+.cardAges { display:flex; flex:1; flex-direction:column; gap:10px; min-width:0; }
+.cardAges dt { color:var(--color-muted); font-size:12px; font-weight:700; }
+.cardAges dd { margin-top:1px; color:var(--story-ink); font-size:22px; font-weight:800; letter-spacing:-.4px; font-variant-numeric:tabular-nums; }
+.cardAges dl { display:flex; flex-direction:column; gap:10px; }
+.cardAgesNow { position:relative; padding-top:10px; border-top:1px dashed #D6CCBF; }
+.cardAgesNow dd { color:var(--coral-ink); }
+.cardWaiting { align-self:flex-start; padding:4px 10px; border-radius:999px; background:rgb(255 255 255 / 75%); color:var(--story-brown); font-size:12px; font-weight:800; }
+.cardExample { position:absolute; top:10px; right:10px; padding:4px 9px; border-radius:999px; background:#FFF6DB; color:#7A5600; font-size:11px; font-weight:800; box-shadow:0 1px 3px rgb(0 0 0 / 12%); }
+.cardBody { display:flex; flex:1; flex-direction:column; padding:18px 20px 20px; }
+.cardChild { margin-top:12px; color:var(--coral-ink); font-size:13px; font-weight:800; }
+.cardTitle { margin-top:4px; color:var(--color-ink); font-size:19px; font-weight:800; line-height:1.4; letter-spacing:-.3px; word-break:keep-all; }
+.cardLine { margin-top:6px; color:var(--color-muted); font-size:13px; line-height:1.55; word-break:keep-all; }
+.cardProgress { position:relative; height:6px; margin-top:auto; overflow:hidden; border-radius:999px; background:#E3EAF3; }
+.cardBody .cardProgress { margin-top:18px; }
+.cardProgress span { position:absolute; inset:0 auto 0 0; border-radius:inherit; background:linear-gradient(90deg, var(--color-brand), #4C8FE6); }
+.cardStats { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin-top:10px; color:var(--color-muted); font-size:13px; font-variant-numeric:tabular-nums; }
+.cardStats strong { color:var(--coral); font-size:17px; font-weight:800; }
+.cardLeft { margin-left:auto; color:var(--color-ink); font-weight:700; }
+
+/* ───────── 아이 사진 ───────── */
+.childPhoto { position:relative; overflow:hidden; border-radius:14px; background:var(--color-surface); }
+.childPhotoEmpty { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:96px; background:linear-gradient(135deg, #EAF1FA, #F6F8FB); }
+.childPhotoEmpty span { color:#9FB3CC; font-size:40px; font-weight:800; }
+.childPhotoCredit { position:absolute; right:8px; bottom:8px; padding:2px 7px; border-radius:6px; background:rgb(23 33 48 / 62%); color:#fff; font-size:10px; font-weight:600; }
+.exampleBadge { position:absolute; top:10px; left:10px; padding:4px 9px; border-radius:999px; background:#FFF6DB; color:#7A5600; font-size:11px; font-weight:800; box-shadow:0 1px 3px rgb(0 0 0 / 12%); }
+
+/* ───────── 상세 상단 아이 카드 ───────── */
+.childCard { display:flex; align-items:center; gap:14px; margin-bottom:18px; padding:12px; border:1px solid var(--color-line); border-radius:16px; background:#fff; }
+.childCard .childPhoto { flex-shrink:0; width:84px; aspect-ratio:3/4; border-radius:10px; }
+.childCard .childPhotoCredit { right:4px; bottom:4px; padding:1px 4px; font-size:9px; }
+.childCard .exampleBadge { top:4px; left:4px; padding:2px 6px; font-size:9px; }
+.childCardText { min-width:0; }
+.childCardEyebrow { color:var(--coral-ink); font-size:12px; font-weight:800; }
+.childCardName { display:flex; align-items:baseline; gap:8px; margin-top:2px; color:var(--color-navy); font-size:20px; font-weight:800; }
+.childCardName span { color:var(--color-muted); font-size:13px; font-weight:700; }
+.childCardLine { margin-top:2px; color:var(--color-muted); font-size:13px; line-height:1.5; word-break:keep-all; }
+.childCardLink { display:inline-flex; align-items:center; gap:2px; margin-top:6px; color:var(--color-brand); font-size:13px; font-weight:700; }
+.childCardLink:hover { text-decoration:underline; text-underline-offset:3px; }
+.childCardLink:focus-visible { outline:2px solid var(--color-brand); outline-offset:2px; border-radius:4px; }
+
+/* ───────── 이야기 없는 캠페인의 이야기 구역 ───────── */
+.childStory { padding-block:56px; background:var(--story-paper); }
+.childStoryTitle { margin-top:8px; font-size:28px; font-weight:800; line-height:1.35; letter-spacing:-.6px; word-break:keep-all; }
+.childStoryLead { max-width:640px; margin-top:12px; color:var(--color-muted); font-size:15px; line-height:1.75; word-break:keep-all; }
+.childStoryBody { margin-top:28px; padding:20px; border-radius:18px; background:#fff; }
+.childStoryCalls { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+
+@media (width < 64rem) {
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (width < 40rem) {
+  .intro { padding-top:32px; }
+  .introTitle { font-size:27px; }
+  .introLead { font-size:15px; }
+  .grid { grid-template-columns:1fr; gap:16px; }
+  .childStoryTitle { font-size:23px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .card:hover { transition:none; translate:none; }
+  .cardFrame, .card:hover .cardFrame { transition:none; translate:none; }
+}
