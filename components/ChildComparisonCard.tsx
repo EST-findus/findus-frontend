@@ -63,7 +63,7 @@ export default function ChildComparisonCard({ person, onOpenDetail, onReport, on
         </dl>
       </div>
       <div className={styles.cardActions}>
-        <button type="button" onClick={openDetail}>{actionVariant === "home" ? "상세보기" : hasAiPhoto ? "상세정보 · 다른 예상 모습 보기" : "상세정보 · 사진 보기"}<ArrowRightIcon size={15} /></button>
+        <button type="button" onClick={openDetail}>{actionVariant === "home" || comparison ? "상세보기" : hasAiPhoto ? "상세정보 · 다른 예상 모습 보기" : "상세정보 · 사진 보기"}<ArrowRightIcon size={15} /></button>
         <button type="button" onClick={event => onReport(person, event.currentTarget)}>목격 제보 안내{actionVariant === "home" && <ArrowUpRightIcon size={14} />}</button>
         <button type="button" aria-label={`${person.name} 정보 공유하기`} aria-haspopup="dialog" onClick={event => onShare(person, event.currentTarget)}><ShareIcon size={18} /></button>
       </div>

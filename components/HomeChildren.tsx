@@ -5,11 +5,15 @@ import Link from "next/link";
 import type { MissingPerson, SortKey } from "@/lib/types";
 import { DEFAULT_FILTERS, filterPersons } from "@/lib/filter";
 import ChildComparisonCard from "./ChildComparisonCard";
+import CountUp from "./CountUp";
 import DetailModal from "./DetailModal";
 import ReportGuideModal from "./ReportGuideModal";
 import ShareModal from "./ShareModal";
 import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "./Icons";
 import styles from "./HomeChildren.module.css";
+
+// Long enough to read a name and region before the cards move on.
+const AUTO_ADVANCE_MS = 6000;
 
 const subscribe = (notify: () => void) => {
   const media = window.matchMedia("(max-width: 639px)");
@@ -82,17 +86,21 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
 
   useEffect(() => {
     if (!playing || reducedMotion || hovered || focused || !inView || !visible || detail || report || share || pages < 2 || outgoing) return;
-    const timer = window.setTimeout(()=>move(current+1,"next"),2000);
+    const timer = window.setTimeout(()=>move(current+1,"next"),AUTO_ADVANCE_MS);
     return () => window.clearTimeout(timer);
   }, [playing,reducedMotion,hovered,focused,inView,visible,detail,report,share,pages,outgoing,current,move]);
 
   const renderCard = (person: MissingPerson) => <ChildComparisonCard key={person.id} person={person} comparison actionVariant="home" className={styles.comparisonCard} onOpenDetail={(person,element)=>{setTrigger(element);setDetail(person);}} onReport={(person,element)=>{setTrigger(element);setReport(person);}} onShare={(person,element)=>{setTrigger(element);setShare(person);}} />;
   return <section className={styles.section} aria-labelledby="home-children-title">
     <div className={`page-container ${styles.sectionBox}`}>
-      <header className={styles.heading}>
-        <h2 id="home-children-title" className="sr-only">지금, 우리가 함께 찾고 있는 아이들</h2>
+      <header className={styles.heading} data-reveal="stagger">
+        <div className={styles.headingCopy}>
+          <p className={styles.eyebrow}><span />함께 찾고 있어요</p>
+          <h2 id="home-children-title">지금, 우리가 함께 찾고 있는 아이들</h2>
+          <p className={styles.description}>경찰청에 공개된 실종아동 정보입니다. 기억나는 얼굴이 있다면 상세 정보를 확인해 주세요.</p>
+        </div>
+        <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} /></Link>
         <div className={styles.headingTools}>
-          <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} /></Link>
           <form className={styles.homeSearch} role="search" onSubmit={event=>{event.preventDefault();setPage(0);setOutgoing(null);}}>
             <label className={styles.searchInput}><SearchIcon size={19} /><input type="search" value={query} onChange={event=>{setQuery(event.target.value);setPage(0);setOutgoing(null);}} placeholder="이름이나 실종 지역을 입력해주세요" aria-label="실종아동 검색" autoComplete="off" /></label>
             <button type="submit">검색하기</button>
@@ -100,10 +108,10 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
         </div>
       </header>
       <div className={styles.toolbar}>
-        <p><strong>{results.length}명</strong>의 정보를 함께 살펴보고 있어요.</p>
+        <p><strong><CountUp value={results.length} />명</strong>의 정보를 함께 살펴보고 있어요.</p>
         <div><label htmlFor="home-children-sort">정렬</label><select id="home-children-sort" value={sort} onChange={event=>{setSort(event.target.value as SortKey);setPage(0);setOutgoing(null);}}><option value="recent">실종 연도 최신순</option><option value="oldest">실종 연도 오래된순</option><option value="name">이름순</option></select></div>
       </div>
-      <div ref={carouselRef} className={styles.carousel} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
+      <div ref={carouselRef} data-reveal className={styles.carousel} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
         <div className={styles.viewport} id="home-comparison-cards" aria-roledescription="슬라이드" aria-label="아동 비교 카드">
           {outgoing && <div className={`${styles.cards} ${styles.outgoing} ${direction === "next" ? styles.exitLeft : styles.exitRight}`} inert aria-hidden="true">{outgoing.map(renderCard)}</div>}
           <div key={`${sort}-${current}-${pageSize}`} className={`${styles.cards} ${outgoing ? direction === "next" ? styles.enterRight : styles.enterLeft : ""}`}>{results.slice(start,end).map(renderCard)}</div>

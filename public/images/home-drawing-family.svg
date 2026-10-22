@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="크레용 그림: 어린 시절 사진을 든 사람이 물음표를 띄우고, 발자국 길 끝 집 앞에서 가족이 손을 흔드는 모습">
+  <defs>
+    <!-- Same crayon treatment as home-drawing-report.svg so the two cards read as one set. -->
+    <filter id="crayon" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="wobble"/>
+      <feDisplacementMap in="SourceGraphic" in2="wobble" scale="7" xChannelSelector="R" yChannelSelector="G" result="shaky"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="5" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.2 0 0 0 1.85" result="grainMask"/>
+      <feComposite in="shaky" in2="grainMask" operator="in"/>
+    </filter>
+    <filter id="paper">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.62  0 0 0 0 0.52  0 0 0 0 0.38  0 0 0 0.09 0"/>
+    </filter>
+    <pattern id="skyHatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)"><line x1="0" y1="7" x2="14" y2="7" stroke="#FFD3C4" stroke-width="7" stroke-linecap="round"/></pattern>
+    <pattern id="grassHatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(62)"><line x1="0" y1="6" x2="12" y2="6" stroke="#8FD08A" stroke-width="7" stroke-linecap="round"/></pattern>
+    <pattern id="sunHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><line x1="0" y1="5" x2="10" y2="5" stroke="#F7CB4D" stroke-width="7" stroke-linecap="round"/></pattern>
+    <pattern id="coralHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)"><line x1="0" y1="5" x2="10" y2="5" stroke="#F2A090" stroke-width="6.5" stroke-linecap="round"/></pattern>
+    <pattern id="blueHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="5" x2="10" y2="5" stroke="#6E9EE3" stroke-width="6.5" stroke-linecap="round"/></pattern>
+    <pattern id="greenHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="5" x2="10" y2="5" stroke="#7CC47E" stroke-width="6.5" stroke-linecap="round"/></pattern>
+    <pattern id="yellowHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><line x1="0" y1="5" x2="10" y2="5" stroke="#FBDD86" stroke-width="6.5" stroke-linecap="round"/></pattern>
+    <pattern id="brownHatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)"><line x1="0" y1="5" x2="10" y2="5" stroke="#C58E63" stroke-width="6.5" stroke-linecap="round"/></pattern>
+    <pattern id="skinHatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><line x1="0" y1="4.5" x2="9" y2="4.5" stroke="#FFD7B5" stroke-width="6" stroke-linecap="round"/></pattern>
+  </defs>
+
+  <rect width="800" height="500" fill="#FFF9EF"/>
+  <rect width="800" height="500" filter="url(#paper)"/>
+
+  <g filter="url(#crayon)" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- warm evening sky and ground -->
+    <rect x="0" y="0" width="800" height="345" fill="url(#skyHatch)" opacity=".7"/>
+    <path d="M0 336 Q140 352 280 338 T560 340 T800 332 L800 500 L0 500 Z" fill="url(#grassHatch)" opacity=".85"/>
+    <path d="M0 336 Q140 352 280 338 T560 340 T800 332" stroke="#5FAE5E" stroke-width="7"/>
+
+    <!-- sun -->
+    <circle cx="700" cy="84" r="42" fill="url(#sunHatch)" stroke="#EDB12C" stroke-width="7"/>
+    <g stroke="#EDB12C" stroke-width="7">
+      <path d="M700 22 L700 6"/><path d="M638 84 L620 84"/><path d="M762 84 L780 84"/><path d="M700 146 L700 162"/>
+      <path d="M656 40 L644 28"/><path d="M744 40 L756 28"/><path d="M656 128 L644 140"/><path d="M744 128 L756 140"/>
+    </g>
+    <path d="M684 84 Q688 78 692 84 M708 84 Q712 78 716 84 M686 100 Q700 112 714 100" stroke="#C9871A" stroke-width="5"/>
+
+    <!-- cloud -->
+    <path d="M330 92 Q334 64 364 70 Q378 48 406 60 Q434 50 444 76 Q468 80 460 102 Q456 116 432 112 L356 112 Q328 114 330 92 Z" fill="#FFFFFF" stroke="#E8A898" stroke-width="6"/>
+
+    <!-- grown-up holding a childhood photo -->
+    <path d="M150 412 L158 344 M186 412 L180 344" stroke="#2E4A7D" stroke-width="9"/>
+    <path d="M140 412 L160 412 M176 412 L198 412" stroke="#2E4A7D" stroke-width="9"/>
+    <path d="M132 246 Q168 234 206 246 L218 350 L120 350 Z" fill="url(#greenHatch)" stroke="#3F9A4D" stroke-width="7"/>
+    <path d="M136 262 L150 288 M202 262 L190 288" stroke="#3F9A4D" stroke-width="9"/>
+    <rect x="138" y="272" width="64" height="56" rx="4" fill="#FFFFFF" stroke="#9A6238" stroke-width="6"/>
+    <circle cx="170" cy="294" r="11" fill="url(#skinHatch)" stroke="#B9794A" stroke-width="4"/>
+    <path d="M160 290 Q162 280 170 281 Q178 281 180 290" fill="#3A2A20" stroke="#3A2A20" stroke-width="3"/>
+    <path d="M156 322 Q170 308 184 322" stroke="#F2A090" stroke-width="5"/>
+    <circle cx="168" cy="200" r="38" fill="url(#skinHatch)" stroke="#B9794A" stroke-width="6"/>
+    <path d="M130 196 Q130 156 168 158 Q206 158 206 198 Q206 224 200 240 M130 196 Q128 222 136 240" fill="none" stroke="#5A3A24" stroke-width="7"/>
+    <path d="M134 190 Q142 168 168 170 Q194 170 202 190 Q186 178 168 178 Q150 178 134 190 Z" fill="#5A3A24" stroke="#5A3A24" stroke-width="5"/>
+    <circle cx="156" cy="204" r="4" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="2"/>
+    <circle cx="180" cy="204" r="4" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="2"/>
+    <path d="M160 222 Q168 218 176 222" stroke="#C0563E" stroke-width="5"/>
+
+    <!-- question bubble -->
+    <circle cx="246" cy="112" r="44" fill="#FFFFFF" stroke="#2E5FA8" stroke-width="6"/>
+    <path d="M222 148 L206 166" stroke="#2E5FA8" stroke-width="6"/>
+    <path d="M232 98 Q232 80 247 80 Q262 80 262 96 Q262 108 247 114 L247 126" stroke="#2E5FA8" stroke-width="9"/>
+    <circle cx="247" cy="140" r="5" fill="#2E5FA8" stroke="#2E5FA8" stroke-width="3"/>
+
+    <!-- footprint path toward home -->
+    <path d="M226 392 Q320 420 410 380" stroke="#C58E63" stroke-width="5" stroke-dasharray="3 18"/>
+    <g fill="#C58E63" stroke="#9A6238" stroke-width="3">
+      <ellipse cx="262" cy="410" rx="9" ry="6" transform="rotate(14 262 410)"/>
+      <ellipse cx="306" cy="420" rx="9" ry="6" transform="rotate(4 306 420)"/>
+      <ellipse cx="352" cy="410" rx="9" ry="6" transform="rotate(-12 352 410)"/>
+      <ellipse cx="392" cy="392" rx="9" ry="6" transform="rotate(-24 392 392)"/>
+    </g>
+
+    <!-- house with a heart door -->
+    <path d="M430 342 L430 226 L572 226 L572 342" fill="url(#yellowHatch)" stroke="#D9A21E" stroke-width="7"/>
+    <path d="M412 230 L501 150 L590 230 Z" fill="url(#coralHatch)" stroke="#D9664E" stroke-width="7"/>
+    <path d="M540 172 L540 140 L560 140 L560 190" fill="url(#brownHatch)" stroke="#9A6238" stroke-width="6"/>
+    <path d="M552 128 Q560 116 552 104 Q546 92 556 82" stroke="#B9B9B9" stroke-width="5"/>
+    <rect x="448" y="246" width="34" height="32" fill="#FFFFFF" stroke="#2E5FA8" stroke-width="5"/>
+    <path d="M465 246 L465 278 M448 262 L482 262" stroke="#2E5FA8" stroke-width="4"/>
+    <path d="M500 342 L500 284 L540 284 L540 342" fill="url(#brownHatch)" stroke="#9A6238" stroke-width="6"/>
+    <path d="M520 310 C508 300 510 290 520 296 C530 290 532 300 520 310 Z" fill="#F07C67" stroke="#D9664E" stroke-width="3"/>
+    <path d="M492 128 C480 118 482 106 492 112 C502 106 504 118 492 128 Z" fill="#F07C67" stroke="#D9664E" stroke-width="4"/>
+    <path d="M462 104 C454 96 456 88 462 92 C468 88 470 96 462 104 Z" fill="#F7B6A8" stroke="#D9664E" stroke-width="3"/>
+
+    <!-- family waving in front of the house -->
+    <path d="M626 410 L630 358 M648 410 L644 358" stroke="#2E4A7D" stroke-width="8"/>
+    <path d="M614 296 Q636 286 660 296 L676 364 L598 364 Z" fill="url(#coralHatch)" stroke="#D9664E" stroke-width="7"/>
+    <path d="M618 308 L596 270" stroke="#D9664E" stroke-width="8"/>
+    <path d="M656 308 L684 330" stroke="#D9664E" stroke-width="8"/>
+    <circle cx="637" cy="262" r="30" fill="url(#skinHatch)" stroke="#B9794A" stroke-width="6"/>
+    <path d="M607 262 Q606 228 637 230 Q668 230 668 262 Q672 284 662 300 M607 262 Q602 284 612 300" stroke="#3A2A20" stroke-width="7"/>
+    <circle cx="627" cy="266" r="3.5" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="2"/>
+    <circle cx="647" cy="266" r="3.5" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="2"/>
+    <path d="M627 280 Q637 288 647 280" stroke="#C0563E" stroke-width="4"/>
+
+    <path d="M706 410 L710 352 M732 410 L726 352" stroke="#2E4A7D" stroke-width="9"/>
+    <path d="M690 286 Q718 276 746 286 L752 356 L684 356 Z" fill="url(#blueHatch)" stroke="#2E5FA8" stroke-width="7"/>
+    <path d="M692 300 L684 330" stroke="#2E5FA8" stroke-width="9"/>
+    <path d="M744 300 L774 256" stroke="#2E5FA8" stroke-width="9"/>
+    <circle cx="718" cy="248" r="32" fill="url(#skinHatch)" stroke="#B9794A" stroke-width="6"/>
+    <path d="M688 244 Q690 210 718 212 Q748 212 750 244 Q736 228 718 228 Q700 228 688 244 Z" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="5"/>
+    <circle cx="707" cy="252" r="3.5" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="2"/>
+    <circle cx="729" cy="252" r="3.5" fill="#2E2E2E" stroke="#2E2E2E" stroke-width="2"/>
+    <path d="M707 268 Q718 276 729 268" stroke="#C0563E" stroke-width="4"/>
+
+    <!-- flowers -->
+    <g stroke-width="5">
+      <path d="M64 430 L64 402" stroke="#4E9E54"/><circle cx="64" cy="394" r="10" fill="#FFE07A" stroke="#E2735D"/>
+      <path d="M454 450 L454 420" stroke="#4E9E54"/><circle cx="454" cy="412" r="10" fill="#FFFFFF" stroke="#6E9EE3"/>
+      <path d="M770 440 L770 414" stroke="#4E9E54"/><circle cx="770" cy="406" r="9" fill="#F7B6A8" stroke="#D9664E"/>
+      <path d="M560 460 L560 432" stroke="#4E9E54"/><circle cx="560" cy="424" r="9" fill="#FFE07A" stroke="#E2735D"/>
+    </g>
+  </g>
+</svg>
