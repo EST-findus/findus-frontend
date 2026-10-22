@@ -1,0 +1,78 @@
+import type { MissingPerson } from './types';
+
+export interface MissingImageDto { id: string; sortOrder: number; url: string; contentType: string; byteSize: number }
+export interface MissingPersonDto {
+  id: string; sourceId: string; name: string; category: string; sex: string | null;
+  occurrenceDate: string | null; age: number | null; ageNow: number | null;
+  address: string | null; clothing: string | null; features: string | null;
+  photoUrl: string | null; images: MissingImageDto[]; lastSeenAt: string; attribution: string;
+}
+interface PageDto { content: MissingPersonDto[]; page: number; size: number; totalElements: number; totalPages: number }
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const text = (value: string | null | undefined) => value?.trim() || '정보 없음';
+export function normalizeDate(raw: string | null): string {
+  if (!raw || !/^\d{8}$/.test(raw)) return '';
+  const iso = raw.slice(0,4)+'-'+raw.slice(4,6)+'-'+raw.slice(6,8);
+  const date = new Date(iso+'T00:00:00Z');
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0,10) === iso ? iso : '';
+}
+export function regionFromAddress(address: string | null): string {
+  const value = address?.replace(/\s+/g,'') ?? '';
+  const regions: [RegExp,string][] = [[/^서울/,'서울'],[/^부산/,'부산'],[/^대구/,'대구'],[/^인천/,'인천'],[/^광주/,'광주'],[/^대전/,'대전'],[/^울산/,'울산'],[/^세종/,'세종'],[/^(경기|수원|성남)/,'경기'],[/^강원/,'강원'],[/^(충청북|충북)/,'충북'],[/^(충청남|충남)/,'충남'],[/^(전라북|전북)/,'전북'],[/^(전라남|전남)/,'전남'],[/^(경상북|경북)/,'경북'],[/^(경상남|경남)/,'경남'],[/^제주/,'제주']];
+  return regions.find(([pattern])=>pattern.test(value))?.[1] ?? '지역 정보 없음';
+}
+export function toMissingPerson(dto: MissingPersonDto): MissingPerson {
+  if (!UUID.test(dto.id) || dto.category !== '010' || !Array.isArray(dto.images)) throw new Error('실종아동 응답 형식을 확인해 주세요.');
+  // Use only DB photo endpoints. Upstream session-dependent photoUrl is never displayed.
+  const images = [...dto.images].sort((a,b)=>a.sortOrder-b.sortOrder).map(image=>{
+    const expected = '/api/missing-persons/'+dto.id+'/images/'+image.id;
+    if (!UUID.test(image.id) || image.url !== expected) throw new Error('사진 응답 경로를 확인해 주세요.');
+    return {id:image.id,sortOrder:image.sortOrder,url:'/backend'+expected};
+  });
+  const age = (value: number | null) => typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : null;
+  return {id:dto.id,source:'api',sourceId:dto.sourceId,name:text(dto.name),
+    gender:dto.sex === '남자' || dto.sex === '남' ? '남' : dto.sex === '여자' || dto.sex === '여' ? '여' : '미상',
+    ageAtMissing:age(dto.age),currentAge:age(dto.ageNow),missingDate:normalizeDate(dto.occurrenceDate),
+    region:regionFromAddress(dto.address),missingLocation:text(dto.address),features:text(dto.features),clothing:text(dto.clothing),
+    images,photos:{past:images[0]?.url ?? '',aged:'',styles:[]},aiNote:'',
+    lastSyncedAt:dto.lastSeenAt,attribution:'자료 출처: 경찰청'};
+}
+async function request(path: string): Promise<Response> {
+  const base = process.env.BACKEND_URL ?? 'http://localhost:18080';
+  try {
+    return await fetch(base.replace(/\/$/,'')+path,{cache:'no-store',signal:AbortSignal.timeout(15000)});
+  } catch { throw new Error('아동 정보를 불러오지 못했습니다. 백엔드 연결을 확인하고 다시 시도해 주세요.'); }
+}
+async function pageAt(page: number): Promise<PageDto> {
+  const response=await request('/api/missing-persons?page='+page+'&size=100');
+  if (!response.ok) throw new Error('아동 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  const data: PageDto=await response.json();
+  if (!Array.isArray(data.content) || data.page !== page || data.size !== 100 || !Number.isInteger(data.totalPages) || data.totalPages < 0 || data.totalPages > 100 || !Number.isInteger(data.totalElements) || data.totalElements < 0) throw new Error('아동 목록 응답을 확인해 주세요.');
+  return data;
+}
+export async function fetchMissingPersons(): Promise<MissingPerson[]> {
+  const first=await pageAt(0);
+  const entries=[...first.content];
+  for(let i=1;i<first.totalPages;i++) {
+    const page=await pageAt(i);
+    if(page.totalElements!==first.totalElements || page.totalPages!==first.totalPages) throw new Error('아동 목록이 갱신되었습니다. 새로고침해 주세요.');
+    entries.push(...page.content);
+  }
+  if(entries.length!==first.totalElements || new Set(entries.map(p=>p.id)).size!==entries.length) throw new Error('전체 목록을 불러오지 못했습니다. 새로고침해 주세요.');
+  return entries.map(toMissingPerson);
+}
+export async function fetchMissingPerson(id: string): Promise<MissingPerson | undefined> {
+  if(!UUID.test(id)) return undefined;
+  const response=await request('/api/missing-persons/'+id);
+  if(response.status===404) return undefined;
+  // Current backend secures the /error dispatch, so a missing detail can surface as 401.
+  // Verify absence using the public list; never interpret all 401 responses as not-found.
+  if(response.status===401) {
+    const available=await fetchMissingPersons();
+    if(!available.some(person=>person.id===id)) return undefined;
+  }
+  if(!response.ok) throw new Error('아동 상세정보를 불러오지 못했습니다. 다시 시도해 주세요.');
+  const dto: MissingPersonDto=await response.json();
+  if(dto.id!==id) throw new Error('아동 상세정보 식별자가 일치하지 않습니다.');
+  return toMissingPerson(dto);
+}

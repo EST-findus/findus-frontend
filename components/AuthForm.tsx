@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AUTH_LIMITS, logIn, signUp, validateLogIn, validateSignUp } from "@/lib/auth";
-import { useCurrentUser } from "@/lib/useCurrentUser";
+import { useAuthReady, useCurrentUser } from "@/lib/useCurrentUser";
+import { getPostLoginPath } from "@/lib/authNavigation";
 import LogoMark from "./LogoMark";
 
 const FOCUS_RING =
@@ -17,12 +18,12 @@ type Mode = "login" | "signup";
 const COPY: Record<Mode, { title: string; description: string; submit: string }> = {
   login: {
     title: "로그인",
-    description: "로그인하면 커뮤니티에 글과 댓글을 남길 수 있어요.",
+    description: "로그인하면 마이페이지에서 내 활동과 필요한 안내를 확인할 수 있어요.",
     submit: "로그인",
   },
   signup: {
     title: "회원가입",
-    description: "함께 기억하고 나누는 FindUs 커뮤니티에 오신 것을 환영해요.",
+    description: "함께 기억하고 나누는 FindUs 정보 마당에 오신 것을 환영해요.",
     submit: "가입하기",
   },
 };
@@ -30,15 +31,16 @@ const COPY: Record<Mode, { title: string; description: string; submit: string }>
 export default function AuthForm({ mode, next }: { mode: Mode; next: string }) {
   const router = useRouter();
   const user = useCurrentUser();
+  const ready = useAuthReady();
   const [values, setValues] = useState({ email: "", password: "", passwordConfirm: "", nickname: "" });
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const copy = COPY[mode];
   const isSignUp = mode === "signup";
 
-  // 이미 로그인한 상태로 들어오면(가입·로그인 직후 포함) 돌아갈 곳으로 보낸다.
+  // 로그인·가입 직후에는 마이페이지를 먼저 보여 준다.
   useEffect(() => {
-    if (user) router.replace(next);
+    if (user) router.replace(getPostLoginPath(next));
   }, [user, next, router]);
   const otherQuery = next === "/" ? "" : `?next=${encodeURIComponent(next)}`;
 
@@ -116,7 +118,7 @@ export default function AuthForm({ mode, next }: { mode: Mode; next: string }) {
                 {...field("nickname")}
                 autoComplete="nickname"
                 maxLength={AUTH_LIMITS.nickname.max}
-                placeholder="커뮤니티에 표시될 이름 (2~12자)"
+                placeholder="정보 마당에 표시될 이름 (2~12자)"
               />
             </div>
           </>
@@ -128,7 +130,7 @@ export default function AuthForm({ mode, next }: { mode: Mode; next: string }) {
 
         <button
           type="submit"
-          disabled={pending}
+          disabled={!ready || pending}
           className={`h-12 rounded-xl bg-brand text-[16px] font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60 ${FOCUS_RING}`}
         >
           {pending ? "처리 중…" : copy.submit}

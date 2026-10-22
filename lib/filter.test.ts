@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { getMissingPersons } from "./data";
+import { getMissingPersons } from "./demoData";
 import {
   DEFAULT_FILTERS,
   filterPersons,

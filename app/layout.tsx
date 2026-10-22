@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Noto_Sans_KR } from "next/font/google";
 import Footer from "@/components/Footer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import Header from "@/components/Header";
 import "./globals.css";
+import "./official-palette.css";
+import RoutePalette from "@/components/RoutePalette";
 
 const pretendard = localFont({
   src: "../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
@@ -19,9 +22,9 @@ const notoSansKr = Noto_Sans_KR({
   preload: false,
 });
 
-const title = "FindUs | 장기 실종아동 찾기";
+const title = "FindUs | 실종아동 찾기";
 const description =
-  "실종 당시 사진과 AI가 추정한 현재 모습을 비교하고 목격 정보를 제보할 수 있는 장기 실종아동 찾기 서비스";
+  "경찰청 공개 실종아동 정보와 등록 사진을 살펴보고 공식 제보 방법을 안내받는 서비스";
 const deploymentHost = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -61,11 +64,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} ${notoSansKr.variable} bg-page font-sans text-ink antialiased`}
+        className={`${pretendard.variable} ${notoSansKr.variable} flex min-h-dvh flex-col bg-page font-sans text-ink antialiased`}
       >
+        <RoutePalette />
         <Header />
         {children}
         <Footer />
+        <MobileBottomNav />
       </body>
     </html>
   );

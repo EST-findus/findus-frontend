@@ -52,3 +52,5 @@ desktop.ini
 scripts
 
 docs/research/*
+output/
+tooling

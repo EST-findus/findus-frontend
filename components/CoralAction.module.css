@@ -1,0 +1,7 @@
+/* Shared coral treatment for support and interest actions. */
+.soft.soft { background:#FFF0ED; color:#963D32; border:1px solid #FFD9D2; }
+.soft.soft > svg { color:#FF7867; }
+.soft.soft:hover { background:#FFE3DE; border-color:#FFC7BD; }
+.soft.soft[aria-pressed="true"] { background:#FFE3DE; border-color:#FFBCAF; }
+.soft.soft[aria-pressed="true"]:hover { background:#FFD9D2; }
+.soft.soft:focus-visible { outline:2px solid #2468C5; outline-offset:3px; }

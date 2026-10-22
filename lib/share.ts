@@ -1,4 +1,4 @@
-import { formatDate } from "./format";
+import { formatDate, formatAge } from "./format";
 import type { MissingPerson } from "./types";
 
 // 상세정보 공유(링크·QR·스토리 이미지)에 쓰는 주소와 문구. 브라우저/서버 어디서든 쓸 수 있게 순수 함수로 둔다.
@@ -15,10 +15,10 @@ export const personUrl = (origin: string, id: string) =>
 
 /** "2001. 05. 20. 서울특별시 … 에서 실종 (당시 5세)" */
 export const missingSummary = (person: MissingPerson) =>
-  `${formatDate(person.missingDate)} ${person.missingLocation}에서 실종 (당시 ${person.ageAtMissing}세)`;
+  `${formatDate(person.missingDate)} ${person.missingLocation}에서 실종 (당시 ${formatAge(person.ageAtMissing)})`;
 
 export const shareTitle = (person: MissingPerson) =>
-  `${person.name} (현재 추정 ${person.currentAge}세)를 찾습니다`;
+  person.source === "api" ? `${person.name}${person.currentAge === null ? "" : ` (현재 ${formatAge(person.currentAge)})`}를 찾습니다` : `${person.name} (현재 추정 ${person.currentAge}세)를 찾습니다`;
 
 /** 메신저·공유 시트에 링크와 함께 붙는 본문 */
 export const shareText = (person: MissingPerson) =>

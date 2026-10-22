@@ -50,66 +50,47 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
   };
 
   return (
-    <section aria-labelledby="board-title" className="page-container relative z-10 -mt-12 max-sm:-mt-10">
-      <div className="rounded-3xl bg-card p-8 shadow-panel max-md:p-6 max-sm:p-4">
+    <section aria-labelledby="board-title" className="page-container max-w-5xl pt-6 max-sm:pt-4">
+      <div className="min-w-0">
         <h2 id="board-title" className="sr-only">
           게시글 목록
         </h2>
 
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div role="group" aria-label="게시판 분류" className="flex flex-wrap gap-1.5">
-            {CATEGORY_TABS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                aria-pressed={category === c}
-                onClick={() => changeCategory(c)}
-                className={`rounded-full px-4 py-2 text-[14px] font-bold transition-colors ${FOCUS_RING} ${
-                  category === c ? "bg-brand text-white" : "bg-surface text-ink/75 hover:text-brand"
-                }`}
-              >
-                {tabLabel(c)}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex gap-2 max-sm:w-full">
-            <form role="search" onSubmit={search} className="relative max-sm:flex-1">
-              <label htmlFor="board-search" className="sr-only">
-                게시글 검색
-              </label>
-              <input
-                id="board-search"
-                type="search"
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder="제목·내용·작성자 검색"
-                className="h-11 w-64 rounded-xl border border-line bg-card pr-11 pl-4 text-[14px] placeholder:text-subtle focus:border-brand focus:outline-none max-sm:w-full"
-              />
-              <button
-                type="submit"
-                aria-label="검색"
-                className={`absolute top-1/2 right-1.5 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:text-brand ${FOCUS_RING}`}
-              >
-                <SearchIcon size={18} />
-              </button>
-            </form>
-            <Link
-              href="/community/write"
-              className={`inline-flex h-11 shrink-0 items-center gap-1.5 rounded-xl bg-brand px-4 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark ${FOCUS_RING}`}
-            >
-              <PencilIcon size={16} strokeWidth={2} /> 글쓰기
-            </Link>
-          </div>
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 max-sm:gap-2">
+          <form role="search" onSubmit={search} className="relative min-w-0">
+            <label htmlFor="board-search" className="sr-only">게시글 검색</label>
+            <input id="board-search" type="search" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="제목·내용·작성자 검색"
+              className="h-11 w-full rounded-xl border border-line bg-white pr-11 pl-4 text-[14px] placeholder:text-subtle focus:border-brand focus:outline-none" />
+            <button type="submit" aria-label="검색" className={`absolute top-1/2 right-1.5 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:text-brand ${FOCUS_RING}`}><SearchIcon size={18} /></button>
+          </form>
+          <Link href="/community/write" className={`inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand px-4 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark ${FOCUS_RING}`}><PencilIcon size={16} strokeWidth={2} />글쓰기</Link>
         </div>
 
-        <p className="mt-6 text-[14px] text-muted" aria-live="polite">
+        <div role="group" aria-label="게시글 분류" className="mt-5 flex flex-wrap gap-x-5 border-b border-line max-sm:gap-x-3">
+          {CATEGORY_TABS.filter((c) => c !== "notice").map((c) => (
+            <button
+              key={c}
+              type="button"
+              aria-pressed={category === c}
+              onClick={() => changeCategory(c)}
+              className={`-mb-px min-h-11 border-b-2 px-1 py-2.5 text-[14px] font-semibold transition-colors max-sm:text-[13px] ${FOCUS_RING} ${
+                category === c
+                  ? "border-brand text-brand"
+                  : "border-transparent text-muted hover:border-brand/30 hover:text-brand"
+              }`}
+            >
+              {tabLabel(c)}
+            </button>
+          ))}
+        </div>
+
+        <p className="mt-4 text-[14px] text-muted" aria-live="polite">
           {query ? (
             <>
               <strong className="text-ink">‘{query}’</strong> 검색 결과{" "}
             </>
           ) : (
-            "전체 "
+            category === "all" ? "전체 " : `${CATEGORY_LABELS[category]} `
           )}
           <strong className="text-brand">{filtered.length}</strong>건
         </p>

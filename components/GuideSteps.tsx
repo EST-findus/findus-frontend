@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Modal from "./Modal";
 import DnaGuideButton from "./DnaGuideButton";
+import styles from "./GuideSteps.module.css";
 import { MISSING_CHILD_CENTER_URL, SAFE182_URL } from "@/lib/links";
 import { ArrowRightIcon, ArrowUpRightIcon, HeartIcon, PhoneIcon, ScanFaceIcon } from "./Icons";
 
@@ -46,7 +47,7 @@ const GUIDES = [
     summary: "어린 시절 기억이 낯설게 느껴진다면, 차근차근 확인하고 상담부터 시작해 보세요.",
     Icon: HeartIcon,
     tone: {
-      art: "bg-gold-soft text-gold",
+      art: "bg-gold-soft text-gold-ink",
       badge: "bg-gold-ink text-white",
       text: "text-gold-ink",
       ring: "hover:border-gold",
@@ -75,7 +76,45 @@ const GUIDES = [
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
-export default function GuideSteps() {
+export type GuidePopupId = "know" | "me";
+
+export function GuidePopup({ guideId, onClose, returnFocusTo }: { guideId: GuidePopupId; onClose: () => void; returnFocusTo?: HTMLElement | null }) {
+  const selected = GUIDES.find((guide) => guide.id === guideId)!;
+  return (
+    <Modal title={selected.title} eyebrow={selected.tag} accent={selected.id === "me" ? "gold" : "brand"} onClose={onClose} returnFocusTo={returnFocusTo} mobileFullscreen>
+          <div className={`mb-4 flex items-center gap-3 rounded-2xl p-4 ${selected.tone.art}`}>
+            <span aria-hidden="true" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/75">
+              <selected.Icon size={24} strokeWidth={1.8} />
+            </span>
+            <p className="text-[14px] leading-relaxed font-medium break-keep text-ink">{selected.summary}</p>
+          </div>
+          <ol className="mt-6 flex flex-col gap-4">
+            {selected.steps.map((step, i) => (
+              <li key={step.title} className="flex gap-4 rounded-2xl border border-line bg-card p-5 max-sm:p-4">
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[14px] font-extrabold ${selected.tone.badge}`}>{i + 1}</span>
+                <div className="min-w-0">
+                  <h3 className="text-[16px] leading-snug font-bold break-keep">{step.title}</h3>
+                  <p className="mt-1.5 text-[14px] leading-relaxed break-keep text-muted">{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          {selected.id === "me" && <div className="mt-5"><DnaGuideButton /></div>}
+          <div className="mt-5 rounded-2xl bg-surface p-5">
+            <p className="text-[14px] leading-relaxed font-bold break-keep">{selected.actions.note}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <a href="tel:182" className={`flex min-h-12 items-center gap-2 rounded-xl bg-brand px-5 py-3 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark ${focusRing}`}>
+                <PhoneIcon size={17} strokeWidth={2.2} />경찰청 182 전화하기
+              </a>
+              <a href={selected.actions.link.href} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-0.5 text-[14px] font-bold text-brand hover:underline ${focusRing}`}>
+                {selected.actions.link.label} <ArrowUpRightIcon size={14} strokeWidth={2.2} />
+              </a>
+            </div>
+          </div>
+    </Modal>
+  );
+}
+export default function GuideSteps({ overlap = true, compact = false }: { overlap?: boolean; compact?: boolean }) {
   const [selected, setSelected] = useState<(typeof GUIDES)[number] | null>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const cardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -118,10 +157,10 @@ export default function GuideSteps() {
 
   return (
     <>
-      <div role="group" aria-label="상황 선택" className="relative -mt-14 grid gap-4 md:grid-cols-2">
+      <div role="group" aria-label="상황 선택" className={`relative ${overlap ? "-mt-14" : ""} grid items-stretch gap-4 md:grid-cols-2 ${compact ? styles.compact : ""}`}>
         {GUIDES.map(({ id, tag, title, summary, Icon, tone }) => (
+          <div key={id} className={`min-w-0 rounded-2xl border border-line bg-card shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none ${tone.ring}`}>
           <button
-            key={id}
             id={id}
             ref={(element) => { cardRefs.current[id] = element; }}
             type="button"
@@ -130,7 +169,7 @@ export default function GuideSteps() {
               returnFocusRef.current = event.currentTarget;
               setSelected(GUIDES.find((item) => item.id === id) ?? null);
             }}
-            className={`group flex w-full cursor-pointer items-start gap-5 text-left rounded-2xl border border-line bg-card p-7 shadow-panel transition-all hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none max-sm:gap-4 max-sm:p-5 ${tone.ring} ${focusRing}`}
+            className={`group flex w-full cursor-pointer items-start gap-5 rounded-2xl p-7 text-left focus-visible:outline-none max-sm:gap-4 max-sm:p-5`}
           >
             <span
               aria-hidden="true"
@@ -147,7 +186,7 @@ export default function GuideSteps() {
                 {summary}
               </span>
               <span
-                className={`mt-4 inline-flex items-center gap-1.5 text-[15px] font-bold ${tone.text}`}
+                className={`mt-4 inline-flex w-fit items-center gap-1.5 rounded-sm text-[15px] font-bold group-focus-visible:ring-2 group-focus-visible:ring-brand group-focus-visible:ring-offset-4 ${tone.text}`}
               >
                 절차 보기
                 <ArrowRightIcon
@@ -158,43 +197,16 @@ export default function GuideSteps() {
               </span>
             </span>
           </button>
+          {id === "me" && (
+            <div className="px-7 pb-7 max-sm:px-5 max-sm:pb-5">
+              <DnaGuideButton variant="followup" />
+            </div>
+          )}
+          </div>
         ))}
       </div>
 
-      {selected && (
-        <Modal title={selected.title} onClose={closeGuide} returnFocusTo={returnFocusRef.current} mobileFullscreen>
-          <div className="mb-4 flex items-center gap-3">
-            <span aria-hidden="true" className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${selected.tone.art}`}>
-              <selected.Icon size={25} strokeWidth={1.8} />
-            </span>
-            <p className={`text-[13px] font-bold ${selected.tone.text}`}>{selected.tag}</p>
-          </div>
-          <p className="text-[15px] leading-relaxed break-keep text-muted">{selected.summary}</p>
-          <ol className="mt-6 flex flex-col gap-4">
-            {selected.steps.map((step, i) => (
-              <li key={step.title} className="flex gap-4 rounded-2xl border border-line bg-card p-5 max-sm:p-4">
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[14px] font-extrabold ${selected.tone.badge}`}>{i + 1}</span>
-                <div className="min-w-0">
-                  <h3 className="text-[16px] leading-snug font-bold break-keep">{step.title}</h3>
-                  <p className="mt-1.5 text-[14px] leading-relaxed break-keep text-muted">{step.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          {selected.id === "me" && <div className="mt-5"><DnaGuideButton /></div>}
-          <div className="mt-5 rounded-2xl bg-surface p-5">
-            <p className="text-[14px] leading-relaxed font-bold break-keep">{selected.actions.note}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
-              <a href="tel:182" className={`flex min-h-12 items-center gap-2 rounded-xl bg-brand px-5 py-3 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark ${focusRing}`}>
-                <PhoneIcon size={17} strokeWidth={2.2} />경찰청 182 전화하기
-              </a>
-              <a href={selected.actions.link.href} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-0.5 text-[14px] font-bold text-brand hover:underline ${focusRing}`}>
-                {selected.actions.link.label} <ArrowUpRightIcon size={14} strokeWidth={2.2} />
-              </a>
-            </div>
-          </div>
-        </Modal>
-      )}
+      {selected && <GuidePopup guideId={selected.id} onClose={closeGuide} returnFocusTo={returnFocusRef.current} />}
     </>
   );
 }

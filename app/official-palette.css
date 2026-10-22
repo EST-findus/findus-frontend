@@ -1,0 +1,49 @@
+/* Shared official palette for every route; selected pages retain a white canvas. */
+body:has(> [data-findus-palette="official"]) {
+  --color-navy: #173B70;
+  --color-brand: #2468C5;
+  --color-brand-dark: #173B70;
+  --color-brand-soft: #EAF4FF;
+  --color-page: #F7F9FC;
+  --color-card: #FFFFFF;
+  --color-ink: #223047;
+  --color-muted: #5C6F86;
+  --color-subtle: #62748C;
+  --color-line: #DCE5F0;
+  --color-surface: #EAF4FF;
+  --color-hero: #EAF4FF;
+  --color-accent: #FF7867;
+  /* Legacy gold tokens: coral decorations, blue informational panels, navy copy. */
+  --color-gold: #FF7867;
+  --color-gold-soft: #EAF4FF;
+  --color-gold-faint: #F7F9FC;
+  --color-gold-ink: #173B70;
+  --shadow-card: 0 1px 2px rgb(23 59 112 / 4%);
+  --shadow-card-hover: 0 12px 32px rgb(23 59 112 / 9%);
+  --shadow-panel: 0 1px 2px rgb(23 59 112 / 4%), 0 8px 24px rgb(23 59 112 / 6%);
+  --shadow-modal: 0 24px 48px rgb(23 59 112 / 18%);
+}
+
+body:has(> [data-findus-palette="official"]) :where(h1, h2, h3):not(:where(.text-white, .text-white *)) {
+  color: var(--color-navy);
+}
+
+/* Keep the existing mark geometry while updating its two decorative fills. */
+body:has(> [data-findus-palette="official"]) svg[viewBox="0 0 64 64"]:not(footer *) > rect {
+  fill: var(--color-brand);
+}
+body:has(> [data-findus-palette="official"]) svg[viewBox="0 0 64 64"]:not(footer *) > g {
+  fill: var(--color-accent);
+}
+
+body:has(> [data-findus-palette="official"]) [data-reunion-panel] {
+  background-color: var(--color-card);
+}
+body:has(> [data-findus-palette="official"]) [data-reunion-panel] a:active {
+  background-color: var(--color-brand-soft);
+}
+
+/* White page canvas for the community and service introduction. */
+body:has(> [data-findus-palette="official"][data-findus-surface="white"]) {
+  --color-page: #FFFFFF;
+}

@@ -3,6 +3,8 @@ import type { MissingPerson } from "@/lib/types";
 import InfoRows from "./InfoRows";
 import { PhotoContent } from "./PhotoFrame";
 
+import PersonPhotoGallery from "./PersonPhotoGallery";
+
 const SIZES = "(min-width: 680px) 150px, 30vw";
 
 /**
@@ -10,6 +12,7 @@ const SIZES = "(min-width: 680px) 150px, 30vw";
  * 어린 시절 예시와 성인 예상 이미지를 영역부터 나눠 비교한다.
  */
 export default function PersonDetailBody({ person }: { person: MissingPerson }) {
+  if (person.source === 'api') return <div className="grid gap-5 sm:grid-cols-2"><PersonPhotoGallery key={person.id} person={person}/><InfoRows person={person}/></div>;
   const aiPhotos: { title: string; src: string; alt: string }[] = [
     {
       title: "AI 예상 모습",

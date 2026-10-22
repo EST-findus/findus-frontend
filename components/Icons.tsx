@@ -55,7 +55,7 @@ export const ArrowUpRightIcon = (p: IconProps) => (
 
 export const PhoneIcon = (p: IconProps) => (
   <Svg {...p}>
-    <path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2 4 1.5V19a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1Z" />
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
   </Svg>
 );
 
@@ -83,6 +83,13 @@ export const LockIcon = (p: IconProps) => (
   <Svg {...p}>
     <rect x="5" y="10.5" width="14" height="9.5" rx="2" />
     <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" />
+  </Svg>
+);
+
+export const UserIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="8" r="3.5" />
+    <path d="M5 20a7 7 0 0 1 14 0" />
   </Svg>
 );
 
@@ -208,5 +215,13 @@ export const DownloadIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="M12 4.5v10M7.5 10.5 12 15l4.5-4.5" />
     <path d="M5 19.5h14" />
+  </Svg>
+);
+
+/** 가족 확인 배지용: 채운 하트 안의 체크 */
+export const HeartCheckIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 20.5s-8-4.9-8-11a4.4 4.4 0 0 1 8-2.6 4.4 4.4 0 0 1 8 2.6c0 6.1-8 11-8 11Z" fill="currentColor" stroke="none" />
+    <path d="m8.6 11.6 2.3 2.3 4.6-4.6" stroke="#fff" strokeWidth={2.2} />
   </Svg>
 );
