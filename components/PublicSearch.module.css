@@ -30,17 +30,18 @@
 .campaignLayout { padding-top:0; }
 .mainRail { min-width:0; }
 .campaignLayout :global(.page-container) { padding-inline:0; }
-.campaignHero { position:relative; min-height:345px; margin-inline:-24px; overflow:hidden; background:#eaf4ff; }
-.campaignPhoto { object-fit:cover; object-position:75% 38%; }
-.campaignVeil { position:absolute; inset:0; background:linear-gradient(90deg,#EAF4FF 3%,#EAF4FFf5 24%,#eff7ff88 49%,transparent 72%); }
+.campaignHero { position:relative; min-height:345px; margin-inline:0; overflow:hidden; border-radius:18px; background:linear-gradient(180deg,#F4F8FD 0%,#FFFFFF 100%); }
+/* Softened like the home hero: faded, desaturated, and masked in from the copy side. */
+.campaignPhoto { object-fit:cover; object-position:75% 38%; opacity:.62; filter:saturate(.8); -webkit-mask-image:linear-gradient(90deg,transparent 18%,#000 58%); mask-image:linear-gradient(90deg,transparent 18%,#000 58%); }
+.campaignVeil { position:absolute; inset:0; background:linear-gradient(180deg,rgba(244,248,253,0) 0%,rgba(244,248,253,.35) 72%,rgba(255,255,255,.7) 100%); }
 .campaignCopy { position:relative; padding:38px 40px 88px; }
 .campaignCopy .heroEyebrow { font-size:13px; font-weight:650; color:#56769a; margin-bottom:12px; }
 .campaignCopy h1 { margin-bottom:16px; font-size:44px; line-height:1.22; font-weight:850; letter-spacing:-1.6px; color:#173B70; }
 .campaignCopy h1 span { color:#2468C5; }
 .campaignCopy p { color:#5C6F86; font-size:15px; line-height:1.8; word-break:keep-all; }
 .campaignImageNote { position:absolute; right:20px; bottom:65px; color:white; font-size:10px; text-shadow:0 1px 4px #15314b; }
-.searchSection { position:relative; margin-top:-50px; }
-.searchBox { background:#edf5fcef; border:2px solid white; border-radius:18px; box-shadow:0 8px 30px #29558a0b; }
+.searchSection { position:relative; margin-top:16px; }
+.searchBox { background:#F9FAFC; border:1px solid #E7ECF2; border-radius:18px; box-shadow:0 4px 18px rgba(23,59,112,.035); }
 .searchBox > div { background:transparent; border:0; padding:22px; box-shadow:none; }
 .searchBox form { gap:12px; }
 .searchBox form > div { background:white; border-color:#d4e1f0; height:56px; }
@@ -133,15 +134,16 @@
  .reportBannerAction { padding:12px; font-size:12px; }
 }
 @media(width<640px) {
- .campaignHero { min-height:295px; margin-inline:-16px; }
+ .campaignHero { min-height:295px; margin-inline:0; border-radius:14px; }
  .campaignCopy { padding:28px 20px 80px; }
  .campaignCopy .heroEyebrow { font-size:11px; max-width:180px; }
  .campaignCopy h1 { font-size:31px; letter-spacing:-1px; }
  .campaignCopy p { font-size:12px; max-width:230px; }
  .campaignPhoto { object-position:65% center; }
- .campaignVeil { background:linear-gradient(90deg,#EAF4FFf5,#EAF4FFdb 32%,#EAF4FF60 70%,#EAF4FF22); }
+ .campaignPhoto { opacity:.4; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 70%); mask-image:linear-gradient(90deg,transparent 0%,#000 70%); }
+ .campaignVeil { background:linear-gradient(180deg,rgba(244,248,253,.1),rgba(255,255,255,.6)); }
  .campaignImageNote { font-size:8px; bottom:48px; right:12px; }
- .searchSection { margin-top:-32px; }
+ .searchSection { margin-top:12px; }
  .searchBox { border-radius:14px; }
  .searchBox > div { padding:13px; }
  .searchBox form { gap:8px; }
@@ -223,7 +225,7 @@
 }
 /* Share the official tokens with header, result cards and the common footer. */
 .palette,.page { --color-brand:#2468C5; --color-brand-dark:#173B70; --color-brand-soft:#EAF4FF; --color-ink:#223047; --color-muted:#5C6F86; --color-subtle:#62748C; --color-line:#DCE5F0; --color-surface:#EAF4FF; color:#223047; }
-.page { background:linear-gradient(#EAF4FF 0,#F7F9FC 700px); }
+.page { background:#FFFFFF; }
 .searchLogo { --color-gold:#FF7867; }
 .searchLogo svg > rect { fill:#2468C5; }
 .searchLogo svg > g { fill:#EAF4FF; }
@@ -254,13 +256,13 @@
 .cardGrid .cardActions { padding:0 12px 12px; gap:6px; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 36px; }
 
 /* A calm white surface for search results and a centered, quieter report banner. */
-.campaignLayout .results { padding:24px 22px 28px; border:1px solid #E3EAF3; border-radius:16px; background:#FFFFFF; box-shadow:0 6px 22px rgba(23,59,112,.035); }
+.campaignLayout .results { margin-top:16px; padding:24px 22px 28px; border:1px solid #E3EAF3; border-radius:16px; background:#FFFFFF; box-shadow:0 6px 22px rgba(23,59,112,.035); }
 .reportBanner { display:grid; grid-template-columns:130px minmax(0,1fr); gap:18px; padding:8px 22px; }
 .reportBannerCopy { text-align:center; }
 .reportBannerCopy strong { display:block; }
 .reportBannerCopy small { margin-top:5px; }
 @media(width<640px) {
-  .campaignLayout .results { padding:18px 13px 20px; border-radius:13px; }
+  .campaignLayout .results { margin-top:12px; padding:18px 13px 20px; border-radius:13px; }
   .reportBanner { grid-template-columns:76px minmax(0,1fr); gap:10px; padding:10px; }
   .reportBannerArt { width:76px; height:68px; }
   .reportBannerCopy strong { font-size:14px; line-height:1.5; }

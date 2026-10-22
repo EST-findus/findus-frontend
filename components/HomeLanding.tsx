@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import type { MissingPerson } from "@/lib/types";
 import HomeChildren from "./HomeChildren";
 import { ArrowRightIcon } from "./Icons";
@@ -9,7 +8,7 @@ import styles from "./HomeLanding.module.css";
 import HomeServiceCards from "./HomeServiceCards";
 import { useScrollReveal } from "./useScrollReveal";
 
-export default function HomeLanding({ persons, aiPanel }: { persons: MissingPerson[]; aiPanel: ReactNode }) {
+export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
   const pageRef = useScrollReveal<HTMLDivElement>();
   return <div ref={pageRef} className={styles.page}>
     <section className={styles.hero} aria-labelledby="home-title">
@@ -39,7 +38,7 @@ export default function HomeLanding({ persons, aiPanel }: { persons: MissingPers
     <HomeChildren persons={persons} />
 
     <div className={styles.serviceBand}>
-      <HomeServiceCards aiPanel={aiPanel} />
+      <HomeServiceCards />
     </div>
 
     <section className={styles.closing} aria-label="FindUs 마무리 메시지">
