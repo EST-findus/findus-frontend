@@ -7,3 +7,5 @@
  .boxedAction { width:36px; padding:0; }
  .label { display:none; }
 }
+.call { width:36px; padding:0; border-color:#2468C526; background:#EAF4FF; color:#2468C5; }
+.call:hover { border-color:#2468C54D; background:#DFEEFF; }

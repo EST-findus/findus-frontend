@@ -8,7 +8,8 @@ import searchStyles from "./PublicSearch.module.css";
 import HeaderAuth from "./HeaderAuth";
 import HeaderNav from "./HeaderNav";
 import LogoMark from "./LogoMark";
-import { ArrowUpRightIcon, PhoneIcon } from "./Icons";
+import { ArrowUpRightIcon } from "./Icons";
+import ReportCallButton from "./ReportCallButton";
 
 export function Logo({ blue = false }: { blue?: boolean }) {
   return (
@@ -54,17 +55,7 @@ export default function Header() {
         </Link>
         <HeaderNav />
         <div className="ml-auto flex shrink-0 items-center gap-2 lg:order-last lg:ml-0 max-sm:gap-1.5">
-          <a
-            href="tel:182"
-            aria-label="공식 제보 182 전화"
-            className="flex shrink-0 items-center gap-1.5 rounded-full border border-line py-1.5 pr-4 pl-1.5 text-[13px] font-semibold transition-colors hover:border-brand hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:px-3 lg:max-xl:pr-3"
-          >
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-soft text-brand max-sm:hidden">
-              <PhoneIcon size={13} strokeWidth={2.2} />
-            </span>
-            <span className="max-sm:hidden lg:max-xl:hidden">공식 제보</span>
-            <span className="text-[15px] font-extrabold text-brand">182</span>
-          </a>
+          <ReportCallButton />
           <HeaderAuth />
         </div>
       </div>
