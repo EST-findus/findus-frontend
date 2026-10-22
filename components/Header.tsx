@@ -7,11 +7,9 @@ import { useCurrentUser } from "@/lib/useCurrentUser";
 import HealthCheckButton from "./HealthCheckButton";
 import searchStyles from "./PublicSearch.module.css";
 import HeaderAuth from "./HeaderAuth";
-import actionStyles from "./HeaderActions.module.css";
-import coralStyles from "./CoralAction.module.css";
 import HeaderNav from "./HeaderNav";
 import LogoMark from "./LogoMark";
-import { ArrowUpRightIcon, PhoneIcon, HeartIcon } from "./Icons";
+import { ArrowUpRightIcon, PhoneIcon } from "./Icons";
 
 export function Logo({ blue = false }: { blue?: boolean }) {
   return (
@@ -28,7 +26,7 @@ export function Logo({ blue = false }: { blue?: boolean }) {
 export default function Header() {
   const pathname = usePathname();
   const onMyPage = pathname === "/mypage";
-  const hideUtilityBar = pathname === "/about" || pathname === "/community" || onMyPage;
+  const hideUtilityBar = pathname === "/about" || pathname === "/community" || onMyPage || pathname.startsWith("/funding");
   const onPublicPage = pathname === "/search" || pathname === "/";
   const user = useCurrentUser();
   return (
@@ -76,10 +74,6 @@ export default function Header() {
             <span className="text-[15px] font-extrabold text-brand">182</span>
           </a>
           <HeaderAuth />
-          <a href="https://tumblbug.com/" target="_blank" rel="noopener noreferrer" aria-label="후원하기 · 텀블벅 (새 창)" className={`${actionStyles.boxedAction} ${coralStyles.soft}`}>
-            <HeartIcon size={20} />
-            <span className={actionStyles.label}>후원하기</span>
-          </a>
         </div>
       </div>
     </header>

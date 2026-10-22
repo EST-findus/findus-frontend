@@ -32,7 +32,7 @@ export default function MobileBottomNav() {
       </nav>
       {menuOpen && <Modal title="전체 메뉴" onClose={() => setMenuOpen(false)} returnFocusTo={menuTrigger.current}>
         <nav aria-label="전체 메뉴" className="divide-y divide-line">
-          {[{ href: "/search", label: "실종아동 찾기" }, { href: "/community", label: "정보 마당" }, { href: "/guide", label: "제보·상담 안내", child: true }, { href: "/ai", label: "AI 연구 안내", child: true }, { href: user ? "/mypage" : "/login?next=%2Fmypage", label: "마이페이지" }, { href: "/about", label: "서비스 소개·정보" }].map((item) => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className={`block rounded-lg py-3 text-[15px] ${item.child ? "pl-6 text-muted" : "px-2 font-bold"} hover:bg-surface ${FOCUS}`}>{item.label}</Link>)}
+          {[{ href: "/search", label: "실종아동 찾기" }, { href: "/community", label: "정보 마당" }, { href: "/guide", label: "제보·상담 안내", child: true }, { href: "/ai", label: "AI 연구 안내", child: true }, { href: user ? "/mypage" : "/login?next=%2Fmypage", label: "마이페이지" }, { href: "/about", label: "서비스 소개·정보" }, { href: "/funding", label: "후원하기" }].map((item) => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className={`block rounded-lg py-3 text-[15px] ${item.child ? "pl-6 text-muted" : "px-2 font-bold"} hover:bg-surface ${FOCUS}`}>{item.label}</Link>)}
         </nav>
       </Modal>}
     </>

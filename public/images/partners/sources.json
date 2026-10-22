@@ -1,0 +1,47 @@
+{
+  "blackyak.svg": {
+    "source": "https://www.byn.kr/_skin/sw_kor_bcc/img/common/BlackyakBI.svg",
+    "page": "https://www.byn.kr/blackyak",
+    "note": "BLACKYAK brand BI (no separate foundation site found); blackyak.com redirects to byn.kr"
+  },
+  "hanjin.png": {
+    "source": "https://www.hanjin.com/attach/IMAGE/TopDesignMgr/LogoImgUpload/2025/1/ijmShJL6Y2PPN8tQ.PNG",
+    "page": "https://www.hanjin.com/kor/Main.do"
+  },
+  "epost.png": {
+    "source": "https://www.koreapost.go.kr/site/kpost/images/upload/logo.png",
+    "page": "https://www.koreapost.go.kr/kpost/index.do",
+    "note": "우정사업본부 header logo (#header h1 background in kpost.css)"
+  },
+  "toss.png": {
+    "source": "https://static.toss.im/assets/toss-im/asset/navigation/logo-toss-blue@2x.png",
+    "page": "https://toss.im/",
+    "note": "site header logo"
+  },
+  "nh.png": {
+    "source": "https://www.nhbank.com/KO/images/common/logo_sub.png",
+    "page": "https://www.nhbank.com/nhmn/KO_NHMN_01.do"
+  },
+  "cu.png": {
+    "source": "https://www.bgf.co.kr/assets/image/bgf/company/brand/cu/logo_cu_166.png",
+    "page": "https://www.bgf.co.kr/company/brand/cu/"
+  },
+  "daangn.svg": {
+    "source": "https://about.daangn.com/",
+    "page": "https://about.daangn.com/",
+    "note": "inline svg"
+  },
+  "kb.png": {
+    "source": "https://oimg1.kbstar.com/img/ocommon/2018/logo_kb2.png",
+    "page": "https://obank.kbstar.com/quics?page=obank"
+  },
+  "tirtir.svg": {
+    "source": "https://tirtir.co.kr/custom/logo.svg",
+    "page": "https://tirtir.co.kr/"
+  },
+  "childfund.png": {
+    "source": "https://www.chorogusan.or.kr/resources/images/common/logo_v2.png",
+    "page": "https://www.chorogusan.or.kr/",
+    "note": "site header logo"
+  }
+}
