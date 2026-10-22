@@ -1,8 +1,11 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { MissingPerson } from "@/lib/types";
+import { HeartIcon } from "./Icons";
 import HomeChildren from "./HomeChildren";
+import coralStyles from "./CoralAction.module.css";
 import styles from "./HomeLanding.module.css";
 import HomeServiceCards from "./HomeServiceCards";
 
@@ -24,7 +27,8 @@ return <div className={styles.page}>
 
     <HomeServiceCards aiPanel={aiPanel} />
 
-        <Image src="/images/support-children-background.png" alt="" fill sizes="100vw" className={styles.supportPhoto} />
+    <section className={styles.supportSection} aria-labelledby="home-support-title">
+      <Image src="/images/support-children-background.png" alt="" fill sizes="100vw" className={styles.supportPhoto} />
       <div className={styles.supportShade} aria-hidden="true" />
       <div className={`page-container ${styles.supportBanner}`}>
         <div className={styles.supportCopy}>
@@ -43,7 +47,6 @@ return <div className={styles.page}>
         <span className={styles.supportArtNote}>AI로 제작한 캠페인 이미지</span>
       </div>
     </section>
-    <HomeChildren persons={persons} />
 
     <section className={styles.closing} aria-label="FindUs 마무리 메시지">
       <div className={`page-container ${styles.closingInner}`}>
