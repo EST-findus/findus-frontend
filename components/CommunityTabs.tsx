@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 
 const TABS = ["소식·이야기", "제보·상담 안내", "AI 연구 안내"];
 
@@ -9,6 +9,10 @@ export default function CommunityTabs({ stories, guide, ai }: { stories: ReactNo
   const id = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
   const panels = [stories, guide, ai];
+
+  useEffect(() => {
+    if (window.location.hash === "#ai") setSelected(2);
+  }, []);
 
   return (
     <>
