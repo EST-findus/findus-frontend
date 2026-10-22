@@ -1,11 +1,15 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
-import { ArrowRightIcon, HeartIcon, ScanFaceIcon, SparklesIcon } from "./Icons";
+import Image from "next/image";
+import { ArrowRightIcon } from "./Icons";
 import DnaGuideButton from "./DnaGuideButton";
 import { GuidePopup, type GuidePopupId } from "./GuideSteps";
 import Modal from "./Modal";
-import styles from "./HomeLanding.module.css";
+import styles from "./HomeServiceCards.module.css";
+
+const FEATURE_IMAGE_SIZES = "(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 46vw, 360px";
+const GUIDE_IMAGE_SIZES = "(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 46vw, 300px";
 
 export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
   const [activeGuide, setActiveGuide] = useState<GuidePopupId | null>(null);
@@ -15,51 +19,76 @@ export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
 
   return (
     <>
-      <nav className={`page-container ${styles.serviceCards}`} aria-label="주요 서비스 바로가기">
-        <button
-          ref={(element) => { guideTriggerRefs.current.know = element; }}
-          type="button"
-          aria-haspopup="dialog"
-          onClick={() => setActiveGuide("know")}
-          className={`${styles.serviceCard} ${styles.serviceCardKnow}`}
-        >
-          <span aria-hidden="true" className={styles.serviceCardIcon}><ScanFaceIcon size={26} strokeWidth={1.8} /></span>
-          <span className={styles.serviceCardCopy}>
-            <span className={styles.serviceCardLabel}>목격·제보</span>
-            <strong>이 사람을 알아요.</strong>
-            <span className={styles.serviceCardDescription}>어디선가 본 얼굴이라면, 기억나는 단서를 공식 제보로 연결해 주세요.</span>
-            <span className={styles.serviceCardAction}>절차 보기 <ArrowRightIcon size={16} /></span>
-          </span>
-        </button>
+      <nav className={`page-container ${styles.section}`} aria-label="주요 서비스 바로가기">
+        <div className={styles.grid} data-reveal="stagger">
+          <header className={styles.intro}>
+            <div>
+              <span className={styles.eyebrow}>지금 시작하세요</span>
+              <h2>실종아동을 찾는 다양한 방법</h2>
+            </div>
+            <p>기억하고 있는 정보로, 소중한 아이를 다시 만날 수 있습니다.</p>
+          </header>
 
-        <div className={styles.serviceGroup} aria-label="가족 찾기 안내">
           <button
-            ref={(element) => { guideTriggerRefs.current.me = element; }}
-            type="button"
             aria-haspopup="dialog"
-            onClick={() => setActiveGuide("me")}
-            className={`${styles.serviceCard} ${styles.serviceGroupItem}`}
+            onClick={() => setActiveGuide("know")}
+            ref={(element) => { guideTriggerRefs.current.know = element; }}
+            type="button"
+            className={`${styles.feature} ${styles.featureReport}`}
           >
-            <span aria-hidden="true" className={`${styles.serviceCardIcon} ${styles.serviceCardIconCoral}`}><HeartIcon size={26} strokeWidth={1.8} /></span>
-            <span className={styles.serviceCardCopy}>
-              <span className={styles.serviceCardLabel}>가족 찾기</span>
-              <strong>혹시 나?</strong>
-              <span className={styles.serviceCardDescription}>어린 시절 기억이 낯설게 느껴진다면, 차근차근 확인하고 상담부터 시작해 보세요.</span>
-              <span className={styles.serviceCardAction}>절차 보기 <ArrowRightIcon size={16} /></span>
+            <span aria-hidden="true" className={styles.featureMedia}>
+              <Image src="/images/home-drawing-report.svg" alt="" fill sizes={FEATURE_IMAGE_SIZES} />
+              <span className={styles.chip}>목격·제보</span>
+            </span>
+            <span className={styles.featureBody}>
+              <strong>이 사람을 알아요.</strong>
+              <span>어디선가 본 얼굴이라면, 기억나는 단서를 공식 제보로 연결해 주세요.</span>
+              <span className={styles.action}>절차 보기 <ArrowRightIcon size={16} /></span>
             </span>
           </button>
-          <DnaGuideButton variant="homeCard" className={`${styles.serviceCard} ${styles.serviceGroupItem} ${styles.serviceCardDna}`} />
-        </div>
 
-        <button ref={aiTriggerRef} type="button" aria-haspopup="dialog" onClick={() => setAiOpen(true)} className={`${styles.serviceCard} ${styles.serviceCardAi}`}>
-          <span aria-hidden="true" className={styles.serviceCardIcon}><SparklesIcon size={26} strokeWidth={1.8} /></span>
-          <span className={styles.serviceCardCopy}>
-            <span className={styles.serviceCardLabel}>책임 있는 AI</span>
-            <strong>AI 연구 안내</strong>
-            <span className={styles.serviceCardDescription}>시간의 변화를 돕는 AI를 신중하게 연구합니다.</span>
-            <span className={styles.serviceCardAction}>연구 안내 보기 <ArrowRightIcon size={16} /></span>
-          </span>
-        </button>
+          <button
+            aria-haspopup="dialog"
+            onClick={() => setActiveGuide("me")}
+            ref={(element) => { guideTriggerRefs.current.me = element; }}
+            type="button"
+            className={`${styles.feature} ${styles.featureFamily}`}
+          >
+            <span aria-hidden="true" className={styles.featureMedia}>
+              <Image src="/images/home-drawing-family.svg" alt="" fill sizes={FEATURE_IMAGE_SIZES} />
+              <span className={styles.chip}>가족 찾기</span>
+            </span>
+            <span className={styles.featureBody}>
+              <strong>혹시 나?</strong>
+              <span>어린 시절 기억이 낯설게 느껴진다면, 차근차근 확인하고 상담부터 시작해 보세요.</span>
+              <span className={styles.action}>절차 보기 <ArrowRightIcon size={16} /></span>
+            </span>
+          </button>
+
+          <DnaGuideButton className={`${styles.guide} ${styles.guideDna}`}>
+            <span aria-hidden="true" className={styles.guideMedia}>
+              <Image src="/images/home-service-lab.jpg" alt="" fill sizes={GUIDE_IMAGE_SIZES} />
+              <span className={styles.chip}>본인·가족 찾기</span>
+            </span>
+            <span className={styles.guideBody}>
+              <strong>DNA 검사·상담 안내</strong>
+              <span>본인·가족의 DNA 채취 절차를 확인하세요.</span>
+              <span className={styles.action}>안내 보기 <ArrowRightIcon size={15} /></span>
+            </span>
+          </DnaGuideButton>
+
+          <button ref={aiTriggerRef} type="button" aria-haspopup="dialog" onClick={() => setAiOpen(true)} className={`${styles.guide} ${styles.guideAi}`}>
+            <span aria-hidden="true" className={styles.guideMedia}>
+              <Image src="/images/home-service-research.jpg" alt="" fill sizes={GUIDE_IMAGE_SIZES} />
+              <span className={styles.chip}>책임 있는 AI</span>
+            </span>
+            <span className={styles.guideBody}>
+              <strong>AI 연구 안내</strong>
+              <span>시간의 변화를 돕는 AI를 신중하게 연구합니다.</span>
+              <span className={styles.action}>연구 안내 보기 <ArrowRightIcon size={15} /></span>
+            </span>
+          </button>
+        </div>
       </nav>
 
       {activeGuide && (

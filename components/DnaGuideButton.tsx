@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { MISSING_CHILD_CENTER_URL } from "@/lib/links";
 import { ArrowRightIcon, ArrowUpRightIcon, HeartIcon, LayersIcon, PhoneIcon, ScanFaceIcon, ShieldIcon } from "./Icons";
 import Modal from "./Modal";
@@ -34,7 +34,8 @@ const ROUTES = [
   },
 ] as const;
 
-export default function DnaGuideButton({ variant = "default", className }: { variant?: "default" | "followup" | "homeCard"; className?: string }) {
+// `children` replaces the trigger content so a page can render the button in its own card layout.
+export default function DnaGuideButton({ variant = "default", className, children }: { variant?: "default" | "followup"; className?: string; children?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -71,12 +72,10 @@ export default function DnaGuideButton({ variant = "default", className }: { var
   return (
     <>
       <button ref={triggerRef} id={variant === "followup" ? "families" : undefined} type="button" aria-haspopup="dialog" aria-label="본인·가족 찾기 — DNA·상담 안내" onClick={() => setOpen(true)}
-        className={className ?? (variant === "homeCard"
-          ? `group flex w-full cursor-pointer items-start gap-4 text-left ${focusRing}`
-          : variant === "followup"
+        className={className ?? (variant === "followup"
           ? `group flex min-h-24 w-full cursor-pointer items-center justify-between gap-3 rounded-2xl border border-gold/20 bg-gold-faint px-4 py-3 text-left text-gold-ink shadow-panel transition-all hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-card-hover motion-reduce:transition-none max-sm:gap-2.5 max-sm:px-3.5 ${focusRing}`
           : `inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-brand bg-card px-5 py-3 text-[15px] font-bold text-brand transition-colors hover:bg-brand-soft ${focusRing}`)}>
-        {variant === "followup" || variant === "homeCard" ? (
+        {children ?? (variant === "followup" ? (
           <>
             <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold/10 transition-transform group-hover:scale-105 motion-reduce:transition-none">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" focusable="false">
@@ -84,20 +83,19 @@ export default function DnaGuideButton({ variant = "default", className }: { var
                 <path d="M7 3h10M8 7h8M10 11h4M10 13h4M8 17h8M7 21h10" />
               </svg>
             </span>
-            <span className={`min-w-0 flex-1 ${variant === "homeCard" ? "flex h-full flex-col items-start" : ""}`}>
-              <span className="block text-[11px] font-bold">{variant === "homeCard" ? "본인·가족 찾기" : "본인·부모·가족을 위한 다음 단계"}</span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[11px] font-bold">본인·부모·가족을 위한 다음 단계</span>
               <span className="mt-1 block text-[19px] leading-snug font-extrabold tracking-[-0.02em] max-sm:text-[18px]"><span className="text-brand">DNA</span> 검사·상담 안내</span>
               <span className="mt-1 block text-[12px] leading-relaxed break-keep text-muted">본인·가족의 DNA 채취 절차를 확인하세요.</span>
-              {variant === "homeCard" && <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-[14px] font-bold text-brand">안내 보기 <ArrowRightIcon size={16} /></span>}
             </span>
-            {variant !== "homeCard" && <span aria-hidden="true" className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-card/80"><ArrowRightIcon size={17} strokeWidth={2.2} className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" /></span>}
+            <span aria-hidden="true" className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-card/80"><ArrowRightIcon size={17} strokeWidth={2.2} className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" /></span>
           </>
         ) : (
           <>
             <span>본인·가족 찾기 — DNA·상담 안내</span>
             <ArrowRightIcon size={16} strokeWidth={2.2} className="shrink-0" />
           </>
-        )}
+        ))}
       </button>
       {open && (
         <Modal eyebrow="본인·가족 찾기" title="DNA 검사·상담 안내" accent="gold" onClose={closeGuide} returnFocusTo={triggerRef.current} mobileFullscreen size="wide">
