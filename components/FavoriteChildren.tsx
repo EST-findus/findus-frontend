@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { selectFavoritePersons, setOwnChild } from "@/lib/favorites";
 import { useFavorites } from "@/lib/useFavorites";
+import { isVerifiedFor } from "@/lib/familyVerification";
+import { useFamilyRecord } from "@/lib/useFamily";
+import FamilyBadge from "./FamilyBadge";
 import type { MissingPerson } from "@/lib/types";
 import { ArrowRightIcon, HeartIcon } from "./Icons";
 import FavoriteButton from "./FavoriteButton";
@@ -14,6 +17,7 @@ const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visi
 
 export default function FavoriteChildren({ userId, persons }: { userId: string; persons: MissingPerson[] }) {
   const favorites = useFavorites(userId);
+  const family = useFamilyRecord(userId);
   const saved = selectFavoritePersons(persons, favorites);
   const [report, setReport] = useState<{ person: MissingPerson; trigger: HTMLElement } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -49,19 +53,21 @@ export default function FavoriteChildren({ userId, persons }: { userId: string; 
           <div data-favorite-grid className="mt-3 grid grid-cols-1 gap-5 max-md:mt-2">
             {saved.map((person) => {
               const own = favorites.ownChildId === person.id;
+              // 가족으로 확인된 아이는 '내 아이' 대신 가족 배지를 단다. '내 아이'는 화면 정렬용일 뿐 인증이 아니다.
+              const verified = !!person.sourceId && isVerifiedFor(family, person.sourceId);
               return (
                 <article data-favorite-card key={person.id} aria-labelledby={`favorite-person-${person.id}`} className="flex min-w-0 flex-col rounded-2xl border border-line bg-card p-6 max-md:p-3">
                   <header className="flex flex-wrap items-center justify-between gap-3">
                     <h3 id={`favorite-person-${person.id}`} className="text-[21px] font-extrabold max-md:text-[18px]">{person.name}</h3>
                     <div className="ml-auto flex items-center gap-1.5">
-                  <button
+                  {verified ? <FamilyBadge label="가족 확인됨" /> : <button
                     type="button"
                     aria-pressed={own}
                     aria-label={`${person.name} 내 아이`}
                     title={own ? "내 아이 우선 표시 해제" : "내 아이로 지정하여 맨 앞에 표시"}
                     onClick={() => pin(own ? null : person.id)}
                     className={`inline-flex items-center rounded-full px-3 py-2 text-[12px] font-bold transition-colors ${FOCUS} ${own ? "bg-brand text-white hover:bg-brand-dark" : "bg-brand-soft text-brand hover:bg-brand/15"}`}
-                  >내 아이</button>
+                  >내 아이</button>}
                       <FavoriteButton personId={person.id} name={person.name} />
                     </div>
                   </header>

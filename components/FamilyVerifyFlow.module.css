@@ -1,0 +1,52 @@
+/* 가족 인증 신청 (체크아웃 스텝퍼 스타일을 함께 쓴다) */
+.layout { max-width:46rem; padding-block:28px 96px; }
+.eyebrow { display:flex; align-items:center; gap:6px; margin-top:18px; color:#963D32; font-size:13px; font-weight:800; }
+.lead { color:var(--color-ink); font-size:15px; line-height:1.75; word-break:keep-all; }
+.mockNote { padding:10px 12px; border-radius:10px; background:#FFFBF3; color:#8A6418; font-size:12px; line-height:1.6; }
+.bigButton { display:inline-flex; align-items:center; gap:8px; margin-top:18px; padding:16px 22px; border-radius:14px; background:var(--color-navy); color:#fff; font-size:16px; font-weight:800; transition:background-color .2s; }
+.bigButton:hover { background:var(--color-brand); }
+.bigButton:focus-visible { outline:2px solid var(--color-brand); outline-offset:3px; }
+.done { display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; margin-top:16px; padding:14px 16px; border-radius:12px; background:#E5F6EC; color:#1D6B43; font-size:14px; animation:pop .4s cubic-bezier(.34,1.56,.64,1); }
+.done span { color:var(--color-ink); }
+@keyframes pop { from { transform:scale(.96); opacity:0; } }
+
+.options { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+.option { display:flex; flex-direction:column; align-items:flex-start; gap:8px; padding:18px; border:1.5px solid var(--color-line); border-radius:14px; background:#fff; transition:border-color .2s, box-shadow .2s; }
+.option[data-checked="true"] { border-color:var(--color-navy); box-shadow:0 0 0 1px var(--color-navy); }
+.option > label, .option > button { cursor:pointer; }
+.option > label:focus-within { outline:2px solid var(--color-brand); outline-offset:2px; }
+.optionTitle { font-size:15px; font-weight:800; }
+.optionText { flex:1; color:var(--color-muted); font-size:13px; line-height:1.6; word-break:keep-all; }
+.recommend { margin-left:4px; padding:2px 7px; border-radius:999px; background:#FFF0ED; color:#963D32; font-size:11px; font-weight:800; }
+.fileName { max-width:100%; overflow:hidden; color:var(--color-navy); font-size:13px; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
+.never { display:flex; align-items:center; gap:6px; margin-top:14px; color:var(--color-muted); font-size:13px; }
+
+.search { display:flex; align-items:center; gap:8px; margin-top:12px; padding:0 14px; border:1px solid var(--color-line); border-radius:12px; background:#fff; color:var(--color-muted); }
+.search:focus-within { border-color:var(--color-brand); box-shadow:0 0 0 3px rgb(36 104 197 / 15%); }
+.search input { flex:1; min-height:48px; border:0; outline:0; background:transparent; color:var(--color-ink); font-size:15px; }
+.results { margin-top:8px; overflow:hidden; border:1px solid var(--color-line); border-radius:12px; background:#fff; }
+.results li + li { border-top:1px solid var(--color-line); }
+.results button { display:flex; flex-direction:column; align-items:flex-start; gap:2px; width:100%; padding:12px 16px; text-align:left; }
+.results button:hover, .results button:focus-visible { background:var(--color-brand-soft); outline:none; }
+.results span { color:var(--color-muted); font-size:13px; }
+.empty { padding:14px 16px; color:var(--color-muted); font-size:13px; line-height:1.6; }
+
+.relations { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.relation { display:inline-flex; align-items:center; gap:6px; padding:10px 14px; border:1.5px solid var(--color-line); border-radius:12px; background:#fff; font-size:14px; font-weight:700; cursor:pointer; }
+.relation input { accent-color:var(--color-navy); }
+.relation[data-checked="true"] { border-color:var(--color-navy); }
+.relation:has(input:focus-visible) { outline:2px solid var(--color-brand); outline-offset:2px; }
+
+.howList { display:flex; flex-direction:column; gap:8px; margin-top:12px; counter-reset:how; }
+.howList li { position:relative; padding:12px 14px 12px 48px; border-radius:12px; background:var(--color-surface); font-size:14px; line-height:1.6; word-break:keep-all; counter-increment:how; }
+.howList li::before { content:counter(how); position:absolute; top:12px; left:14px; display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--color-navy); color:#fff; font-size:12px; font-weight:800; }
+.howList strong { margin-right:6px; }
+
+.actions { display:flex; justify-content:flex-end; gap:8px; margin-top:28px; }
+
+@media (width < 40rem) {
+  .options { grid-template-columns:1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .done { animation:none; }
+}

@@ -6,20 +6,25 @@ import { useEffect, useId, useRef, useState } from "react";
 import { useAuthReady, useCurrentUser } from "@/lib/useCurrentUser";
 import { formatPostDate, getPosts, type Post } from "@/lib/community";
 import type { MissingPerson } from "@/lib/types";
-import AccountButton from "./AccountButton";
+import AccountSettings from "./AccountSettings";
+import FamilyBadge from "./FamilyBadge";
+import { useFamilyRecord } from "@/lib/useFamily";
 import styles from "./MyPage.module.css";
 import FavoriteChildren from "./FavoriteChildren";
 import ReunionStory from "./ReunionStory";
+import MyPledges from "./funding/MyPledges";
 import { ArrowRightIcon, MessageIcon } from "./Icons";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand";
 const PAGE_TABS = [
   { key: "favorites", label: "관심 아동" },
   { key: "activity", label: "내 활동" },
+  { key: "funding", label: "내 후원" },
+  { key: "account", label: "계정" },
 ] as const;
 type PageTab = (typeof PAGE_TABS)[number]["key"];
 
-export default function MyPage({ continuation, persons }: { continuation: string | null; persons: MissingPerson[] }) {
+export default function MyPage({ continuation, persons, initialTab }: { continuation: string | null; persons: MissingPerson[]; initialTab?: string }) {
   const user = useCurrentUser();
   const ready = useAuthReady();
   const router = useRouter();
@@ -27,7 +32,8 @@ export default function MyPage({ continuation, persons }: { continuation: string
   const [failed, setFailed] = useState(false);
   const [tab, setTab] = useState<"posts" | "comments">("posts");
   const userId = user?.id;
-  const [pageTab, setPageTab] = useState<PageTab>("favorites");
+  const family = useFamilyRecord(userId);
+  const [pageTab, setPageTab] = useState<PageTab>(() => PAGE_TABS.find((item) => item.key === initialTab)?.key ?? "favorites");
   const tabId = useId();
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -87,21 +93,22 @@ export default function MyPage({ continuation, persons }: { continuation: string
         )}
 
         <div data-mypage-toolbar className="mb-4 flex items-center justify-between gap-3 max-md:mb-2">
-        <div role="tablist" aria-label="마이페이지 메뉴" className="inline-flex gap-0.5 rounded-xl border border-line bg-surface p-0.5">
+        <div role="tablist" aria-label="마이페이지 메뉴" className="inline-flex max-w-full gap-0.5 overflow-x-auto rounded-xl border border-line bg-surface p-0.5 [scrollbar-width:none]">
           {PAGE_TABS.map(({ key, label }, index) => (
             <button
               key={key} ref={(el) => { tabRefs.current[index] = el; }} type="button" role="tab"
               id={`${tabId}-tab-${key}`} aria-controls={`${tabId}-panel-${key}`}
               aria-selected={pageTab === key} tabIndex={pageTab === key ? 0 : -1}
               onClick={() => setPageTab(key)} onKeyDown={(event) => moveTab(event, index)}
-              className={`min-w-21 rounded-lg px-3 py-1.5 text-[13px] font-bold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:min-w-19 max-sm:px-2.5 max-sm:text-[12px] ${pageTab === key ? "bg-brand text-white shadow-sm" : "text-muted hover:bg-brand-soft hover:text-brand"}`}
+              className={`min-w-21 shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-bold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:min-w-0 max-sm:px-2.5 max-sm:text-[12px] ${pageTab === key ? "bg-brand text-white shadow-sm" : "text-muted hover:bg-brand-soft hover:text-brand"}`}
             >{label}</button>
           ))}
         </div>
 
-          <div className="flex shrink-0 items-center gap-1.5">
-            <AccountButton />
-          </div>
+          <p className="flex min-w-0 items-center gap-2 text-[14px] font-bold max-sm:hidden">
+            <span className="truncate">{user.nickname}님</span>
+            {family?.status === "verified" && <FamilyBadge label="가족 확인됨" />}
+          </p>
         </div>
 
         <div role="tabpanel" id={`${tabId}-panel-favorites`} aria-labelledby={`${tabId}-tab-favorites`} hidden={pageTab !== "favorites"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
@@ -136,6 +143,14 @@ export default function MyPage({ continuation, persons }: { continuation: string
             </div>
           </section>
 
+        </div>
+
+        <div role="tabpanel" id={`${tabId}-panel-funding`} aria-labelledby={`${tabId}-tab-funding`} hidden={pageTab !== "funding"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
+          <MyPledges userId={user.id} />
+        </div>
+
+        <div role="tabpanel" id={`${tabId}-panel-account`} aria-labelledby={`${tabId}-tab-account`} hidden={pageTab !== "account"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
+          <AccountSettings user={user} />
         </div>
 
       </div>
