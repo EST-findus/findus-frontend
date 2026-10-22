@@ -252,6 +252,20 @@
 .cardGrid .cardFacts { padding-top:9px; column-gap:14px; font-size:12px; }
 .cardGrid .cardFacts > div { gap:6px; }
 .cardGrid .cardActions { padding:0 12px 12px; gap:6px; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 36px; }
+
+/* A calm white surface for search results and a centered, quieter report banner. */
+.campaignLayout .results { padding:24px 22px 28px; border:1px solid #E3EAF3; border-radius:16px; background:#FFFFFF; box-shadow:0 6px 22px rgba(23,59,112,.035); }
+.reportBanner { display:grid; grid-template-columns:130px minmax(0,1fr); gap:18px; padding:8px 22px; }
+.reportBannerCopy { text-align:center; }
+.reportBannerCopy strong { display:block; }
+.reportBannerCopy small { margin-top:5px; }
+@media(width<640px) {
+  .campaignLayout .results { padding:18px 13px 20px; border-radius:13px; }
+  .reportBanner { grid-template-columns:76px minmax(0,1fr); gap:10px; padding:10px; }
+  .reportBannerArt { width:76px; height:68px; }
+  .reportBannerCopy strong { font-size:14px; line-height:1.5; }
+  .reportBannerCopy small { font-size:10px; }
+}
 .cardGrid .cardActions button { font-size:11px; min-height:38px; }
 @media(width>=1100px) {
  .cardGrid { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -259,4 +273,104 @@
 @media(width<640px) {
  .cardGrid .cardActions { grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 44px; }
  .cardGrid .cardActions button { min-height:44px; }
+}
+
+/* Match result cards to the soft blue and coral service palette. */
+.results .cardGrid .card {
+  border:1px solid #D7E5F5;
+  border-radius:16px;
+  background:#FFFFFF;
+  box-shadow:0 5px 18px rgba(23,59,112,.045);
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.results .cardGrid .card:hover {
+  transform:translateY(-2px);
+  border-color:#B8D0EE;
+  box-shadow:0 10px 24px rgba(23,59,112,.09);
+}
+.results .cardGrid .cardMain { background:linear-gradient(180deg,#F7FAFE 0%,#FFFFFF 54%); }
+.results .cardGrid .cardTop h3 { color:#173B70; }
+.results .cardGrid .portraitPair { gap:9px; padding:7px; border:1px solid #E4EDF7; border-radius:13px; background:#EAF4FF; }
+.results .cardGrid .portraitPair figure { overflow:hidden; border:1px solid #E2EAF3; border-radius:10px; background:#FFFFFF; }
+.results .cardGrid .portraitPair figcaption { color:#365F91; }
+.results .cardGrid .photo { border-radius:8px; background:#E6EFF9; }
+.results .cardGrid .aiPending { border:1px dashed #C7D8EC; border-radius:8px; background:linear-gradient(145deg,#F2F7FD,#E8F0FA); color:#54708F; }
+.results .cardGrid .aiPending strong { color:#365F91; }
+.results .cardGrid .cardFacts { border-color:#E6EDF5; }
+.results .cardGrid .cardActions { border-top:1px solid #EEF2F7; padding-top:10px; }
+.results .cardGrid .cardActions button { border-color:#D7E5F5; border-radius:9px; background:#FFFFFF; color:#365F91; transition:background .18s ease,border-color .18s ease,transform .18s ease; }
+.results .cardGrid .cardActions button:first-child { border-color:#D3E3F6; background:#EAF4FF; color:#2468C5; }
+.results .cardGrid .cardActions button:hover { transform:translateY(-1px); border-color:#AFC9E8; background:#F4F8FD; }
+.results .cardGrid .cardActions button:first-child:hover { background:#DFEDFC; }
+@media(prefers-reduced-motion:reduce) {
+  .results .cardGrid .card,.results .cardGrid .cardActions button { transition:none; }
+}
+
+/* Search card form: compact portraits, then one clear primary action. */
+.results .cardGrid .card { border-radius:15px; box-shadow:0 3px 12px rgba(23,59,112,.035); }
+.results .cardGrid .cardMain { background:#FFFFFF; padding:13px 13px 10px; }
+.results .cardGrid .cardTop { min-height:32px; margin-bottom:10px; }
+.results .cardGrid .portraitPair { gap:12px; padding:0; border:0; border-radius:0; background:transparent; }
+.results .cardGrid .portraitPair figure { overflow:visible; padding:0; border:0; border-radius:0; background:transparent; }
+.results .cardGrid .portraitPair figcaption { min-height:20px; margin-bottom:5px; color:#5C6F86; font-size:11px; }
+.results .cardGrid .photo { height:136px; border-radius:7px; }
+.results .cardGrid .portraitPair figure > p { margin-top:6px; font-size:11px; }
+.results .cardGrid .aiPending { border:1px dashed #C7D8EC; border-radius:7px; background:#EDF2F8; }
+.results .cardGrid .aiCaution { margin:7px 0 10px; font-size:10px; }
+.results .cardGrid .cardFacts { padding-top:10px; font-size:12px; }
+.results .cardGrid .cardActions { grid-template-columns:minmax(0,1fr) 38px; gap:4px 8px; padding:10px 12px 12px; border-top:0; }
+.results .cardGrid .cardActions button { min-height:34px; border-radius:8px; font-size:11px; }
+.results .cardGrid .cardActions button:first-child { grid-column:1 / -1; min-height:42px; }
+.results .cardGrid .cardActions button:nth-child(2) { justify-content:flex-start; padding-inline:2px; border-color:transparent; background:transparent; color:#365F91; }
+.results .cardGrid .cardActions button:nth-child(2):hover { transform:none; border-color:transparent; background:transparent; color:#2468C5; text-decoration:underline; text-underline-offset:3px; }
+.results .cardGrid .cardActions button:nth-child(3) { grid-column:2; width:38px; min-height:34px; padding:0; }
+@media(width<800px) {
+  .results .cardGrid .photo { height:126px; }
+}
+@media(width<640px) {
+  .results .cardGrid .photo { height:174px; }
+  .results .cardGrid .cardActions { grid-template-columns:minmax(0,1fr) 42px; padding-inline:13px; }
+  .results .cardGrid .cardActions button:nth-child(3) { width:42px; min-height:38px; }
+}
+
+/* Motion: the hero settles in, the search panel rises, and results fade up as they scroll into view.
+   Ambient motion uses scale/translate so it never fights the hover transforms. */
+@keyframes searchRise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@keyframes searchZoom { from { scale:1; } to { scale:1.06; } }
+@keyframes searchFloat { 0%,100% { translate:0 0; } 50% { translate:0 -5px; } }
+@keyframes chipIn { from { opacity:0; transform:translateY(4px) scale(.94); } to { opacity:1; transform:none; } }
+.campaignPhoto { animation:searchZoom 24s ease-in-out infinite alternate; }
+.campaignCopy > * { animation:searchRise .85s cubic-bezier(.2,.7,.2,1) backwards; }
+.campaignCopy > :nth-child(2) { animation-delay:.08s; }
+.campaignCopy > :nth-child(3) { animation-delay:.16s; }
+.searchBox { animation:searchRise .85s cubic-bezier(.2,.7,.2,1) .24s backwards; }
+.searchBox form > div { transition:border-color .2s ease,box-shadow .2s ease; }
+.searchBox form > div:focus-within { border-color:#2468C5; box-shadow:0 0 0 4px rgba(36,104,197,.1); }
+.searchBox form > button { transition:background-color .2s ease,transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s ease; }
+.searchBox form > button:hover { transform:translateY(-1px); box-shadow:0 10px 22px rgba(36,104,197,.24); }
+.searchBox select { transition:border-color .2s ease; }
+.searchBox select:hover { border-color:#B9CDE6; }
+.conditions span { animation:chipIn .3s ease backwards; }
+
+.page[data-motion="on"] [data-reveal]:not([data-revealed]),
+.page[data-motion="on"] [data-reveal-items] > :not([data-revealed]) { opacity:0; }
+.page [data-reveal][data-revealed="in"],
+.page [data-reveal-items] > [data-revealed="in"] { animation:searchRise .7s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0s) backwards; }
+
+.results .cardGrid .card { transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .25s ease,box-shadow .35s ease; }
+.results .cardGrid .card:hover { transform:translateY(-4px); box-shadow:0 18px 36px rgba(23,59,112,.1); }
+.results .cardGrid .photo img { transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.results .cardGrid button.photo:hover img { transform:scale(1.05); }
+.results .cardGrid .cardActions button:first-child svg { transition:transform .25s cubic-bezier(.2,.7,.2,1); }
+.results .cardGrid .cardActions button:first-child:hover svg { transform:translateX(4px); }
+.results nav[aria-label="검색 결과 페이지"] button { transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease; }
+.results nav[aria-label="검색 결과 페이지"] button:not(:disabled):not([aria-current]):hover { border-color:#2468C5; color:#2468C5; }
+.results nav[aria-label="검색 결과 페이지"] button:not(:disabled):active { transform:scale(.95); }
+
+.reportBanner { transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease; }
+.reportBanner:hover { transform:translateY(-3px); box-shadow:0 14px 30px rgba(185,78,64,.12); }
+.reportBannerArt { animation:searchFloat 6s ease-in-out infinite; }
+
+@media(prefers-reduced-motion:reduce) {
+  .page *,.page *::before,.page *::after { animation:none !important; transition:none !important; }
 }
