@@ -7,11 +7,10 @@ import { formatGender } from "@/lib/format";
 import PublicPersonCard from "./ChildComparisonCard";
 import styles from "./PublicSearch.module.css";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
-import { SAFE182_URL } from "@/lib/links";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
 import DetailModal from "./DetailModal";
 import EmptyState from "./EmptyState";
-import { ArrowRightIcon, LayersIcon, PhoneIcon, ShareIcon, ShieldIcon } from "./Icons";
+import { ArrowRightIcon } from "./Icons";
 import ReportGuideModal from "./ReportGuideModal";
 import SearchPanel from "./SearchPanel";
 import ShareModal from "./ShareModal";
@@ -139,13 +138,6 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         </span>
         <span className={styles.reportBannerAction}><span>목격 제보 안내</span><ArrowRightIcon size={16} /></span>
       </Link>
-      <nav className={styles.quickLinks} aria-label="찾기와 제보 도움 안내">
-        <Link href="/guide#know"><ShieldIcon size={26} /><span><strong>목격 제보 안내</strong><small>기억나는 단서를 전하는 방법</small></span><ArrowRightIcon size={17} /></Link>
-        <Link href="/guide#families"><LayersIcon size={26} /><span><strong>DNA 등록 안내</strong><small>가족을 찾는 또 하나의 연결</small></span><ArrowRightIcon size={17} /></Link>
-        <Link href="/community"><ShareIcon size={26} /><span><strong>소식·이야기</strong><small>함께 나누는 정보와 따뜻한 응원</small></span><ArrowRightIcon size={17} /></Link>
-        <a href={SAFE182_URL} target="_blank" rel="noopener noreferrer"><PhoneIcon size={26} /><span><strong>공식 기관 안내</strong><small>긴급 신고 112 · 실종 상담 182</small></span><ArrowRightIcon size={17} /></a>
-      </nav>
-
       </div>
       </div>
 
