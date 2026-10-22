@@ -41,7 +41,11 @@ async function request(path: string): Promise<Response> {
   const base = process.env.BACKEND_URL ?? 'http://localhost:18080';
   try {
     return await fetch(base.replace(/\/$/,'')+path,{cache:'no-store',signal:AbortSignal.timeout(15000)});
-  } catch { throw new Error('아동 정보를 불러오지 못했습니다. 백엔드 연결을 확인하고 다시 시도해 주세요.'); }
+  } catch (error) {
+    // 배포 환경에서 원인(주소 미설정·타임아웃·연결 거부)을 로그로 구분할 수 있게 남긴다.
+    console.error('[missingApi] backend request failed', {base, path, error, cause: (error as {cause?: unknown})?.cause});
+    throw new Error('아동 정보를 불러오지 못했습니다. 백엔드 연결을 확인하고 다시 시도해 주세요.');
+  }
 }
 async function pageAt(page: number): Promise<PageDto> {
   const response=await request('/api/missing-persons?page='+page+'&size=100');
