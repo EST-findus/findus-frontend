@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import Reveal from "@/components/funding/Reveal";
 import { ArrowRightIcon, CheckIcon, CloseIcon, ImageIcon, LockIcon, SparklesIcon } from "@/components/Icons";
@@ -80,8 +81,15 @@ export function VerifySection() {
 
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-sm:mt-8">
         {VERIFY_STATS.map((stat, i) => (
-          <Reveal as="li" key={stat.label} delay={i * 100} className="flex flex-col rounded-2xl border border-line bg-card p-6 shadow-card max-sm:p-5">
-            <p className="text-[38px] leading-none font-extrabold tracking-tight whitespace-nowrap text-brand tabular-nums max-sm:text-[32px]">{stat.value}</p>
+          <Reveal as="li" key={stat.label} delay={i * 100} className="flex flex-col rounded-2xl border border-line bg-card px-5 py-6 shadow-card max-sm:p-5">
+            <p className="text-[38px] leading-none font-extrabold tracking-[-0.06em] whitespace-nowrap text-brand tabular-nums max-sm:text-[32px]">
+              {stat.value.split(" → ").map((part, j) => (
+                <Fragment key={part}>
+                  {j > 0 && <span className="mx-[0.06em]">→</span>}
+                  {part}
+                </Fragment>
+              ))}
+            </p>
             <p className="mt-3 text-[17px] leading-snug font-bold break-keep">{stat.label}</p>
             <p className="mt-2 text-[13.5px] leading-relaxed break-keep text-muted">{stat.note}</p>
           </Reveal>
