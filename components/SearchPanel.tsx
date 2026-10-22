@@ -5,7 +5,7 @@ import type { AgeGroupKey, GenderFilter, PeriodKey, SearchFilters } from "@/lib/
 import { CloseIcon, ResetIcon, SearchIcon } from "./Icons";
 
 const GENDER_OPTIONS: { value: GenderFilter; label: string }[] = [
-  { value: "all", label: "전체" },
+  { value: "all", label: "전체 성별" },
   { value: "남", label: "남자" },
   { value: "여", label: "여자" },
 ];
@@ -53,7 +53,8 @@ function Select<T extends string>({
   const id = useId();
   return (
     <div className="min-w-0">
-      <label htmlFor={id} className="mb-2 block text-[13px] font-semibold text-muted">
+      {/* 모바일에서는 선택지 문구(전체 지역 등)로 충분해 라벨을 숨긴다. */}
+      <label htmlFor={id} className="mb-2 block text-[13px] font-semibold text-muted max-sm:sr-only">
         {label}
       </label>
       <select
@@ -128,13 +129,15 @@ export default function SearchPanel({
         </div>
         <button
           type="submit"
-          className={`h-13 shrink-0 rounded-xl bg-brand px-8 text-[16px] font-bold text-white transition-colors hover:bg-brand-dark max-sm:px-4.5 ${FOCUS_RING}`}
+          aria-label="검색하기"
+          className={`flex h-13 shrink-0 items-center justify-center rounded-xl bg-brand px-8 text-[16px] font-bold text-white transition-colors hover:bg-brand-dark max-sm:w-13 max-sm:px-0 ${FOCUS_RING}`}
         >
-          검색하기
+          <SearchIcon size={20} strokeWidth={2.4} className="sm:hidden" />
+          <span className="max-sm:hidden">검색하기</span>
         </button>
       </form>
 
-      <div className="mt-5 grid grid-cols-2 items-end gap-3 border-t border-line pt-5 md:grid-cols-[repeat(4,1fr)_auto] max-sm:mt-4 max-sm:pt-4">
+      <div className="mt-5 grid grid-cols-2 items-end gap-3 border-t border-line pt-5 md:grid-cols-[repeat(4,1fr)_auto] max-sm:mt-3 max-sm:gap-2 max-sm:border-0 max-sm:pt-0">
         <Select label="성별" value={filters.gender} options={GENDER_OPTIONS} onChange={set("gender")} />
         <Select
           label="실종 지역"
@@ -155,7 +158,7 @@ export default function SearchPanel({
         <button
           type="button"
           onClick={onReset}
-          className={`col-span-2 flex h-11 items-center justify-center gap-1 rounded-lg px-4 text-[14px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand md:col-span-1 ${FOCUS_RING}`}
+          className={`col-span-2 flex h-11 items-center justify-center gap-1 rounded-lg px-4 text-[14px] font-semibold text-muted transition-colors hover:bg-surface hover:text-brand md:col-span-1 max-sm:h-8 max-sm:justify-self-end max-sm:px-2 max-sm:text-[13px] ${FOCUS_RING}`}
         >
           <ResetIcon size={15} strokeWidth={2.2} /> 초기화
         </button>
