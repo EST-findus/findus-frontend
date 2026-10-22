@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SAFE182_URL } from "@/lib/links";
-import { useCurrentUser } from "@/lib/useCurrentUser";
 import HealthCheckButton from "./HealthCheckButton";
 import searchStyles from "./PublicSearch.module.css";
 import HeaderAuth from "./HeaderAuth";
@@ -26,12 +25,12 @@ export function Logo({ blue = false }: { blue?: boolean }) {
 export default function Header() {
   const pathname = usePathname();
   const onMyPage = pathname === "/mypage";
-  const hideUtilityBar = pathname === "/about" || pathname === "/community" || onMyPage || pathname.startsWith("/funding");
   const onPublicPage = pathname === "/search" || pathname === "/";
-  const user = useCurrentUser();
+  const hideUtilityBar = onPublicPage || pathname === "/help" || pathname === "/community" || onMyPage || pathname.startsWith("/funding");
   return (
     <header className={`${onPublicPage ? searchStyles.palette : ""} sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
-      {!hideUtilityBar && <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""} ${onPublicPage ? "md:hidden" : ""}`}>
+      {/* 서버 상태·안전Dream 바로가기 줄은 데스크톱에서만 보인다. */}
+      {!hideUtilityBar && <div className="border-b border-line bg-surface max-md:hidden">
         <div className="page-container flex items-center gap-4 py-1.5 text-[12px] text-muted">
           <p className="break-keep max-sm:hidden">오래된 기억도, 다시 단서가 되도록</p>
           <div className="ml-auto flex items-center gap-4">
@@ -50,14 +49,7 @@ export default function Header() {
 
 }
       <div className={`page-container flex h-16 items-center gap-5 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
-        <Link
-          href={user ? "/" : "/about"}
-          aria-label={user ? "FindUs 홈" : "FindUs 서비스 소개"}
-          className="hidden rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:inline-flex"
-        >
-          <Logo blue={onPublicPage} />
-        </Link>
-        <Link href="/" aria-label="FindUs 홈" className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:hidden">
+        <Link href="/" aria-label="FindUs 홈" className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
           <Logo blue={onPublicPage} />
         </Link>
         <HeaderNav />

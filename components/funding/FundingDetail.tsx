@@ -402,7 +402,7 @@ export default function FundingDetail({ campaignId, child, now, availableImages,
       <p className={`page-container ${styles.footNote}`}>
         결제 연동 전 데모 화면이에요. 모인 금액과 후원자 수는 예시 값에 이 브라우저에서 한 후원을 더한 값이에요.
         {campaign.example && " 이 펀딩은 화면 확인용 예시로, 실제 실종아동 정보를 연결했지만 가족 동의 전이라 개발 환경에서만 보여요."}{" "}
-        <Link href="/about">FindUs 소개</Link>
+        <Link href="/">FindUs 소개</Link>
       </p>
     </div>
   );

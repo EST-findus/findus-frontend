@@ -10,7 +10,7 @@ export default function Footer() {
       <footer className={`${searchStyles.palette} ${searchStyles.searchFooter}`}>
         <div className={`page-container ${searchStyles.footerRow}`}>
           <div className={searchStyles.footerBrand}>
-            <Link href="/about" aria-label="FindUs 서비스 소개" className={searchStyles.footerLogo}>
+            <Link href="/" aria-label="FindUs 홈" className={searchStyles.footerLogo}>
               <span className={searchStyles.searchLogo}><LogoMark size={30} /></span><strong><span style={{ color: "#173B70" }}>Find</span><span style={{ color: "#2468C5" }}>Us</span></strong>
             </Link>
             <p>작은 관심이 한 아이의 내일을 바꿀 수 있습니다.</p>

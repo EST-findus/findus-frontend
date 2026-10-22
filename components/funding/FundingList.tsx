@@ -136,7 +136,7 @@ export default function FundingList({ campaigns: all, childrenById, now }: { cam
       <p className={`page-container ${detail.footNote}`}>
         결제 연동 전 데모 화면이에요. 모인 금액과 후원자 수는 예시 값에 이 브라우저에서 한 후원을 더한 값이에요.
         {hasExample && " ‘예시’ 표시가 붙은 펀딩은 화면 확인용으로 실제 실종아동 정보를 연결한 것이며, 가족 동의 전이라 개발 환경에서만 보여요."}{" "}
-        <Link href="/about">FindUs 소개 <ArrowRightIcon size={12} /></Link>
+        <Link href="/">FindUs 소개 <ArrowRightIcon size={12} /></Link>
       </p>
     </div>
   );

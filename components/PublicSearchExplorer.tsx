@@ -130,7 +130,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         </nav>}
       </section>
 
-      <Link href="/guide#know" className={styles.reportBanner} aria-label="기억나는 작은 단서, 목격 제보 안내 보기">
+      <Link href="/help#know" className={styles.reportBanner} aria-label="기억나는 작은 단서, 목격 제보 안내 보기">
         <Image src="/images/report-hope-hand.png" alt="" width={112} height={74} sizes="(max-width: 640px) 76px, 112px" className={styles.reportBannerArt} />
         <span className={styles.reportBannerCopy}>
           <strong>기억나는 작은 단서,<br className={styles.reportBannerBreak} /> <span>다시 만나는 희망이 됩니다.</span></strong>
