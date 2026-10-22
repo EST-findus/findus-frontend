@@ -1,21 +1,19 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRightIcon } from "./Icons";
 import DnaGuideButton from "./DnaGuideButton";
 import { GuidePopup, type GuidePopupId } from "./GuideSteps";
-import Modal from "./Modal";
 import styles from "./HomeServiceCards.module.css";
 
 const FEATURE_IMAGE_SIZES = "(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 46vw, 360px";
 const GUIDE_IMAGE_SIZES = "(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 46vw, 300px";
 
-export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
+export default function HomeServiceCards() {
   const [activeGuide, setActiveGuide] = useState<GuidePopupId | null>(null);
-  const [aiOpen, setAiOpen] = useState(false);
   const guideTriggerRefs = useRef<Record<GuidePopupId, HTMLButtonElement | null>>({ know: null, me: null });
-  const aiTriggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
@@ -77,7 +75,7 @@ export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
             </span>
           </DnaGuideButton>
 
-          <button ref={aiTriggerRef} type="button" aria-haspopup="dialog" onClick={() => setAiOpen(true)} className={`${styles.guide} ${styles.guideAi}`}>
+          <Link href="/help?tab=ai" className={`${styles.guide} ${styles.guideAi}`}>
             <span aria-hidden="true" className={styles.guideMedia}>
               <Image src="/images/home-service-research.jpg" alt="" fill sizes={GUIDE_IMAGE_SIZES} />
               <span className={styles.chip}>책임 있는 AI</span>
@@ -87,7 +85,7 @@ export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
               <span>시간의 변화를 돕는 AI를 신중하게 연구합니다.</span>
               <span className={styles.action}>연구 안내 보기 <ArrowRightIcon size={15} /></span>
             </span>
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -97,11 +95,6 @@ export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
           onClose={() => setActiveGuide(null)}
           returnFocusTo={guideTriggerRefs.current[activeGuide]}
         />
-      )}
-      {aiOpen && (
-        <Modal eyebrow="책임 있는 AI" title="AI 연구 안내" accent="brand" onClose={() => setAiOpen(false)} returnFocusTo={aiTriggerRef.current} size="wide">
-          {aiPanel}
-        </Modal>
       )}
     </>
   );

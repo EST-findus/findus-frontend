@@ -1,7 +1,6 @@
 export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import HomeLanding from "@/components/HomeLanding";
-import AiPrinciplesPanel from "@/components/AiPrinciplesPanel";
 import { getMissingPersons } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -11,5 +10,5 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const persons = await getMissingPersons();
-  return <main><HomeLanding persons={persons} aiPanel={<AiPrinciplesPanel compact />} /></main>;
+  return <main><HomeLanding persons={persons} /></main>;
 }
