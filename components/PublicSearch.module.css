@@ -17,15 +17,33 @@
 .footerNotice strong { font-size:12px; font-weight:750; color:#365674; }
 .footerNotice p { font-size:10px; line-height:1.5; color:#62748C; margin-top:1px; }
 .footerNotice p a { color:#466a94; font-weight:700; }
-.footerAgencies { display:flex; align-items:center; gap:20px; }
-.footerAgencies a { display:block; padding:4px 0; }
-.footerAgencies strong { display:flex; align-items:center; gap:4px; font-size:12px; font-weight:750; color:#375c8c; white-space:nowrap; }
-.footerAgencies small { display:block; margin-top:4px; color:#62748C; font-size:9px; }
-.footerAgencies a:hover strong { color:#2468C5; }
-.footerCopyright { display:flex; justify-content:space-between; gap:12px; margin-top:6px; padding-top:5px; border-top:1px solid #f0f3f8; color:#62748C; font-size:10px; }
+/* Official institution marks retain their original colors and proportions. */
+.footerAgencies { display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; min-width:0; }
+.footerAgencies a { display:flex; align-items:center; min-height:32px; max-width:100%; }
+.safetyDreamMark { width:140px; max-width:100%; height:auto; object-fit:contain; }
+.ncrcMark { width:175px; max-width:100%; height:auto; object-fit:contain; }
+.footerCopyright { display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 12px; margin-top:6px; padding-top:5px; border-top:1px solid #f0f3f8; color:#62748C; font-size:10px; }
 .searchFooter a:focus-visible { outline:2px solid #2468C5; outline-offset:4px; }
-@media(width<1000px) { .footerRow { grid-template-columns:1fr 1fr; gap:10px; }.footerAgencies { grid-column:1/-1; justify-content:flex-end; }.footerBrand { gap:12px; } }
-@media(width<640px) { .searchFooter { padding:12px 0 84px; }.footerRow { grid-template-columns:1fr; gap:10px; }.footerAgencies { grid-column:auto; justify-content:flex-start; gap:24px; }.footerBrand > p { max-width:none; font-size:10px; }.footerLogo strong { font-size:17px; }.footerCopyright { margin-top:6px; font-size:9px; } }
+/* Tablet: brand and notice side by side, agency marks on their own row. */
+@media(width<1000px) {
+ .searchFooter { padding:14px 0 8px; }
+ .footerRow { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px 24px; align-items:start; }
+ .footerAgencies { grid-column:1/-1; padding-top:10px; border-top:1px solid #f0f3f8; }
+}
+/* Mobile: single column; MobileBottomNav already reserves its own space below. */
+@media(width<640px) {
+ .searchFooter { padding:18px 0 10px; }
+ .footerRow { grid-template-columns:minmax(0,1fr); gap:14px; }
+ .footerBrand { flex-direction:column; align-items:flex-start; gap:6px; }
+ .footerBrand > p { max-width:none; font-size:12px; line-height:1.6; }
+ .footerLogo strong { font-size:17px; }
+ .footerNotice strong { font-size:13px; }
+ .footerNotice p { font-size:11.5px; line-height:1.6; margin-top:2px; }
+ .footerAgencies { gap:6px 18px; }
+ .safetyDreamMark { width:128px; }
+ .ncrcMark { width:160px; }
+ .footerCopyright { flex-direction:column; margin-top:12px; padding-top:8px; font-size:10.5px; }
+}
 .page { background:linear-gradient(#EAF4FF 0,white 700px); padding-bottom:17px; }
 .campaignLayout { padding-top:0; }
 .mainRail { min-width:0; }
@@ -187,13 +205,6 @@
  .sourceNote { align-items:flex-start; font-size:11px; text-align:left; }
 }
 @media(prefers-reduced-motion:reduce) { .card { transition:none; } }
-
-/* Official institution marks retain their original colors and proportions. */
-.footerAgencies { gap:20px; }
-.footerAgencies a { min-height:32px; display:flex; align-items:center; }
-.safetyDreamMark { width:140px; height:auto; object-fit:contain; }
-.ncrcMark { width:175px; height:auto; object-fit:contain; }
-@media(width<640px) { .footerAgencies { flex-wrap:wrap; gap:10px 20px; }.safetyDreamMark { width:140px; }.ncrcMark { width:170px; } }
 
 /* Search result cards: paired portraits and a single row of actions. */
 .comparisonCard { border-color:#a5c5f7; border-radius:15px; }
