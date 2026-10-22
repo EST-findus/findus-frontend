@@ -72,7 +72,7 @@ export default function AuthForm({ mode, next }: { mode: Mode; next: string }) {
   return (
     <div className="mx-auto w-full max-w-110 rounded-3xl border border-line bg-card p-10 shadow-panel max-sm:border-0 max-sm:p-0 max-sm:shadow-none">
       <div className="text-center">
-        <LogoMark size={44} className="mx-auto" />
+        <Link href="/" aria-label="FindUs 홈" className={`mx-auto inline-flex rounded-md ${FOCUS_RING}`}><LogoMark size={44} /></Link>
         <h1 className="mt-4 text-[26px] font-extrabold tracking-[-0.02em]">{copy.title}</h1>
         <p className="mt-2 text-[14px] leading-relaxed break-keep text-muted">{copy.description}</p>
       </div>

@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SAFE182_URL } from "@/lib/links";
-import { useCurrentUser } from "@/lib/useCurrentUser";
 import HealthCheckButton from "./HealthCheckButton";
 import searchStyles from "./PublicSearch.module.css";
 import HeaderAuth from "./HeaderAuth";
@@ -28,7 +27,6 @@ export default function Header() {
   const onMyPage = pathname === "/mypage";
   const hideUtilityBar = pathname === "/about" || pathname === "/community" || onMyPage || pathname.startsWith("/funding");
   const onPublicPage = pathname === "/search" || pathname === "/";
-  const user = useCurrentUser();
   return (
     <header className={`${onPublicPage ? searchStyles.palette : ""} sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
       {!hideUtilityBar && <div className={`border-b border-line bg-surface ${onMyPage ? "max-md:hidden" : ""} ${onPublicPage ? "md:hidden" : ""}`}>
@@ -50,14 +48,7 @@ export default function Header() {
 
 }
       <div className={`page-container flex h-16 items-center gap-5 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
-        <Link
-          href={user ? "/" : "/about"}
-          aria-label={user ? "FindUs 홈" : "FindUs 서비스 소개"}
-          className="hidden rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:inline-flex"
-        >
-          <Logo blue={onPublicPage} />
-        </Link>
-        <Link href="/" aria-label="FindUs 홈" className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:hidden">
+        <Link href="/" aria-label="FindUs 홈" className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
           <Logo blue={onPublicPage} />
         </Link>
         <HeaderNav />
