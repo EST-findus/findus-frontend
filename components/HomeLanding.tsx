@@ -50,17 +50,17 @@ export default function HomeLanding({ persons }: { persons: MissingPerson[] }) {
       <div className={styles.supportShade} aria-hidden="true" />
       <div className={`page-container ${styles.supportBanner}`}>
         <div className={styles.supportCopy}>
-          <div className={styles.supportEyebrow}><span>FINDUS CAMPAIGN</span><span className={styles.supportBadge}>프로젝트 준비 중</span></div>
+          <div className={styles.supportEyebrow}><span>FINDUS CAMPAIGN</span><span className={styles.supportBadge}>펀딩 진행 중</span></div>
           <h2 id="home-support-title">오랜 기다림이 끝나고,<br /><em>다시 가족의 품으로.</em></h2>
           <p>장기 실종아동이 안전하게 집으로 돌아오는 날을 위해,<br />작은 관심을 하나의 희망으로 잇습니다.</p>
           <span className={styles.supportMessage}>잊지 않고 기억하는 마음이, 다시 만날 내일을 만듭니다.</span>
         </div>
         <aside className={styles.supportCard} aria-label="후원 프로젝트 안내">
           <p className={styles.supportCardLabel}><HeartIcon size={17} fill="currentColor" />함께 만드는 프로젝트</p>
-          <h3>후원 프로젝트 준비 중</h3>
-          <p className={styles.supportCardDescription}>오래 기다린 가족과 아이들의 재회를 돕는<br />의미 있는 프로젝트를 준비하고 있습니다.</p>
-          <a href="https://tumblbug.com/" target="_blank" rel="noopener noreferrer" aria-label="텀블벅 둘러보기 (새 창)" className={`${styles.supportButton} ${coralStyles.soft}`}>텀블벅 둘러보기</a>
-          <p className={styles.supportCardNote}>현재 텀블벅 홈페이지로 연결됩니다.</p>
+          <h3>기억을 들고 다니는 QR 굿즈</h3>
+          <p className={styles.supportCardDescription}>가방과 옷에 남은 작은 QR이<br />실종아동의 얼굴을 다시 한 번 보게 합니다.</p>
+          <Link href="/funding" className={`${styles.supportButton} ${coralStyles.soft}`}>펀딩 보러 가기</Link>
+          <p className={styles.supportCardNote}>목표 300만 원에 닿지 못하면 전액 환불해요.</p>
         </aside>
         <span className={styles.supportArtNote}>AI로 제작한 캠페인 이미지</span>
       </div>

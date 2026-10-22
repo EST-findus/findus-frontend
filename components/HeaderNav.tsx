@@ -9,6 +9,7 @@ export const NAV_ITEMS = [
   { href: "/search", label: "실종아동 찾기", short: "찾기" },
   { href: "/community", label: "정보 마당", short: "정보 마당" },
   { href: "/about", label: "서비스 소개", short: "소개" },
+  { href: "/funding", label: "후원하기", short: "후원" },
 ];
 
 export default function HeaderNav() {
