@@ -25,7 +25,7 @@ const CANNOT = [
   "체중, 흉터, 생활환경에 따른 변화까지 예측하지 못해요.",
 ];
 
-export default function AiPrinciplesPanel({ compact = false }: { compact?: boolean }) {
+export default function AiPrinciplesPanel({ compact = false, showProcess = true }: { compact?: boolean; showProcess?: boolean }) {
   return (
     <div className={`rounded-3xl bg-gold-faint ${compact ? "p-6 max-md:p-5 max-sm:p-4" : "p-10 max-lg:p-8 max-sm:p-5"}`}>
       <section aria-labelledby="principles-title">
@@ -41,7 +41,7 @@ export default function AiPrinciplesPanel({ compact = false }: { compact?: boole
         </ul>
       </section>
 
-      <section aria-labelledby="process-title" className="mt-16 scroll-mt-28 max-sm:mt-12">
+      {showProcess && <section aria-labelledby="process-title" className="mt-16 scroll-mt-28 max-sm:mt-12">
         <SectionHeading id="process-title" align="center" eyebrow="작동 방식" title="AI 예상 모습은 이렇게 만들어져요" />
         <ol className="relative mt-8 grid gap-8 rounded-2xl border border-line bg-card p-6 shadow-card md:grid-cols-3 md:before:absolute md:before:top-14 md:before:right-[16.6%] md:before:left-[16.6%] md:before:border-t-2 md:before:border-dashed md:before:border-brand/25 max-sm:p-4">
           {PROCESS.map(({ icon: Icon, title, text }, i) => (
@@ -52,7 +52,7 @@ export default function AiPrinciplesPanel({ compact = false }: { compact?: boole
             </li>
           ))}
         </ol>
-      </section>
+      </section>}
 
       <section aria-labelledby="limits-title" className="mt-16 max-sm:mt-12">
         <SectionHeading id="limits-title" align="center" eyebrow="AI의 가능성과 한계" title="AI가 할 수 있는 것과 없는 것" />
