@@ -5,17 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatGender } from "@/lib/format";
 import PublicPersonCard from "./ChildComparisonCard";
+import CountUp from "./CountUp";
 import styles from "./PublicSearch.module.css";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
 import DetailModal from "./DetailModal";
 import EmptyState from "./EmptyState";
-import { ArrowRightIcon } from "./Icons";
 import ReportGuideModal from "./ReportGuideModal";
 import SearchPanel from "./SearchPanel";
 import ShareModal from "./ShareModal";
+import { useScrollReveal } from "./useScrollReveal";
 
 export default function PublicSearchExplorer({ persons }: { persons: MissingPerson[] }) {
+  const pageRef = useScrollReveal<HTMLDivElement>();
   const [page, setPage] = useState(0);
   const pageSize=12;
   const [query, setQuery] = useState("");
@@ -71,7 +73,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
   const periods = { before2000: "1999년 이전", "2000s": "2000년대", "2010s": "2010년대", after2020: "2020년 이후" };
   const selected = [query.trim() ? `검색어: ${query.trim()}` : "", filters.region !== "all" ? `지역: ${filters.region}` : "", filters.gender !== "all" ? `성별: ${formatGender(filters.gender)}` : "", filters.ageGroup !== "all" ? `당시 나이: ${filters.ageGroup === "10+" ? "10세 이상" : filters.ageGroup.replace("-", "~") + "세"}` : "", filters.period !== "all" ? `실종 연도: ${periods[filters.period]}` : ""].filter(Boolean);
   return (
-    <div className={styles.page}>
+    <div ref={pageRef} className={styles.page}>
       <div className={`page-container ${styles.campaignLayout}`}>
       <div className={styles.mainRail}>
       <section className={styles.campaignHero} aria-labelledby="campaign-title">
@@ -96,7 +98,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         <header className={styles.resultHeader}>
           <h2 id="results" tabIndex={-1}>현재 찾고 있는 아이들</h2>
           <div className={styles.resultTools}>
-            <p aria-live="polite">총 <strong>{results.length}</strong>명</p>
+            <p aria-live="polite">총 <strong><CountUp value={results.length} /></strong>명</p>
             <label htmlFor="public-search-sort" className="sr-only">정렬</label>
             <select id="public-search-sort" value={sort} onChange={(event) => {setSort(event.target.value as SortKey);setPage(0);}}>
               <option value="recent">실종 연도 최신순</option>
@@ -107,7 +109,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         </header>
         <div className={styles.exampleNote}><span>자료 출처: 경찰청</span><p>우리 DB에 동기화된 공개 실종아동 정보입니다. 검색과 페이지 이동은 저장된 정보만 조회합니다.</p></div>
         {results.length > 0 ? (
-          <div id="search-card-page" className={styles.cardGrid}>
+          <div id="search-card-page" className={styles.cardGrid} data-reveal-items>
             {visible.map((person) => (
               <PublicPersonCard
                 key={person.id}
@@ -130,13 +132,12 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         </nav>}
       </section>
 
-      <Link href="/guide#know" className={styles.reportBanner} aria-label="기억나는 작은 단서, 목격 제보 안내 보기">
+      <Link href="/guide#know" data-reveal className={styles.reportBanner} aria-label="기억나는 작은 단서, 목격 제보 안내 보기">
         <Image src="/images/report-hope-hand.png" alt="" width={112} height={74} sizes="(max-width: 640px) 76px, 112px" className={styles.reportBannerArt} />
         <span className={styles.reportBannerCopy}>
-          <strong>기억나는 작은 단서,<br className={styles.reportBannerBreak} /> <span>다시 만나는 희망이 됩니다.</span></strong>
+          <strong>기억나는 작은 단서, <span>다시 만나는 희망이 됩니다.</span></strong>
           <small>작은 기억도 소중한 제보가 될 수 있어요.</small>
         </span>
-        <span className={styles.reportBannerAction}><span>목격 제보 안내</span><ArrowRightIcon size={16} /></span>
       </Link>
       </div>
       </div>
