@@ -8,7 +8,7 @@ import ChildComparisonCard from "./ChildComparisonCard";
 import DetailModal from "./DetailModal";
 import ReportGuideModal from "./ReportGuideModal";
 import ShareModal from "./ShareModal";
-import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
+import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "./Icons";
 import styles from "./HomeChildren.module.css";
 
 const subscribe = (notify: () => void) => {
@@ -43,6 +43,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useSyncExternalStore(subscribeMotion, motionSnapshot, serverSnapshot);
   const [sort, setSort] = useState<SortKey>("recent");
+  const [query, setQuery] = useState("");
   const [detail, setDetail] = useState<MissingPerson | null>(null);
   const [report, setReport] = useState<MissingPerson | null>(null);
   const [share, setShare] = useState<MissingPerson | null>(null);
@@ -50,7 +51,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const mobile = useSyncExternalStore(subscribe, mobileSnapshot, serverSnapshot);
   const desktop = useSyncExternalStore(subscribeDesktop, desktopSnapshot, serverSnapshot);
   const pageSize = mobile ? 1 : desktop ? 3 : 2;
-  const results = useMemo(()=>filterPersons(persons,{query:"",filters:DEFAULT_FILTERS,sort}),[persons,sort]);
+  const results = useMemo(()=>filterPersons(persons,{query,filters:DEFAULT_FILTERS,sort}),[persons,query,sort]);
   const pages = Math.ceil(results.length / pageSize);
   const current = Math.min(page,Math.max(0,pages-1));
   const start = current * pageSize;
@@ -89,8 +90,14 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   return <section className={styles.section} aria-labelledby="home-children-title">
     <div className={`page-container ${styles.sectionBox}`}>
       <header className={styles.heading}>
-        <div><p className={styles.eyebrow}><span />함께 찾는 마음</p><h2 id="home-children-title">지금, 우리가 함께 찾고 있는 아이들</h2><p className={styles.description}>기억 속 얼굴을 다시 살펴보세요. 작은 관심이 소중한 단서가 될 수 있습니다.</p></div>
-        <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={17} /></Link>
+        <h2 id="home-children-title" className="sr-only">지금, 우리가 함께 찾고 있는 아이들</h2>
+        <div className={styles.headingTools}>
+          <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} /></Link>
+          <form className={styles.homeSearch} role="search" onSubmit={event=>{event.preventDefault();setPage(0);setOutgoing(null);}}>
+            <label className={styles.searchInput}><SearchIcon size={19} /><input type="search" value={query} onChange={event=>{setQuery(event.target.value);setPage(0);setOutgoing(null);}} placeholder="이름이나 실종 지역을 입력해주세요" aria-label="실종아동 검색" autoComplete="off" /></label>
+            <button type="submit">검색하기</button>
+          </form>
+        </div>
       </header>
       <div className={styles.toolbar}>
         <p><strong>{results.length}명</strong>의 정보를 함께 살펴보고 있어요.</p>
@@ -102,14 +109,16 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
           <div key={`${sort}-${current}-${pageSize}`} className={`${styles.cards} ${outgoing ? direction === "next" ? styles.enterRight : styles.enterLeft : ""}`}>{results.slice(start,end).map(renderCard)}</div>
         </div>
         {results.length === 0 && <p className={styles.empty}>현재 표시할 아동 정보가 없습니다. 전체 검색에서 다시 확인해 주세요.</p>}
+        <div className={styles.paginationRow}>
         {pages > 1 && <nav className={styles.pagination} aria-label="홈 아동 카드 넘기기">
           <button type="button" aria-label="이전 아동 카드 보기" aria-controls="home-comparison-cards" disabled={Boolean(outgoing)} onClick={()=>move(current-1,"previous")}><ChevronLeftIcon size={19} /></button>
           <p aria-live={playing && !reducedMotion ? "off" : "polite"}><strong>{mobile ? start+1 : `${start+1}–${end}`}</strong><span> / {results.length}명</span><span className="sr-only"> · {current+1} / {pages} 페이지</span></p>
           <button type="button" aria-label="다음 아동 카드 보기" aria-controls="home-comparison-cards" disabled={Boolean(outgoing)} onClick={()=>move(current+1,"next")}><ChevronRightIcon size={19} /></button>
           {!reducedMotion && <button type="button" className={styles.rotationControl} aria-label={playing ? "자동 넘김 일시정지" : "자동 넘김 시작"} aria-pressed={!playing} onClick={()=>setPlaying(!playing)}><span aria-hidden="true">{playing ? "Ⅱ" : "▷"}</span><span>{playing ? "일시정지" : "자동 넘김"}</span></button>}
         </nav>}
+        <p className={styles.demo}><span>자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
+        </div>
       </div>
-      <p className={styles.demo}><span>자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
     </div>
     {detail && <DetailModal person={detail} returnFocusTo={trigger} onClose={()=>setDetail(null)} onReport={person=>{setDetail(null);setReport(person);}} />}
     {report && <ReportGuideModal person={report} returnFocusTo={trigger} onClose={()=>setReport(null)} />}

@@ -138,6 +138,20 @@
 @media(width<640px) { .videoCampaignInner { grid-template-columns:1fr; gap:23px; padding-block:30px; }.videoPlaceholder { padding:20px; }.videoPlaceholder > svg { width:35px; height:35px; margin-bottom:10px; }.videoPlaceholder strong { font-size:14px; }.videoPlaceholder > p { font-size:11px; }.videoPlaceholder > span { bottom:9px; left:10px; font-size:9px; }.videoCampaignCopy h2 { font-size:26px; margin-top:9px; }.videoCampaignDescription { margin-top:12px; font-size:13px; }.videoCampaignAction { margin-top:18px; } }
 
 .heroAbout { max-width:460px; margin-top:22px; padding-top:15px; border-top:1px solid #bed0df70; }
+
+.closing { background:linear-gradient(135deg,#F7F9FC 0%,#EAF4FF 100%); }
+.closingInner { padding-block:34px 26px; text-align:center; }
+.closingTag { display:inline-flex; align-items:center; border-radius:999px; padding:5px 11px; background:#FFFFFF; color:#2468C5; font-size:11px; font-weight:700; letter-spacing:.2px; }
+.closing h2 { margin-top:15px; color:#173B70; font-size:25px; font-weight:800; line-height:1.5; letter-spacing:-.6px; }
+.closing h2 em { color:#2468C5; font-style:normal; }
+.closing p { margin-top:8px; color:#5C6F86; font-size:13px; line-height:1.7; }
+.closingRule { height:1px; margin-top:24px; background:linear-gradient(90deg,transparent,#FF7867 18%,#D5E4F5 50%,#2468C5 82%,transparent); opacity:.55; }
+@media(width<640px) {
+  .closingInner { padding-block:27px 20px; }
+  .closing h2 { margin-top:12px; font-size:21px; }
+  .closing p { margin-top:6px; font-size:12px; }
+  .closingRule { margin-top:19px; }
+}
 .heroAboutLabel { font-size:11px; font-weight:750; letter-spacing:.4px; color:#5C6F86; }
 .heroAbout .heroDescription { margin-top:8px; font-size:13px; line-height:1.85; color:#6c8197; }
 .heroAbout .heroDescription > span + span { margin-top:6px; }
@@ -346,7 +360,6 @@
 @media(width<640px) {
  .videoCampaignInner { background-image:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.90)),url('/images/home-four-frame-campaign-full.png'); background-position:center,center 54%; }
 }
-
 /* Source details sit beside the player without covering the campaign artwork. */
 .videoEmbed { display:grid; grid-template-columns:minmax(0,560px) minmax(0,1fr); align-items:end; gap:32px; max-width:none; }
 .videoCredit { justify-self:end; width:100%; max-width:440px; margin:0; padding:10px 14px; border:1px solid rgba(220,229,240,.8); border-radius:10px; background:rgba(255,255,255,.88); }
@@ -382,4 +395,272 @@
  .stepsScene .steps { margin-top:20px; gap:18px; }
  .stepsScene .steps li { padding:12px; }
  .stepsScene .stepNote { margin-top:16px; }
+}
+
+/* Updated hero copy after removing the secondary intro and action block. */
+.heroLead { max-width:460px; margin-top:18px; color:#2468C5; font-size:18px; font-weight:750; line-height:1.7; word-break:keep-all; }
+.heroCopy > .heroDescription { max-width:460px; margin-top:10px; color:#5C6F86; font-size:14px; line-height:1.8; word-break:keep-all; }
+@media(width<1100px) { .hero h1 { font-size:42px; }.heroLead,.heroCopy > .heroDescription { max-width:410px; }.heroLead { font-size:17px; }.heroCopy > .heroDescription { font-size:13px; } }
+@media(width<640px) { .hero,.heroInner { min-height:660px; }.heroVisual { top:340px; }.heroLead { max-width:340px; margin-top:14px; font-size:15px; line-height:1.7; }.heroCopy > .heroDescription { max-width:340px; margin-top:8px; font-size:12px; line-height:1.75; } }
+
+/* Compact responsive campaign hero. */
+.heroInner { min-height:245px; }
+.heroCopy { padding:20px 0; }
+.hero h1 { margin-top:8px; font-size:36px; line-height:1.12; letter-spacing:-1.2px; }
+.heroLead { max-width:none; margin-top:9px; font-size:15px; line-height:1.45; }
+.heroCopy > .heroDescription { max-width:none; margin-top:6px; font-size:12px; line-height:1.35; white-space:nowrap; }
+@media(width<1100px) { .hero h1 { font-size:32px; }.heroLead { font-size:14px; }.heroCopy > .heroDescription { font-size:11px; } }
+@media(width<640px) {
+ .hero,.heroInner { min-height:470px; }
+ .heroCopy { padding:20px 0 0; }
+ .hero h1 { font-size:30px; line-height:1.2; }
+ .heroLead { max-width:340px; margin-top:9px; font-size:14px; line-height:1.5; }
+ .heroCopy > .heroDescription { max-width:340px; margin-top:8px; font-size:12px; line-height:1.6; white-space:normal; }
+ .heroVisual { top:275px; bottom:auto; height:195px; }
+}
+/* Full-bleed campaign artwork, with the content kept on the shared page grid. */
+.videoCampaign {
+  padding:16px 0 28px;
+  border:0;
+  background-color:#FBFCFD;
+  background-image:linear-gradient(90deg,rgba(255,255,255,.88),rgba(255,255,255,.78)),url('/images/home-four-frame-campaign-full.png');
+  background-size:cover;
+  background-position:center,center 54%;
+  background-repeat:no-repeat;
+}
+.videoCampaign .videoCampaignInner {
+  width:auto;
+  padding-block:28px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  background-image:none;
+}
+@media(width<640px) {
+  .videoCampaign { padding:12px 0 20px; background-image:linear-gradient(rgba(255,255,255,.86),rgba(255,255,255,.90)),url('/images/home-four-frame-campaign-full.png'); background-position:center,center 54%; }
+  .videoCampaign .videoCampaignInner { padding:22px 14px; }
+}
+
+/* Guide-like cards for the three home service shortcuts. */
+.services {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  padding-block:28px;
+  border-bottom:0;
+  background:transparent;
+}
+.services > a,
+.services > a:first-child,
+.services > a:last-child {
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  min-width:0;
+  min-height:170px;
+  padding:24px;
+  border:1px solid #E3EAF3;
+  border-radius:16px;
+  background:#FFFFFF;
+  box-shadow:0 4px 16px rgba(23,59,112,.045);
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.services > a:hover {
+  transform:translateY(-2px);
+  border-color:#C7D8EC;
+  box-shadow:0 8px 22px rgba(23,59,112,.08);
+}
+.services > a:focus-visible { outline:2px solid #2468C5; outline-offset:3px; }
+.services .serviceIcon { width:52px; height:52px; }
+.services .serviceCopy { display:flex; min-width:0; flex:1; flex-direction:column; align-items:flex-start; }
+.services .serviceTag { color:#2468C5; font-size:11px; font-weight:750; }
+.services .serviceCopy strong { margin-top:4px; font-size:17px; line-height:1.4; }
+.services .serviceCopy p { margin-top:7px; font-size:12px; line-height:1.65; }
+.services .serviceAction { display:inline-flex; align-items:center; gap:5px; margin-top:auto; padding-top:14px; color:#2468C5; font-size:12px; font-weight:750; }
+.services .serviceAction svg { margin:0; }
+@media(width<900px) {
+  .services { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .services > a,
+  .services > a:first-child,
+  .services > a:last-child { min-height:160px; padding:20px; }
+}
+@media(width<640px) {
+  .services { grid-template-columns:1fr; gap:12px; padding-block:20px; }
+  .services > a,
+  .services > a:first-child,
+  .services > a:last-child { min-height:0; padding:18px; border-radius:14px; }
+  .services .serviceIcon { width:46px; height:46px; }
+  .services .serviceCopy strong { font-size:16px; }
+}
+
+/* Four responsive service cards, matching the guide-choice cards. */
+.serviceCards {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-areas:"know group group ai";
+  gap:14px;
+  padding-block:28px;
+  align-items:stretch;
+}
+.serviceCard,
+.serviceCards > a,
+.serviceCards > button {
+  box-sizing:border-box;
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  width:100%;
+  min-width:0;
+  min-height:218px;
+  padding:22px 18px;
+  border:1px solid #E3EAF3;
+  border-radius:16px;
+  background:#FFFFFF;
+  box-shadow:0 4px 16px rgba(23,59,112,.045);
+  color:#173B70;
+  text-align:left;
+  text-decoration:none;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.serviceCards > a,
+.serviceCards > button { cursor:pointer; }
+.serviceCards > a:hover,
+.serviceCards > button:hover {
+  transform:translateY(-2px);
+  border-color:#C7D8EC;
+  box-shadow:0 8px 22px rgba(23,59,112,.08);
+}
+.serviceCards > a:focus-visible,
+.serviceCards > button:focus-visible { outline:2px solid #2468C5; outline-offset:3px; }
+.serviceCard > span:first-child { width:52px; height:52px; flex:0 0 52px; border-radius:16px; }
+.serviceCardCopy,
+.serviceCard > span:nth-child(2) { display:flex; min-width:0; flex:1; flex-direction:column; align-items:flex-start; align-self:stretch; }
+.serviceCardLabel,
+.serviceCard > span:nth-child(2) > span:first-child { color:#2468C5; font-size:11px; font-weight:750; }
+.serviceCardCopy > strong,
+.serviceCard > span:nth-child(2) > span:nth-child(2) { margin-top:3px; font-size:17px; font-weight:800; line-height:1.4; letter-spacing:-.3px; }
+.serviceCardDescription,
+.serviceCard > span:nth-child(2) > span:nth-child(3) { margin-top:7px; color:#62748C; font-size:12px; line-height:1.65; word-break:keep-all; }
+.serviceCardAction,
+.serviceCard > span:nth-child(2) > span:nth-child(4) { display:inline-flex; align-items:center; gap:5px; margin-top:auto; padding-top:14px; color:#2468C5; font-size:12px; font-weight:750; }
+.serviceCardKnow { grid-area:know; }
+.serviceCardAi { grid-area:ai; }
+.serviceGroup {
+  grid-area:group;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  min-width:0;
+  overflow:hidden;
+  border:1px solid #DCE6F2;
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 4px 16px rgba(23,59,112,.045);
+}
+.serviceGroup > .serviceGroupItem {
+  min-height:218px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.serviceGroup > .serviceGroupItem + .serviceGroupItem { border-left:1px solid #DCE6F2; }
+.serviceGroup > .serviceGroupItem:hover { transform:none; background:#F8FBFF; box-shadow:none; }
+.serviceCardCopy { text-align:left; }
+.serviceCardDescription { max-width:30ch; }
+.serviceCardDna > span:nth-child(2) { text-align:left; }
+.serviceCardDna > span:nth-child(2) > span:nth-child(3) { color:#62748C; }
+@media(width<1100px) {
+  .serviceCards { grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-areas:"know ai" "group group"; gap:14px; }
+  .serviceCard,
+  .serviceCards > a,
+  .serviceCards > button { min-height:190px; padding:20px; }
+  .serviceGroup > .serviceGroupItem { min-height:190px; padding:20px; }
+}
+@media(width<640px) {
+  .serviceCards { grid-template-columns:1fr; grid-template-areas:"know" "group" "ai"; gap:12px; padding-block:20px; }
+  .serviceCard,
+  .serviceCards > a,
+  .serviceCards > button { min-height:0; padding:18px; border-radius:14px; }
+  .serviceCard > span:first-child { width:48px; height:48px; flex-basis:48px; }
+  .serviceGroup { grid-template-columns:1fr; border-radius:14px; }
+  .serviceGroup > .serviceGroupItem { min-height:0; padding:18px; }
+  .serviceGroup > .serviceGroupItem + .serviceGroupItem { border-top:1px solid #DCE6F2; border-left:0; }
+}
+
+/* Compact service cards with one shared icon treatment. */
+.serviceCards { gap:12px; padding-block:22px; }
+.serviceCard,
+.serviceCards > a,
+.serviceCards > button { min-height:184px; gap:12px; padding:18px 16px; }
+.serviceCard > span:first-child {
+  display:flex;
+  flex:0 0 46px;
+  align-items:center;
+  justify-content:center;
+  width:46px;
+  height:46px;
+  flex-basis:46px;
+  border-radius:14px;
+  background:#FFF0ED;
+  color:#173B70;
+}
+.serviceGroup > .serviceGroupItem { min-height:184px; gap:12px; padding:18px 16px; }
+.serviceCardCopy > strong,
+.serviceCard > span:nth-child(2) > span:nth-child(2) { font-size:16px; }
+.serviceCardDescription,
+.serviceCard > span:nth-child(2) > span:nth-child(3) { margin-top:5px; font-size:11.5px; line-height:1.55; }
+.serviceCardAction,
+.serviceCard > span:nth-child(2) > span:nth-child(4) { padding-top:10px; font-size:11.5px; }
+@media(width<1100px) {
+  .serviceCards { gap:12px; }
+  .serviceCard,
+  .serviceCards > a,
+  .serviceCards > button,
+  .serviceGroup > .serviceGroupItem { min-height:170px; padding:16px; }
+}
+@media(width<640px) {
+  .serviceCards { gap:10px; padding-block:18px; }
+  .serviceCard,
+  .serviceCards > a,
+  .serviceCards > button,
+  .serviceGroup > .serviceGroupItem { min-height:0; padding:15px; }
+  .serviceCard > span:first-child { width:44px; height:44px; flex-basis:44px; }
+}
+/* Minimize the shortcut row height while keeping every label and action visible. */
+.serviceCards { width:calc(100% - 32px); padding-inline:0; padding-block:16px; }
+.serviceCard,
+.serviceCards > a,
+.serviceCards > button,
+.serviceGroup > .serviceGroupItem { min-height:148px; padding:14px; }
+.serviceCard > span:first-child { width:42px; height:42px; flex-basis:42px; border-radius:13px; }
+.serviceCardDescription,
+.serviceCard > span:nth-child(2) > span:nth-child(3) { margin-top:4px; font-size:11px; line-height:1.45; }
+.serviceCardAction,
+.serviceCard > span:nth-child(2) > span:nth-child(4) { padding-top:8px; }
+@media(width<640px) {
+  .serviceCards { width:calc(100% - 40px); padding-block:14px; }
+  .serviceCard,
+  .serviceCards > a,
+  .serviceCards > button,
+  .serviceGroup > .serviceGroupItem { min-height:0; padding:13px; }
+  .serviceCard > span:first-child { width:40px; height:40px; flex-basis:40px; }
+}
+
+/* Simplify the campaign block around its video and a compact source line. */
+.videoCampaign { padding-block:10px 16px; }
+.videoCampaignInner { gap:14px; padding-block:18px; }
+.videoCampaignHeading { align-items:center; padding-bottom:12px; }
+.videoCampaignCopy h2 { margin-top:0; font-size:24px; line-height:1.35; }
+.videoCampaignLink { padding-block:6px; }
+.videoEmbed { display:block; width:100%; max-width:760px; align-self:flex-start; margin:0; }
+.videoPlayer { width:100%; max-width:560px; }
+.videoCredit { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:4px 12px; width:100%; max-width:560px; margin:7px 0 0; padding:0; border:0; background:transparent; color:#5C6F86; font-size:10px; line-height:1.5; }
+.videoCredit a { color:#2468C5; }
+.videoCredit .videoOriginal { min-height:24px; }
+@media(width<640px) {
+  .videoCampaign { padding-block:8px 12px; }
+  .videoCampaignInner { gap:12px; padding:16px 12px; }
+  .videoCampaignHeading { flex-direction:row; align-items:center; gap:8px; padding-bottom:10px; }
+  .videoCampaignCopy h2 { font-size:19px; }
+  .videoCampaignLink { gap:5px; padding-block:4px; font-size:11px; }
+  .videoCredit { font-size:9px; }
 }

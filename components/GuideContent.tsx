@@ -42,9 +42,9 @@ export default function GuideContent({ embedded = false }: { embedded?: boolean 
       <PageHero
         embedded={embedded}
         overlap
-        eyebrow="제보·상담 안내"
-        title="기억이 떠올랐다면, 다음은 이렇게."
-        description="목격한 사람인지, 혹시 내가 실종아동인지에 따라 공식 절차가 달라요. 상황을 고르면 차근차근 안내해 드려요."
+        eyebrow="FindUs 이용 안내"
+        title="실종아동 제보·가족 찾기 안내"
+        description="목격 단서를 어디에 제보하는지, 본인이나 가족을 찾을 때 어떻게 상담하는지 안내합니다. 제보와 상담은 경찰청 182 또는 안전Dream에서 진행해 주세요."
       />
 
       <div className={embedded ? "flow-root pb-4" : "flow-root bg-hero pb-8"}>

@@ -19,13 +19,15 @@ interface ModalProps {
   mobileFullscreen?: boolean;
   mobileCompact?: boolean;
   size?: "default" | "wide";
+  accent?: "brand" | "gold";
+  eyebrow?: string;
 }
 
 /**
  * 마운트되어 있는 동안 열린 상태다. 부모에서 조건부 렌더링으로 열고 닫는다.
  * 첫 포커스는 [data-autofocus] 요소, 없으면 첫 포커스 가능 요소.
  */
-export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false, mobileCompact = false, size = "default" }: ModalProps) {
+export default function Modal({ title, onClose, returnFocusTo, children, mobileFullscreen = false, mobileCompact = false, size = "default", accent, eyebrow }: ModalProps) {
   const titleId = useId();
   const boxRef = useRef<HTMLDivElement>(null);
   const onCloseRef = useRef(onClose);
@@ -108,7 +110,8 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
         >
           <CloseIcon size={20} />
         </button>
-        <h2 id={titleId} className={`mb-5 pr-10 text-[20px] font-extrabold tracking-[-0.3px] break-keep ${mobileCompact ? "max-md:mb-0 max-md:shrink-0 max-md:border-b max-md:border-line max-md:px-5 max-md:py-4 max-md:pr-16" : ""}`}>
+        {eyebrow && <p className={`mb-2 inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wide ${accent === "gold" ? "bg-gold-soft text-gold-ink" : "bg-brand-soft text-brand"}`}>{eyebrow}</p>}
+        <h2 id={titleId} className={`mb-5 pr-10 text-[20px] font-extrabold tracking-[-0.3px] break-keep text-ink ${mobileCompact ? "max-md:mb-0 max-md:shrink-0 max-md:border-b max-md:border-line max-md:px-5 max-md:py-4 max-md:pr-16" : ""}`}>
           {title}
         </h2>
         {children}
