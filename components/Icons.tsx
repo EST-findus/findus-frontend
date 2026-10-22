@@ -217,3 +217,11 @@ export const DownloadIcon = (p: IconProps) => (
     <path d="M5 19.5h14" />
   </Svg>
 );
+
+/** 가족 확인 배지용: 채운 하트 안의 체크 */
+export const HeartCheckIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M12 20.5s-8-4.9-8-11a4.4 4.4 0 0 1 8-2.6 4.4 4.4 0 0 1 8 2.6c0 6.1-8 11-8 11Z" fill="currentColor" stroke="none" />
+    <path d="m8.6 11.6 2.3 2.3 4.6-4.6" stroke="#fff" strokeWidth={2.2} />
+  </Svg>
+);
