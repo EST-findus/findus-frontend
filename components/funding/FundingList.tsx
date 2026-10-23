@@ -103,11 +103,11 @@ export default function FundingList({ campaigns: all, childrenById, now }: { cam
   const hasExample = campaigns.some((campaign) => campaign.example);
 
   return (
-    <div className={detail.page}>
-      <p className={detail.refundBand}><ShieldIcon size={16} /><span>모든 펀딩은 목표에 닿지 못하면 <strong>전액 환불</strong>해요</span></p>
+    <div className={`${detail.page} ${styles.listPage}`}>
+      <p className={`${detail.refundBand} ${styles.refund}`}><ShieldIcon size={16} /><span>모든 펀딩은 목표에 닿지 못하면 <strong>전액 환불</strong>해요</span></p>
 
       <header className={`page-container ${styles.intro}`}>
-        <p className={detail.eyebrow}>FINDUS REWARD FUNDING</p>
+        <p className={`${detail.eyebrow} ${styles.introEyebrow}`}><span aria-hidden="true" />FINDUS REWARD FUNDING</p>
         <h1 className={styles.introTitle}>한 아이를 기억하는<br />QR 굿즈를 함께 만들어요</h1>
         <p className={styles.introLead}>펀딩마다 함께 기억하는 아이가 있어요. 후원하면 키링·에코백·옷이 만들어지고, 그 위의 QR이 길 위에서 아이들의 얼굴을 다시 한 번 보게 합니다.</p>
         <p className={styles.introNote}><QrIcon size={16} />굿즈에는 아이 얼굴을 넣지 않고 <strong>QR만</strong> 넣어요. 얼굴은 이 페이지와 공식 실종 정보에서만 보여드려요.</p>
