@@ -11,7 +11,7 @@ export default function Footer() {
         <div className={`page-container ${searchStyles.footerRow}`}>
           <div className={searchStyles.footerBrand}>
             <Link href="/" aria-label="FindUs 홈" className={searchStyles.footerLogo}>
-              <span className={searchStyles.searchLogo}><LogoMark size={30} /></span><strong><span style={{ color: "#173B70" }}>Find</span><span style={{ color: "#2468C5" }}>Us</span></strong>
+              <span className={searchStyles.searchLogo}><LogoMark size={30} /></span><strong><span style={{ color: "#173B70" }}>Find</span><span style={{ color: "#3978B8" }}>Us</span></strong>
             </Link>
             <p>작은 관심이 한 아이의 내일을 바꿀 수 있습니다.</p>
           </div>
@@ -24,7 +24,7 @@ export default function Footer() {
             <a href="https://www.ncrc.or.kr/" target="_blank" rel="noopener noreferrer" aria-label="국가아동권리보장원 공식 사이트 (새 창)"><Image src="/images/agencies/ncrc.png" alt="국가아동권리보장원" width={244} height={24} className={searchStyles.ncrcMark} /></a>
           </nav>
         </div>
-        <div className={`page-container ${searchStyles.footerCopyright}`}><span>© 2026 FindUs</span><span>아이들이 안전한 내일을 함께합니다.</span></div>
+        <div className={`page-container ${searchStyles.footerCopyright}`}><span>© 2026 FindUs</span><span>기억이 단서가 되어, 다시 만나는 날까지 함께합니다.</span></div>
       </footer>
   );
 }
