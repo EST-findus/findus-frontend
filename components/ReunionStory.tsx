@@ -7,33 +7,31 @@ import { NEWS_PAGE_HREF, NEWS_SUMMARY_COUNT, REUNION_NEWS } from "@/lib/reunionS
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
 
-/** 마이페이지용 요약. 전체 목록은 정보 마당의 뉴스 탭에서 본다. */
+/** 마이페이지용 요약. 전체 목록은 정보 마당의 뉴스 탭에서 본다. 최근 소식 세 개를 작은 카드로 보여준다. */
 export default function ReunionStory() {
   return (
-    <aside data-reunion-panel aria-labelledby="reunion-story-title" className="mt-4 rounded-2xl border border-line bg-[#f7faf8] max-md:mt-3">
-      <section aria-label="다시 만난 가족" className="min-w-0 px-4 pt-3.5 pb-0.5 max-sm:px-2.5 max-sm:pt-2 max-sm:pb-0">
-        <div className="mb-1 flex items-center justify-between gap-1">
-          <div className="flex min-w-0 items-center gap-1.5 max-sm:gap-0.5">
-            <span className="shrink-0 rounded-md border border-brand/10 bg-brand-soft px-1.5 py-0.5 text-[11px] leading-4 font-semibold text-brand max-sm:px-1 max-sm:text-[9px]">뉴스</span>
-            <h3 className="min-w-0 truncate text-[15px] font-bold text-brand max-sm:text-[14px]">다시 만난 가족</h3>
-          </div>
-          <Link href={NEWS_PAGE_HREF} aria-label="다시 만난 가족 뉴스 자세히 보기" className={`inline-flex shrink-0 items-center gap-0.5 rounded px-1 text-[13px] text-muted hover:text-brand max-sm:text-[12px] ${FOCUS}`}>
-            자세히 보기<ChevronRightIcon size={12} />
-          </Link>
+    <aside data-reunion-summary aria-labelledby="reunion-story-title" className={styles.summary}>
+      <div className={styles.summaryHead}>
+        <div className={styles.summaryTitle}>
+          <span className={styles.summaryBadge}>뉴스</span>
+          <h3>다시 만난 가족</h3>
         </div>
-        <ul>
-          {REUNION_NEWS.slice(0, NEWS_SUMMARY_COUNT).map((item) => <li key={item.href}>
-            <a href={item.href} target="_blank" rel="noopener noreferrer" title={`${item.title} · ${item.source} · ${item.date}`}
-              aria-label={`${item.kind}, ${item.title}, ${item.source}, ${item.date}, ${item.action} (새 창)`}
-              className={`${styles.link} flex min-w-0 items-center gap-1.5 rounded py-0.5 text-[14px] leading-5 max-sm:py-0.5 max-sm:text-[13px] ${FOCUS}`}>
-              <ArrowUpRightIcon size={15} className={`${styles.arrow} shrink-0 text-brand/70`} />
-              <span className={`${styles.title} truncate`}>{item.title}</span>
-              <span className="ml-auto shrink-0 pl-2 text-[12px] text-muted max-sm:hidden">{item.source} · {item.date}</span>
-            </a>
-          </li>)}
-        </ul>
-      </section>
-      <h2 id="reunion-story-title" className="flex items-center justify-end gap-2 text-right px-4 pt-1 pb-2 text-[14px] font-semibold text-gold-ink max-sm:px-3 max-sm:pt-1 max-sm:text-[13px]"><HeartIcon size={16} className="shrink-0 text-gold" />다시 만날 날을 바라며, 희망을 함께 이어가요.</h2>
+        <Link href={NEWS_PAGE_HREF} aria-label="다시 만난 가족 뉴스 자세히 보기" className={`${styles.summaryMore} ${FOCUS}`}>
+          자세히 보기<ChevronRightIcon size={14} />
+        </Link>
+      </div>
+      <ul className={styles.summaryList}>
+        {REUNION_NEWS.slice(0, NEWS_SUMMARY_COUNT).map((item) => <li key={item.href}>
+          <a href={item.href} target="_blank" rel="noopener noreferrer" title={`${item.title} · ${item.source} · ${item.date}`}
+            aria-label={`${item.kind}, ${item.title}, ${item.source}, ${item.date}, ${item.action} (새 창)`}
+            className={`${styles.summaryCard} ${FOCUS}`}>
+            <span className={styles.summaryMeta}>{item.source} · {item.date}</span>
+            <span className={styles.summaryCardTitle}>{item.title}</span>
+            <span className={styles.summaryAction}>{item.action}<ArrowUpRightIcon size={14} /></span>
+          </a>
+        </li>)}
+      </ul>
+      <h2 id="reunion-story-title" className={styles.summaryFoot}><HeartIcon size={15} />다시 만날 날을 바라며, 희망을 함께 이어가요.</h2>
     </aside>
   );
 }

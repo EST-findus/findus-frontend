@@ -41,8 +41,8 @@ export default function FavoriteChildren({ userId, persons }: { userId: string; 
       </div>
       {error && <p role="alert" className="mt-4 text-[14px] text-red">{error}</p>}
       {saved.length === 0 ? (
-        <div className="mt-6 rounded-2xl border border-line bg-card px-5 py-12 text-center">
-          <HeartIcon className="mx-auto text-gold" size={32} />
+        <div data-favorite-empty className="mt-6 rounded-2xl border border-line bg-card px-5 py-12 text-center">
+          <span aria-hidden="true" data-favorite-empty-icon className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FEF4F3] text-[#D4675E]"><HeartIcon size={30} /></span>
           <p className="mt-4 font-bold">아직 관심 등록한 아동이 없어요.</p>
           <p className="mt-2 text-[14px] leading-relaxed text-muted">실종아동 카드의 하트 버튼을 눌러 관심 아동에 추가해 보세요.</p>
           <Link href="/search" className={`mt-5 inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-[14px] font-bold text-white hover:bg-brand-dark ${FOCUS}`}>실종아동 찾아보기 <ArrowRightIcon size={16} /></Link>
