@@ -1,7 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
+import styles from "./InfoPages.module.css";
 
 export type PageTab = { key: string; label: string };
 type PageTabsProps = { label: string; tabs: PageTab[]; panels: ReactNode[]; hashAliases?: Record<string, string> };
@@ -53,8 +54,9 @@ function TabsView({ label, tabs, panels, selected, onSelect }: PageTabsProps & {
 
   return (
     <>
-      <div className="border-b border-line">
-        <div role="tablist" aria-label={label} className="page-container flex max-w-5xl">
+      <div className={`page-container max-w-5xl ${styles.tabsWrap}`}>
+        <div role="tablist" aria-label={label} className={styles.tabs} style={{ "--tab-count": tabs.length, "--tab-index": selected } as CSSProperties}>
+          <span aria-hidden="true" className={styles.tabIndicator} />
           {tabs.map((tab, index) => (
             <button
               key={tab.key}
@@ -76,7 +78,7 @@ function TabsView({ label, tabs, panels, selected, onSelect }: PageTabsProps & {
                 onSelect(next);
                 buttons.current[next]?.focus();
               }}
-              className={`flex flex-1 items-center justify-center border-b-2 px-3 py-3.5 text-[15px] font-bold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-brand max-sm:px-1 max-sm:text-[13px] ${selected === index ? "border-brand text-brand" : "border-transparent text-muted hover:bg-surface hover:text-brand"}`}
+              className={styles.tab}
             >
               {tab.label}
             </button>
@@ -84,7 +86,7 @@ function TabsView({ label, tabs, panels, selected, onSelect }: PageTabsProps & {
         </div>
       </div>
       {panels.map((content, index) => (
-        <div key={index} id={`${id}-panel-${index}`} role="tabpanel" aria-labelledby={`${id}-tab-${index}`} hidden={selected !== index} tabIndex={0} className="focus-visible:outline-2 focus-visible:outline-brand">
+        <div key={index} id={`${id}-panel-${index}`} role="tabpanel" aria-labelledby={`${id}-tab-${index}`} hidden={selected !== index} tabIndex={0} className={styles.panel}>
           {content}
         </div>
       ))}
