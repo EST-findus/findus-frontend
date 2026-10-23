@@ -6,7 +6,7 @@ import InfoHero from "@/components/InfoHero";
 import InquiryForm from "@/components/InquiryForm";
 import PageTabs from "@/components/PageTabs";
 import styles from "@/components/InfoPages.module.css";
-import ServiceInfoContent from "@/components/ServiceInfoContent";
+import ServiceInfoContent, { OfficialCalls } from "@/components/ServiceInfoContent";
 
 export const metadata: Metadata = {
   title: "이용 안내",
@@ -41,18 +41,24 @@ export default function HelpPage() {
         panels={[
           <GuideContent key="guide" embedded />,
           <AiContent key="ai" />,
-          <section key="info" aria-labelledby="service-info-title" className={`page-container max-w-5xl pt-7 max-sm:pt-5 ${styles.infoGrid}`}>
+          <section key="info" aria-labelledby="service-info-title" className="page-container max-w-5xl pt-7 max-sm:pt-5">
+            {/* 가장 먼저 필요한 전화번호를 맨 위에 크게, 그 아래에 기관 바로가기와 서비스 문의를 둔다. */}
             <div className={styles.rise}>
               <p className={styles.kicker}>OFFICIAL CONTACTS</p>
               <h2 id="service-info-title" className={styles.sectionTitle}>공식 기관·서비스 정보</h2>
-              <p className={styles.sectionText}>실종 신고와 제보, 상담은 아래 공식 기관에서 진행해 주세요.</p>
-              <ServiceInfoContent />
+              <p className={styles.sectionText}>실종 신고와 제보, 상담은 아래 공식 기관에서 진행해 주세요. 번호를 누르면 바로 전화가 연결돼요.</p>
             </div>
-            <div className={styles.rise} style={{ "--d": ".1s" } as CSSProperties}>
-              <p className={styles.kicker}>CONTACT US</p>
-              <h2 id="inquiry-title" className={styles.sectionTitle}>서비스 문의</h2>
-              <p className={styles.sectionText}>사이트를 쓰며 불편했던 점이나 개선 의견을 들려주세요.</p>
-              <div className={`mt-4 ${styles.formPanel}`}><InquiryForm /></div>
+            <OfficialCalls />
+            <div className={styles.infoGrid}>
+              <div className={styles.rise} style={{ "--d": ".2s" } as CSSProperties}>
+                <h3 className={styles.subTitle}>공식 기관 바로가기</h3>
+                <ServiceInfoContent />
+              </div>
+              <div className={styles.rise} style={{ "--d": ".28s" } as CSSProperties}>
+                <h3 id="inquiry-title" className={styles.subTitle}>서비스 문의</h3>
+                <p className={styles.subText}>사이트를 쓰며 불편했던 점이나 개선 의견을 들려주세요.</p>
+                <div className={`mt-3 ${styles.formPanel}`}><InquiryForm /></div>
+              </div>
             </div>
           </section>,
         ]}
