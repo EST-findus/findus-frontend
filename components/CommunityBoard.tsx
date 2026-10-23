@@ -119,7 +119,7 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
                 >
                   <span className="text-center text-muted max-md:hidden">
                     {isNotice ? (
-                      <span className="font-bold text-brand">공지</span>
+                      <span className="inline-flex items-center gap-1 font-bold text-brand"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 17v5M9 10.76V6h6v4.76l2 3.24H7z" /><path d="M8 2h8" /></svg>공지</span>
                     ) : (
                       normalCount - (index - normalOffset)
                     )}
@@ -140,7 +140,7 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
                       {post.title}
                     </span>
                     {post.comments.length > 0 && (
-                      <span className="inline-flex shrink-0 items-center gap-0.5 text-[13px] font-bold text-gold-ink">
+                      <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-[#EAF2F9] px-1.5 py-px text-[12px] font-bold text-[#3978B8]">
                         <MessageIcon size={13} strokeWidth={2} />
                         <span className="sr-only">댓글</span>
                         {post.comments.length}

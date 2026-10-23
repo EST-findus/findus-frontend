@@ -376,3 +376,32 @@
 @media(prefers-reduced-motion:reduce) {
   .page *,.page *::before,.page *::after { animation:none !important; transition:none !important; }
 }
+
+/* ───────── Polish in the site palette ─────────
+   공공 블루 #3978B8, 라이트 블루 #EAF2F9, 웜 코랄 #F28B82 for small accents. */
+@keyframes searchDot { 0% { box-shadow:0 0 0 0 rgba(242,139,130,.45); } 70%,100% { box-shadow:0 0 0 7px rgba(242,139,130,0); } }
+/* Hero label as the same pill used on the other pages. */
+.campaignCopy .heroEyebrow { display:inline-flex; align-items:center; gap:8px; width:fit-content; padding:5px 12px; border:1px solid rgb(57 120 184 / 16%); border-radius:999px; background:rgb(255 255 255 / 78%); color:#3978B8; font-size:12px; font-weight:700; letter-spacing:.02em; backdrop-filter:blur(6px); }
+.campaignCopy .heroEyebrow::before { width:6px; height:6px; border-radius:50%; background:#F28B82; content:""; animation:searchDot 2.4s ease-out infinite; }
+.campaignCopy h1 { color:#173B70; }
+.campaignCopy h1 span { color:#3978B8; }
+
+/* Results heading with the coral dot, and the count as a soft chip. */
+.resultHeader h2 { display:flex; align-items:center; gap:10px; color:#173B70; }
+.resultHeader h2::before { width:8px; height:8px; flex:none; border-radius:50%; background:#F28B82; box-shadow:0 0 0 4px #FEF4F3; content:""; }
+.resultTools p { padding:6px 12px; border-radius:999px; background:#EAF2F9; color:#3D5877; }
+.resultTools select { border-color:#D4E1F0; color:#3D5877; transition:border-color .2s ease; }
+.resultTools select:hover { border-color:#B9CDE6; }
+.exampleNote { border:1px solid #E7ECF2; border-radius:12px; background:#F9FAFC; }
+.exampleNote > span { color:#3978B8; }
+
+/* Result cards: the main action reads as the primary button, the report guide as a quiet coral link. */
+.results .cardGrid .card { border-color:#E3EAF3; border-radius:18px; box-shadow:0 2px 8px rgb(23 59 112 / 4%); }
+.results .cardGrid .card:hover { border-color:#C9DAEE; }
+.results .cardGrid .cardActions button:first-child { border-color:#3978B8; background:#3978B8; color:#FFFFFF; font-weight:700; transition:background-color .2s ease,border-color .2s ease; }
+.results .cardGrid .cardActions button:first-child:hover { border-color:#2F66A0; background:#2F66A0; }
+.results .cardGrid .cardActions button:nth-child(2) { border-color:transparent; background:transparent; color:#B4473F; font-weight:700; transition:background-color .2s ease; }
+.results .cardGrid .cardActions button:nth-child(2):hover { background:#FEF4F3; }
+.results .cardGrid .cardActions button:last-child:not(:first-child):not(:nth-child(2)) { border-color:#DCE5F0; color:#3978B8; transition:background-color .2s ease,border-color .2s ease; }
+.results .cardGrid .cardActions button:last-child:not(:first-child):not(:nth-child(2)):hover { border-color:#B9CDE6; background:#EAF2F9; }
+@media(prefers-reduced-motion:reduce) { .campaignCopy .heroEyebrow::before { animation:none; } }
