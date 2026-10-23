@@ -64,10 +64,12 @@
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
 /* Closing: a full-bleed sky photo with the copy laid over its left side as page text.
-   No frame, no veil and no gradient; a soft shadow keeps white type legible on the sky. */
+   No frame and no gradient; a soft shadow keeps white type legible on the sky. */
 .closing { position:relative; overflow:hidden; }
 .closingStage { position:relative; height:clamp(280px,23vw,340px); background:#5F7FA8; }
-.closingSky { object-fit:cover; object-position:62% 42%; }
+/* Softened so the band stays calm: a little less saturation and light, then one even navy veil (no gradient). The copy above it stays crisp white. */
+.closingSky { object-fit:cover; object-position:62% 42%; filter:saturate(.78) brightness(.97); }
+.closingStage::after { position:absolute; inset:0; background:rgb(23 59 112 / 18%); content:""; pointer-events:none; }
 .closingCopy { position:relative; z-index:1; display:flex; height:100%; flex-direction:column; justify-content:center; color:#FFFFFF; text-shadow:0 1px 14px rgba(12,32,68,.38); }
 .closingTag { padding-left:14px; border-left:1.5px solid rgba(255,255,255,.75); font-size:17px; font-weight:500; letter-spacing:.06em; }
 .closingTag strong { margin-left:4px; font-size:25px; font-weight:600; letter-spacing:.01em; }
@@ -105,6 +107,7 @@
 @media(width<720px) {
   /* Phones: the photo is cropped to the two people, and the copy sits below it in navy. */
   .closingStage { height:auto; background:none; }
+  .closingStage::after { display:none; }
   .closingSky.closingSky { position:relative !important; display:block; width:100% !important; height:auto !important; aspect-ratio:4 / 3; object-position:66% 40%; }
   .closingCopy { height:auto; padding-block:22px 32px; color:#173B70; text-shadow:none; }
   .closingTag { border-left-color:#3978B8; color:#3978B8; }
