@@ -1,6 +1,6 @@
 /* 후원금 사용 계획: "공개 장부" 느낌. 상자를 줄이고 선과 숫자로 정리한다. */
 .page {
-  --navy:#173B70; --navy-deep:#0F2A52; --goods:#2468C5; --search:#FF7867; --family:#8DB4EA; --coral-ink:#C2412F;
+  --navy:#173B70; --navy-deep:#0F2A52; --goods:#3978B8; --search:#F28B82; --family:#8DB4EA; --coral-ink:#C2412F;
   --paper:#FFFFFF; --rule:var(--color-line);
   background:var(--color-page); font-variant-numeric:tabular-nums;
 }
@@ -132,7 +132,7 @@
 .tile[data-invite="true"] .tileRole { margin-bottom:auto; }
 .tile[data-invite="true"] .tileName { color:var(--navy); }
 .tileRole { display:flex; justify-content:space-between; gap:8px; color:var(--color-subtle); font-size:12px; font-weight:700; }
-.tileRole span { color:#A06A00; }
+.tileRole span { color:#B4473F; }
 .tileMark { display:grid; place-items:center; margin-top:14px; padding-block:6px; border-radius:12px; background:#F6F8FB; }
 .tileName { margin-top:16px; font-size:17px; font-weight:800; word-break:keep-all; }
 .tileAsk { margin-top:4px; color:var(--color-ink); font-size:14px; font-weight:600; line-height:1.55; word-break:keep-all; }

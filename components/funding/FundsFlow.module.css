@@ -1,5 +1,5 @@
 /* 모인 돈이 가는 길 */
-.flow { --goods:#2468C5; --search:#FF7867; --family:#173B70; margin-top:28px; padding:28px; border:1px solid var(--color-line); border-radius:24px; background:linear-gradient(180deg, #fff, #F7F9FC); }
+.flow { --goods:#3978B8; --search:#F28B82; --family:#173B70; margin-top:28px; padding:28px; border:1px solid var(--color-line); border-radius:24px; background:linear-gradient(180deg, #fff, #F7F9FC); }
 .head h3 { font-size:20px; font-weight:800; letter-spacing:-.3px; word-break:keep-all; }
 .head p { margin-top:6px; color:var(--color-muted); font-size:14px; line-height:1.6; word-break:keep-all; }
 

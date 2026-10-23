@@ -2,18 +2,19 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { useAuthReady, useCurrentUser } from "@/lib/useCurrentUser";
 import { formatPostDate, getPosts, type Post } from "@/lib/community";
 import type { MissingPerson } from "@/lib/types";
 import AccountSettings from "./AccountSettings";
 import FamilyBadge from "./FamilyBadge";
 import { useFamilyRecord } from "@/lib/useFamily";
+import info from "./InfoPages.module.css";
 import styles from "./MyPage.module.css";
 import FavoriteChildren from "./FavoriteChildren";
 import ReunionStory from "./ReunionStory";
 import MyPledges from "./funding/MyPledges";
-import { ArrowRightIcon, MessageIcon } from "./Icons";
+import { ArrowRightIcon, HeartIcon, MessageIcon } from "./Icons";
 
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand";
 const PAGE_TABS = [
@@ -53,6 +54,12 @@ export default function MyPage({ continuation, persons, initialTab }: { continua
     if (ready && !user) router.replace("/");
   }, [ready, user, router]);
 
+  // 헤더 계정 메뉴의 '내 활동'·'내 후원'처럼 마이페이지에 있는 동안 ?tab=만 바뀌어도 그 탭을 연다.
+  useEffect(() => {
+    const next = PAGE_TABS.find((item) => item.key === initialTab)?.key;
+    if (next) setPageTab(next);
+  }, [initialTab]);
+
   useEffect(() => {
     if (!userId) return;
     let active = true;
@@ -83,51 +90,55 @@ export default function MyPage({ continuation, persons, initialTab }: { continua
 
   return (
     <>
-      <h1 className="sr-only">마이페이지</h1>
       <div className={`${styles.layout} page-container max-w-5xl pt-6 pb-5 max-md:pt-12 max-md:pb-3 max-sm:pt-9 max-sm:pb-1`}>
+        {/* 인사 머리말: 다른 페이지 히어로와 같은 연한 하늘빛 면에, 닉네임과 가족 확인 배지를 함께 둔다. */}
+        <header className={styles.hello}>
+          <p className={styles.helloEyebrow}><span aria-hidden="true" />마이페이지</p>
+          <h1><strong>{user.nickname}</strong>님, 함께 기억해 주셔서 고마워요.</h1>
+          <p className={styles.helloText}>관심 아동과 내 활동, 후원 내역을 한곳에서 확인하세요.</p>
+          {family?.status === "verified" && <div className={styles.helloBadge}><FamilyBadge label="가족 확인됨" /></div>}
+          <span aria-hidden="true" className={styles.helloMark}><HeartIcon size={26} strokeWidth={1.8} /></span>
+        </header>
+
         {continuation && (
-          <aside className="mb-8 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gold/30 bg-gold-soft p-6">
+          <aside className={styles.continuation}>
             <div><p className="font-bold">로그인 전에 보던 화면이 있어요.</p><p className="mt-1 text-[14px] text-muted">마이페이지에서 확인한 뒤 하던 일을 이어갈 수 있어요.</p></div>
-            <Link href={continuation} className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 font-bold text-gold-ink hover:bg-gold/10 ${FOCUS}`}>이어서 진행하기 <ArrowRightIcon size={18} /></Link>
+            <Link href={continuation} className={`${styles.continuationLink} ${FOCUS}`}>이어서 진행하기 <ArrowRightIcon size={18} /></Link>
           </aside>
         )}
 
-        <div data-mypage-toolbar className="mb-4 flex items-center justify-between gap-3 max-md:mb-2">
-        <div role="tablist" aria-label="마이페이지 메뉴" className="inline-flex max-w-full gap-0.5 overflow-x-auto rounded-xl border border-line bg-surface p-0.5 [scrollbar-width:none]">
+        <div data-mypage-toolbar className={styles.toolbar}>
+        <div role="tablist" aria-label="마이페이지 메뉴" className={info.tabs} style={{ "--tab-count": PAGE_TABS.length, "--tab-index": PAGE_TABS.findIndex((item) => item.key === pageTab) } as CSSProperties}>
+          <span aria-hidden="true" className={info.tabIndicator} />
           {PAGE_TABS.map(({ key, label }, index) => (
             <button
               key={key} ref={(el) => { tabRefs.current[index] = el; }} type="button" role="tab"
               id={`${tabId}-tab-${key}`} aria-controls={`${tabId}-panel-${key}`}
               aria-selected={pageTab === key} tabIndex={pageTab === key ? 0 : -1}
               onClick={() => setPageTab(key)} onKeyDown={(event) => moveTab(event, index)}
-              className={`min-w-21 shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-bold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:min-w-0 max-sm:px-2.5 max-sm:text-[12px] ${pageTab === key ? "bg-brand text-white shadow-sm" : "text-muted hover:bg-brand-soft hover:text-brand"}`}
+              className={info.tab}
             >{label}</button>
           ))}
         </div>
-
-          <p className="flex min-w-0 items-center gap-2 text-[14px] font-bold max-sm:hidden">
-            <span className="truncate">{user.nickname}님</span>
-            {family?.status === "verified" && <FamilyBadge label="가족 확인됨" />}
-          </p>
         </div>
 
-        <div role="tabpanel" id={`${tabId}-panel-favorites`} aria-labelledby={`${tabId}-tab-favorites`} hidden={pageTab !== "favorites"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
+        <div role="tabpanel" id={`${tabId}-panel-favorites`} aria-labelledby={`${tabId}-tab-favorites`} hidden={pageTab !== "favorites"} tabIndex={0} className={`rounded-lg ${styles.panel} ${FOCUS}`}>
           <FavoriteChildren key={user.id} userId={user.id} persons={persons} />
           <ReunionStory />
         </div>
 
-        <div role="tabpanel" id={`${tabId}-panel-activity`} aria-labelledby={`${tabId}-tab-activity`} hidden={pageTab !== "activity"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
-          <section aria-labelledby="mypage-activity" className="min-w-0 rounded-3xl border border-line bg-card p-8 max-sm:p-5">
+        <div role="tabpanel" id={`${tabId}-panel-activity`} aria-labelledby={`${tabId}-tab-activity`} hidden={pageTab !== "activity"} tabIndex={0} className={`rounded-lg ${styles.panel} ${FOCUS}`}>
+          <section aria-labelledby="mypage-activity" className={`min-w-0 p-8 max-sm:p-5 ${styles.card}`}>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 id="mypage-activity" className="flex items-center gap-2 text-[23px] font-extrabold"><MessageIcon className="text-brand" />내 정보 마당 활동</h2>
-              <Link href="/community/write" className={`rounded-lg px-3 py-2 text-[14px] font-bold text-brand hover:bg-brand-soft ${FOCUS}`}>글쓰기</Link>
+              <Link href="/community/write" className={`${styles.pillLink} ${FOCUS}`}>글쓰기 <ArrowRightIcon size={15} /></Link>
             </div>
             <div role="group" aria-label="내 활동 분류" className="mt-6 flex gap-2 border-b border-line pb-4">
-              {(["posts", "comments"] as const).map((key) => <button key={key} type="button" aria-pressed={tab === key} onClick={() => setTab(key)} className={`rounded-full px-4 py-2 text-[14px] font-bold ${FOCUS} ${tab === key ? "bg-brand text-white" : "bg-surface text-muted hover:bg-brand-soft"}`}>{key === "posts" ? "내가 쓴 글" : "내가 쓴 댓글"} <span className="ml-1">{loaded ? (key === "posts" ? myPosts.length : myComments.length) : "—"}</span></button>)}
+              {(["posts", "comments"] as const).map((key) => <button key={key} type="button" aria-pressed={tab === key} onClick={() => setTab(key)} className={`${info.chip} ${FOCUS}`}>{key === "posts" ? "내가 쓴 글" : "내가 쓴 댓글"} <span className="ml-1">{loaded ? (key === "posts" ? myPosts.length : myComments.length) : "—"}</span></button>)}
             </div>
             <div aria-live="polite">
               {failed ? <p role="alert" className="py-10 text-center text-muted">활동을 불러오지 못했어요. 새로고침 후 다시 확인해 주세요.</p> : !loaded ? <p role="status" className="py-10 text-center text-muted">내 활동을 불러오고 있어요.</p> : count === 0 ? (
-                <div className="py-12 text-center">
+                <div className={`py-12 text-center ${styles.empty}`}>
                   <p className="font-bold">아직 작성한 {tab === "posts" ? "글이" : "댓글이"} 없어요.</p>
                   <p className="mt-2 text-[14px] text-muted">나누고 싶은 정보나 응원의 마음을 남겨 보세요.</p>
                   <Link href="/community" className={`mt-5 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[14px] font-bold text-brand hover:bg-brand-soft ${FOCUS}`}>정보 마당 둘러보기 <ArrowRightIcon size={16} /></Link>
@@ -135,7 +146,7 @@ export default function MyPage({ continuation, persons, initialTab }: { continua
               ) : (
                 <>
                   <p className="mt-4 text-[12px] text-muted">최근 활동 {Math.min(count, 5)}개를 보여드려요.</p>
-                  <ul className="mt-2 divide-y divide-line">
+                  <ul className={`mt-2 divide-y divide-line ${styles.activityList}`}>
                     {tab === "posts" ? myPosts.slice(0, 5).map((post) => <li key={post.id}><Link href={`/community/${post.id}`} className={`block rounded-lg py-4 hover:text-brand ${FOCUS}`}><p className="truncate font-bold">{post.title}</p><p className="mt-2 text-[12px] text-muted">{formatPostDate(post.createdAt)} · 댓글 {post.comments.length}개</p></Link></li>) : myComments.slice(0, 5).map((comment) => <li key={comment.id}><Link href={`/community/${comment.postId}`} className={`block rounded-lg py-4 hover:text-brand ${FOCUS}`}><p className="line-clamp-2 text-[14px] leading-relaxed">{comment.content}</p><p className="mt-2 truncate text-[12px] text-muted">{comment.postTitle} · {formatPostDate(comment.createdAt)}</p></Link></li>)}
                   </ul>
                 </>
@@ -145,11 +156,11 @@ export default function MyPage({ continuation, persons, initialTab }: { continua
 
         </div>
 
-        <div role="tabpanel" id={`${tabId}-panel-funding`} aria-labelledby={`${tabId}-tab-funding`} hidden={pageTab !== "funding"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
+        <div role="tabpanel" id={`${tabId}-panel-funding`} aria-labelledby={`${tabId}-tab-funding`} hidden={pageTab !== "funding"} tabIndex={0} className={`rounded-lg ${styles.panel} ${FOCUS}`}>
           <MyPledges userId={user.id} />
         </div>
 
-        <div role="tabpanel" id={`${tabId}-panel-account`} aria-labelledby={`${tabId}-tab-account`} hidden={pageTab !== "account"} tabIndex={0} className={`rounded-lg ${FOCUS}`}>
+        <div role="tabpanel" id={`${tabId}-panel-account`} aria-labelledby={`${tabId}-tab-account`} hidden={pageTab !== "account"} tabIndex={0} className={`rounded-lg ${styles.panel} ${FOCUS}`}>
           <AccountSettings user={user} />
         </div>
 

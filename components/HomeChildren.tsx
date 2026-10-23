@@ -12,6 +12,9 @@ import ShareModal from "./ShareModal";
 import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "./Icons";
 import styles from "./HomeChildren.module.css";
 
+// The hero's search shortcut scrolls to and focuses this input.
+export const HOME_SEARCH_INPUT_ID = "home-children-search";
+
 // Long enough to read a name and region before the cards move on.
 const AUTO_ADVANCE_MS = 6000;
 
@@ -102,7 +105,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
         <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} /></Link>
         <div className={styles.headingTools}>
           <form className={styles.homeSearch} role="search" onSubmit={event=>{event.preventDefault();setPage(0);setOutgoing(null);}}>
-            <label className={styles.searchInput}><SearchIcon size={19} /><input type="search" value={query} onChange={event=>{setQuery(event.target.value);setPage(0);setOutgoing(null);}} placeholder="이름이나 실종 지역을 입력해주세요" aria-label="실종아동 검색" autoComplete="off" /></label>
+            <label className={styles.searchInput}><SearchIcon size={19} /><input id={HOME_SEARCH_INPUT_ID} type="search" value={query} onChange={event=>{setQuery(event.target.value);setPage(0);setOutgoing(null);}} placeholder="이름이나 실종 지역을 입력해주세요" aria-label="실종아동 검색" autoComplete="off" /></label>
             <button type="submit">검색하기</button>
           </form>
         </div>

@@ -24,15 +24,15 @@ export default function FamilyBadge({ size = "sm", label = "가족이 함께해�
   }, [open]);
 
   const md = size === "md";
-  const look = `inline-flex items-center gap-1 rounded-full border border-[#FFD9D2] bg-[#FFF0ED] font-bold whitespace-nowrap text-[#963D32] ${md ? "py-1 pr-3 pl-1.5 text-[13px]" : "py-0.5 pr-2 pl-1 text-[11px]"}`;
+  const look = `inline-flex items-center gap-1 rounded-full border border-[#FFD9D2] bg-[#FDECEA] font-bold whitespace-nowrap text-[#B4473F] ${md ? "py-1 pr-3 pl-1.5 text-[13px]" : "py-0.5 pr-2 pl-1 text-[11px]"}`;
   if (!interactive) {
-    return <span className={`${look} ${className}`}><HeartCheckIcon size={md ? 18 : 14} className="text-[#FF7867]" />{label}</span>;
+    return <span className={`${look} ${className}`}><HeartCheckIcon size={md ? 18 : 14} className="text-[#F28B82]" />{label}</span>;
   }
   return (
     <span ref={box} className={`relative inline-flex align-middle ${className}`}>
       <button type="button" aria-expanded={open} aria-describedby={open ? tipId : undefined} onClick={() => setOpen(!open)}
         className={`${look} transition-colors hover:bg-[#FFE3DE] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand`}>
-        <HeartCheckIcon size={md ? 18 : 14} className="text-[#FF7867]" />
+        <HeartCheckIcon size={md ? 18 : 14} className="text-[#F28B82]" />
         {label}
         <span className="sr-only">: 가족 확인됨. 설명 보기</span>
       </button>

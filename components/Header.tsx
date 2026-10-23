@@ -17,7 +17,7 @@ export function Logo({ blue = false }: { blue?: boolean }) {
       <LogoMark size={36} className="shrink-0" />
       <span className="text-[21px] font-extrabold tracking-[-0.4px]">
         <span style={{ color: "#173B70" }}>Find</span>
-        <span style={{ color: "#2468C5" }}>Us</span>
+        <span style={{ color: "#3978B8" }}>Us</span>
       </span>
     </span>
   );

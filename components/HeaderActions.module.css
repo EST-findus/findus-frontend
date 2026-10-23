@@ -1,11 +1,27 @@
 .boxedAction { display:inline-flex; flex-shrink:0; align-items:center; justify-content:center; gap:6px; width:104px; height:36px; padding:0 10px; border:1px solid; border-radius:8px; font-size:13px; font-weight:700; line-height:1; white-space:nowrap; transition:background-color .18s,border-color .18s; }
 .boxedAction > svg { flex-shrink:0; }
-.account { width:36px; padding:0; border-color:#2468C526; background:#EAF4FF; color:#2468C5; }
-.account:hover { border-color:#2468C54D; background:#DFEEFF; }
-.boxedAction:focus-visible { outline:2px solid #2468C5; outline-offset:3px; }
+.account { width:36px; padding:0; border-color:#3978B826; background:#EAF2F9; color:#3978B8; }
+.account:hover { border-color:#3978B84D; background:#DFEEFF; }
+.boxedAction:focus-visible { outline:2px solid #3978B8; outline-offset:3px; }
 @media(width<640px) {
  .boxedAction { width:36px; padding:0; }
  .label { display:none; }
 }
-.call { width:36px; padding:0; border-color:#2468C526; background:#EAF4FF; color:#2468C5; }
-.call:hover { border-color:#2468C54D; background:#DFEEFF; }
+.call { width:36px; padding:0; border-color:#3978B826; background:#EAF2F9; color:#3978B8; }
+.call:hover { border-color:#3978B84D; background:#DFEEFF; }
+
+/* Account menu under the person icon: white card, soft blue edge, logout set apart at the bottom. */
+@keyframes menuIn { from { opacity:0; transform:translateY(-6px) scale(.98); } to { opacity:1; transform:none; } }
+.accountOpen { border-color:#3978B866; background:#DFEEFF; }
+.menu { position:absolute; top:calc(100% + 10px); right:0; z-index:70; width:248px; max-width:calc(100vw - 24px); padding:8px; border:1px solid #DCE5F0; border-radius:16px; background:#FFFFFF; box-shadow:0 18px 40px rgb(23 59 112 / 14%); transform-origin:top right; animation:menuIn .22s cubic-bezier(.2,.7,.2,1); }
+.menuHead { display:flex; align-items:center; gap:10px; padding:10px 10px 12px; border-bottom:1px solid #EEF2F7; }
+.menuHead strong { display:block; overflow:hidden; color:#173B70; font-size:14px; font-weight:800; text-overflow:ellipsis; white-space:nowrap; }
+.menuHead small { display:block; overflow:hidden; margin-top:1px; color:#62748C; font-size:12px; text-overflow:ellipsis; white-space:nowrap; }
+.menuAvatar { display:grid; flex:none; width:36px; height:36px; place-items:center; border-radius:50%; background:#EAF2F9; color:#3978B8; font-size:15px; font-weight:800; }
+.menuLinks { display:grid; gap:2px; padding:6px 0; }
+.menuLinks a { display:flex; align-items:center; gap:10px; padding:10px 10px; border-radius:10px; color:#223047; font-size:14px; font-weight:650; transition:background-color .15s ease,color .15s ease; }
+.menuLinks a svg { color:#3978B8; }
+.menuLinks a:hover { background:#EAF2F9; color:#173B70; }
+.menuLogout { display:flex; width:100%; align-items:center; gap:10px; padding:10px; border-top:1px solid #EEF2F7; border-radius:0 0 10px 10px; color:#5C6F86; font-size:14px; font-weight:650; text-align:left; cursor:pointer; transition:background-color .15s ease,color .15s ease; }
+.menuLogout:hover { background:#FEF4F3; color:#B4473F; }
+@media(prefers-reduced-motion:reduce) { .menu { animation:none; } }
