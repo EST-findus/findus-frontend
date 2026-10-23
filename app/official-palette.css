@@ -1,21 +1,21 @@
-/* Shared official palette for every route; selected pages retain a white canvas. */
+/* Shared official palette for every route: 공공 블루 #3978B8, 클린 화이트 #FFFFFF, 웜 코랄 #F28B82, 라이트 블루 #EAF2F9. */
 body:has(> [data-findus-palette="official"]) {
   --color-navy: #173B70;
-  --color-brand: #2468C5;
+  --color-brand: #3978B8;
   --color-brand-dark: #173B70;
-  --color-brand-soft: #EAF4FF;
+  --color-brand-soft: #EAF2F9;
   --color-page: #F7F9FC;
   --color-card: #FFFFFF;
   --color-ink: #223047;
   --color-muted: #5C6F86;
   --color-subtle: #62748C;
   --color-line: #DCE5F0;
-  --color-surface: #EAF4FF;
-  --color-hero: #EAF4FF;
-  --color-accent: #FF7867;
+  --color-surface: #EAF2F9;
+  --color-hero: #EAF2F9;
+  --color-accent: #F28B82;
   /* Legacy gold tokens: coral decorations, blue informational panels, navy copy. */
-  --color-gold: #FF7867;
-  --color-gold-soft: #EAF4FF;
+  --color-gold: #F28B82;
+  --color-gold-soft: #EAF2F9;
   --color-gold-faint: #F7F9FC;
   --color-gold-ink: #173B70;
   --shadow-card: 0 1px 2px rgb(23 59 112 / 4%);
