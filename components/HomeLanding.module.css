@@ -64,27 +64,26 @@
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
 /* Closing: a full-bleed sky photo with the copy laid over its left side as page text.
-   No frame and no gradient; a soft shadow keeps white type legible on the sky. */
+   Softened the same way as the hero photo: faded onto white and slightly desaturated, no veil and no gradient,
+   so the band reads light and calm. The copy sits on it in navy and 공공 블루. */
 .closing { position:relative; overflow:hidden; }
-.closingStage { position:relative; height:clamp(280px,23vw,340px); background:#5F7FA8; }
-/* Softened so the band stays calm: a little less saturation and light, then one even navy veil (no gradient). The copy above it stays crisp white. */
-.closingSky { object-fit:cover; object-position:62% 42%; filter:saturate(.78) brightness(.97); }
-.closingStage::after { position:absolute; inset:0; background:rgb(23 59 112 / 18%); content:""; pointer-events:none; }
-.closingCopy { position:relative; z-index:1; display:flex; height:100%; flex-direction:column; justify-content:center; color:#FFFFFF; text-shadow:0 1px 14px rgba(12,32,68,.38); }
-.closingTag { padding-left:14px; border-left:1.5px solid rgba(255,255,255,.75); font-size:17px; font-weight:500; letter-spacing:.06em; }
-.closingTag strong { margin-left:4px; font-size:25px; font-weight:600; letter-spacing:.01em; }
-.closingCopy h2 { margin-top:10px; padding-left:15px; color:#FFFFFF; font-size:23px; font-weight:500; line-height:1.42; letter-spacing:-.2px; word-break:keep-all; }
-.closingCopy h2 em { color:#C9E5FF; font-style:normal; font-weight:600; }
-.closingDescription { margin-top:8px; padding-left:15px; color:rgba(255,255,255,.9); font-size:12.5px; line-height:1.6; word-break:keep-all; }
+.closingStage { position:relative; height:clamp(280px,23vw,340px); background:#FFFFFF; }
+.closingSky { object-fit:cover; object-position:62% 42%; opacity:.55; filter:saturate(.85); }
+.closingCopy { position:relative; z-index:1; display:flex; height:100%; flex-direction:column; justify-content:center; color:#173B70; text-shadow:0 1px 12px rgba(255,255,255,.7); }
+.closingTag { padding-left:14px; border-left:1.5px solid #3978B8; color:#25508F; font-size:17px; font-weight:500; letter-spacing:.06em; }
+.closingTag strong { margin-left:4px; color:#173B70; font-size:25px; font-weight:600; letter-spacing:.01em; }
+.closingCopy h2 { margin-top:10px; padding-left:15px; color:#173B70; font-size:23px; font-weight:500; line-height:1.42; letter-spacing:-.2px; word-break:keep-all; }
+.closingCopy h2 em { color:#3978B8; font-style:normal; font-weight:600; }
+.closingDescription { margin-top:8px; padding-left:15px; color:#3D5877; font-size:12.5px; line-height:1.6; word-break:keep-all; }
 .closingPair { display:flex; align-items:center; gap:12px; margin-top:12px; padding-left:15px; }
 .closingPair figure { display:grid; justify-items:center; gap:5px; margin:0; }
-.closingPair img { width:66px; height:auto; border:2px solid rgba(255,255,255,.85); border-radius:9px; box-shadow:0 6px 16px rgba(12,32,68,.25); transition:transform .4s cubic-bezier(.2,.7,.2,1); }
+.closingPair img { width:66px; height:auto; border:2px solid #FFFFFF; border-radius:9px; box-shadow:0 6px 16px rgba(23,59,112,.16); transition:transform .4s cubic-bezier(.2,.7,.2,1); }
 .closingPair figure:hover img { transform:translateY(-3px); }
-.closingPair figcaption { padding:2px 9px; border-radius:999px; background:rgba(16,38,74,.55); color:#FFFFFF; font-size:10px; font-weight:600; text-shadow:none; }
-.closingPair > span { display:grid; color:rgba(255,255,255,.85); }
-.closingFoot { margin-top:12px; padding-left:15px; color:rgba(255,255,255,.92); font-size:12.5px; }
-.closingFoot::before { display:block; width:22px; height:1px; margin-bottom:8px; background:rgba(255,255,255,.7); content:""; }
-.closingNote { position:absolute; z-index:1; top:14%; right:max(24px,calc((100% - 1200px) / 2 + 40px)); color:rgba(255,255,255,.9); font-size:21px; line-height:1.3; rotate:-6deg; text-shadow:0 1px 10px rgba(12,32,68,.35); }
+.closingPair figcaption { padding:2px 9px; border-radius:999px; background:#173B70; color:#FFFFFF; font-size:10px; font-weight:600; text-shadow:none; }
+.closingPair > span { display:grid; color:#3978B8; }
+.closingFoot { margin-top:12px; padding-left:15px; color:#173B70; font-size:12.5px; font-weight:600; }
+.closingFoot::before { display:block; width:22px; height:1px; margin-bottom:8px; background:#9FB6D2; content:""; }
+.closingNote { position:absolute; z-index:1; top:14%; right:max(24px,calc((100% - 1200px) / 2 + 40px)); color:#25508F; font-size:21px; line-height:1.3; rotate:-6deg; text-shadow:0 1px 10px rgba(255,255,255,.7); }
 /* When the band scrolls in, the copy settles in line by line and the photo eases in. */
 .page [data-revealed="in"] .closingCopy > * { animation:revealUp .8s var(--ease-out) backwards; }
 .page [data-revealed="in"] .closingCopy > :nth-child(2) { animation-delay:.08s; }
@@ -107,7 +106,6 @@
 @media(width<720px) {
   /* Phones: the photo is cropped to the two people, and the copy sits below it in navy. */
   .closingStage { height:auto; background:none; }
-  .closingStage::after { display:none; }
   .closingSky.closingSky { position:relative !important; display:block; width:100% !important; height:auto !important; aspect-ratio:4 / 3; object-position:66% 40%; }
   .closingCopy { height:auto; padding-block:22px 32px; color:#173B70; text-shadow:none; }
   .closingTag { border-left-color:#3978B8; color:#3978B8; }
