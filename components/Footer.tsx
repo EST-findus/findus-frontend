@@ -24,7 +24,15 @@ export default function Footer() {
             <a href="https://www.ncrc.or.kr/" target="_blank" rel="noopener noreferrer" aria-label="국가아동권리보장원 공식 사이트 (새 창)"><Image src="/images/agencies/ncrc.png" alt="국가아동권리보장원" width={244} height={24} className={searchStyles.ncrcMark} /></a>
           </nav>
         </div>
-        <div className={`page-container ${searchStyles.footerCopyright}`}><span>© 2026 FindUs</span><span>기억이 단서가 되어, 다시 만나는 날까지 함께합니다.</span></div>
+        <div className={`page-container ${searchStyles.footerCopyright}`}>
+          <span>© 2026 FindUs</span>
+          {/* 사진이 공개되는 가족이 정정·비공개를 요청할 길을 늘 바닥에 둔다. */}
+          <nav className={searchStyles.footerLinks} aria-label="서비스 정책">
+            <Link href="/help">이용 안내</Link>
+            <Link href="/help?tab=ai">AI 이용 원칙</Link>
+            <Link href="/mypage/verify">정보 정정·비공개 요청</Link>
+          </nav>
+        </div>
       </footer>
   );
 }
