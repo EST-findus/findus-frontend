@@ -5,7 +5,18 @@ import { formatAge, formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import FavoriteButton from "./FavoriteButton";
 import StoredPhoto from "./StoredPhoto";
-import { ArrowRightIcon, ChevronRightIcon, EyeIcon, ShareIcon, SparklesIcon } from "./Icons";
+import { ArrowRightIcon, EyeIcon, ShareIcon, SparklesIcon } from "./Icons";
+
+const PinGlyph = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" />
+  </svg>
+);
+const CalendarGlyph = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <rect x="3.5" y="5" width="17" height="15" rx="2.5" /><path d="M8 3v4M16 3v4M3.5 10h17" />
+  </svg>
+);
 import styles from "./HomeChildCard.module.css";
 
 type PersonAction = (person: MissingPerson, trigger: HTMLElement) => void;
@@ -59,13 +70,15 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare 
 
       <div className={styles.body}>
         <h3 id={`home-child-${person.id}`} className={styles.name}>{person.name}<small>{formatGender(person.gender)}</small></h3>
-        <p className={styles.meta}>{person.region} · {formatDate(person.missingDate)} 실종</p>
+        {/* 실종 지역과 날짜를 같은 칸 모양으로 나란히 둔다. 모든 카드가 같은 자리에 같은 정보를 보여준다. */}
+        <dl className={styles.facts}>
+          <div><dt><PinGlyph />실종 지역</dt><dd>{person.region || "정보 없음"}</dd></div>
+          <div><dt><CalendarGlyph />실종 일자</dt><dd>{formatDate(person.missingDate)}</dd></div>
+        </dl>
         <div className={styles.actions}>
-          <button type="button" className={styles.detail} onClick={openDetail}>상세보기 <ChevronRightIcon size={16} strokeWidth={2.4} /></button>
-          <span className={styles.iconActions}>
-            <button type="button" aria-label={`${person.name} 목격 제보 안내`} title="목격 제보 안내" aria-haspopup="dialog" onClick={event => onReport(person, event.currentTarget)}><EyeIcon size={20} /></button>
-            <button type="button" aria-label={`${person.name} 정보 공유하기`} title="공유하기" aria-haspopup="dialog" onClick={event => onShare(person, event.currentTarget)}><ShareIcon size={19} /></button>
-          </span>
+          <button type="button" className={styles.detail} onClick={openDetail}>상세보기 <ArrowRightIcon size={15} strokeWidth={2.4} /></button>
+          <button type="button" className={styles.iconButton} aria-label={`${person.name} 목격 제보 안내`} title="목격 제보 안내" aria-haspopup="dialog" onClick={event => onReport(person, event.currentTarget)}><EyeIcon size={19} /></button>
+          <button type="button" className={styles.iconButton} aria-label={`${person.name} 정보 공유하기`} title="공유하기" aria-haspopup="dialog" onClick={event => onShare(person, event.currentTarget)}><ShareIcon size={18} /></button>
         </div>
       </div>
       <p className={styles.note}>출처: 경찰청 · AI 예상 이미지는 실제 모습과 다를 수 있습니다</p>
