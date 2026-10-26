@@ -50,4 +50,6 @@ export interface MissingPerson {
   };
   /** 상세 모달 "AI 알고리즘 분석" 문구 */
   aiNote: string;
+  /** 대표 AI 사진을 만들 때 지정한 목표 나이 (백엔드 데이터만) */
+  aiTargetAge?: number | null;
 }

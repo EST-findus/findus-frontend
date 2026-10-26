@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PersonDetailBody from "@/components/PersonDetailBody";
 import PersonPageActions from "@/components/PersonPageActions";
-import { getMissingPersonById } from "@/lib/data";
+import { getMissingPersonById, getMissingPersonWithAiImage } from "@/lib/data";
 import { missingSummary, personPath, shareTitle } from "@/lib/share";
 
 export const dynamic = "force-dynamic";
@@ -44,7 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function MissingPersonPage({ params }: Props) {
   const { id } = await params;
-  const person = await getMissingPersonById(id);
+  // 본문에만 대표 AI 사진을 합친다. 메타데이터·공유 이미지는 원본 정보만 쓴다.
+  const person = await getMissingPersonWithAiImage(id);
   if (!person) notFound();
 
   return (

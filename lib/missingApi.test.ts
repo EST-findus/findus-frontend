@@ -1,5 +1,5 @@
 import {afterEach,describe,expect,it,vi} from 'vitest';
-import {fetchMissingPerson,fetchMissingPersons,normalizeDate,regionFromAddress,toMissingPerson,type MissingPersonDto} from './missingApi';
+import {fetchMissingAiImage,fetchMissingPerson,fetchMissingPersons,normalizeDate,regionFromAddress,toMissingPerson,withAiImage,type MissingAiImageDto,type MissingPersonDto} from './missingApi';
 import {DEFAULT_FILTERS,filterPersons} from './filter';
 const id='00000000-0000-4000-8000-000000000001';
 const image1='00000000-0000-4000-8000-000000000011';
@@ -17,6 +17,12 @@ describe('실제 데이터 변환',()=>{
     const image=(id:string,sortOrder:number)=>({id,sortOrder,url:'/api/missing-persons/'+fixture().id+'/images/'+id,contentType:'image/jpeg',byteSize:10});
     const person=toMissingPerson(fixture({images:[image(image2,1),image(image1,0)]}));
     expect(person.images?.map(p=>p.id)).toEqual([image1,image2]);expect(person.photos.past).toBe('/backend/api/missing-persons/'+id+'/images/'+image1);
+  });
+  it('목록의 대표 AI 사진 주소는 이 아동의 경로일 때만 AI 예상 모습으로 쓴다',()=>{
+    const photo='/api/missing-persons/'+id+'/ai-image/photo';
+    expect(toMissingPerson(fixture({aiPhotoUrl:photo})).photos.aged).toBe('/backend'+photo);
+    expect(toMissingPerson(fixture({aiPhotoUrl:null})).photos.aged).toBe('');
+    expect(toMissingPerson(fixture({aiPhotoUrl:'https://example.com/ai.png'})).photos.aged).toBe('');
   });
   it('외부 또는 다른 아동의 사진 경로는 사용하지 않는다',()=>{
     expect(()=>toMissingPerson(fixture({images:[{id:image1,sortOrder:0,url:'https://example.com/photo',contentType:'image/png',byteSize:10}]}))).toThrow();
@@ -69,5 +75,38 @@ describe('조회 API',()=>{
   });
   it('접속 실패는 명확한 조회 오류로 전달한다',async()=>{
     vi.stubGlobal('fetch',vi.fn().mockRejectedValue(new TypeError('network failure')));await expect(fetchMissingPersons()).rejects.toThrow('백엔드 연결');
+  });
+});
+describe('대표 AI 사진',()=>{
+  const photo='/api/missing-persons/'+id+'/ai-image/photo';
+  const ai=(override:Partial<MissingAiImageDto>={}):MissingAiImageDto=>({id:image1,targetAge:30,createdAt:'2026-10-26T01:00:00',url:photo,
+    styles:[{key:'bob',name:'단발',url:photo+'?style=bob'},{key:'long',name:'긴 머리',url:photo+'?style=long'}],notice:'AI가 만든 예상 모습이며 실제 모습이 아닙니다.',...override});
+  const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status});
+  it('대표 AI 사진과 스타일을 프록시 주소로 변환해 아동 정보에 합친다',async()=>{
+    const fetch=vi.fn().mockResolvedValue(json(ai()));vi.stubGlobal('fetch',fetch);
+    const result=await fetchMissingAiImage(id);
+    expect(fetch.mock.calls[0][0]).toContain('/api/missing-persons/'+id+'/ai-image');
+    expect(result?.url).toBe('/backend'+photo);expect(result?.targetAge).toBe(30);
+    const person=withAiImage(toMissingPerson(fixture()),result);
+    expect(person.photos.aged).toBe('/backend'+photo);
+    expect(person.photos.styles).toEqual([{label:'단발',src:'/backend'+photo+'?style=bob'},{label:'긴 머리',src:'/backend'+photo+'?style=long'}]);
+    expect(person.aiNote).toContain('실제 모습이 아닙니다');expect(person.aiTargetAge).toBe(30);
+  });
+  it('AI 사진이 없거나 조회에 실패해도 상세 화면을 깨지 않는다',async()=>{
+    vi.spyOn(console,'error').mockImplementation(()=>{});
+    const fetch=vi.fn().mockResolvedValueOnce(new Response('',{status:404})).mockResolvedValueOnce(new Response('',{status:401}))
+      .mockResolvedValueOnce(new Response('',{status:500})).mockRejectedValueOnce(new TypeError('network failure'));
+    vi.stubGlobal('fetch',fetch);
+    for (let i=0;i<4;i++) expect(await fetchMissingAiImage(id)).toBeUndefined();
+    expect(await fetchMissingAiImage('invalid')).toBeUndefined();expect(fetch).toHaveBeenCalledTimes(4);
+    const person=toMissingPerson(fixture());expect(withAiImage(person,undefined)).toBe(person);
+  });
+  it('다른 아동의 사진 경로와 잘못된 스타일은 쓰지 않는다',async()=>{
+    vi.spyOn(console,'error').mockImplementation(()=>{});
+    const other='/api/missing-persons/00000000-0000-4000-8000-000000000002/ai-image/photo';
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(json(ai({url:other})))
+      .mockResolvedValueOnce(json(ai({styles:[{key:'bob',name:'단발',url:other+'?style=bob'},{key:'Bad Key',name:'x',url:photo+'?style=Bad Key'},{key:'long',name:'긴 머리',url:photo+'?style=long'}]}))));
+    expect(await fetchMissingAiImage(id)).toBeUndefined();
+    expect((await fetchMissingAiImage(id))?.styles.map(s=>s.key)).toEqual(['long']);
   });
 });
