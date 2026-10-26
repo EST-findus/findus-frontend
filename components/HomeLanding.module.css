@@ -68,7 +68,10 @@
    so the band reads light and calm. The copy sits on it in navy and 공공 블루. */
 .closing { position:relative; overflow:hidden; }
 .closingStage { position:relative; height:clamp(280px,23vw,340px); background:#FFFFFF; }
-.closingSky { object-fit:cover; object-position:62% 42%; opacity:.55; filter:saturate(.85); }
+.closingSky { object-fit:cover; object-position:62% 42%; opacity:.62; filter:saturate(.85); }
+/* Same veil as the hero: a soft white wash behind the copy on the left, and the top and bottom edges
+   melting into the white page, so the band sits in the page instead of looking pasted on. */
+.closingStage::after { position:absolute; inset:0; z-index:0; content:""; pointer-events:none; background:linear-gradient(90deg,rgba(255,255,255,.72) 0%,rgba(255,255,255,.5) 30%,rgba(255,255,255,0) 52%),linear-gradient(180deg,#FFFFFF 0%,rgba(255,255,255,0) 16%,rgba(255,255,255,0) 80%,#FFFFFF 100%); }
 .closingCopy { position:relative; z-index:1; display:flex; height:100%; flex-direction:column; justify-content:center; color:#173B70; text-shadow:0 1px 12px rgba(255,255,255,.7); }
 .closingTag { padding-left:14px; border-left:1.5px solid #3978B8; color:#25508F; font-size:17px; font-weight:500; letter-spacing:.06em; }
 .closingTag strong { margin-left:4px; color:#173B70; font-size:25px; font-weight:600; letter-spacing:.01em; }
@@ -106,6 +109,7 @@
 @media(width<720px) {
   /* Phones: the photo is cropped to the two people, and the copy sits below it in navy. */
   .closingStage { height:auto; background:none; }
+  .closingStage::after { display:none; }
   .closingSky.closingSky { position:relative !important; display:block; width:100% !important; height:auto !important; aspect-ratio:4 / 3; object-position:66% 40%; }
   .closingCopy { height:auto; padding-block:22px 32px; color:#173B70; text-shadow:none; }
   .closingTag { border-left-color:#3978B8; color:#3978B8; }
