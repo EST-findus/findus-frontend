@@ -1,93 +1,124 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
-import Image from "next/image";
+import Link from "next/link";
 import { ArrowRightIcon } from "./Icons";
 import DnaGuideButton from "./DnaGuideButton";
 import { GuidePopup, type GuidePopupId } from "./GuideSteps";
-import Modal from "./Modal";
 import styles from "./HomeServiceCards.module.css";
 
-const FEATURE_IMAGE_SIZES = "(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 46vw, 360px";
-const GUIDE_IMAGE_SIZES = "(max-width: 680px) calc(100vw - 40px), (max-width: 1000px) 46vw, 300px";
+// Two-tone tile icons: a soft filled shape (`.iconFill`) under a 1.8px line, both in the tile's tone colour.
+function TileIcon({ children }: { children: ReactNode }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      {children}
+    </svg>
+  );
+}
 
-export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
+const SearchGlyph = () => (
+  <TileIcon>
+    <circle className={styles.iconFill} cx="10.5" cy="10.5" r="6.5" stroke="none" />
+    <circle cx="10.5" cy="10.5" r="6.5" />
+    <path d="M15.4 15.4 20 20" />
+    <path d="M7.8 9.2a3 3 0 0 1 2.4-1.7" />
+  </TileIcon>
+);
+
+const WitnessGlyph = () => (
+  <TileIcon>
+    <path className={styles.iconFill} d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" stroke="none" />
+    <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+    <circle cx="12" cy="12" r="3" />
+    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+  </TileIcon>
+);
+
+const FamilyGlyph = () => (
+  <TileIcon>
+    <circle className={styles.iconFill} cx="10" cy="8.5" r="3.8" stroke="none" />
+    <path className={styles.iconFill} d="M3.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2Z" stroke="none" />
+    <circle cx="10" cy="8.5" r="3.8" />
+    <path d="M3.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2" />
+    <path d="M17.2 4.6a2 2 0 1 1 2.8 1.8c-.6.3-1 .8-1 1.4v.4" />
+    <circle cx="19" cy="10.6" r=".9" fill="currentColor" stroke="none" />
+  </TileIcon>
+);
+
+const DnaGlyph = () => (
+  <TileIcon>
+    <path className={styles.iconFill} d="M8 3c0 4.5 8 6.5 8 9s-8 4.5-8 9h8c0-4.5-8-6.5-8-9s8-4.5 8-9Z" stroke="none" />
+    <path d="M8 3c0 4.5 8 6.5 8 9s-8 4.5-8 9" />
+    <path d="M16 3c0 4.5-8 6.5-8 9s8 4.5 8 9" />
+    <path d="M9.3 6.5h5.4M10.6 9.5h2.8M10.6 14.5h2.8M9.3 17.5h5.4" />
+  </TileIcon>
+);
+
+const AiGlyph = () => (
+  <TileIcon>
+    <path className={styles.iconFill} d="M11 3.5 12.9 9 18.5 11l-5.6 2L11 18.5 9.1 13 3.5 11l5.6-2Z" stroke="none" />
+    <path d="M11 3.5 12.9 9 18.5 11l-5.6 2L11 18.5 9.1 13 3.5 11l5.6-2Z" />
+    <path d="M18.5 15.5v4M16.5 17.5h4" />
+  </TileIcon>
+);
+
+function TileBody({ icon, eyebrow, title }: { icon: ReactNode; eyebrow: string; title: string }) {
+  return (
+    <>
+      <span aria-hidden="true" className={styles.icon}>{icon}</span>
+      <span className={styles.copy}>
+        <span className={styles.eyebrow}>{eyebrow}</span>
+        <strong>{title}</strong>
+      </span>
+      <span aria-hidden="true" className={styles.arrow}><ArrowRightIcon size={15} /></span>
+    </>
+  );
+}
+
+// The AI guide link under the hero's AI example, in the same tile style as the shortcuts.
+export function HomeAiGuideLink() {
+  return (
+    <Link href="/help?tab=ai" className={`${styles.tile} ${styles.single} ${styles.toneViolet}`}>
+      <TileBody icon={<AiGlyph />} eyebrow="책임 있는 AI" title="AI 연구 안내" />
+    </Link>
+  );
+}
+
+// Four quick shortcuts that sit in the home hero, beside the AI age-progression example.
+export default function HomeServiceCards() {
   const [activeGuide, setActiveGuide] = useState<GuidePopupId | null>(null);
-  const [aiOpen, setAiOpen] = useState(false);
   const guideTriggerRefs = useRef<Record<GuidePopupId, HTMLButtonElement | null>>({ know: null, me: null });
-  const aiTriggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
-      <nav className={`page-container ${styles.section}`} aria-label="주요 서비스 바로가기">
-        <div className={styles.grid} data-reveal="stagger">
-          <header className={styles.intro}>
-            <div>
-              <span className={styles.eyebrow}>지금 시작하세요</span>
-              <h2>실종아동을 찾는 다양한 방법</h2>
-            </div>
-            <p>기억하고 있는 정보로, 소중한 아이를 다시 만날 수 있습니다.</p>
-          </header>
-
+      <nav className={styles.panel} aria-label="주요 서비스 바로가기">
+        <p className={styles.heading}>어떤 도움이 필요하신가요?</p>
+        <div className={styles.grid}>
+          {/* 실종아동 찾기 화면으로 가서 검색창에 바로 커서를 둔다. */}
+          <Link href="/search?focus=search" className={`${styles.tile} ${styles.toneNavy}`}>
+            <TileBody icon={<SearchGlyph />} eyebrow="검색 바로가기" title="실종아동 검색" />
+          </Link>
           <button
+            type="button"
             aria-haspopup="dialog"
             onClick={() => setActiveGuide("know")}
             ref={(element) => { guideTriggerRefs.current.know = element; }}
-            type="button"
-            className={`${styles.feature} ${styles.featureReport}`}
+            className={`${styles.tile} ${styles.toneBlue}`}
           >
-            <span aria-hidden="true" className={styles.featureMedia}>
-              <Image src="/images/home-drawing-report.svg" alt="" fill sizes={FEATURE_IMAGE_SIZES} />
-              <span className={styles.chip}>목격·제보</span>
-            </span>
-            <span className={styles.featureBody}>
-              <strong>이 사람을 알아요.</strong>
-              <span>어디선가 본 얼굴이라면, 기억나는 단서를 공식 제보로 연결해 주세요.</span>
-              <span className={styles.action}>절차 보기 <ArrowRightIcon size={16} /></span>
-            </span>
+            <TileBody icon={<WitnessGlyph />} eyebrow="목격·제보" title="이 사람을 알아요" />
           </button>
-
           <button
+            type="button"
             aria-haspopup="dialog"
             onClick={() => setActiveGuide("me")}
             ref={(element) => { guideTriggerRefs.current.me = element; }}
-            type="button"
-            className={`${styles.feature} ${styles.featureFamily}`}
+            className={`${styles.tile} ${styles.toneCoral}`}
           >
-            <span aria-hidden="true" className={styles.featureMedia}>
-              <Image src="/images/home-drawing-family.svg" alt="" fill sizes={FEATURE_IMAGE_SIZES} />
-              <span className={styles.chip}>가족 찾기</span>
-            </span>
-            <span className={styles.featureBody}>
-              <strong>혹시 나?</strong>
-              <span>어린 시절 기억이 낯설게 느껴진다면, 차근차근 확인하고 상담부터 시작해 보세요.</span>
-              <span className={styles.action}>절차 보기 <ArrowRightIcon size={16} /></span>
-            </span>
+            <TileBody icon={<FamilyGlyph />} eyebrow="가족 찾기" title="혹시 나?" />
           </button>
-
-          <DnaGuideButton className={`${styles.guide} ${styles.guideDna}`}>
-            <span aria-hidden="true" className={styles.guideMedia}>
-              <Image src="/images/home-service-lab.jpg" alt="" fill sizes={GUIDE_IMAGE_SIZES} />
-              <span className={styles.chip}>본인·가족 찾기</span>
-            </span>
-            <span className={styles.guideBody}>
-              <strong>DNA 검사·상담 안내</strong>
-              <span>본인·가족의 DNA 채취 절차를 확인하세요.</span>
-              <span className={styles.action}>안내 보기 <ArrowRightIcon size={15} /></span>
-            </span>
+          <DnaGuideButton className={`${styles.tile} ${styles.toneGold}`}>
+            <TileBody icon={<DnaGlyph />} eyebrow="본인·가족 찾기" title="DNA 검사·상담" />
           </DnaGuideButton>
-
-          <button ref={aiTriggerRef} type="button" aria-haspopup="dialog" onClick={() => setAiOpen(true)} className={`${styles.guide} ${styles.guideAi}`}>
-            <span aria-hidden="true" className={styles.guideMedia}>
-              <Image src="/images/home-service-research.jpg" alt="" fill sizes={GUIDE_IMAGE_SIZES} />
-              <span className={styles.chip}>책임 있는 AI</span>
-            </span>
-            <span className={styles.guideBody}>
-              <strong>AI 연구 안내</strong>
-              <span>시간의 변화를 돕는 AI를 신중하게 연구합니다.</span>
-              <span className={styles.action}>연구 안내 보기 <ArrowRightIcon size={15} /></span>
-            </span>
-          </button>
         </div>
       </nav>
 
@@ -97,11 +128,6 @@ export default function HomeServiceCards({ aiPanel }: { aiPanel: ReactNode }) {
           onClose={() => setActiveGuide(null)}
           returnFocusTo={guideTriggerRefs.current[activeGuide]}
         />
-      )}
-      {aiOpen && (
-        <Modal eyebrow="책임 있는 AI" title="AI 연구 안내" accent="brand" onClose={() => setAiOpen(false)} returnFocusTo={aiTriggerRef.current} size="wide">
-          {aiPanel}
-        </Modal>
       )}
     </>
   );

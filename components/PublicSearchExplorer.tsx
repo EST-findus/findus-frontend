@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatGender } from "@/lib/format";
-import PublicPersonCard from "./ChildComparisonCard";
+import HomeChildCard from "./HomeChildCard";
 import CountUp from "./CountUp";
 import styles from "./PublicSearch.module.css";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
@@ -16,8 +16,24 @@ import SearchPanel from "./SearchPanel";
 import ShareModal from "./ShareModal";
 import { useScrollReveal } from "./useScrollReveal";
 
+const SEARCH_INPUT_ID = "public-search-input";
+
 export default function PublicSearchExplorer({ persons }: { persons: MissingPerson[] }) {
   const pageRef = useScrollReveal<HTMLDivElement>();
+
+  // 홈의 '실종아동 검색' 바로가기(?focus=search)로 들어오면 검색창에 바로 커서를 둔다. 주소의 표시는 지운다.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("focus") !== "search") return;
+    const input = document.getElementById(SEARCH_INPUT_ID);
+    if (input) {
+      const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      input.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "center" });
+      input.focus({ preventScroll: true });
+    }
+    url.searchParams.delete("focus");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+  }, []);
   const [page, setPage] = useState(0);
   const pageSize=12;
   const [query, setQuery] = useState("");
@@ -89,7 +105,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
       <section className={styles.searchSection} aria-labelledby="search-page-title">
         <div className="page-container">
           <h2 id="search-page-title" className="sr-only" tabIndex={-1}>실종아동 검색</h2>
-          <div className={styles.searchBox}><SearchPanel query={query} onQueryChange={(value)=>{setQuery(value);setPage(0);}} filters={filters} onFiltersChange={(value)=>{setFilters(value);setPage(0);}} regions={regions} onReset={reset} onSubmit={goToResults} /></div>
+          <div className={styles.searchBox}><SearchPanel query={query} onQueryChange={(value)=>{setQuery(value);setPage(0);}} filters={filters} onFiltersChange={(value)=>{setFilters(value);setPage(0);}} regions={regions} onReset={reset} onSubmit={goToResults} inputId={SEARCH_INPUT_ID} /></div>
           {selected.length > 0 && <div className={styles.conditions} aria-label="선택한 검색 조건" aria-live="polite"><strong>선택한 조건</strong>{selected.map((label) => <span key={label}>{label}</span>)}</div>}
 
         </div>
@@ -111,10 +127,10 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         {results.length > 0 ? (
           <div id="search-card-page" className={styles.cardGrid} data-reveal-items>
             {visible.map((person) => (
-              <PublicPersonCard
+              // 홈의 아동 카드와 같은 카드를 써서, 홈에서 넘어와도 같은 모양으로 이어 보이게 한다.
+              <HomeChildCard
                 key={person.id}
                 person={person}
-                comparison
                 onOpenDetail={openDetail}
                 onReport={openTip}
                 onShare={openShare}

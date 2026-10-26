@@ -100,7 +100,7 @@ export default function AgeLabPage() {
           <ul className="mt-6 grid gap-3 md:grid-cols-2">
             {PROMISES.map((text) => (
               <li key={text} className="flex items-start gap-3 rounded-2xl bg-white/8 p-5 text-[16px] leading-relaxed break-keep ring-1 ring-white/15">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FFD25A] text-[#173B70]"><CheckIcon size={14} strokeWidth={3} /></span>{text}
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FDE8E6] text-[#B4473F]"><CheckIcon size={14} strokeWidth={3} /></span>{text}
               </li>
             ))}
           </ul>

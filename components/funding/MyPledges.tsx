@@ -35,12 +35,12 @@ function PledgeCard({ pledge, raised, userId }: { pledge: Pledge; raised: number
             <span className={`rounded-full px-2.5 py-0.5 text-[12px] font-bold ${paid ? "bg-brand-soft text-brand" : "bg-surface text-muted"}`}>{paid ? (ended ? "제작 준비" : "결제 완료") : "취소됨"}</span>
             <span className="text-[12px] text-muted">{pledge.no} · {new Date(pledge.createdAt).toLocaleDateString("ko-KR")}</span>
           </div>
-          <Link href={`/funding/${campaign.id}`} className={`mt-2 inline-block text-[13px] font-bold text-[#963D32] hover:underline ${FOCUS}`}>{campaign.child.name}님을 기억하는 {campaign.title}</Link>
+          <Link href={`/funding/${campaign.id}`} className={`mt-2 inline-block text-[13px] font-bold text-[#B4473F] hover:underline ${FOCUS}`}>{campaign.child.name}님을 기억하는 {campaign.title}</Link>
           <p className="mt-1 text-[18px] font-extrabold">{tier.title} <span className="text-brand">{formatWon(pledge.amount)}</span></p>
           {pledge.sizes.length > 0 && <p className="mt-1 text-[13px] text-muted">사이즈 {pledge.sizes.join(", ")}</p>}
           {bonuses.length > 0 && (
             <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="열린 보너스">
-              {bonuses.map((bonus) => <li key={bonus} className="inline-flex items-center gap-1 rounded-full bg-[#FFF0ED] px-2.5 py-1 text-[12px] font-bold text-[#963D32]"><SparklesIcon size={13} />{bonus}</li>)}
+              {bonuses.map((bonus) => <li key={bonus} className="inline-flex items-center gap-1 rounded-full bg-[#FDECEA] px-2.5 py-1 text-[12px] font-bold text-[#B4473F]"><SparklesIcon size={13} />{bonus}</li>)}
             </ul>
           )}
         </div>
@@ -49,7 +49,7 @@ function PledgeCard({ pledge, raised, userId }: { pledge: Pledge; raised: number
       {paid && needsKeyringChoice(pledge.tierId, raised, campaign) && (
         <fieldset className="mt-4 rounded-xl bg-surface p-4">
           <legend className="float-left mb-2 w-full text-[14px] font-bold">
-            키링 디자인을 골라 주세요 {!pledge.keyringDesign && <span className="ml-1 text-[12px] font-bold text-[#963D32]">선택 필요</span>}
+            키링 디자인을 골라 주세요 {!pledge.keyringDesign && <span className="ml-1 text-[12px] font-bold text-[#B4473F]">선택 필요</span>}
           </legend>
           <div className="clear-both flex flex-wrap gap-2">
             {KEYRING_DESIGNS.map((design) => (
@@ -97,13 +97,13 @@ function CampaignProgress({ campaign, raised, myTotal }: { campaign: Campaign; r
   return (
     <div className="rounded-2xl bg-surface p-5">
       <p className="text-[13px] font-semibold text-muted">{campaign.child.name}님을 기억하는 {campaign.title}</p>
-      <p className="mt-1 text-[20px] font-extrabold text-[#173B70]">{formatWon(raised)} <span className="text-[15px] text-[#FF7867]">{rate}%</span></p>
+      <p className="mt-1 text-[20px] font-extrabold text-[#173B70]">{formatWon(raised)} <span className="text-[15px] text-[#F28B82]">{rate}%</span></p>
       <div className="relative mt-3 h-2.5 overflow-hidden rounded-full bg-white" aria-hidden="true">
         <span className="absolute inset-y-0 left-0 rounded-full bg-brand" style={{ width: `${Math.min(100, rate)}%` }} />
-        {myTotal > 0 && <span className="absolute inset-y-0 rounded-full bg-[#FF7867]" style={{ left: `${Math.max(0, Math.min(100, rate) - mine)}%`, width: `${mine}%` }} />}
+        {myTotal > 0 && <span className="absolute inset-y-0 rounded-full bg-[#F28B82]" style={{ left: `${Math.max(0, Math.min(100, rate) - mine)}%`, width: `${mine}%` }} />}
       </div>
       <p className="mt-2 text-[13px] text-muted">
-        {myTotal > 0 ? <>이 중 <strong className="text-[#963D32]">{formatWon(myTotal)}</strong>이 내 후원이에요.</> : "결제가 취소된 후원만 있어요."} 목표 {formatManWon(campaign.goal)} 원
+        {myTotal > 0 ? <>이 중 <strong className="text-[#B4473F]">{formatWon(myTotal)}</strong>이 내 후원이에요.</> : "결제가 취소된 후원만 있어요."} 목표 {formatManWon(campaign.goal)} 원
       </p>
     </div>
   );
@@ -121,7 +121,7 @@ export default function MyPledges({ userId }: { userId: string }) {
   return (
     <section aria-labelledby="mypage-funding" className="min-w-0 rounded-3xl border border-line bg-card p-8 max-sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 id="mypage-funding" className="flex items-center gap-2 text-[23px] font-extrabold"><HeartIcon className="text-[#FF7867]" />내 후원</h2>
+        <h2 id="mypage-funding" className="flex items-center gap-2 text-[23px] font-extrabold"><HeartIcon className="text-[#F28B82]" />내 후원</h2>
         <Link href="/funding" className={`inline-flex items-center gap-1 rounded-lg px-3 py-2 text-[14px] font-bold text-brand hover:bg-brand-soft ${FOCUS}`}>펀딩 보기 <ArrowRightIcon size={16} /></Link>
       </div>
 
@@ -131,7 +131,7 @@ export default function MyPledges({ userId }: { userId: string }) {
         </div>
       )}
 
-      {pendingChoice && <p role="status" className="mt-4 rounded-xl border border-[#FFD0C8] bg-[#FFF0ED] px-4 py-3 text-[14px] font-semibold text-[#963D32]">골라야 할 보너스가 있어요. 아래에서 키링 디자인을 선택해 주세요.</p>}
+      {pendingChoice && <p role="status" className="mt-4 rounded-xl border border-[#FFD0C8] bg-[#FDECEA] px-4 py-3 text-[14px] font-semibold text-[#B4473F]">골라야 할 보너스가 있어요. 아래에서 키링 디자인을 선택해 주세요.</p>}
 
       {mine.length === 0 ? (
         <div className="py-12 text-center">

@@ -1,9 +1,8 @@
 import GuideSteps from "@/components/GuideSteps";
 import { PlusIcon } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
-import SectionHeading from "@/components/SectionHeading";
-
-
+import info from "@/components/InfoPages.module.css";
+import type { CSSProperties } from "react";
 
 const FAQ = [
   {
@@ -37,35 +36,45 @@ const FAQ = [
 ];
 
 export default function GuideContent({ embedded = false }: { embedded?: boolean }) {
+  const intro = {
+    eyebrow: "FindUs 이용 안내",
+    title: "실종아동 제보·가족 찾기 안내",
+    description: "목격 단서를 어디에 제보하는지, 본인이나 가족을 찾을 때 어떻게 상담하는지 안내합니다. 제보와 상담은 경찰청 182 또는 안전Dream에서 진행해 주세요.",
+  };
   return (
     <>
-      <PageHero
-        embedded={embedded}
-        overlap
-        eyebrow="FindUs 이용 안내"
-        title="실종아동 제보·가족 찾기 안내"
-        description="목격 단서를 어디에 제보하는지, 본인이나 가족을 찾을 때 어떻게 상담하는지 안내합니다. 제보와 상담은 경찰청 182 또는 안전Dream에서 진행해 주세요."
-      />
+      {embedded ? (
+        // 이용 안내 탭 안에서는 페이지 히어로가 이미 있으니 작은 머리말만 둔다.
+        <div className={`page-container max-w-5xl pt-7 pb-5 max-sm:pt-5 ${info.rise}`}>
+          <p className={info.kicker}>{intro.eyebrow}</p>
+          <h2 className={info.sectionTitle}>{intro.title}</h2>
+          <p className={`${info.sectionText} max-w-180`}>{intro.description}</p>
+        </div>
+      ) : (
+        <PageHero overlap eyebrow={intro.eyebrow} title={intro.title} description={intro.description} />
+      )}
 
-      <div className={embedded ? "flow-root pb-4" : "flow-root bg-hero pb-8"}>
+      <div className={embedded ? `flow-root pb-4 ${info.rise}` : "flow-root bg-hero pb-8"} style={embedded ? ({ "--d": ".1s" } as CSSProperties) : undefined}>
         <div className={`page-container ${embedded ? "max-w-5xl" : ""}`}>
           <GuideSteps overlap={!embedded} compact={embedded} />
         </div>
       </div>
 
       <div className={`page-container ${embedded ? "max-w-5xl" : ""}`}>
-      <section id="faq" aria-labelledby="faq-title" className={`${embedded ? "mt-10 max-sm:mt-8" : "mt-24 max-sm:mt-16"} scroll-mt-28`}>
-        <SectionHeading id="faq-title" eyebrow="Help & answers" title="자주 묻는 질문" />
-        <div className="mt-8 border-t border-line">
+      <section id="faq" aria-labelledby="faq-title" className={`${embedded ? "mt-10 max-sm:mt-8" : "mt-24 max-sm:mt-16"} scroll-mt-28 ${info.faq}`}>
+        <div className={info.faqHead}>
+          <p className={info.kicker}>HELP & ANSWERS</p>
+          <h2 id="faq-title" className={info.sectionTitle}>자주 묻는 질문</h2>
+          <p className={info.sectionText}>궁금한 내용을 누르면 답변이 펼쳐집니다. 더 필요한 내용은 공식 기관·정보 탭의 문의로 알려 주세요.</p>
+        </div>
+        <div className={info.faqList}>
           {FAQ.map((item) => (
-            <details key={item.q} className="group border-b border-line">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5.5 text-[16px] font-bold break-keep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden">
-                {item.q}
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface text-muted transition group-open:rotate-45 group-open:bg-brand-soft group-open:text-brand motion-reduce:transition-none">
-                  <PlusIcon size={16} strokeWidth={2.2} />
-                </span>
+            <details key={item.q} className={info.faqItem}>
+              <summary>
+                <span><span aria-hidden="true" className={info.faqQ}>Q</span>{item.q}</span>
+                <span aria-hidden="true" className={info.faqToggle}><PlusIcon size={15} strokeWidth={2.4} /></span>
               </summary>
-              <p className="max-w-200 pr-12 pb-6 text-[15px] leading-[1.7] break-keep text-muted max-sm:pr-0">{item.a}</p>
+              <p>{item.a}</p>
             </details>
           ))}
         </div>

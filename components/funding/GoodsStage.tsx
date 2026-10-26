@@ -5,8 +5,8 @@ import styles from "./GoodsStage.module.css";
 // 모든 굿즈를 항상 그려 두고 data-on으로 들어오고 나가는 전환을 준다.
 
 const NAVY = "#173B70";
-const BRAND = "#2468C5";
-const CORAL = "#FF7867";
+const BRAND = "#3978B8";
+const CORAL = "#F28B82";
 
 /** 장식용 QR 무늬 (실제로 읽히는 코드가 아님) */
 function Qr({ x, y, size, color = NAVY }: { x: number; y: number; size: number; color?: string }) {
@@ -27,9 +27,9 @@ function Keyring({ variant = "main" }: { variant?: "main" | "mini" }) {
     <g className={styles.swing}>
       <circle cx="0" cy="8" r="8" fill="none" stroke="#9AA9BC" strokeWidth="3" />
       <path d="M0 16v10" stroke="#9AA9BC" strokeWidth="3" />
-      <rect x="-22" y="26" width="44" height="56" rx="11" fill={variant === "main" ? "#EAF4FF" : "#FFF0ED"} stroke={variant === "main" ? BRAND : CORAL} strokeWidth="2.5" />
+      <rect x="-22" y="26" width="44" height="56" rx="11" fill={variant === "main" ? "#EAF2F9" : "#FDECEA"} stroke={variant === "main" ? BRAND : CORAL} strokeWidth="2.5" />
       <circle cx="0" cy="33" r="2.5" fill="#fff" stroke="#9AA9BC" />
-      <Qr x={-14} y={42} size={28} color={variant === "main" ? NAVY : "#963D32"} />
+      <Qr x={-14} y={42} size={28} color={variant === "main" ? NAVY : "#B4473F"} />
     </g>
   );
 }
@@ -129,7 +129,7 @@ export default function GoodsStage({ kinds, highlight = [], label, className = "
       {part("tshirt", crowded ? "translate(300px, 196px) scale(.66)" : "translate(360px, 140px)", <Tee shimmerId={`${idPrefix}-shimmer`} />)}
       {part("extras", "translate(0px, 0px)", (
         <g>
-          <g transform="translate(470 222) scale(.5)"><Tee fill="#FFF0ED" /></g>
+          <g transform="translate(470 222) scale(.5)"><Tee fill="#FDECEA" /></g>
           <g transform="translate(70 22)"><Keyring variant="mini" /></g>
           <g transform="translate(118 36)"><Keyring variant="mini" /></g>
         </g>

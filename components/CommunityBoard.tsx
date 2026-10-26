@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   CATEGORY_LABELS,
   CATEGORY_TABS,
@@ -13,6 +13,7 @@ import {
   type Post,
 } from "@/lib/community";
 import CategoryBadge from "./CategoryBadge";
+import styles from "./InfoPages.module.css";
 import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, MessageIcon, PencilIcon, SearchIcon } from "./Icons";
 
 const FOCUS_RING =
@@ -50,63 +51,55 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
   };
 
   return (
-    <section aria-labelledby="board-title" className="page-container max-w-5xl pt-6 max-sm:pt-4">
+    <section aria-labelledby="board-title" className="page-container max-w-5xl pt-5 max-sm:pt-4">
       <div className="min-w-0">
         <h2 id="board-title" className="sr-only">
           게시글 목록
         </h2>
 
-        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 max-sm:gap-2">
-          <form role="search" onSubmit={search} className="relative min-w-0">
-            <label htmlFor="board-search" className="sr-only">게시글 검색</label>
-            <input id="board-search" type="search" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="제목·내용·작성자 검색"
-              className="h-11 w-full rounded-xl border border-line bg-white pr-11 pl-4 text-[14px] placeholder:text-subtle focus:border-brand focus:outline-none" />
-            <button type="submit" aria-label="검색" className={`absolute top-1/2 right-1.5 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:text-brand ${FOCUS_RING}`}><SearchIcon size={18} /></button>
-          </form>
-          <Link href="/community/write" className={`inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-brand px-4 text-[14px] font-bold text-white transition-colors hover:bg-brand-dark ${FOCUS_RING}`}><PencilIcon size={16} strokeWidth={2} />글쓰기</Link>
+        <div className={`${styles.boardPanel} ${styles.rise}`}>
+          <div className={styles.boardSearch}>
+            <form role="search" onSubmit={search} className={styles.searchField}>
+              <label htmlFor="board-search" className="sr-only">게시글 검색</label>
+              <input id="board-search" type="search" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="제목·내용·작성자 검색" />
+              <button type="submit" aria-label="검색" className={FOCUS_RING}><SearchIcon size={18} /></button>
+            </form>
+            <Link href="/community/write" className={`${styles.writeButton} ${FOCUS_RING}`}><PencilIcon size={16} strokeWidth={2} />글쓰기</Link>
+          </div>
+
+          <div role="group" aria-label="게시글 분류" className={styles.chips}>
+            {CATEGORY_TABS.filter((c) => c !== "notice").map((c) => (
+              <button key={c} type="button" aria-pressed={category === c} onClick={() => changeCategory(c)} className={`${styles.chip} ${FOCUS_RING}`}>
+                {tabLabel(c)}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div role="group" aria-label="게시글 분류" className="mt-5 flex flex-wrap gap-x-5 border-b border-line max-sm:gap-x-3">
-          {CATEGORY_TABS.filter((c) => c !== "notice").map((c) => (
-            <button
-              key={c}
-              type="button"
-              aria-pressed={category === c}
-              onClick={() => changeCategory(c)}
-              className={`-mb-px min-h-11 border-b-2 px-1 py-2.5 text-[14px] font-semibold transition-colors max-sm:text-[13px] ${FOCUS_RING} ${
-                category === c
-                  ? "border-brand text-brand"
-                  : "border-transparent text-muted hover:border-brand/30 hover:text-brand"
-              }`}
-            >
-              {tabLabel(c)}
-            </button>
-          ))}
-        </div>
-
-        <p className="mt-4 text-[14px] text-muted" aria-live="polite">
+        <p className={styles.count} aria-live="polite">
           {query ? (
             <>
-              <strong className="text-ink">‘{query}’</strong> 검색 결과{" "}
+              <span className={styles.query}>‘{query}’</span> 검색 결과{" "}
             </>
           ) : (
             category === "all" ? "전체 " : `${CATEGORY_LABELS[category]} `
           )}
-          <strong className="text-brand">{filtered.length}</strong>건
+          <strong>{filtered.length}</strong>건
         </p>
 
         {items.length === 0 ? (
-          <div className="mt-3 rounded-2xl border border-dashed border-line bg-surface px-5 py-16 text-center">
+          <div className={styles.empty}>
             <p className="text-[16px] font-bold">게시글이 없습니다</p>
             <p className="mt-1.5 text-[14px] break-keep text-muted">
               다른 분류를 고르거나 검색어를 바꿔 보세요.
             </p>
           </div>
         ) : (
-          <ul className="mt-3 border-t-2 border-ink">
+          // 분류·검색어·페이지가 바뀌면 목록을 새로 그려 행이 다시 차례로 떠오르게 한다.
+          <ul key={`${category}-${query}-${current}`} className={styles.list}>
             <li
               aria-hidden="true"
-              className="grid grid-cols-[64px_96px_1fr_120px_104px_72px] items-center border-b border-line bg-surface py-3 text-center text-[13px] font-bold text-muted max-md:hidden"
+              className={`grid grid-cols-[64px_96px_1fr_120px_104px_72px] items-center py-3 text-center max-md:hidden ${styles.listHead}`}
             >
               <span>번호</span>
               <span>분류</span>
@@ -115,19 +108,18 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
               <span>작성일</span>
               <span>조회</span>
             </li>
-            {items.map((post) => {
+            {items.map((post, order) => {
               const index = filtered.indexOf(post);
               const isNotice = post.category === "notice";
               return (
                 <li
                   key={post.id}
-                  className={`grid grid-cols-[64px_96px_1fr_120px_104px_72px] items-center border-b border-line text-[14px] max-md:flex max-md:flex-col max-md:items-start max-md:gap-1.5 max-md:px-1 max-md:py-4 ${
-                    isNotice ? "bg-brand-soft/50" : ""
-                  }`}
+                  style={{ "--i": order } as CSSProperties}
+                  className={`grid grid-cols-[64px_96px_1fr_120px_104px_72px] items-center text-[14px] max-md:flex max-md:flex-col max-md:items-start max-md:gap-1.5 max-md:px-4 max-md:py-4 ${styles.row} ${isNotice ? styles.notice : ""}`}
                 >
                   <span className="text-center text-muted max-md:hidden">
                     {isNotice ? (
-                      <span className="font-bold text-brand">공지</span>
+                      <span className="inline-flex items-center gap-1 font-bold text-brand"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 17v5M9 10.76V6h6v4.76l2 3.24H7z" /><path d="M8 2h8" /></svg>공지</span>
                     ) : (
                       normalCount - (index - normalOffset)
                     )}
@@ -143,14 +135,12 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
                       <CategoryBadge category={post.category} />
                     </span>
                     <span
-                      className={`truncate group-hover:text-brand group-hover:underline ${
-                        isNotice ? "font-bold" : "font-semibold"
-                      }`}
+                      className={`truncate ${styles.rowTitle} ${isNotice ? "font-bold" : "font-semibold"}`}
                     >
                       {post.title}
                     </span>
                     {post.comments.length > 0 && (
-                      <span className="inline-flex shrink-0 items-center gap-0.5 text-[13px] font-bold text-gold-ink">
+                      <span className="inline-flex shrink-0 items-center gap-0.5 rounded-full bg-[#EAF2F9] px-1.5 py-px text-[12px] font-bold text-[#3978B8]">
                         <MessageIcon size={13} strokeWidth={2} />
                         <span className="sr-only">댓글</span>
                         {post.comments.length}
@@ -178,7 +168,7 @@ export default function CommunityBoard({ initialPosts }: { initialPosts: Post[] 
         )}
 
         {totalPages > 1 && (
-          <nav aria-label="페이지" className="mt-8 flex items-center justify-center gap-1">
+          <nav aria-label="페이지" className={styles.pager}>
             <PageButton label="이전 페이지" disabled={current === 1} onClick={() => setPage(current - 1)}>
               <ChevronLeftIcon size={16} strokeWidth={2.2} />
             </PageButton>
@@ -221,9 +211,7 @@ function PageButton({
       aria-current={active ? "page" : undefined}
       disabled={disabled}
       onClick={onClick}
-      className={`flex h-9 min-w-9 items-center justify-center rounded-lg px-2 text-[14px] font-bold transition-colors disabled:opacity-35 ${FOCUS_RING} ${
-        active ? "bg-brand text-white" : "text-muted hover:bg-surface hover:text-brand"
-      }`}
+      className={`${styles.pageButton} ${FOCUS_RING}`}
     >
       {children}
     </button>

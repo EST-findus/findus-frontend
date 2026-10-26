@@ -35,13 +35,13 @@ function DevReviewControls({ userId, record }: { userId: string; record: FamilyR
     ["reviewing", "확인 중으로", null],
   ];
   return (
-    <div className="mt-5 rounded-xl border border-dashed border-[#C9B79C] bg-[#FFFBF3] p-4">
-      <p className="text-[12px] font-bold text-[#8A6418]">데모 · 개발 환경에서만 보여요</p>
+    <div className="mt-5 rounded-xl border border-dashed border-[#F2BDB8] bg-[#FFF8F7] p-4">
+      <p className="text-[12px] font-bold text-[#B4473F]">데모 · 개발 환경에서만 보여요</p>
       <p className="mt-1 text-[12px] text-muted">실제로는 관리자가 기관 확인 결과를 보고 바꿔요 (관리자 화면 A10).</p>
       <div className="mt-3 flex flex-wrap gap-1.5">
         {options.filter(([to]) => canTransition(record.status, to)).map(([to, label, note]) => (
           <button key={to} type="button" onClick={() => { try { devSetFamilyStatus(userId, to, note); setError(null); } catch (problem) { setError(problem instanceof Error ? problem.message : "바꾸지 못했어요."); } }}
-            className={`rounded-lg border border-[#E2C9A6] bg-white px-3 py-1.5 text-[12px] font-bold ${FOCUS}`}>{label}</button>
+            className={`rounded-lg border border-[#F6CDC9] bg-white px-3 py-1.5 text-[12px] font-bold ${FOCUS}`}>{label}</button>
         ))}
       </div>
       {error && <p role="alert" className="mt-2 text-[12px] text-red">{error}</p>}
@@ -57,7 +57,7 @@ export function KeptTable() {
         <ul className="mt-2 space-y-1 text-muted">{KEPT_INFO.map((item) => <li key={item}>· {item}</li>)}</ul>
       </div>
       <div className="rounded-xl bg-[#FFF5F3] p-4">
-        <p className="flex items-center gap-1.5 font-bold text-[#963D32]"><MinusCircleIcon size={15} />보관하지 않는 정보</p>
+        <p className="flex items-center gap-1.5 font-bold text-[#B4473F]"><MinusCircleIcon size={15} />보관하지 않는 정보</p>
         <ul className="mt-2 space-y-1 text-muted">{NOT_KEPT_INFO.map((item) => <li key={item}>· {item}</li>)}</ul>
       </div>
     </div>
@@ -92,7 +92,7 @@ function OurChild({ userId, record }: { userId: string; record: FamilyRecord }) 
           <div key={campaign.id} className="mt-3 rounded-2xl border border-line p-5 max-sm:p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <Link href={`/funding/${campaign.id}`} className={`font-bold hover:text-brand ${FOCUS}`}>{campaign.child.name}님을 기억하는 {campaign.title}</Link>
-              <span className={`rounded-full px-2.5 py-1 text-[12px] font-bold ${state?.paused ? "bg-surface text-muted" : state?.approved ? "bg-[#FFF0ED] text-[#963D32]" : "bg-brand-soft text-brand"}`}>
+              <span className={`rounded-full px-2.5 py-1 text-[12px] font-bold ${state?.paused ? "bg-surface text-muted" : state?.approved ? "bg-[#FDECEA] text-[#B4473F]" : "bg-brand-soft text-brand"}`}>
                 {state?.paused ? "공개 일시 중지" : state?.approved ? "가족 승인됨" : "가족 승인 전"}
               </span>
             </div>
@@ -164,7 +164,7 @@ function FamilyCard({ user }: { user: User }) {
   return (
     <section aria-labelledby="account-family" className={CARD}>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <CardTitle id="account-family" icon={<ShieldIcon className="text-[#FF7867]" />}>가족 인증</CardTitle>
+        <CardTitle id="account-family" icon={<ShieldIcon className="text-[#F28B82]" />}>가족 인증</CardTitle>
         {status === "verified" ? <FamilyBadge size="md" label="가족 확인됨" /> : <span className="rounded-full bg-surface px-3 py-1 text-[12px] font-bold text-muted">{STATUS_LABEL[status]}</span>}
       </div>
 
@@ -199,7 +199,7 @@ function FamilyCard({ user }: { user: User }) {
           {status === "reviewing" && <p className="mt-4 flex items-start gap-2 rounded-xl bg-brand-soft p-4 text-[14px] text-[#173B70]"><ClockIcon size={18} className="mt-0.5 shrink-0" />아동권리보장원 실종아동전문센터와 관할 경찰서에 확인하고 있어요. 보통 5~10일(영업일) 걸려요. [가정]</p>}
           {status === "needs_more" && (
             <div className="mt-4 rounded-xl bg-[#FFF5F3] p-4 text-[14px]">
-              <p className="font-bold text-[#963D32]">보완이 필요해요</p>
+              <p className="font-bold text-[#B4473F]">보완이 필요해요</p>
               <p className="mt-1 break-keep">{record.note}</p>
               <Link href="/mypage/verify" className={`mt-3 inline-flex items-center gap-1 font-bold text-brand ${FOCUS}`}>다시 제출하기 <ArrowRightIcon size={15} /></Link>
             </div>

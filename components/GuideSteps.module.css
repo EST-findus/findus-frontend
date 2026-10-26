@@ -1,20 +1,145 @@
-/* Compact situation cards in the community guide tab. */
-.compact > div { border-radius:14px; box-shadow:0 1px 3px rgb(23 59 112 / 4%); }
-.compact > div > button { gap:14px; padding:20px; border-radius:14px; }
-.compact > div > button > span:first-child { width:48px; height:48px; border-radius:12px; }
-.compact > div > button > span:first-child > svg { width:25px; height:25px; }
-.compact > div > button > span:last-child > span:nth-child(1) { font-size:12px; }
-.compact > div > button > span:last-child > span:nth-child(2) { font-size:20px; }
-.compact > div > button > span:last-child > span:nth-child(3) { margin-top:6px; font-size:13px; line-height:1.6; }
-.compact > div > button > span:last-child > span:nth-child(4) { margin-top:10px; font-size:13px; }
-.compact > div > div { padding:0 16px 16px; }
+/* Compact situation cards in the help guide tab.
+   Each card has a clear tone: a tinted face, a coloured top edge, a filled icon chip and its three steps at a glance,
+   so the two cards read as distinct, clickable panels instead of faint outlines. */
+/* Each card spans three shared rows (header, steps, bottom box) as a subgrid, so the tinted headers and the dividers line up across the two cards even when one summary wraps. */
+.compact > div { --tone:#3978B8; --tone-ink:#173B70; --tone-soft:#F1F7FF; --tone-line:#CFDEF0; --tone-ring:rgb(57 120 184 / 14%);
+  position:relative; display:grid; grid-row:span 3; grid-template-rows:subgrid; row-gap:0; overflow:hidden; border:1px solid var(--tone-line); border-radius:20px; background:#FFFFFF; box-shadow:0 10px 28px rgb(23 59 112 / 8%); transition:translate .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,border-color .25s ease; }
+.compact > div[data-guide="me"] { --tone:#D4675E; --tone-ink:#B4473F; --tone-soft:#FEF4F3; --tone-line:#F6CDC9; --tone-ring:rgb(212 103 94 / 16%); }
+.compact > div::before { position:absolute; inset:0 0 auto; height:4px; background:var(--tone); content:""; }
+.compact > div:hover { translate:0 -4px; border-color:var(--tone); box-shadow:0 20px 40px rgb(23 59 112 / 13%); }
+.compact > div > button { gap:16px; padding:24px 22px 20px; border-bottom:1px solid var(--tone-line); border-radius:20px 20px 0 0; background:var(--tone-soft); }
+.compact > div > button > span:first-child { width:52px; height:52px; border-radius:14px; background:var(--tone); color:#FFFFFF; box-shadow:0 8px 18px var(--tone-ring); }
+.compact > div > button > span:first-child > svg { width:26px; height:26px; }
+.compact > div > button > span:last-child > span:nth-child(1) { width:fit-content; padding:3px 10px; border-radius:999px; background:#FFFFFF; color:var(--tone-ink); font-size:12px; box-shadow:inset 0 0 0 1px var(--tone-line); }
+.compact > div > button > span:last-child > span:nth-child(2) { margin-top:8px; color:#173B70; font-size:22px; }
+.compact > div > button > span:last-child > span:nth-child(3) { margin-top:6px; color:#4A5D75; font-size:13.5px; line-height:1.6; }
+/* "절차 보기" reads as a button: tone outline that fills on hover. */
+.compact > div > button > span:last-child > span:nth-child(4) { margin-top:14px; padding:7px 14px; border:1px solid var(--tone); border-radius:999px; color:var(--tone-ink); font-size:13px; transition:background-color .2s ease,color .2s ease; }
+.compact > div:hover > button > span:last-child > span:nth-child(4) { background:var(--tone); color:#FFFFFF; }
+
+.preview { display:grid; gap:8px; margin:16px 22px 22px; }
+.preview li { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #E7ECF2; border-radius:12px; background:#FFFFFF; color:#25364D; font-size:13.5px; font-weight:700; transition:border-color .2s ease,translate .3s cubic-bezier(.2,.7,.2,1); }
+.compact > div:hover .preview li { border-color:var(--tone-line); }
+.compact > div:hover .preview li:nth-child(1) { translate:3px 0; transition-delay:0s; }
+.compact > div:hover .preview li:nth-child(2) { translate:3px 0; transition-delay:.05s; }
+.compact > div:hover .preview li:nth-child(3) { translate:3px 0; transition-delay:.1s; }
+.preview li > span { display:grid; flex:none; width:24px; height:24px; place-items:center; border-radius:50%; background:var(--tone-soft); color:var(--tone-ink); font-size:12px; font-weight:800; box-shadow:inset 0 0 0 1px var(--tone-line); }
+
+.compact > div > div { margin-top:-6px; padding:0 22px 22px; }
+/* 182 call box, sized like the DNA box in the other card. */
+.callout { display:flex; min-height:72px; align-items:center; gap:10px; padding:10px 12px; border:1px solid #CFDEF0; border-radius:12px; background:#F6FAFF; color:#173B70; transition:border-color .2s ease,background-color .2s ease; }
+.callout:hover { border-color:#3978B8; background:#EEF5FE; }
+.callout > span:first-child { display:grid; flex:none; width:34px; height:34px; place-items:center; border-radius:10px; background:#EAF2F9; color:#3978B8; }
+.callout > span:nth-child(2) { display:grid; flex:1; min-width:0; }
+.callout small { color:#3D5877; font-size:10px; font-weight:700; }
+.callout strong { margin-top:2px; font-size:16px; font-weight:800; }
+.callout em { margin-top:2px; color:#62748C; font-size:11px; font-style:normal; }
+.callout > svg { flex:none; color:#3978B8; transition:translate .25s cubic-bezier(.2,.7,.2,1); }
+.callout:hover > svg { translate:3px 0; }
 .compact [id="families"] { min-height:72px; padding:10px 12px; gap:10px; border-radius:12px; box-shadow:none; }
 .compact [id="families"] > span:first-child { width:34px; height:34px; border-radius:10px; }
 .compact [id="families"] > span:nth-child(2) > span:first-child { font-size:10px; }
 .compact [id="families"] > span:nth-child(2) > span:nth-child(2) { margin-top:2px; font-size:16px; }
 .compact [id="families"] > span:nth-child(2) > span:nth-child(3) { margin-top:2px; font-size:11px; }
+@media(prefers-reduced-motion:reduce) {
+ .compact > div,.preview li,.compact > div > button > span:last-child > span:nth-child(4) { transition:none; }
+ .compact > div:hover,.compact > div:hover .preview li { translate:none; }
+}
 @media(width<640px) {
- .compact > div > button { padding:16px; gap:12px; }
- .compact > div > button > span:first-child { width:42px; height:42px; }
- .compact > div > div { padding-inline:14px; padding-bottom:14px; }
+ .compact > div > button { padding:20px 16px 14px; gap:12px; }
+ .compact > div > button > span:first-child { width:44px; height:44px; }
+ .compact > div > button > span:last-child > span:nth-child(2) { font-size:20px; }
+ .preview { margin:12px 16px 16px; }
+ .compact > div > div { padding-inline:16px; padding-bottom:16px; }
+}
+
+/* ───────── Guide popup ─────────
+   Opened from a card, so it gives more than the card: steps on a quiet timeline with what to bring for each,
+   then good-to-know notes, cautions and the right phone numbers. Everything settles in once, in order. */
+@keyframes popRise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+@keyframes popNumber { from { opacity:0; scale:.6; } to { opacity:1; scale:1; } }
+@keyframes popLine { from { scale:1 0; } to { scale:1 1; } }
+@keyframes popBreathe { 0%,100% { scale:1; } 50% { scale:1.06; } }
+.popup { --tone:#3978B8; --tone-ink:#173B70; --tone-soft:#F1F7FF; --tone-line:#CFDEF0; --tone-ring:rgb(57 120 184 / 16%); }
+.popup[data-guide="me"] { --tone:#D4675E; --tone-ink:#B4473F; --tone-soft:#FEF4F3; --tone-line:#F6CDC9; --tone-ring:rgb(212 103 94 / 18%); }
+.popup > * { animation:popRise .55s cubic-bezier(.2,.7,.2,1) backwards; }
+.popup > :nth-child(2) { animation-delay:.06s; }
+.popup > :nth-child(3) { animation-delay:.1s; }
+.popup > :nth-child(4) { animation-delay:.5s; }
+.popup > :nth-child(5) { animation-delay:.58s; }
+.popup > :nth-child(6) { animation-delay:.66s; }
+
+.popupIntro { display:flex; align-items:center; gap:14px; padding:18px; border:1px solid var(--tone-line); border-radius:18px; background:var(--tone-soft); }
+.popupIcon { display:grid; flex:none; width:48px; height:48px; place-items:center; border-radius:14px; background:var(--tone); color:#FFFFFF; box-shadow:0 8px 18px var(--tone-ring); animation:popBreathe 4.5s ease-in-out 1s infinite; }
+.popupSummary { color:#173B70; font-size:15px; font-weight:700; line-height:1.55; word-break:keep-all; }
+.popupLead { margin-top:3px; color:#4A5D75; font-size:13px; line-height:1.6; word-break:keep-all; }
+
+.popupHeading { margin:26px 0 12px; color:var(--tone-ink); font-size:13px; font-weight:800; letter-spacing:.02em; }
+.popupSteps { position:relative; display:grid; gap:12px; }
+/* The timeline line grows down behind the numbers. */
+.popupSteps::before { position:absolute; top:22px; bottom:22px; left:19px; width:2px; border-radius:2px; background:var(--tone-line); content:""; transform-origin:top; animation:popLine .9s cubic-bezier(.2,.7,.2,1) .2s backwards; }
+.popupSteps > li { position:relative; display:flex; gap:14px; animation:popRise .55s cubic-bezier(.2,.7,.2,1) backwards; }
+.popupSteps > li:nth-child(1) { animation-delay:.16s; }
+.popupSteps > li:nth-child(2) { animation-delay:.26s; }
+.popupSteps > li:nth-child(3) { animation-delay:.36s; }
+.popupNumber { position:relative; z-index:1; display:grid; flex:none; width:40px; height:40px; margin-top:12px; place-items:center; border:3px solid #FFFFFF; border-radius:50%; background:var(--tone); color:#FFFFFF; font-size:14px; font-weight:800; box-shadow:0 4px 12px var(--tone-ring); animation:popNumber .5s cubic-bezier(.3,1.4,.5,1) backwards; }
+.popupSteps > li:nth-child(1) .popupNumber { animation-delay:.24s; }
+.popupSteps > li:nth-child(2) .popupNumber { animation-delay:.34s; }
+.popupSteps > li:nth-child(3) .popupNumber { animation-delay:.44s; }
+.popupStep { flex:1; min-width:0; padding:16px 18px; border:1px solid #E3EAF3; border-radius:16px; background:#FFFFFF; transition:border-color .25s ease,box-shadow .3s ease,translate .3s cubic-bezier(.2,.7,.2,1); }
+.popupSteps > li:hover .popupStep { translate:3px 0; border-color:var(--tone-line); box-shadow:0 10px 24px rgb(23 59 112 / 7%); }
+.popupStep h3 { color:#173B70; font-size:16px; font-weight:800; line-height:1.4; word-break:keep-all; }
+.popupStep p { margin-top:5px; color:#4A5D75; font-size:14px; line-height:1.65; word-break:keep-all; }
+.popupStep ul { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.popupStep ul li { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:999px; background:var(--tone-soft); color:var(--tone-ink); font-size:12px; font-weight:700; box-shadow:inset 0 0 0 1px var(--tone-line); }
+.popupStep ul li svg { color:var(--tone); }
+
+.popupDna { margin-top:16px; }
+
+.popupNotes { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:12px; margin-top:18px; }
+.popupNotes section { padding:16px 18px; border-radius:16px; }
+.popupNotes h3 { display:flex; align-items:center; gap:6px; font-size:14px; font-weight:800; }
+.popupNotes ul { display:grid; gap:8px; margin-top:10px; }
+.popupNotes li { position:relative; padding-left:14px; font-size:13px; line-height:1.6; word-break:keep-all; }
+.popupNotes li::before { position:absolute; top:.62em; left:0; width:5px; height:5px; border-radius:50%; content:""; }
+.popupGood { border:1px solid #E3EAF3; background:#F9FAFC; }
+.popupGood h3 { color:#173B70; }
+.popupGood h3 svg { color:var(--tone); }
+.popupGood li { color:#3D5877; }
+.popupGood li::before { background:var(--tone); }
+.popupCare { border:1px solid #F6D3CF; background:#FFF7F6; }
+.popup[data-guide="me"] .popupCare { border-color:#F6CDC9; background:#FFF8F7; }
+.popupCare h3 { color:#B4473F; }
+.popup[data-guide="me"] .popupCare h3 { color:#B4473F; }
+.popupCare li { color:#5E4A44; }
+.popupCare li::before { background:#F28B82; }
+
+.popupContact { margin-top:18px; padding:18px; border-radius:18px; background:#173B70; color:#FFFFFF; }
+.popupContactNote { font-size:14px; font-weight:700; line-height:1.6; word-break:keep-all; }
+.popupCalls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:12px; }
+.popupCall { display:flex; align-items:center; gap:10px; min-height:56px; padding:10px 14px; border:1px solid rgb(255 255 255 / 22%); border-radius:14px; background:rgb(255 255 255 / 8%); color:#FFFFFF; transition:background-color .2s ease,border-color .2s ease,translate .25s cubic-bezier(.2,.7,.2,1); }
+.popupCall:hover { translate:0 -2px; border-color:rgb(255 255 255 / 45%); background:rgb(255 255 255 / 14%); }
+.popupCall > span:first-child { display:grid; flex:none; width:34px; height:34px; place-items:center; border-radius:10px; background:rgb(255 255 255 / 14%); }
+.popupCall > span:last-child { display:grid; }
+.popupCall strong { font-size:18px; font-weight:850; letter-spacing:-.2px; }
+.popupCall small { color:rgb(255 255 255 / 75%); font-size:11.5px; font-weight:600; }
+.popupCallPrimary { border-color:#FFFFFF; background:#FFFFFF; color:#173B70; }
+.popupCallPrimary:hover { border-color:#FFFFFF; background:#EEF5FE; }
+.popupCallPrimary > span:first-child { background:#3978B8; color:#FFFFFF; }
+.popupCallPrimary small { color:#4A5D75; }
+.popupLink { display:inline-flex; align-items:center; gap:2px; margin-top:12px; color:#C9E5FF; font-size:13px; font-weight:700; }
+.popupLink:hover { color:#FFFFFF; text-decoration:underline; text-underline-offset:3px; }
+
+@media(width<640px) {
+ .popupIntro { padding:14px; }
+ .popupSteps::before { left:16px; }
+ .popupNumber { width:34px; height:34px; font-size:13px; }
+ .popupSteps > li { gap:10px; }
+ .popupStep { padding:14px; }
+ .popupNotes,.popupCalls { grid-template-columns:minmax(0,1fr); }
+}
+@media(prefers-reduced-motion:reduce) {
+ .popup > *,.popupIcon,.popupSteps::before,.popupSteps > li,.popupNumber { animation:none; }
+ .popupStep,.popupCall { transition:none; }
+ .popupSteps > li:hover .popupStep,.popupCall:hover { translate:none; }
 }

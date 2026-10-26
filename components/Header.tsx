@@ -10,6 +10,7 @@ import HeaderNav from "./HeaderNav";
 import LogoMark from "./LogoMark";
 import { ArrowUpRightIcon } from "./Icons";
 import ReportCallButton from "./ReportCallButton";
+import { requestFeaturedPopup } from "./HomeFeaturedPopup";
 
 export function Logo({ blue = false }: { blue?: boolean }) {
   return (
@@ -17,7 +18,7 @@ export function Logo({ blue = false }: { blue?: boolean }) {
       <LogoMark size={36} className="shrink-0" />
       <span className="text-[21px] font-extrabold tracking-[-0.4px]">
         <span style={{ color: "#173B70" }}>Find</span>
-        <span style={{ color: "#2468C5" }}>Us</span>
+        <span style={{ color: "#3978B8" }}>Us</span>
       </span>
     </span>
   );
@@ -50,7 +51,7 @@ export default function Header() {
 
 }
       <div className={`page-container flex h-16 items-center gap-5 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
-        <Link href="/" aria-label="FindUs 홈" className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
+        <Link href="/" aria-label="FindUs 홈" onClick={requestFeaturedPopup} className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
           <Logo blue={onPublicPage} />
         </Link>
         <HeaderNav />

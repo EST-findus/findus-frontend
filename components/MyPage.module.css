@@ -292,3 +292,117 @@
  .layout [data-reunion-panel] > div > section { border:0; padding:0 8px; }
  .layout [data-reunion-panel] > h2 { margin-inline:16px; font-size:12px; }
 }
+
+/* ───────── Look and motion ─────────
+   Same calm language as the other pages and the official palette: 공공 블루 #3978B8, 라이트 블루 #EAF2F9,
+   웜 코랄 #F28B82 for small accents, white cards. Things settle in once; nothing loops loudly. */
+@keyframes myRise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+@keyframes myFade { from { opacity:0; } to { opacity:1; } }
+@keyframes myFloat { 0%,100% { translate:0 0; } 50% { translate:0 -5px; } }
+@keyframes myDot { 0% { box-shadow:0 0 0 0 rgba(242,139,130,.45); } 70%,100% { box-shadow:0 0 0 7px rgba(242,139,130,0); } }
+@keyframes myBeat { 0%,100% { scale:1; } 12% { scale:1.12; } 24% { scale:1; } }
+
+.hello { position:relative; overflow:hidden; margin-bottom:14px; padding:24px 30px 26px; border:1px solid #DCE8F4; border-radius:20px; background:radial-gradient(circle at 92% 18%, rgb(242 139 130 / 14%), transparent 38%), #EAF2F9; }
+.hello > * { animation:myRise .8s cubic-bezier(.2,.7,.2,1) backwards; }
+.hello > :nth-child(2) { animation-delay:.08s; }
+.hello > :nth-child(3) { animation-delay:.16s; }
+.hello > :nth-child(4) { animation-delay:.22s; }
+.helloEyebrow { display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border:1px solid rgb(57 120 184 / 16%); border-radius:999px; background:rgb(255 255 255 / 80%); color:#3978B8; font-size:12px; font-weight:700; letter-spacing:.02em; }
+.helloEyebrow > span { width:6px; height:6px; border-radius:50%; background:#F28B82; animation:myDot 2.4s ease-out infinite; }
+.hello h1 { margin-top:12px; color:#173B70; font-size:24px; font-weight:800; line-height:1.4; letter-spacing:-.6px; word-break:keep-all; }
+.hello h1 strong { color:#3978B8; font-weight:850; }
+.helloText { margin-top:4px; color:#5C6F86; font-size:14px; line-height:1.7; word-break:keep-all; }
+.helloBadge { margin-top:12px; }
+.helloMark { position:absolute; top:50%; right:30px; display:grid; width:60px; height:60px; margin-top:-30px; place-items:center; border-radius:18px; background:#FFFFFF; color:#F28B82; box-shadow:0 12px 28px rgb(23 59 112 / 10%); animation:myFloat 6s ease-in-out 1s infinite; }
+.helloMark svg { animation:myBeat 3.2s ease-in-out 1.6s infinite; }
+
+.continuation { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-bottom:14px; padding:18px 22px; border:1px solid #F6CDC9; border-radius:18px; background:#FEF4F3; animation:myRise .7s cubic-bezier(.2,.7,.2,1) .2s backwards; }
+.continuationLink { display:inline-flex; align-items:center; gap:6px; padding:9px 14px; border-radius:12px; background:#FFFFFF; color:#B4473F; font-weight:700; box-shadow:inset 0 0 0 1px #F6CDC9; transition:background-color .2s ease,translate .25s cubic-bezier(.2,.7,.2,1); }
+.continuationLink:hover { translate:2px 0; background:#FDE8E6; }
+
+.toolbar { margin-bottom:16px; animation:myRise .7s cubic-bezier(.2,.7,.2,1) .2s backwards; }
+.panel:not([hidden]) { animation:myFade .45s ease backwards; }
+.panel:not([hidden]) > * { animation:myRise .6s cubic-bezier(.2,.7,.2,1) .05s backwards; }
+.panel:not([hidden]) > * + * { animation-delay:.15s; }
+
+/* Cards in every tab share one surface: white, soft blue edge, a light lift on hover. */
+.card,
+.panel section[class*="rounded-3xl"],
+.layout [data-favorite-card],
+.layout [data-favorite-empty] { border-color:#E3EAF3 !important; border-radius:20px; background:#FFFFFF; box-shadow:0 2px 10px rgb(23 59 112 / 5%); transition:box-shadow .35s ease,border-color .25s ease; }
+.card:hover,
+.panel section[class*="rounded-3xl"]:hover,
+.layout [data-favorite-card]:hover { border-color:#C9DAEE !important; box-shadow:0 14px 32px rgb(23 59 112 / 9%); }
+.layout [data-favorite-empty] { border-style:dashed !important; border-color:#D4E1F0 !important; background:#F9FAFC; }
+.layout [data-favorite-empty-icon] { animation:myBeat 3.2s ease-in-out 1s infinite; }
+.panel li[class*="rounded-2xl"] { border-color:#E3EAF3; box-shadow:0 2px 8px rgb(23 59 112 / 4%); transition:translate .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease; }
+.panel li[class*="rounded-2xl"]:hover { translate:0 -3px; box-shadow:0 14px 30px rgb(23 59 112 / 9%); }
+
+.pillLink { display:inline-flex; align-items:center; gap:4px; padding:8px 14px; border:1px solid #3978B8; border-radius:999px; color:#3978B8; font-size:14px; font-weight:700; transition:background-color .2s ease,color .2s ease; }
+.pillLink:hover { background:#3978B8; color:#FFFFFF; }
+.empty > p:first-child::before { display:block; width:44px; height:44px; margin:0 auto 14px; border-radius:50%; background:#EAF2F9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%233978B8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E") center / 22px no-repeat; content:""; }
+.activityList > li { animation:myRise .5s cubic-bezier(.2,.7,.2,1) backwards; }
+.activityList > li:nth-child(2) { animation-delay:.05s; }
+.activityList > li:nth-child(3) { animation-delay:.1s; }
+.activityList > li:nth-child(4) { animation-delay:.15s; }
+.activityList > li:nth-child(5) { animation-delay:.2s; }
+.activityList a { padding-inline:10px; transition:background-color .2s ease,translate .3s cubic-bezier(.2,.7,.2,1); }
+.activityList a:hover { translate:3px 0; background:#F7FAFE; }
+
+@media(width<640px) {
+  .hello { padding:20px 18px 22px; border-radius:16px; }
+  .hello h1 { padding-right:56px; font-size:20px; }
+  .helloText { font-size:13px; }
+  .helloMark { top:20px; right:16px; width:46px; height:46px; margin-top:0; border-radius:14px; }
+  .continuation { padding:16px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hello > *,.helloEyebrow > span,.helloMark,.helloMark svg,.continuation,.toolbar,.panel,.panel > *,.activityList > li,.layout [data-favorite-empty-icon] { animation:none !important; }
+  .card,.panel section,.panel li,.activityList a,.continuationLink,.pillLink { transition:none; }
+  .panel li[class*="rounded-2xl"]:hover,.activityList a:hover,.continuationLink:hover { translate:none; }
+}
+
+/* Saved child details as a tidy information card: age on a light-blue band, one fact per row,
+   source and sync time quieter at the bottom. Rows settle in one after another. */
+@keyframes myRow { from { opacity:0; transform:translateX(-6px); } to { opacity:1; transform:none; } }
+.layout [data-favorite-api-body] > dl { display:grid; gap:0; overflow:hidden; padding:0; border:1px solid #E3EAF3; border-radius:16px; background:#FFFFFF; box-shadow:0 2px 8px rgb(23 59 112 / 4%); }
+.layout [data-favorite-api-body] > dl > div { display:grid; grid-template-columns:96px minmax(0,1fr); align-items:baseline; gap:12px; padding:11px 18px; border-top:1px solid #EEF2F7; transition:background-color .2s ease; animation:myRow .45s cubic-bezier(.2,.7,.2,1) backwards; }
+.layout [data-favorite-api-body] > dl > div:hover { background:#F7FAFE; }
+.layout [data-favorite-api-body] > dl > div > dt { position:relative; width:auto; padding-left:12px; color:#62748C; font-size:13px; font-weight:600; line-height:1.6; }
+.layout [data-favorite-api-body] > dl > div > dt::before { position:absolute; top:.62em; left:0; width:5px; height:5px; border-radius:50%; background:#BFD3EC; content:""; }
+.layout [data-favorite-api-body] > dl > div > dd { color:#173B70; font-size:15px; font-weight:600; line-height:1.6; }
+/* 나이: the key fact, on the light-blue band */
+.layout [data-favorite-api-body] > dl > div:first-child { padding-block:14px; border-top:0; background:#EAF2F9; }
+.layout [data-favorite-api-body] > dl > div:first-child > dt::before { background:#F28B82; }
+.layout [data-favorite-api-body] > dl > div:first-child > dd span { color:#3978B8; font-size:17px; font-weight:800; letter-spacing:-.2px; }
+/* 특징·착의 사항 read as running text */
+.layout [data-favorite-api-body] > dl > div:nth-child(5) > dd,
+.layout [data-favorite-api-body] > dl > div:nth-child(7) > dd { font-weight:500; word-break:keep-all; overflow-wrap:anywhere; }
+/* 출처·마지막 동기화: quieter footer rows */
+.layout [data-favorite-api-body] > dl > div:nth-child(n+8) { padding-block:8px; background:#F9FAFC; }
+.layout [data-favorite-api-body] > dl > div:nth-child(n+8) > dt,
+.layout [data-favorite-api-body] > dl > div:nth-child(n+8) > dd { color:#7A8BA0; font-size:12.5px; font-weight:500; }
+.layout [data-favorite-api-body] > dl > div:nth-child(n+8) > dt::before { background:#DCE5F0; }
+.layout [data-favorite-api-body] > dl > div:nth-child(2) { animation-delay:.04s; }
+.layout [data-favorite-api-body] > dl > div:nth-child(3) { animation-delay:.08s; }
+.layout [data-favorite-api-body] > dl > div:nth-child(4) { animation-delay:.12s; }
+.layout [data-favorite-api-body] > dl > div:nth-child(5) { animation-delay:.16s; }
+.layout [data-favorite-api-body] > dl > div:nth-child(6) { animation-delay:.2s; }
+.layout [data-favorite-api-body] > dl > div:nth-child(7) { animation-delay:.24s; }
+.layout [data-favorite-api-body] > dl > div:nth-child(n+8) { animation-delay:.28s; }
+@media(min-width:768px) {
+  .layout [data-favorite-api-body] > dl { padding-left:0; border-left:1px solid #E3EAF3; }
+}
+@media(width<600px) {
+  .layout [data-favorite-api-body] > dl { padding:0; border-top:1px solid #E3EAF3; }
+  .layout [data-favorite-api-body] > dl > div { grid-template-columns:80px minmax(0,1fr); gap:10px; padding:10px 14px; }
+  .layout [data-favorite-api-body] > dl > div > dd { font-size:14px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .layout [data-favorite-api-body] > dl > div { animation:none; transition:none; }
+}
+/* Between phone and desktop the side column is too narrow for the card, so it sits under the photos. */
+@media(600px <= width < 768px) {
+  .layout [data-favorite-api-body] { grid-template-columns:minmax(0,1fr); gap:16px; }
+  .layout [data-favorite-api-body] > section { width:100%; max-width:340px; justify-self:center; }
+}

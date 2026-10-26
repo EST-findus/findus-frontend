@@ -1,0 +1,62 @@
+/* Home "함께 찾고 있는 아이들" card, in the site palette:
+   공공 블루 #3978B8, 라이트 블루 #EAF2F9, 웜 코랄 #F28B82, white. */
+.card { display:flex; height:100%; flex-direction:column; overflow:hidden; border:1px solid #E3EAF3; border-radius:20px; background:#FFFFFF; box-shadow:0 2px 10px rgba(23,59,112,.05); transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,border-color .25s ease; }
+.card:hover { transform:translateY(-4px); border-color:#C9DAEE; box-shadow:0 18px 36px rgba(23,59,112,.11); }
+
+/* Photo pair, edge to edge, split down the middle by a thin white line. */
+.media { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:2px; height:232px; background:#FFFFFF; }
+.past,.aged { position:relative; display:block; overflow:hidden; padding:0; border:0; cursor:pointer; }
+.past { background:#E6EBF1; }
+.aged { background:#EAF2F9; }
+.past img,.aged img { transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.past:hover img,.aged:hover img { transform:scale(1.05); }
+.past:focus-visible,.aged:focus-visible { outline:2px solid #3978B8; outline-offset:-3px; }
+
+.badge { position:absolute; z-index:1; bottom:10px; padding:4px 10px; border-radius:999px; background:rgba(23,32,48,.72); color:#FFFFFF; font-size:12px; font-weight:700; letter-spacing:-.1px; white-space:nowrap; backdrop-filter:blur(4px); }
+.badgeLeft { left:10px; }
+.badgeRight { right:10px; }
+.aiChip { position:absolute; z-index:1; top:10px; left:10px; display:inline-flex; align-items:center; gap:4px; padding:4px 9px; border-radius:7px; background:#3978B8; color:#FFFFFF; font-size:11.5px; font-weight:800; }
+
+/* AI image not ready yet: a calm placeholder that says what is coming. */
+.pending { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:16px 12px 34px; cursor:default; text-align:center; }
+.aiChipSoft { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border:1px solid #BFD3EC; border-radius:7px; background:#FFFFFF; color:#3978B8; font-size:11.5px; font-weight:800; }
+.pending strong { margin-top:4px; color:#173B70; font-size:14.5px; font-weight:800; line-height:1.4; letter-spacing:-.3px; word-break:keep-all; }
+.pendingSub { color:#5C6F86; font-size:12px; }
+.pendingRing { position:absolute; bottom:-62px; left:50%; width:132px; height:132px; margin-left:-66px; border:2px dashed #BFD3EC; border-radius:50%; animation:ringTurn 26s linear infinite; pointer-events:none; }
+@keyframes ringTurn { to { rotate:360deg; } }
+
+/* Years apart, floating on the seam. */
+.years { position:absolute; z-index:2; top:50%; left:50%; display:inline-flex; align-items:center; gap:3px; padding:7px 13px; transform:translate(-50%,-50%); border-radius:999px; background:#FFFFFF; color:#173B70; font-size:13px; font-weight:800; box-shadow:0 6px 16px rgba(23,59,112,.18); white-space:nowrap; pointer-events:none; }
+.years svg { color:#F28B82; }
+.favorite { position:absolute; z-index:2; top:10px; right:10px; }
+
+/* Body: name with a gender chip, two fact cells, then one primary action and two quiet icon buttons. */
+.body { display:flex; flex:1; flex-direction:column; padding:16px 18px 16px; }
+.name { display:flex; align-items:center; gap:8px; color:#173B70; font-size:20px; font-weight:850; letter-spacing:-.5px; }
+.name small { padding:2px 8px; border-radius:999px; background:#F1F5FA; color:#5C6F86; font-size:11.5px; font-weight:700; letter-spacing:0; }
+.facts { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); margin-top:12px; overflow:hidden; border:1px solid #E7ECF2; border-radius:12px; background:#F9FAFC; }
+.facts > div { min-width:0; padding:9px 12px; }
+.facts > div + div { border-left:1px solid #E7ECF2; }
+.facts dt { display:flex; align-items:center; gap:4px; color:#7A8BA0; font-size:11px; font-weight:700; }
+.facts dt svg { flex:none; color:#3978B8; }
+.facts dd { margin-top:2px; overflow:hidden; color:#173B70; font-size:14px; font-weight:800; letter-spacing:-.2px; text-overflow:ellipsis; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.actions { display:grid; grid-template-columns:minmax(0,1fr) 40px 40px; align-items:center; gap:8px; margin-top:auto; padding-top:14px; }
+.detail { display:flex; height:40px; align-items:center; justify-content:center; gap:5px; border-radius:11px; background:#EAF2F9; color:#2F66A0; font-size:14px; font-weight:800; cursor:pointer; transition:background-color .2s ease,color .2s ease; }
+.detail:hover { background:#3978B8; color:#FFFFFF; }
+.detail svg { transition:transform .25s cubic-bezier(.2,.7,.2,1); }
+.detail:hover svg { transform:translateX(3px); }
+.iconButton { display:grid; width:40px; height:40px; place-items:center; border:1px solid #E3EAF3; border-radius:11px; background:#FFFFFF; color:#3D5877; cursor:pointer; transition:background-color .2s ease,border-color .2s ease,color .2s ease; }
+.iconButton:hover { border-color:#BFD3EC; background:#EAF2F9; color:#3978B8; }
+.detail:focus-visible,.iconButton:focus-visible { outline:2px solid #3978B8; outline-offset:2px; }
+.note { padding:10px 18px 12px; border-top:1px solid #EEF2F7; color:#7A8BA0; font-size:11.5px; }
+
+@media(width<640px) {
+  .media { height:208px; }
+  .body { padding:14px 16px 10px; }
+  .note { padding-inline:16px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .card,.past img,.aged img,.detail,.detail svg,.iconButton { transition:none; }
+  .card:hover,.past:hover img,.aged:hover img { transform:none; }
+  .pendingRing { animation:none; }
+}

@@ -37,6 +37,8 @@ interface SearchPanelProps {
   regions: string[];
   onReset: () => void;
   onSubmit: () => void;
+  /** 다른 화면에서 이 검색창으로 바로 이동할 때 쓰는 id */
+  inputId?: string;
 }
 
 function Select<T extends string>({
@@ -81,6 +83,7 @@ export default function SearchPanel({
   regions,
   onReset,
   onSubmit,
+  inputId,
 }: SearchPanelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const set = <K extends keyof SearchFilters>(key: K) => (value: SearchFilters[K]) =>
@@ -105,6 +108,7 @@ export default function SearchPanel({
           />
           <input
             ref={inputRef}
+            id={inputId}
             type="search"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}

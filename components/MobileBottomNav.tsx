@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { logOut } from "@/lib/auth";
 import { useCurrentUser } from "@/lib/useCurrentUser";
 import { useRef, useState } from "react";
 import { HomeIcon, LayersIcon, UserIcon } from "./Icons";
@@ -11,6 +12,7 @@ const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visi
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const user = useCurrentUser();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuTrigger = useRef<HTMLButtonElement>(null);
@@ -34,6 +36,16 @@ export default function MobileBottomNav() {
         <nav aria-label="전체 메뉴" className="divide-y divide-line">
           {[{ href: "/search", label: "실종아동 찾기" }, { href: "/community", label: "정보 마당" }, { href: "/help", label: "이용 안내" }, { href: "/help?tab=ai", label: "AI 연구 안내", child: true }, { href: "/help?tab=info", label: "공식 기관·정보", child: true }, { href: user ? "/mypage" : "/login?next=%2Fmypage", label: "마이페이지" }, { href: "/funding", label: "후원하기" }].map((item) => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className={`block rounded-lg py-3 text-[15px] ${item.child ? "pl-6 text-muted" : "px-2 font-bold"} hover:bg-surface ${FOCUS}`}>{item.label}</Link>)}
         </nav>
+        {user && (
+          <div className="mt-4 border-t border-line pt-4">
+            <p className="px-2 text-[13px] text-muted"><strong className="font-bold text-ink">{user.nickname}</strong>님으로 로그인 중</p>
+            <button type="button" onClick={() => { logOut(); setMenuOpen(false); router.push("/"); }}
+              className={`mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-line py-3 text-[15px] font-bold text-muted transition-colors hover:border-[#F6CDC9] hover:bg-[#FEF4F3] hover:text-[#B4473F] ${FOCUS}`}>
+              <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" /></svg>
+              로그아웃
+            </button>
+          </div>
+        )}
       </Modal>}
     </>
   );

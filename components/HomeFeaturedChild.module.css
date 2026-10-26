@@ -1,0 +1,83 @@
+/* Hero mini card for one randomly picked child, in the same frosted style as the hero shortcut tiles. */
+/* One tile column wide (the tile grid has an 8px gap), so its left edge lines up with the right column of tiles. */
+.card { width:max(220px,calc((100% - 8px) / 2)); padding:10px 12px; border:1px solid rgba(255,255,255,.85); border-radius:18px; background:rgba(255,255,255,.78); color:#173B70; box-shadow:inset 0 1px 0 #FFFFFF,0 12px 30px rgba(23,59,112,.12); backdrop-filter:blur(14px) saturate(1.1); -webkit-backdrop-filter:blur(14px) saturate(1.1); animation:cardIn .8s cubic-bezier(.2,.7,.2,1) .4s backwards; transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,background-color .3s ease; }
+.card:hover { transform:translateY(-3px); background:rgba(255,255,255,.88); box-shadow:inset 0 1px 0 #FFFFFF,0 18px 38px rgba(23,59,112,.16); }
+
+/* Calm motion: the name and photos settle in after the card, the arrow nudges now and then,
+   and a slow light passes over the empty AI slot to suggest it is still being prepared. */
+.name { animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) .55s backwards; }
+.photos > :nth-child(1) { animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) .65s backwards; }
+.photos > :nth-child(2) { animation:fadeIn .5s ease .85s backwards; }
+.photos > :nth-child(3) { animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) .8s backwards; }
+.report { animation:fadeIn .5s ease .95s backwards; }
+.top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.label { display:inline-flex; align-items:center; gap:6px; color:#3978B8; font-size:11px; font-weight:700; }
+.label > span { width:6px; height:6px; border-radius:50%; background:#F28B82; animation:dotPulse 2.4s ease-out infinite; }
+.source { color:#8B9AAD; font-size:10px; white-space:nowrap; }
+.name { display:flex; align-items:baseline; gap:6px; margin:4px 0 6px; color:#173B70; font-size:16px; font-weight:800; letter-spacing:-.3px; }
+.name small { color:#62748C; font-size:12px; font-weight:500; }
+
+.photos { display:grid; grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr); align-items:center; gap:6px; }
+.photo { position:relative; display:flex; height:84px; overflow:hidden; border-radius:10px; background:#E6EFF9; cursor:pointer; }
+.photo img { transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+button.photo:hover img { transform:scale(1.05); }
+button.photo:focus-visible,.report:focus-visible { outline:2px solid #3978B8; outline-offset:2px; }
+.arrow { display:flex; justify-content:center; color:#3978B8; }
+.arrow svg { animation:nudge 2.8s ease-in-out 1.6s infinite; }
+.pending { flex-direction:column; align-items:center; justify-content:center; gap:4px; border:1px dashed #C7D8EC; background:#EEF3F9; color:#54708F; cursor:default; }
+.pending > span:not(.tag) { font-size:10.5px; font-weight:700; }
+.pending::after { position:absolute; inset:0; content:""; background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.7) 50%,transparent 70%); translate:-110% 0; animation:sweep 4.5s ease-in-out 1.8s infinite; pointer-events:none; }
+.pending svg { animation:breathe 3.6s ease-in-out 1.2s infinite; }
+.tag { position:absolute; z-index:1; left:6px; bottom:6px; padding:2px 7px; border-radius:999px; background:rgba(23,59,112,.78); color:#FFFFFF; font-size:10px; font-weight:700; }
+.tagAi { right:6px; left:auto; background:#3978B8; }
+
+.report { display:flex; width:100%; align-items:center; justify-content:center; gap:6px; height:32px; margin-top:8px; border:1px solid #F6CDC9; border-radius:10px; background:#FFF7F6; color:#D4675E; font-size:12.5px; font-weight:800; cursor:pointer; transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .25s cubic-bezier(.2,.7,.2,1); }
+.report:hover { border-color:#D4675E; background:#D4675E; color:#FFFFFF; transform:translateY(-1px); }
+.report svg { transition:transform .3s cubic-bezier(.2,.7,.2,1); }
+.report:hover svg { transform:rotate(-10deg) scale(1.08); }
+
+@keyframes cardIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes nudge { 0%,60%,100% { translate:0 0; } 30% { translate:3px 0; } }
+@keyframes sweep { 0% { translate:-110% 0; } 35%,100% { translate:110% 0; } }
+@keyframes breathe { 0%,100% { opacity:.65; } 50% { opacity:1; } }
+@keyframes dotPulse { 0% { box-shadow:0 0 0 0 rgba(242,139,130,.45); } 70%,100% { box-shadow:0 0 0 7px rgba(242,139,130,0); } }
+
+/* Popup variant: the card fills the popup, photos are larger, and a few facts sit under them. */
+.popup { width:100%; padding:0; border:0; background:transparent; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; animation:none; }
+.popup:hover { transform:none; background:transparent; box-shadow:none; }
+.popup .name { margin:0; font-size:20px; }
+.popup .photos { grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr); gap:10px; margin-top:12px; }
+.popup .photo { height:auto; aspect-ratio:1; border-radius:14px; }
+.popup .pending > span:not(.tag) { font-size:12px; }
+.facts { display:grid; gap:0; margin-top:14px; overflow:hidden; border:1px solid #E3EAF3; border-radius:12px; animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) .9s backwards; }
+.facts > div { display:grid; grid-template-columns:72px minmax(0,1fr); gap:10px; padding:8px 14px; border-top:1px solid #EEF2F7; font-size:13.5px; }
+.facts > div:first-child { border-top:0; background:#EAF2F9; }
+.facts dt { color:#62748C; font-weight:600; }
+.facts dd { color:#173B70; font-weight:700; word-break:keep-all; }
+.facts > div:first-child dd { color:#3978B8; }
+.ask { margin-top:12px; color:#3D5877; font-size:13.5px; line-height:1.65; word-break:keep-all; }
+.actions { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; margin-top:14px; }
+.actions .report { height:44px; margin-top:0; font-size:14px; }
+.more { display:flex; align-items:center; justify-content:center; gap:4px; height:44px; border:1px solid #3978B8; border-radius:10px; background:#3978B8; color:#FFFFFF; font-size:14px; font-weight:800; cursor:pointer; transition:background-color .2s ease,transform .25s cubic-bezier(.2,.7,.2,1); animation:fadeIn .5s ease .95s backwards; }
+.more:hover { background:#2F66A0; transform:translateY(-1px); }
+.more:focus-visible { outline:2px solid #3978B8; outline-offset:2px; }
+.popupFoot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:18px -28px -28px; padding:12px 20px; border-top:1px solid #EEF2F7; background:#F9FAFC; border-radius:0 0 16px 16px; }
+.popupFoot button { padding:6px 8px; border-radius:8px; color:#62748C; font-size:13px; font-weight:600; cursor:pointer; transition:background-color .2s ease,color .2s ease; }
+.popupFoot button:hover { background:#EAF2F9; color:#173B70; }
+.popupFoot button:last-child { color:#173B70; font-weight:700; }
+.popupFoot button:focus-visible { outline:2px solid #3978B8; outline-offset:2px; }
+
+@media(width<720px) {
+  .card { width:100%; background:rgba(255,255,255,.88); }
+  .popup { background:transparent; }
+  .popupFoot { margin-inline:-20px; }
+  .photo { height:110px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .card,.label > span,.name,.photos > *,.report,.arrow svg,.pending::after,.pending svg { animation:none; }
+  .card,.photo img,.report,.report svg { transition:none; }
+  .card:hover,button.photo:hover img,.report:hover,.report:hover svg,.more:hover { transform:none; }
+  .facts,.more { animation:none; }
+}
