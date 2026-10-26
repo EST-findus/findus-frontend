@@ -20,7 +20,7 @@ const POLAROID = "/images/mock-persons/MC-2001-0812/past.jpg";
 type Section = { id: string; label: string; content: ReactNode };
 
 /* Two-pane guide shown inside a bare Modal: a numbered sidebar that follows the reading position, and the sections. */
-function GuideSheet({ title, sections, ending, tone = "brand" }: { title: string; sections: Section[]; ending: ReactNode; tone?: "brand" | "coral" }) {
+function GuideSheet({ title, sections, ending, tone = "brand" }: { title: string; sections: Section[]; ending: ReactNode; tone?: "brand" | "coral" | "navy" }) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(sections[0].id);
 
@@ -375,11 +375,93 @@ function SupportGuide() {
   );
 }
 
-// Two story cards near the end of the home page; each opens a full guide instead of leaving the page.
+// 일상 속에서 실종아동을 다시 보게 하는 국내 캠페인 모음. 보도 기사를 바탕으로 정리했다.
+const CAMPAIGNS = {
+  store: [
+    { title: "CU · 아이CU", text: "전국 CU 점포에서 길 잃은 아이를 보호하고 경찰에 인계해요. POS 화면에 장기 실종아동 사진을 띄워 20년 만의 상봉 사례도 있어요.", source: "파이낸셜뉴스" },
+    { title: "우체국 · 한진 · 경찰청 '호프테이프'", text: "택배 포장 테이프에 실종 당시 사진과 나이 변환 예상 모습을 함께 인쇄했어요. 한진은 이 캠페인 등으로 사회공헌 시상에서 상을 받기도 했어요.", source: "사이언스타임즈 · 메트로서울" },
+    { title: "티르티르 택배 라벨", text: "뷰티 브랜드 티르티르는 택배 상자 안쪽에 실종 당시 사진과 현재 추정 사진을 비교하는 라벨을 붙였어요.", source: "메트로서울" },
+    { title: "인생네컷 × 경찰청 '실종아동네컷'", text: "인생네컷과 경찰청이 함께한 장기 실종아동 찾기 캠페인이에요. 네 컷 사진 프레임에 아이들의 어린 시절 모습과 특징을 담았어요.", source: "캠페인 포스터" },
+  ],
+  app: [
+    { title: "당근 × 경찰청 실종 정보 실시간 공유", text: "안전Dream에 공개된 실종 정보가 당근 앱에 실시간으로 올라가고, 발견되면 자동 삭제돼요.", source: "뉴시스" },
+    { title: "토스 × 대전경찰청 결제 단말기 실종경보", text: "실종경보 발령 시 지역 가맹점의 토스 결제 단말기에 실종 정보를 띄우는 협약이에요. 대전에서 먼저 시작해요.", source: "토스피드" },
+    { title: "NH농협은행 인터넷뱅킹 실종아동 찾기", text: "2016년부터 이체 화면에 실종아동 사진과 정보를 노출해 왔어요. 10년째 이어진 장수 캠페인이에요.", source: "스마트투데이" },
+  ],
+  more: [
+    { title: "에어서울 기내 모니터 실종아동 찾기", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", source: "아이뉴스24" },
+    { title: "KB국민은행 · 실종 예방 협력", text: "자녀 지문을 등록하고 사전신고증을 내면 어린이 적금에 우대이율을 주는 상품이 있었어요. 올해 실종아동의 날 행사에서 KB국민은행과 NH농협은행이 경찰청장 감사장을 받았어요.", source: "데일리안 · 다자비" },
+  ],
+} as const;
+
+function CampaignList({ items, icon }: { items: readonly { title: string; text: string; source: string }[]; icon: ReactNode }) {
+  return (
+    <ul className={`${styles.features} ${styles.campaignList}`}>
+      {items.map(item => (
+        <li key={item.title}>
+          <span aria-hidden="true" className={styles.featureIcon}>{icon}</span>
+          <div><strong>{item.title}</strong><span>{item.text}</span><em className={styles.campaignSource}>출처: {item.source}</em></div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function CampaignGuide() {
+  const sections: Section[] = [
+    {
+      id: "campaign-why",
+      label: "FindUs와 닮은 사례",
+      content: (
+        <>
+          <p className={styles.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
+          <h3 className={styles.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
+          <p className={styles.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
+          <p className={styles.body}>호프테이프와 에어서울 캠페인은 모두 실종 당시 사진과 나이 변환으로 만든 현재 추정 모습을 나란히 보여주었습니다. 호프테이프에는 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주로 만든 현재 추정 모습, 실종 장소와 신체 특징이 담겼습니다.</p>
+          <p className={styles.lead}>원본과 AI 예상 모습을 나란히 비교하는 방식은, 이미 현장에서 검증된 방법입니다.</p>
+        </>
+      ),
+    },
+    { id: "campaign-store", label: "편의점·택배·사진", content: (<><p className={styles.kicker}>편의점 · 택배 · 사진</p><h3 className={styles.midTitle}>매일 지나치는 계산대와 상자, 사진 한 장 위에서.</h3><CampaignList items={CAMPAIGNS.store} icon={<BoxGlyph />} /></>) },
+    { id: "campaign-app", label: "앱·결제·은행", content: (<><p className={styles.kicker}>앱 · 결제 · 은행</p><h3 className={styles.midTitle}>손안의 화면에서, 한 번 더.</h3><CampaignList items={CAMPAIGNS.app} icon={<PhoneIcon size={20} />} /></>) },
+    {
+      id: "campaign-more",
+      label: "기내·예방 협력",
+      content: (
+        <>
+          <p className={styles.kicker}>기내 · 실종 예방</p>
+          <h3 className={styles.midTitle}>이동하는 순간에도, 미리 대비하는 순간에도.</h3>
+          <CampaignList items={CAMPAIGNS.more} icon={<UsersIcon size={20} />} />
+          <p className={styles.note}>각 캠페인 내용은 보도 기사를 바탕으로 정리했으며, 현재 진행 여부와 세부 내용은 달라질 수 있습니다. FindUs는 위 기업·기관과 제휴 관계가 아닙니다.</p>
+        </>
+      ),
+    },
+  ];
+  return (
+    <GuideSheet
+      title="함께하는 캠페인"
+      tone="navy"
+      sections={sections}
+      ending={<>
+        <Image src="/images/home-family-together.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={styles.endingPhoto} />
+        <p className={`${pen.className} ${styles.endingNote}`}>일상의 한 장면이,<br />다시 만나는 길이 됩니다.</p>
+      </>}
+    />
+  );
+}
+
+const BoxGlyph = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z" /><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9" />
+  </svg>
+);
+
+// Story cards near the end of the home page; each opens a full guide instead of leaving the page.
 export default function HomeStory() {
-  const [open, setOpen] = useState<"service" | "support" | null>(null);
+  const [open, setOpen] = useState<"service" | "support" | "campaign" | null>(null);
   const serviceRef = useRef<HTMLButtonElement>(null);
   const supportRef = useRef<HTMLButtonElement>(null);
+  const campaignRef = useRef<HTMLButtonElement>(null);
 
   return (
     <section className={`page-container ${styles.section}`} aria-labelledby="home-story-title">
@@ -419,11 +501,34 @@ export default function HomeStory() {
             <span className={styles.supportTag}>Remember A Child</span>
           </span>
         </button>
+        <button ref={campaignRef} type="button" aria-haspopup="dialog" onClick={() => setOpen("campaign")} className={`${styles.card} ${styles.cardCampaign}`}>
+          <span className={styles.cardCopy}>
+            <span className={styles.cardLabel}><span aria-hidden="true" className={styles.cardIcon}><UsersIcon size={18} /></span>03 · 함께하는 캠페인</span>
+            <span className={styles.cardTitle}>일상 곳곳에서, 한 번 더 보게 합니다</span>
+            <span className={styles.cardText}>편의점 계산대, 택배 상자, 결제 화면, 기내 모니터까지. 실종아동의 얼굴을 일상에서 다시 보게 하는 캠페인들을 소개합니다.</span>
+            <span className={styles.cardTags}><span>원본 ↔ 나이 변환 비교</span><span>일상 속 노출</span></span>
+            <span className={styles.cardMore}>자세히 보기 <ArrowRightIcon size={15} /></span>
+          </span>
+          <span aria-hidden="true" className={styles.campaignVisual}>
+            {[["편의점", "POS 화면"], ["택배", "호프테이프"], ["동네 앱", "실시간 공유"], ["결제 단말기", "실종경보"], ["인터넷뱅킹", "이체 화면"], ["기내 모니터", "나이 변환"]].map(([place, how]) => (
+              <span key={place} className={styles.campaignTile}><strong>{place}</strong><small>{how}</small></span>
+            ))}
+          </span>
+          <span aria-hidden="true" className={styles.campaignPhoto}>
+            <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="280px" />
+            <span className={styles.supportTag}>실종아동네컷</span>
+          </span>
+        </button>
       </div>
 
       {open === "service" && (
         <Modal bare mobileFullscreen title="서비스 소개" onClose={() => setOpen(null)} returnFocusTo={serviceRef.current}>
           <ServiceGuide />
+        </Modal>
+      )}
+      {open === "campaign" && (
+        <Modal bare mobileFullscreen title="함께하는 캠페인" onClose={() => setOpen(null)} returnFocusTo={campaignRef.current}>
+          <CampaignGuide />
         </Modal>
       )}
       {open === "support" && (

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatGender } from "@/lib/format";
-import PublicPersonCard from "./ChildComparisonCard";
+import HomeChildCard from "./HomeChildCard";
 import CountUp from "./CountUp";
 import styles from "./PublicSearch.module.css";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
@@ -127,10 +127,10 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         {results.length > 0 ? (
           <div id="search-card-page" className={styles.cardGrid} data-reveal-items>
             {visible.map((person) => (
-              <PublicPersonCard
+              // 홈의 아동 카드와 같은 카드를 써서, 홈에서 넘어와도 같은 모양으로 이어 보이게 한다.
+              <HomeChildCard
                 key={person.id}
                 person={person}
-                comparison
                 onOpenDetail={openDetail}
                 onReport={openTip}
                 onShare={openShare}

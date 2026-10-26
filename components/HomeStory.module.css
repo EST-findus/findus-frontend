@@ -13,6 +13,23 @@
 .card { --tone:#3978B8; --tone-ink:#2F66A0; --tone-soft:#EAF2F9; --tone-line:#D4E3F2;
   position:relative; display:flex; min-width:0; min-height:214px; overflow:hidden; align-items:stretch; padding:0; border:1px solid #E3EAF3; border-radius:20px; background:#FFFFFF; color:#173B70; text-align:left; cursor:pointer; box-shadow:0 2px 8px rgba(23,59,112,.04); transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,border-color .3s ease; }
 .cardSupport { --tone:#D4675E; --tone-ink:#B4473F; --tone-soft:#FEF4F3; --tone-line:#F6CDC9; }
+/* 03 · 함께하는 캠페인: full-width, in navy, with a grid of everyday places on the right. */
+.cardCampaign { --tone:#25508F; --tone-ink:#173B70; --tone-soft:#EEF3FA; --tone-line:#D2DEEC; grid-column:1 / -1; min-height:0; }
+.campaignVisual { display:grid; flex:0 0 30%; grid-template-columns:repeat(2,minmax(0,1fr)); align-content:center; gap:8px; padding:22px 18px 22px 0; }
+/* Photo strips from the 실종아동네컷 campaign, faded in from the tiles like the QR goods photo in card 02. */
+.campaignPhoto { position:relative; flex:0 0 26%; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 22%); mask-image:linear-gradient(90deg,transparent 0%,#000 22%); }
+.campaignPhoto img { object-fit:cover; object-position:center 40%; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.card:hover .campaignPhoto img { transform:scale(1.05); }
+.campaignTile { display:flex; min-height:66px; flex-direction:column; justify-content:center; padding:10px 12px; border:1px solid #E3EAF3; border-radius:12px; background:#F7F9FC; transition:border-color .25s ease,background-color .25s ease,transform .3s cubic-bezier(.2,.7,.2,1); }
+.campaignTile strong { color:#173B70; font-size:13.5px; font-weight:800; }
+.campaignTile small { margin-top:2px; color:#62748C; font-size:11.5px; font-weight:600; }
+.campaignTile:nth-child(4n+1),.campaignTile:nth-child(4n) { border-left:3px solid #3978B8; }
+.campaignTile:nth-child(4n+2),.campaignTile:nth-child(4n+3) { border-left:3px solid #F28B82; }
+.card:hover .campaignTile { border-color:#D2DEEC; background:#FFFFFF; }
+.card:hover .campaignTile:nth-child(odd) { transform:translateY(-2px); }
+/* Campaign guide items */
+.features.campaignList { grid-template-columns:minmax(0,1fr); }
+.campaignSource { display:inline-block; margin-top:8px; padding:2px 8px; border-radius:6px; background:#EEF3FA; color:#3D5877; font-size:11px; font-style:normal; font-weight:700; }
 .card::before { position:absolute; inset:0 0 auto; z-index:2; height:3px; background:var(--tone); content:""; }
 .card:hover { transform:translateY(-4px); border-color:var(--tone-line); box-shadow:0 18px 38px rgba(23,59,112,.1); }
 .card:focus-visible { outline:2px solid #3978B8; outline-offset:4px; }
@@ -53,6 +70,7 @@
 
 /* Guide sheet inside the bare modal. */
 .sheet { --tone:#3978B8; --tone-ink:#2F66A0; --tone-soft:#EAF2F9; --tone-line:#D4E3F2; display:grid; grid-template-columns:232px minmax(0,1fr); min-height:100%; color:#1C2F4D; }
+.sheet[data-tone="navy"] { --tone:#25508F; --tone-ink:#173B70; --tone-soft:#EEF3FA; --tone-line:#D2DEEC; }
 .sheet[data-tone="coral"] { --tone:#D4675E; --tone-ink:#B4473F; --tone-soft:#FEF4F3; --tone-line:#F6CDC9; }
 /* Side navigation: a quiet reading guide. Steps sit on a thin line, the current one is filled with the tone,
    steps already read keep a soft tint, and a progress bar shows how far the reader is. */
@@ -195,6 +213,10 @@
 }
 @media(width<760px) {
   .cards { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .cardCampaign { flex-wrap:wrap; }
+  .cardCampaign .cardCopy { flex:1 1 60%; }
+  .campaignPhoto { flex:0 0 34%; min-height:200px; }
+  .campaignVisual { flex:1 1 100%; grid-template-columns:repeat(3,minmax(0,1fr)); padding:0 22px 22px; }
   .sheet { grid-template-columns:minmax(0,1fr); }
   .sheetNav { position:sticky; z-index:20; top:0; border-right:0; border-bottom:1px solid #E6EDF5; }
   .sheetNav nav { position:static; padding:14px 64px 10px 16px; }
@@ -241,7 +263,16 @@
   .splitFace { flex-basis:36%; height:128px; margin-right:14px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .card,.cardMore,.splitHalf img,.supportVisual img,.polaroidFrame,.features li,.stepIcon,.tiers li,.primary,.secondary,.cardMore svg,.sheetNav button,.sheetStep,.sheetProgressBar > span,.sheetHelp { transition:none; }
+  .card,.cardMore,.campaignTile,.campaignPhoto img,.splitHalf img,.supportVisual img,.polaroidFrame,.features li,.stepIcon,.tiers li,.primary,.secondary,.cardMore svg,.sheetNav button,.sheetStep,.sheetProgressBar > span,.sheetHelp { transition:none; }
   .sheetSection,.agePair > span,.timeline li { animation:none; }
   .card:hover,.polaroid:hover .polaroidFrame,.features li:hover,.tiers li:hover,.steps li:hover .stepIcon { transform:none; }
+}
+@media(width<640px) {
+  .campaignVisual { grid-template-columns:repeat(2,minmax(0,1fr)); padding:0 20px 20px; }
+  .campaignTile { min-height:56px; }
+}
+@media(width<640px) {
+  /* Phones: the campaign photo leads the card as a short strip, fading into the copy below. */
+  .campaignPhoto { order:-1; flex:1 1 100%; min-height:150px; -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%); mask-image:linear-gradient(180deg,#000 55%,transparent 100%); }
+  .cardCampaign .cardCopy { flex-basis:100%; }
 }
