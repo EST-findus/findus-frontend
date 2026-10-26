@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { formatGender } from "@/lib/format";
+import { formatGender, formatSyncTime } from "@/lib/format";
 import HomeChildCard from "./HomeChildCard";
 import CountUp from "./CountUp";
+import { ArrowRightIcon, PhoneIcon } from "./Icons";
 import styles from "./PublicSearch.module.css";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
@@ -46,6 +46,11 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
 
   const regions = useMemo(() => listRegions(persons), [persons]);
+  // 가장 최근에 동기화된 시각을 목록 전체의 기준 시각으로 보여 준다.
+  const syncedAt = useMemo(
+    () => persons.reduce<string | undefined>((latest, p) => (p.lastSyncedAt && (!latest || p.lastSyncedAt > latest) ? p.lastSyncedAt : latest), undefined),
+    [persons],
+  );
   const results = useMemo(
     () => filterPersons(persons, { query, filters, sort }),
     [persons, query, filters, sort],
@@ -93,20 +98,18 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
       <div className={`page-container ${styles.campaignLayout}`}>
       <div className={styles.mainRail}>
       <section className={styles.campaignHero} aria-labelledby="campaign-title">
-        <Image src="/images/search-campaign-hope.png" alt="" fill priority sizes="(min-width: 1280px) 1200px, 100vw" className={styles.campaignPhoto} />
-        <div className={styles.campaignVeil} />
         <div className={styles.campaignCopy}>
-          <p className={styles.heroEyebrow}>작은 관심으로 함께 만드는 안전한 내일</p>
+          <p className={styles.heroEyebrow}>경찰청 공개 실종아동 정보</p>
           <h1 id="campaign-title">실종아동을<br /><span>함께 찾아주세요</span></h1>
           <p>작은 관심이 한 아이의 내일을 바꿀 수 있습니다.<br />이름, 지역, 나이 등 기억나는 정보로 찾아보세요.</p>
         </div>
-        <span className={styles.campaignImageNote}>AI로 제작한 캠페인 이미지</span>
       </section>
       <section className={styles.searchSection} aria-labelledby="search-page-title">
         <div className="page-container">
           <h2 id="search-page-title" className="sr-only" tabIndex={-1}>실종아동 검색</h2>
           <div className={styles.searchBox}><SearchPanel query={query} onQueryChange={(value)=>{setQuery(value);setPage(0);}} filters={filters} onFiltersChange={(value)=>{setFilters(value);setPage(0);}} regions={regions} onReset={reset} onSubmit={goToResults} inputId={SEARCH_INPUT_ID} /></div>
           {selected.length > 0 && <div className={styles.conditions} aria-label="선택한 검색 조건" aria-live="polite"><strong>선택한 조건</strong>{selected.map((label) => <span key={label}>{label}</span>)}</div>}
+          <p className={styles.urgentNotice}><PhoneIcon size={15} strokeWidth={2.2} aria-hidden="true" />아이를 지금 목격했다면 바로 <a href="tel:112">112 긴급 신고</a><span aria-hidden="true">·</span><a href="tel:182">182 실종아동 제보·상담</a></p>
 
         </div>
       </section>
@@ -123,7 +126,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
             </select>
           </div>
         </header>
-        <div className={styles.exampleNote}><span>자료 출처: 경찰청</span><p>우리 DB에 동기화된 공개 실종아동 정보입니다. 검색과 페이지 이동은 저장된 정보만 조회합니다.</p></div>
+        <div className={styles.exampleNote}><span>자료 출처: 경찰청</span><p>경찰청이 공개한 실종아동 정보를 정기적으로 받아 보여 드립니다.{syncedAt && <> 기준: {formatSyncTime(syncedAt)}.</>} 사진과 정보는 공개 당시 기준이라 지금 모습과 다를 수 있습니다.</p></div>
         {results.length > 0 ? (
           <div id="search-card-page" className={styles.cardGrid} data-reveal-items>
             {visible.map((person) => (
@@ -148,12 +151,13 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         </nav>}
       </section>
 
-      <Link href="/help#know" className={styles.reportBanner} aria-label="기억나는 작은 단서, 목격 제보 안내 보기">
-        <Image src="/images/report-hope-hand.png" alt="" width={112} height={74} sizes="(max-width: 640px) 76px, 112px" className={styles.reportBannerArt} />
+      <Link href="/help#know" className={styles.reportBanner}>
+        <span className={styles.reportBannerIcon} aria-hidden="true"><PhoneIcon size={20} /></span>
         <span className={styles.reportBannerCopy}>
-          <strong>기억나는 작은 단서, <span>다시 만나는 희망이 됩니다.</span></strong>
-          <small>작은 기억도 소중한 제보가 될 수 있어요.</small>
+          <strong>기억나는 작은 단서도 제보가 됩니다</strong>
+          <small>언제, 어디서 봤는지만 알려 주셔도 큰 도움이 돼요.</small>
         </span>
+        <span className={styles.reportBannerMore}>목격 제보 방법 보기<ArrowRightIcon size={15} aria-hidden="true" /></span>
       </Link>
       </div>
       </div>
