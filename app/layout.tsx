@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Noto_Sans_KR } from "next/font/google";
 import Footer from "@/components/Footer";
@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import "./globals.css";
 import "./official-palette.css";
 import RoutePalette from "@/components/RoutePalette";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const pretendard = localFont({
   src: "../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
@@ -42,7 +43,10 @@ export const metadata: Metadata = {
   applicationName: "findus",
   title: { default: title, template: "%s | FindUs" },
   description,
+  keywords: ["실종아동", "장기 실종아동", "실종아동 찾기", "AI 예상 모습", "나이 변환", "실종 제보", "FindUs"],
   alternates: { canonical: "/" },
+  appleWebApp: { capable: true, title: "FindUs", statusBarStyle: "default" },
+  formatDetection: { telephone: false },
   openGraph: {
     type: "website",
     locale: "ko_KR",
@@ -60,6 +64,14 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#3978B8",
+  width: "device-width",
+  initialScale: 1,
+  // 하단 내비게이션이 env(safe-area-inset-bottom)을 쓰므로 노치·홈 바 영역까지 화면을 채운다.
+  viewportFit: "cover",
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
@@ -71,6 +83,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <Footer />
         <MobileBottomNav />
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
