@@ -8,7 +8,7 @@ import { useFunding } from "@/lib/useFunding";
 import { useAuthReady, useCurrentUser } from "@/lib/useCurrentUser";
 import { ArrowRightIcon, ShareIcon } from "../Icons";
 import GoodsStage from "./GoodsStage";
-import styles from "./Checkout.module.css";
+import * as styles from "./checkoutStyles";
 
 export default function PledgeComplete({ no }: { no: string }) {
   const ready = useAuthReady();
@@ -46,8 +46,8 @@ export default function PledgeComplete({ no }: { no: string }) {
       <div className={styles.box} aria-hidden="true">
         <div className={styles.boxGoods}><GoodsStage kinds={tier.stage} label="" idPrefix="complete" still /></div>
         <div className={styles.boxBody}>
-          <span className={styles.boxFlap} />
-          <span className={styles.boxFlap} />
+          <span className={styles.boxFlapLeft} />
+          <span className={styles.boxFlapRight} />
           <span className={styles.boxTape} />
           <span className={styles.boxStamp}>후원 완료</span>
         </div>
@@ -60,7 +60,7 @@ export default function PledgeComplete({ no }: { no: string }) {
       </p>
 
       <div className={styles.completeCard}>
-        <dl>
+        <dl className={styles.completeList}>
           <div><dt>후원번호</dt><dd className={styles.pledgeNo}>{pledge.no}</dd></div>
           <div><dt>펀딩</dt><dd>{campaign.child.name}님을 기억하는 {campaign.title}</dd></div>
           <div><dt>리워드</dt><dd>{tier.title}{pledge.sizes.length > 0 && ` · ${pledge.sizes.join(", ")}`}</dd></div>
