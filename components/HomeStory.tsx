@@ -506,13 +506,10 @@ export default function HomeStory() {
             <span className={styles.cardLabel}><span aria-hidden="true" className={styles.cardIcon}><UsersIcon size={18} /></span>03 · 함께하는 캠페인</span>
             <span className={styles.cardTitle}>일상 곳곳에서, 한 번 더 보게 합니다</span>
             <span className={styles.cardText}>편의점 계산대, 택배 상자, 결제 화면, 기내 모니터까지. 실종아동의 얼굴을 일상에서 다시 보게 하는 캠페인들을 소개합니다.</span>
-            <span className={styles.cardTags}><span>원본 ↔ 나이 변환 비교</span><span>일상 속 노출</span></span>
+            <span className={styles.campaignPlaces}>
+              {["편의점", "택배", "동네 앱", "결제 단말기", "인터넷뱅킹", "기내 모니터"].map(place => <span key={place}>{place}</span>)}
+            </span>
             <span className={styles.cardMore}>자세히 보기 <ArrowRightIcon size={15} /></span>
-          </span>
-          <span aria-hidden="true" className={styles.campaignVisual}>
-            {[["편의점", "POS 화면"], ["택배", "호프테이프"], ["동네 앱", "실시간 공유"], ["결제 단말기", "실종경보"], ["인터넷뱅킹", "이체 화면"], ["기내 모니터", "나이 변환"]].map(([place, how]) => (
-              <span key={place} className={styles.campaignTile}><strong>{place}</strong><small>{how}</small></span>
-            ))}
           </span>
           <span aria-hidden="true" className={styles.campaignPhoto}>
             <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="280px" />

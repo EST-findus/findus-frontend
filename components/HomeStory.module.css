@@ -1,13 +1,13 @@
 /* Home story cards (서비스 소개 · 후원 안내) and the two-pane guides they open. */
-.section { padding-block:24px 48px; }
-.cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.section { padding-block:72px 112px; }
+.cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
 
 /* Section heading, in the same voice as the other home sections. */
-.storyHead { margin-bottom:18px; }
+.storyHead { margin-bottom:36px; }
 .storyKicker { display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:999px; background:#EAF2F9; color:#3978B8; font-size:12px; font-weight:700; letter-spacing:.02em; }
 .storyKicker > span { width:6px; height:6px; border-radius:50%; background:#F28B82; }
-.storyHead h2 { margin-top:10px; color:#173B70; font-size:26px; font-weight:800; line-height:1.35; letter-spacing:-.8px; word-break:keep-all; }
-.storyHead > p:last-child { margin-top:6px; color:#5C6F86; font-size:14px; line-height:1.7; word-break:keep-all; }
+.storyHead h2 { margin-top:14px; color:#173B70; font-size:26px; font-weight:800; line-height:1.35; letter-spacing:-.8px; word-break:keep-all; }
+.storyHead > p:last-child { margin-top:10px; color:#5C6F86; font-size:14px; line-height:1.7; word-break:keep-all; }
 
 /* Two calm public-service cards: white face, one tone each (공공 블루 / 웜 코랄), a thin top edge in that tone. */
 .card { --tone:#3978B8; --tone-ink:#2F66A0; --tone-soft:#EAF2F9; --tone-line:#D4E3F2;
@@ -15,34 +15,26 @@
 .cardSupport { --tone:#D4675E; --tone-ink:#B4473F; --tone-soft:#FEF4F3; --tone-line:#F6CDC9; }
 /* 03 · 함께하는 캠페인: full-width, in navy, with a grid of everyday places on the right. */
 .cardCampaign { --tone:#25508F; --tone-ink:#173B70; --tone-soft:#EEF3FA; --tone-line:#D2DEEC; grid-column:1 / -1; min-height:0; }
-.campaignVisual { display:grid; flex:0 0 30%; grid-template-columns:repeat(2,minmax(0,1fr)); align-content:center; gap:8px; padding:22px 18px 22px 0; }
 /* Photo strips from the 실종아동네컷 campaign, faded in from the tiles like the QR goods photo in card 02. */
 .campaignPhoto { position:relative; flex:0 0 26%; -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 22%); mask-image:linear-gradient(90deg,transparent 0%,#000 22%); }
 .campaignPhoto img { object-fit:cover; object-position:center 40%; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
 .card:hover .campaignPhoto img { transform:scale(1.05); }
-.campaignTile { display:flex; min-height:66px; flex-direction:column; justify-content:center; padding:10px 12px; border:1px solid #E3EAF3; border-radius:12px; background:#F7F9FC; transition:border-color .25s ease,background-color .25s ease,transform .3s cubic-bezier(.2,.7,.2,1); }
-.campaignTile strong { color:#173B70; font-size:13.5px; font-weight:800; }
-.campaignTile small { margin-top:2px; color:#62748C; font-size:11.5px; font-weight:600; }
-.campaignTile:nth-child(4n+1),.campaignTile:nth-child(4n) { border-left:3px solid #3978B8; }
-.campaignTile:nth-child(4n+2),.campaignTile:nth-child(4n+3) { border-left:3px solid #F28B82; }
-.card:hover .campaignTile { border-color:#D2DEEC; background:#FFFFFF; }
-.card:hover .campaignTile:nth-child(odd) { transform:translateY(-2px); }
 /* Campaign guide items */
 .features.campaignList { grid-template-columns:minmax(0,1fr); }
 .campaignSource { display:inline-block; margin-top:8px; padding:2px 8px; border-radius:6px; background:#EEF3FA; color:#3D5877; font-size:11px; font-style:normal; font-weight:700; }
 .card::before { position:absolute; inset:0 0 auto; z-index:2; height:3px; background:var(--tone); content:""; }
 .card:hover { transform:translateY(-4px); border-color:var(--tone-line); box-shadow:0 18px 38px rgba(23,59,112,.1); }
 .card:focus-visible { outline:2px solid #3978B8; outline-offset:4px; }
-.cardCopy { position:relative; z-index:1; display:flex; flex:1 1 58%; flex-direction:column; align-items:flex-start; padding:24px 10px 22px 26px; }
+.cardCopy { position:relative; z-index:1; display:flex; flex:1 1 58%; flex-direction:column; align-items:flex-start; padding:32px 12px 30px 32px; }
 .cardLabel { display:inline-flex; align-items:center; gap:7px; padding:4px 11px 4px 8px; border-radius:999px; background:var(--tone-soft); color:var(--tone-ink); font-size:12px; font-weight:800; letter-spacing:.01em; }
 .cardIcon { display:flex; align-items:center; justify-content:center; color:var(--tone); }
 .cardIcon svg { width:16px; height:16px; }
-.cardTitle { margin-top:12px; color:#173B70; font-size:19px; font-weight:850; line-height:1.4; letter-spacing:-.5px; word-break:keep-all; }
-.cardText { margin-top:6px; color:#5C6F86; font-size:13.5px; line-height:1.7; word-break:keep-all; }
-.cardTags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.cardTitle { margin-top:16px; color:#173B70; font-size:19px; font-weight:850; line-height:1.4; letter-spacing:-.5px; word-break:keep-all; }
+.cardText { margin-top:10px; color:#5C6F86; font-size:13.5px; line-height:1.7; word-break:keep-all; }
+.cardTags { display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; }
 .cardTags span { padding:3px 9px; border:1px solid #E3EAF3; border-radius:7px; background:#F9FAFC; color:#3D5877; font-size:11.5px; font-weight:700; }
 .cardMore { display:inline-flex; align-items:center; gap:6px; margin-top:auto; padding:8px 14px; border:1px solid var(--tone); border-radius:999px; color:var(--tone-ink); font-size:13px; font-weight:800; transition:background-color .2s ease,color .2s ease; }
-.cardTags + .cardMore { margin-top:16px; }
+.cardTags + .cardMore { margin-top:24px; }
 .card:hover .cardMore { background:var(--tone); color:#FFFFFF; }
 .cardMore svg { transition:transform .3s cubic-bezier(.2,.7,.2,1); }
 .card:hover .cardMore svg { transform:translateX(3px); }
@@ -216,7 +208,6 @@
   .cardCampaign { flex-wrap:wrap; }
   .cardCampaign .cardCopy { flex:1 1 60%; }
   .campaignPhoto { flex:0 0 34%; min-height:200px; }
-  .campaignVisual { flex:1 1 100%; grid-template-columns:repeat(3,minmax(0,1fr)); padding:0 22px 22px; }
   .sheet { grid-template-columns:minmax(0,1fr); }
   .sheetNav { position:sticky; z-index:20; top:0; border-right:0; border-bottom:1px solid #E6EDF5; }
   .sheetNav nav { position:static; padding:14px 64px 10px 16px; }
@@ -253,7 +244,7 @@
   .endingNote { font-size:22px; }
 }
 @media(width<640px) {
-  .section { padding-block:12px 32px; }
+  .section { padding-block:48px 72px; }
   .cardCopy { padding:20px 4px 18px 20px; }
   .storyHead h2 { font-size:21px; }
   .storyHead > p:last-child { font-size:13px; }
@@ -263,16 +254,96 @@
   .splitFace { flex-basis:36%; height:128px; margin-right:14px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .card,.cardMore,.campaignTile,.campaignPhoto img,.splitHalf img,.supportVisual img,.polaroidFrame,.features li,.stepIcon,.tiers li,.primary,.secondary,.cardMore svg,.sheetNav button,.sheetStep,.sheetProgressBar > span,.sheetHelp { transition:none; }
+  .card,.cardMore,.campaignPhoto img,.splitHalf img,.supportVisual img,.polaroidFrame,.features li,.stepIcon,.tiers li,.primary,.secondary,.cardMore svg,.sheetNav button,.sheetStep,.sheetProgressBar > span,.sheetHelp { transition:none; }
   .sheetSection,.agePair > span,.timeline li { animation:none; }
   .card:hover,.polaroid:hover .polaroidFrame,.features li:hover,.tiers li:hover,.steps li:hover .stepIcon { transform:none; }
-}
-@media(width<640px) {
-  .campaignVisual { grid-template-columns:repeat(2,minmax(0,1fr)); padding:0 20px 20px; }
-  .campaignTile { min-height:56px; }
 }
 @media(width<640px) {
   /* Phones: the campaign photo leads the card as a short strip, fading into the copy below. */
   .campaignPhoto { order:-1; flex:1 1 100%; min-height:150px; -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%); mask-image:linear-gradient(180deg,#000 55%,transparent 100%); }
   .cardCampaign .cardCopy { flex-basis:100%; }
 }
+
+/* ───────── Roomy story rows ─────────
+   One card per row, copy and picture side by side with generous padding, so each story reads on its own. */
+.cards { grid-template-columns:minmax(0,1fr); gap:28px; }
+.card { min-height:300px; }
+.cardCopy { flex:1 1 52%; padding:44px 40px 40px 48px; }
+.cardTitle { font-size:23px; }
+.cardText { max-width:34em; font-size:14.5px; line-height:1.8; }
+.splitFace { flex:0 0 36%; height:240px; margin-right:56px; border-radius:20px; }
+.supportVisual { flex:0 0 44%; }
+.campaignPhoto { flex:0 0 44%; }
+.campaignPlaces { display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:18px; color:#3D5877; font-size:13px; font-weight:700; }
+.campaignPlaces > span { display:inline-flex; align-items:center; gap:6px; }
+.campaignPlaces > span::before { width:5px; height:5px; border-radius:50%; background:var(--tone); content:""; }
+.campaignPlaces > span:nth-child(even)::before { background:#F28B82; }
+.campaignPlaces + .cardMore { margin-top:26px; }
+@media(width<1000px) {
+  .card { min-height:260px; }
+  .cardCopy { padding:34px 24px 32px 34px; }
+  .cardTitle { font-size:21px; }
+  .splitFace { flex-basis:38%; height:200px; margin-right:32px; }
+}
+@media(width<760px) {
+  .cards { gap:18px; }
+  .cardCampaign { flex-wrap:nowrap; }
+  .cardCampaign .cardCopy { flex:1 1 56%; }
+  .campaignPhoto { flex:0 0 40%; min-height:0; }
+}
+@media(width<640px) {
+  .card { min-height:0; }
+  .cardCopy { padding:26px 6px 24px 22px; }
+  .cardTitle { font-size:18px; }
+  .cardText { font-size:13.5px; }
+  .splitFace { flex-basis:36%; height:140px; margin-right:16px; }
+  .cardCampaign { flex-wrap:wrap; }
+  .cardCampaign .cardCopy { flex-basis:100%; padding-right:22px; }
+  .campaignPhoto { flex:1 1 100%; min-height:150px; }
+  .campaignPlaces { gap:6px 12px; font-size:12.5px; }
+}
+
+/* ───────── Zigzag layout ─────────
+   No boxes: each story is a picture and its copy on the open page, the picture switching sides
+   from one story to the next, with a large faint number behind the copy. */
+.cards { counter-reset:story; grid-template-columns:minmax(0,1fr); gap:88px; }
+.card { counter-increment:story; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:64px; min-height:0; overflow:visible; border:0; border-radius:0; background:transparent; box-shadow:none; }
+.card::before { display:none; }
+.card:hover { transform:none; border-color:transparent; box-shadow:none; }
+.card:focus-visible { outline:2px solid #3978B8; outline-offset:12px; border-radius:16px; }
+.cardCopy { position:relative; isolation:isolate; padding:12px 0; }
+.cardCopy::after { position:absolute; top:-46px; right:0; z-index:-1; color:var(--tone-soft); font-size:120px; font-weight:900; line-height:1; letter-spacing:-6px; content:"0" counter(story); pointer-events:none; }
+.cardTitle { font-size:26px; }
+.cardText { max-width:30em; font-size:15px; line-height:1.85; }
+/* The picture: same height for all three, softly rounded, lifting a little on hover. */
+.splitFace,.supportVisual,.campaignPhoto { position:relative; order:-1; align-self:stretch; height:340px; min-height:0; margin:0; overflow:hidden; border-radius:24px; box-shadow:0 18px 40px rgba(23,59,112,.12); -webkit-mask-image:none; mask-image:none; transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s ease; }
+.card:hover .splitFace,.card:hover .supportVisual,.card:hover .campaignPhoto { transform:translateY(-6px); box-shadow:0 26px 52px rgba(23,59,112,.16); }
+/* Story 02 puts its picture on the right. */
+.cardSupport .supportVisual { order:1; }
+.supportTag { right:16px; bottom:16px; }
+.campaignPlaces + .cardMore,.cardTags + .cardMore { margin-top:26px; }
+@media(width<1000px) {
+  .cards { gap:64px; }
+  .card { gap:36px; }
+  .cardTitle { font-size:22px; }
+  .cardCopy::after { font-size:92px; top:-34px; }
+  .splitFace,.supportVisual,.campaignPhoto { height:280px; }
+}
+@media(width<760px) {
+  .cards { gap:52px; }
+  .card { grid-template-columns:minmax(0,1fr); gap:22px; }
+  .cardSupport .supportVisual { order:-1; }
+  .splitFace,.supportVisual,.campaignPhoto { height:230px; border-radius:20px; }
+  .cardCopy { padding:0 4px; }
+  .cardCopy::after { font-size:72px; top:-20px; }
+  .cardTitle { font-size:20px; }
+  .cardText { font-size:14px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .splitFace,.supportVisual,.campaignPhoto { transition:none; }
+  .card:hover .splitFace,.card:hover .supportVisual,.card:hover .campaignPhoto { transform:none; }
+}
+/* Story labels (01 · 서비스 소개 …) read a step larger, with the number set apart. */
+.cardLabel { gap:8px; padding:6px 14px 6px 10px; font-size:14px; }
+.cardIcon svg { width:18px; height:18px; }
+@media(width<760px) { .cardLabel { padding:5px 12px 5px 9px; font-size:13px; } }

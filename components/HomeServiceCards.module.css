@@ -1,9 +1,9 @@
 /* Hero shortcuts: frosted tiles over the campaign photo. Each tile carries one calm tone (--tone*)
    that only comes forward on hover: a tinted wash, a filled icon chip, and a soft light sweep. */
 .panel { width:100%; max-width:500px; animation:panelIn .9s cubic-bezier(.2,.7,.2,1) .45s backwards; }
-.heading { display:flex; align-items:center; gap:8px; margin:0 0 8px 2px; color:#3D5877; font-size:13px; font-weight:700; letter-spacing:-.1px; }
+.heading { display:flex; align-items:center; gap:8px; margin:0 0 12px 2px; color:#3D5877; font-size:13px; font-weight:700; letter-spacing:-.1px; }
 .heading::before { width:16px; height:2px; content:""; border-radius:2px; background:#3978B8; opacity:.6; }
-.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
 
 .toneNavy { --tone:#1F4B8A; --tone-soft:#E3EAF5; --tone-softer:#F1F5FB; --tone-ring:rgba(31,75,138,.24); }
 .toneBlue { --tone:#3978B8; --tone-soft:#E1ECFB; --tone-softer:#F0F6FE; --tone-ring:rgba(57,120,184,.26); }
@@ -12,7 +12,7 @@
 .toneGold { --tone:#C25A52; --tone-soft:#FBE1DE; --tone-softer:#FEF2F1; --tone-ring:rgba(194,90,82,.24); }
 .toneViolet { --tone:#4A56A6; --tone-soft:#E6E8F7; --tone-softer:#F3F4FC; --tone-ring:rgba(74,86,166,.24); }
 
-.tile { position:relative; isolation:isolate; display:flex; min-width:0; align-items:center; gap:12px; min-height:68px; overflow:hidden; padding:11px 12px 11px 13px; border:1px solid rgba(255,255,255,.82); border-radius:18px; background:rgba(255,255,255,.74); color:#173B70; text-align:left; cursor:pointer; box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,59,112,.04),0 10px 26px rgba(23,59,112,.07); backdrop-filter:blur(14px) saturate(1.1); -webkit-backdrop-filter:blur(14px) saturate(1.1); transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .35s ease,border-color .3s ease; }
+.tile { position:relative; isolation:isolate; display:flex; min-width:0; align-items:center; gap:12px; min-height:76px; overflow:hidden; padding:14px 14px 14px 15px; border:1px solid rgba(255,255,255,.82); border-radius:18px; background:rgba(255,255,255,.74); color:#173B70; text-align:left; cursor:pointer; box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,59,112,.04),0 10px 26px rgba(23,59,112,.07); backdrop-filter:blur(14px) saturate(1.1); -webkit-backdrop-filter:blur(14px) saturate(1.1); transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .35s ease,border-color .3s ease; }
 .tile::before { position:absolute; z-index:-1; inset:0; content:""; background:radial-gradient(130% 110% at 0% 50%,var(--tone-softer),transparent 62%); opacity:0; transition:opacity .35s ease; }
 .tile::after { position:absolute; z-index:-1; inset:0; content:""; background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%); translate:-120% 0; transition:translate .9s cubic-bezier(.2,.7,.2,1); pointer-events:none; }
 .tile:hover { transform:translateY(-3px); border-color:var(--tone-ring); background:rgba(255,255,255,.9); box-shadow:inset 0 1px 0 #FFFFFF,0 2px 4px rgba(23,59,112,.05),0 18px 36px rgba(23,59,112,.12); }
@@ -47,7 +47,7 @@
 }
 @media(width<720px) {
   .panel { max-width:none; }
-  .grid { gap:8px; }
+  .grid { gap:10px; }
   .tile { gap:10px; min-height:70px; padding:12px; border-radius:16px; background:rgba(255,255,255,.88); }
   .icon { flex-basis:38px; width:38px; height:38px; border-radius:12px; }
   .copy > strong { font-size:14px; }
