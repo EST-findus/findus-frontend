@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { HeartIcon, MessageIcon, UserIcon } from "./Icons";
-import actionStyles from "./HeaderActions.module.css";
+import { HEADER_ICON_ACTION, HEADER_ICON_ACTION_OPEN } from "./headerActionStyles";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { logOut, type User } from "@/lib/auth";
@@ -10,6 +10,8 @@ import { useCurrentUser } from "@/lib/useCurrentUser";
 
 const FOCUS_RING =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+const MENU_LINK =
+  "flex items-center gap-2.5 rounded-[10px] p-2.5 text-[14px] font-[650] text-ink [transition:background-color_.15s_ease,color_.15s_ease] hover:bg-brand-soft hover:text-navy [&_svg]:text-brand";
 
 export default function HeaderAuth() {
   const user = useCurrentUser();
@@ -79,24 +81,24 @@ function AccountMenu({ user, hiddenOnMobile }: { user: User; hiddenOnMobile: boo
   return (
     <div ref={container} className={`relative ${hiddenOnMobile ? "max-md:hidden" : ""}`}>
       <button ref={trigger} type="button" aria-label={`${user.nickname}님 계정 메뉴`} title="계정 메뉴" aria-expanded={open} aria-controls={menuId} onClick={() => setOpen(!open)}
-        className={`${actionStyles.boxedAction} ${actionStyles.account} ${open ? actionStyles.accountOpen : ""} ${FOCUS_RING}`}>
+        className={open ? HEADER_ICON_ACTION_OPEN : HEADER_ICON_ACTION}>
         <UserIcon size={20} className="shrink-0" />
       </button>
       {open && (
-        <div id={menuId} className={actionStyles.menu}>
-          <div className={actionStyles.menuHead}>
-            <span aria-hidden="true" className={actionStyles.menuAvatar}>{user.nickname.slice(0, 1)}</span>
+        <div id={menuId} className="absolute top-[calc(100%+10px)] right-0 z-70 w-[248px] max-w-[calc(100vw-24px)] origin-top-right animate-header-menu-in rounded-2xl border border-line bg-white p-2 shadow-[0_18px_40px_rgb(23_59_112/14%)] motion-reduce:animate-none">
+          <div className="flex items-center gap-2.5 border-b border-[#EEF2F7] px-2.5 pt-2.5 pb-3">
+            <span aria-hidden="true" className="grid size-9 flex-none place-items-center rounded-full bg-brand-soft text-[15px] font-extrabold text-brand">{user.nickname.slice(0, 1)}</span>
             <span className="min-w-0">
-              <strong>{user.nickname}님</strong>
-              <small>{user.email}</small>
+              <strong className="block truncate text-[14px] font-extrabold text-navy">{user.nickname}님</strong>
+              <small className="mt-px block truncate text-[12px] text-subtle">{user.email}</small>
             </span>
           </div>
-          <nav aria-label="계정 메뉴" className={actionStyles.menuLinks}>
-            <Link href="/mypage" onClick={close} className={FOCUS_RING}><UserIcon size={17} />마이페이지</Link>
-            <Link href="/mypage?tab=activity" onClick={close} className={FOCUS_RING}><MessageIcon size={17} />내 활동</Link>
-            <Link href="/mypage?tab=funding" onClick={close} className={FOCUS_RING}><HeartIcon size={17} />내 후원</Link>
+          <nav aria-label="계정 메뉴" className="grid gap-0.5 py-1.5">
+            <Link href="/mypage" onClick={close} className={`${MENU_LINK} ${FOCUS_RING}`}><UserIcon size={17} />마이페이지</Link>
+            <Link href="/mypage?tab=activity" onClick={close} className={`${MENU_LINK} ${FOCUS_RING}`}><MessageIcon size={17} />내 활동</Link>
+            <Link href="/mypage?tab=funding" onClick={close} className={`${MENU_LINK} ${FOCUS_RING}`}><HeartIcon size={17} />내 후원</Link>
           </nav>
-          <button type="button" onClick={signOut} className={`${actionStyles.menuLogout} ${FOCUS_RING}`}><LogoutIcon />로그아웃</button>
+          <button type="button" onClick={signOut} className={`flex w-full cursor-pointer items-center gap-2.5 rounded-b-[10px] border-t border-[#EEF2F7] p-2.5 text-left text-[14px] font-[650] text-muted [transition:background-color_.15s_ease,color_.15s_ease] hover:bg-[#FEF4F3] hover:text-coral-ink ${FOCUS_RING}`}><LogoutIcon />로그아웃</button>
         </div>
       )}
     </div>

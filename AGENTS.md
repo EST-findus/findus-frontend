@@ -9,6 +9,14 @@ Claude Code는 `CLAUDE.md`에서 이 파일을 불러오므로, 규칙은 이 �
 - 테스트: vitest
 - 백엔드 API는 `next.config.ts`의 `/backend/*` 프록시를 통해 호출 (`BACKEND_URL`, `.env.example` 참고)
 
+## 스타일 규칙
+
+- 스타일은 **Tailwind CSS 유틸리티 클래스로만** 작성합니다. CSS Modules(`*.module.css`), styled-components 등 다른 방식은 쓰지 않습니다.
+- 색상·폰트 등 디자인 토큰은 `app/globals.css`의 `@theme`에 정의하고 `bg-*`, `text-*` 같은 유틸리티로 씁니다. hex 값을 클래스에 직접 쓰기보다 토큰을 먼저 추가합니다.
+- `@keyframes`와 애니메이션은 `app/globals.css`의 `@theme`에 `--animate-*`로 정의하고 `animate-*` 클래스로 씁니다.
+- 유틸리티로 표현하기 어려운 경우에만 arbitrary value/variant(`[--share:40%]`, `data-[on=false]:opacity-0`, `[&_li]:...`)를 씁니다. 그래도 안 되는 전역 스타일만 `app/globals.css`에 추가합니다.
+- 반복되는 클래스 묶음은 CSS 파일이 아니라 컴포넌트나 상수(`const card = "..."`)로 재사용합니다.
+
 ## 명령어
 
 ```bash
