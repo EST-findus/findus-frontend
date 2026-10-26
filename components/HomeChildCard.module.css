@@ -69,12 +69,10 @@
 .feature .name { font-size:26px; }
 .feature .note { padding-inline:26px; }
 .waiting { display:inline-flex; align-items:center; gap:7px; margin-bottom:8px; color:#B4473F; font-size:13px; font-weight:800; }
-.waiting > span { width:7px; height:7px; border-radius:50%; background:#F28B82; animation:waitPulse 2.4s ease-out infinite; }
-@keyframes waitPulse { 0% { box-shadow:0 0 0 0 rgba(242,139,130,.45); } 70%,100% { box-shadow:0 0 0 7px rgba(242,139,130,0); } }
+.waiting > svg { flex:none; color:#F28B82; }
 .featureLine { display:-webkit-box; margin-top:8px; overflow:hidden; color:#4A5D75; font-size:14px; line-height:1.65; word-break:keep-all; -webkit-box-orient:vertical; -webkit-line-clamp:2; }
 @media(width<640px) {
   .feature .media { height:240px; }
   .feature .body { padding:16px 18px 14px; }
   .feature .name { font-size:22px; }
 }
-@media(prefers-reduced-motion:reduce) { .waiting > span { animation:none; } }

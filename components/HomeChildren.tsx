@@ -14,7 +14,7 @@ import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
 import styles from "./HomeChildren.module.css";
 
 // Long enough to read a name and region before the spotlight moves on.
-const AUTO_ADVANCE_MS = 6000;
+const AUTO_ADVANCE_MS = 4000;
 const SORT: SortKey = "recent";
 // The list beside the spotlight shows this many children at a time; the highlight moves within the group.
 const GROUP = 4;

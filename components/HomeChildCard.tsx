@@ -5,7 +5,7 @@ import { formatAge, formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import FavoriteButton from "./FavoriteButton";
 import StoredPhoto from "./StoredPhoto";
-import { ArrowRightIcon, EyeIcon, ShareIcon, SparklesIcon } from "./Icons";
+import { ArrowRightIcon, ClockIcon, EyeIcon, ShareIcon, SparklesIcon } from "./Icons";
 
 const PinGlyph = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -69,7 +69,7 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare,
       </div>
 
       <div className={styles.body}>
-        {feature && years !== null && <p className={styles.waiting}><span aria-hidden="true" />{years}년째 기다리는 중</p>}
+        {feature && years !== null && <p className={styles.waiting}><ClockIcon size={15} strokeWidth={2.2} aria-hidden="true" />{years}년째 기다리는 중</p>}
         <h3 id={`home-child-${person.id}`} className={styles.name}>{person.name}<small>{formatGender(person.gender)}</small></h3>
         {feature && person.features && person.features !== "정보 없음" && <p className={styles.featureLine}>{person.features}</p>}
         {/* 실종 지역과 날짜를 같은 칸 모양으로 나란히 둔다. 모든 카드가 같은 자리에 같은 정보를 보여준다. */}
