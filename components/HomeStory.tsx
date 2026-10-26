@@ -24,13 +24,13 @@ function GuideSheet({ title, sections, ending, tone = "brand" }: { title: string
   const sheetRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(sections[0].id);
 
-  const scroller = () => sheetRef.current?.closest<HTMLElement>("[role=dialog]") ?? null;
+  const scroller = () => sheetRef.current?.closest<HTMLElement>("[data-modal-scroll]") ?? null;
   const smooth = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // The active item is the last section whose top has passed a line near the top of the box,
   // or the last section once the box is scrolled to the end (short final sections never reach the line).
   useEffect(() => {
-    const root = sheetRef.current?.closest<HTMLElement>("[role=dialog]");
+    const root = scroller();
     if (!root) return;
     let frame = 0;
     const update = () => {
