@@ -51,13 +51,13 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
   return <div ref={pageRef} className={page}>
     <section className="relative overflow-hidden bg-white" aria-labelledby="home-title">
       <div className={heroVisual}><Image src="/images/search-campaign-hope.png" alt="햇살 아래 인형을 안고 있는 아이의 모습 · AI 캠페인 이미지" fill priority sizes="100vw" className={heroVisualImage} /><span className={`absolute right-4 bottom-2 z-1 opacity-85 max-[720px]:right-3 max-[720px]:bottom-1.5 ${smallNote}`}>AI로 제작한 캠페인 이미지</span></div>
-      <div className="page-container relative z-1 grid min-h-0 grid-cols-[minmax(0,600px)_minmax(300px,500px)] items-end justify-between gap-8 pt-6 pb-7 max-[1000px]:grid-cols-[minmax(0,600px)] max-[1000px]:justify-start max-[1000px]:gap-5 max-[1000px]:pt-[26px] max-[1000px]:pb-[30px] max-[720px]:grid-cols-[minmax(0,1fr)] max-[720px]:gap-[22px] max-[720px]:pt-7 max-[720px]:pb-8">
-        <div className="grid min-w-0 gap-3.5 max-[1000px]:gap-4">
+      <div className="page-container relative z-1 grid min-h-0 grid-cols-[minmax(0,600px)_minmax(300px,500px)] items-end justify-between gap-12 pt-16 pb-18 max-[1000px]:grid-cols-[minmax(0,600px)] max-[1000px]:justify-start max-[1000px]:gap-8 max-[1000px]:pt-12 max-[1000px]:pb-14 max-[720px]:grid-cols-[minmax(0,1fr)] max-[720px]:gap-7 max-[720px]:pt-9 max-[720px]:pb-11">
+        <div className="grid min-w-0 gap-[26px] max-[1000px]:gap-4">
         <div className={heroCopy}>
           <p className="inline-flex items-center gap-2 rounded-full border border-[rgba(57,120,184,.14)] bg-white/75 px-[13px] py-1.5 text-[12px] font-bold tracking-[.02em] text-brand backdrop-blur-[6px]"><span className="size-1.5 animate-home-dot-pulse rounded-full bg-[#F28B82]" />아이를 기억하는 마음, FindUs</p>
-          <h1 id="home-title" className="mt-3.5 text-[44px] leading-[1.24] font-extrabold tracking-[-1.8px] break-keep text-brand-dark max-[1000px]:text-[38px] max-[1000px]:tracking-[-1.3px] max-[720px]:mt-4 max-[720px]:text-[31px] max-[720px]:leading-[1.3] max-[720px]:tracking-[-1px]">다시 그린 얼굴에,<br /><em className="text-brand not-italic">우리의 마음을 더하다.</em></h1>
-          <p className="mt-3 max-w-[30em] text-[17px] leading-[1.65] font-[650] break-keep text-[#25508F] max-[1000px]:text-[16px] max-[720px]:mt-4 max-[720px]:text-[15px]">잊혀진 얼굴에 다시 시선을, 기다리는 가족에게 새로운 희망을.</p>
-          <p className="mt-1 text-[14.5px] leading-[1.75] break-keep whitespace-nowrap text-muted max-[1000px]:text-[14px] max-[720px]:text-[13.5px] max-[720px]:whitespace-normal">AI 나이 예측 기술로 시간이 흐른 아이들의 모습을 그려보고, 다시 만날 희망을 이어갑니다.</p>
+          <h1 id="home-title" className="mt-5 text-[44px] leading-[1.24] font-extrabold tracking-[-1.8px] break-keep text-brand-dark max-[1000px]:text-[38px] max-[1000px]:tracking-[-1.3px] max-[720px]:mt-4 max-[720px]:text-[31px] max-[720px]:leading-[1.3] max-[720px]:tracking-[-1px]">다시 그린 얼굴에,<br /><em className="text-brand not-italic">우리의 마음을 더하다.</em></h1>
+          <p className="mt-[18px] max-w-[30em] text-[17px] leading-[1.65] font-[650] break-keep text-[#25508F] max-[1000px]:text-[16px] max-[720px]:mt-4 max-[720px]:text-[15px]">잊혀진 얼굴에 다시 시선을, 기다리는 가족에게 새로운 희망을.</p>
+          <p className="mt-1.5 text-[14.5px] leading-[1.75] break-keep whitespace-nowrap text-muted max-[1000px]:text-[14px] max-[720px]:text-[13.5px] max-[720px]:whitespace-normal">AI 나이 예측 기술로 시간이 흐른 아이들의 모습을 그려보고, 다시 만날 희망을 이어갑니다.</p>
         </div>
         <div className="relative grid w-[min(100%,270px)] grid-cols-2 items-start gap-4 pb-[22px] max-[1000px]:w-[min(100%,300px)] max-[720px]:gap-3.5 max-[720px]:pb-6" aria-label="AI로 만든 가상 인물 예시 사진">
           <figure className={`${heroPhotoCard} animate-[home-photo-in_1s_cubic-bezier(.2,.7,.2,1)_.25s_backwards,home-gentle-float_7s_ease-in-out_1.4s_infinite]`}>
@@ -73,7 +73,7 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
         </div>
         <HomeAiGuideLink />
         </div>
-        <div className="grid min-w-0 justify-items-end gap-3">
+        <div className="grid min-w-0 justify-items-end gap-[18px]">
           <HomeServiceCards />
         </div>
       </div>
@@ -90,18 +90,18 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
           On phones the photo is cropped to the two people and the copy moves below it. */}
       {/* Same veil as the hero: a soft white wash behind the copy on the left, and the top and bottom edges
           melting into the white page, so the band sits in the page instead of looking pasted on. */}
-      <div className="relative h-[clamp(280px,23vw,340px)] bg-white after:pointer-events-none after:absolute after:inset-0 after:z-0 after:bg-[linear-gradient(90deg,rgba(255,255,255,.72)_0%,rgba(255,255,255,.5)_30%,rgba(255,255,255,0)_52%),linear-gradient(180deg,#FFFFFF_0%,rgba(255,255,255,0)_16%,rgba(255,255,255,0)_80%,#FFFFFF_100%)] after:content-[''] max-[720px]:h-auto max-[720px]:bg-transparent max-[720px]:after:hidden">
+      <div className="relative h-[clamp(340px,28vw,420px)] bg-white after:pointer-events-none after:absolute after:inset-0 after:z-0 after:bg-[linear-gradient(90deg,rgba(255,255,255,.72)_0%,rgba(255,255,255,.5)_30%,rgba(255,255,255,0)_52%),linear-gradient(180deg,#FFFFFF_0%,rgba(255,255,255,0)_16%,rgba(255,255,255,0)_80%,#FFFFFF_100%)] after:content-[''] max-[720px]:h-auto max-[720px]:bg-transparent max-[720px]:after:hidden">
         <Image src="/images/home-closing-sky.webp" alt="" fill sizes="100vw" unoptimized className="object-cover object-[62%_42%] opacity-[.62] saturate-[.85] [[data-revealed=in]_&]:animate-home-slow-zoom max-[720px]:relative! max-[720px]:block max-[720px]:aspect-[4/3] max-[720px]:h-auto! max-[720px]:w-full! max-[720px]:object-[66%_40%]" />
         <div className={closingCopy}>
           <p className={`${serif.className} border-l-[1.5px] border-brand pl-3.5 text-[17px] font-medium tracking-[.06em] text-[#25508F] max-[720px]:text-brand`}>함께 기억하는 <strong className="ml-1 text-[25px] font-semibold tracking-[.01em] text-brand-dark">FindUs</strong></p>
-          <h2 id="closing-title" className={`${serif.className} mt-2.5 pl-[15px] text-[23px] leading-[1.42] font-medium tracking-[-.2px] break-keep text-brand-dark`}>AI로 그리는 오늘,<br /><em className="font-semibold text-brand not-italic">가족에게 돌아가는 내일.</em></h2>
-          <p className="mt-2 pl-[15px] text-[12.5px] leading-[1.6] break-keep text-[#3D5877] max-[720px]:text-[#4A5D75]">실종 원본 사진을 기반으로 AI가 나이 예측을 통해 미래의 모습을 그립니다.</p>
-          <div className="mt-3 flex items-center gap-3 pl-[15px]" aria-label="AI 나이 예측 예시">
+          <h2 id="closing-title" className={`${serif.className} mt-4 pl-[15px] text-[23px] leading-[1.42] font-medium tracking-[-.2px] break-keep text-brand-dark`}>AI로 그리는 오늘,<br /><em className="font-semibold text-brand not-italic">가족에게 돌아가는 내일.</em></h2>
+          <p className="mt-3 pl-[15px] text-[12.5px] leading-[1.6] break-keep text-[#3D5877] max-[720px]:text-[#4A5D75]">실종 원본 사진을 기반으로 AI가 나이 예측을 통해 미래의 모습을 그립니다.</p>
+          <div className="mt-[18px] flex items-center gap-3.5 pl-[15px]" aria-label="AI 나이 예측 예시">
             <figure className={closingPairFigure}><Image src="/images/home-closing-past.webp" alt="AI로 만든 가상 인물의 어린 시절 예시" width={240} height={224} className={closingPairImage} /><figcaption className={closingPairCaption}>실종 원본</figcaption></figure>
             <span aria-hidden="true" className="grid text-brand"><ArrowRightIcon size={14} /></span>
             <figure className={closingPairFigure}><Image src="/images/home-closing-aged.webp" alt="AI로 만든 가상 인물의 현재 추정 모습" width={240} height={224} className={closingPairImage} /><figcaption className={closingPairCaption}>미래 예측 이미지</figcaption></figure>
           </div>
-          <p className="mt-3 pl-[15px] text-[12.5px] font-semibold text-brand-dark before:mb-2 before:block before:h-px before:w-[22px] before:bg-[#9FB6D2] before:content-[''] max-[720px]:text-[#4A5D75] max-[720px]:before:bg-[#C7D6E8]">잊지 않고 기억하며, 다시 만날 희망을 이어갑니다.</p>
+          <p className="mt-[18px] pl-[15px] text-[12.5px] font-semibold text-brand-dark before:mb-2 before:block before:h-px before:w-[22px] before:bg-[#9FB6D2] before:content-[''] max-[720px]:text-[#4A5D75] max-[720px]:before:bg-[#C7D6E8]">잊지 않고 기억하며, 다시 만날 희망을 이어갑니다.</p>
         </div>
         <p className={`${pen.className} absolute top-[14%] right-[max(24px,calc((100%-1200px)/2+40px))] z-1 rotate-[-6deg] text-[21px] leading-[1.3] text-[#25508F] [text-shadow:0_1px_10px_rgba(255,255,255,.7)] [[data-revealed=in]_&]:animate-[fade-in_1.2s_ease_.5s_backwards] max-[720px]:hidden`}>기술이<br />기억을 이어,<br />사랑이 다시 만듭니다.</p>
       </div>

@@ -24,35 +24,37 @@ const toneCoral = "[--tone:#D4675E] [--tone-ink:#B4473F] [--tone-soft:#FEF4F3] [
 const toneNavy = "[--tone:#25508F] [--tone-ink:#173B70] [--tone-soft:#EEF3FA] [--tone-line:#D2DEEC]";
 // Home story cards (서비스 소개 · 후원 안내 · 함께하는 캠페인) and the two-pane guides they open.
 const ui = {
-  section: "page-container pt-6 pb-12 max-sm:pt-3 max-sm:pb-8",
-  cards: "grid grid-cols-2 gap-[18px] max-[760px]:grid-cols-[minmax(0,1fr)] max-[760px]:gap-3",
+  section: "page-container pt-18 pb-28 max-sm:pt-12 max-sm:pb-18",
+  cards: "grid grid-cols-[minmax(0,1fr)] gap-22 [counter-reset:story] max-[1000px]:gap-16 max-[760px]:gap-13",
   // Section heading, in the same voice as the other home sections.
-  storyHead: "mb-[18px]",
+  storyHead: "mb-9",
   storyKicker: "inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-[5px] text-[12px] font-bold tracking-[.02em] text-brand",
-  storyTitle: "mt-2.5 text-[26px] leading-[1.35] font-extrabold tracking-[-.8px] break-keep text-brand-dark max-sm:text-[21px]",
-  storyText: "mt-1.5 text-[14px] leading-[1.7] break-keep text-muted max-sm:text-[13px]",
+  storyTitle: "mt-3.5 text-[26px] leading-[1.35] font-extrabold tracking-[-.8px] break-keep text-brand-dark max-sm:text-[21px]",
+  storyText: "mt-2.5 text-[14px] leading-[1.7] break-keep text-muted max-sm:text-[13px]",
   dot: "size-1.5 rounded-full bg-[#F28B82]",
 
-  // Two calm public-service cards: white face, one tone each, a thin top edge in that tone.
-  card: "group/card relative flex min-w-0 cursor-pointer items-stretch overflow-hidden rounded-[20px] border border-[#E3EAF3] bg-white p-0 text-left text-brand-dark shadow-[0_2px_8px_rgba(23,59,112,.04)] [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease,border-color_.3s_ease] before:absolute before:inset-x-0 before:top-0 before:z-2 before:h-[3px] before:bg-[color:var(--tone)] before:content-[''] hover:[transform:translateY(-4px)] hover:border-[color:var(--tone-line)] hover:shadow-[0_18px_38px_rgba(23,59,112,.1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand max-[1000px]:min-h-[200px] motion-reduce:[transition:none] motion-reduce:hover:[transform:none]",
-  cardService: `${toneBrand} min-h-[214px]`,
-  cardSupport: `${toneCoral} min-h-[214px]`,
-  // 03 · 함께하는 캠페인: full-width, in navy, with a grid of everyday places on the right.
-  cardCampaign: `${toneNavy} col-span-full min-h-0 max-[760px]:flex-wrap`,
-  cardCopy: "relative z-1 flex flex-[1_1_58%] flex-col items-start pt-6 pr-2.5 pb-[22px] pl-[26px] max-[1000px]:pt-[22px] max-[1000px]:pr-2 max-[1000px]:pb-5 max-[1000px]:pl-[22px] max-sm:pt-5 max-sm:pr-1 max-sm:pb-[18px] max-sm:pl-5",
-  cardCopyCampaign: "max-[760px]:flex-[1_1_60%] max-sm:flex-[1_1_100%]",
-  cardLabel: "inline-flex items-center gap-[7px] rounded-full bg-[color:var(--tone-soft)] py-1 pr-[11px] pl-2 text-[12px] font-extrabold tracking-[.01em] text-[color:var(--tone-ink)]",
-  cardIcon: "flex items-center justify-center text-[color:var(--tone)] [&_svg]:size-4",
-  cardTitle: "mt-3 text-[19px] leading-[1.4] font-[850] tracking-[-.5px] break-keep text-brand-dark max-sm:text-[17px]",
-  cardText: "mt-1.5 text-[13.5px] leading-[1.7] break-keep text-muted max-sm:text-[13px]",
-  cardTags: "mt-3 flex flex-wrap gap-1.5 max-sm:hidden",
+  // No boxes: each story is a picture and its copy on the open page, the picture switching sides
+  // from one story to the next, with a large faint number behind the copy.
+  card: "group/card relative grid min-w-0 cursor-pointer grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-16 p-0 text-left text-brand-dark [counter-increment:story] focus-visible:rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-[12px] focus-visible:outline-brand max-[1000px]:gap-9 max-[760px]:grid-cols-[minmax(0,1fr)] max-[760px]:gap-[22px]",
+  cardService: toneBrand,
+  cardSupport: toneCoral,
+  // 03 · 함께하는 캠페인: in navy, with a short list of everyday places under the copy.
+  cardCampaign: toneNavy,
+  cardCopy: "relative isolate z-1 flex flex-col items-start px-0 py-3 after:pointer-events-none after:absolute after:-top-[46px] after:right-0 after:-z-1 after:text-[120px] after:leading-none after:font-black after:tracking-[-6px] after:text-[color:var(--tone-soft)] after:content-['0'_counter(story)] max-[1000px]:after:-top-[34px] max-[1000px]:after:text-[92px] max-[760px]:px-1 max-[760px]:py-0 max-[760px]:after:-top-5 max-[760px]:after:text-[72px]",
+  cardLabel: "inline-flex items-center gap-2 rounded-full bg-[color:var(--tone-soft)] py-1.5 pr-3.5 pl-2.5 text-[14px] font-extrabold tracking-[.01em] text-[color:var(--tone-ink)] max-[760px]:py-[5px] max-[760px]:pr-3 max-[760px]:pl-[9px] max-[760px]:text-[13px]",
+  cardIcon: "flex items-center justify-center text-[color:var(--tone)] [&_svg]:size-[18px]",
+  cardTitle: "mt-4 text-[26px] leading-[1.4] font-[850] tracking-[-.5px] break-keep text-brand-dark max-[1000px]:text-[22px] max-[760px]:text-[20px]",
+  cardText: "mt-2.5 max-w-[30em] text-[15px] leading-[1.85] break-keep text-muted max-[760px]:text-[14px]",
+  cardTags: "mt-4 flex flex-wrap gap-1.5 max-sm:hidden",
   cardTag: "rounded-[7px] border border-[#E3EAF3] bg-[#F9FAFC] px-[9px] py-[3px] text-[11.5px] font-bold text-[#3D5877]",
-  // Always follows the tags, so it keeps a fixed gap instead of margin-top: auto.
-  cardMore: "mt-4 inline-flex items-center gap-1.5 rounded-full border border-[color:var(--tone)] px-3.5 py-2 text-[13px] font-extrabold text-[color:var(--tone-ink)] [transition:background-color_.2s_ease,color_.2s_ease] group-hover/card:bg-[color:var(--tone)] group-hover/card:text-white motion-reduce:[transition:none]",
+  // Always follows the tags or the place list, so it keeps a fixed gap instead of margin-top: auto.
+  cardMore: "mt-[26px] inline-flex items-center gap-1.5 rounded-full border border-[color:var(--tone)] px-3.5 py-2 text-[13px] font-extrabold text-[color:var(--tone-ink)] [transition:background-color_.2s_ease,color_.2s_ease] group-hover/card:bg-[color:var(--tone)] group-hover/card:text-white motion-reduce:[transition:none]",
   cardMoreIcon: "[transition:transform_.3s_cubic-bezier(.2,.7,.2,1)] group-hover/card:[transform:translateX(3px)] motion-reduce:[transition:none]",
 
+  // The picture beside each story: same height for all three, softly rounded, lifting a little on hover.
+  picture: "relative order-[-1] m-0 h-[340px] min-h-0 self-stretch overflow-hidden rounded-3xl shadow-[0_18px_40px_rgba(23,59,112,.12)] [transition:transform_.45s_cubic-bezier(.2,.7,.2,1),box-shadow_.45s_ease] group-hover/card:[transform:translateY(-6px)] group-hover/card:shadow-[0_26px_52px_rgba(23,59,112,.16)] max-[1000px]:h-[280px] max-[760px]:h-[230px] max-[760px]:rounded-[20px] motion-reduce:[transition:none] motion-reduce:group-hover/card:[transform:none]",
   // Child and AI-aged halves of one face, framed like a scanner viewfinder, on a light-blue stage.
-  splitFace: "relative mr-6 h-[170px] flex-[0_0_38%] self-center overflow-hidden rounded-2xl bg-[#E6EFF9] shadow-[0_10px_24px_rgba(23,59,112,.12)] max-[1000px]:mr-[18px] max-[1000px]:h-[150px] max-[1000px]:basis-[36%] max-sm:mr-3.5 max-sm:h-[128px] max-sm:basis-[36%]",
+  splitFace: "bg-[#E6EFF9]",
   splitHalf: "absolute inset-0 [clip-path:inset(0_50%_0_0)]",
   splitRight: "absolute inset-0 [clip-path:inset(0_0_0_50%)]",
   zoomImage: "[transition:transform_.6s_cubic-bezier(.2,.7,.2,1)] group-hover/card:[transform:scale(1.05)] motion-reduce:[transition:none]",
@@ -61,14 +63,12 @@ const ui = {
   splitTag: "absolute bottom-3 rounded-full px-2 py-0.5 text-[10.5px] font-extrabold text-white",
   splitTagLeft: "left-3.5 bg-[rgba(23,32,48,.68)]",
   splitTagRight: "right-3.5 bg-brand",
-  // The QR key ring sits left of centre in the photo, so the fade-in from the copy side stays short.
-  supportVisual: "relative flex-[0_0_40%] [-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_24%)] [mask-image:linear-gradient(90deg,transparent_0%,#000_24%)]",
-  campaignVisual: "grid flex-[0_0_30%] grid-cols-2 content-center gap-2 py-[22px] pr-[18px] pl-0 max-[760px]:flex-[1_1_100%] max-[760px]:grid-cols-3 max-[760px]:px-[22px] max-[760px]:pt-0 max-[760px]:pb-[22px] max-sm:grid-cols-2 max-sm:px-5 max-sm:pb-5",
-  campaignTile: "flex min-h-[66px] flex-col justify-center rounded-xl border border-l-[3px] border-[#E3EAF3] bg-[#F7F9FC] px-3 py-2.5 [transition:border-color_.25s_ease,background-color_.25s_ease,transform_.3s_cubic-bezier(.2,.7,.2,1)] group-hover/card:border-[#D2DEEC] group-hover/card:bg-white motion-reduce:[transition:none] max-sm:min-h-[56px]",
-  // Photo strips from the 실종아동네컷 campaign, faded in from the tiles like the QR goods photo in card 02.
-  // Phones: the photo leads the card as a short strip, fading into the copy below.
-  campaignPhoto: "relative flex-[0_0_26%] [-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_22%)] [mask-image:linear-gradient(90deg,transparent_0%,#000_22%)] max-[760px]:min-h-[200px] max-[760px]:flex-[0_0_34%] max-sm:order-[-1] max-sm:min-h-[150px] max-sm:flex-[1_1_100%] max-sm:[-webkit-mask-image:linear-gradient(180deg,#000_55%,transparent_100%)] max-sm:[mask-image:linear-gradient(180deg,#000_55%,transparent_100%)]",
-  supportTag: "absolute right-3.5 bottom-3.5 z-1 rounded-full bg-white/90 px-[9px] py-[3px] text-[10.5px] font-extrabold tracking-[.02em] text-[#B4473F] shadow-[0_4px_10px_rgba(23,59,112,.1)]",
+  // Story 02 puts its picture on the right (on top again once the stories stack).
+  supportVisual: "order-1 max-[760px]:order-[-1]",
+  // Places the campaigns reach, as a dotted list: blue and coral dots in turn.
+  campaignPlaces: "mt-[18px] flex flex-wrap gap-x-3.5 gap-y-1.5 text-[13px] font-bold text-[#3D5877] max-sm:gap-x-3 max-sm:text-[12.5px]",
+  campaignPlace: "inline-flex items-center gap-1.5 before:size-[5px] before:rounded-full before:bg-[color:var(--tone)] before:content-[''] even:before:bg-[#F28B82]",
+  supportTag: "absolute right-4 bottom-4 z-1 rounded-full bg-white/90 px-[9px] py-[3px] text-[10.5px] font-extrabold tracking-[.02em] text-[#B4473F] shadow-[0_4px_10px_rgba(23,59,112,.1)]",
 
   // Guide sheet inside the bare modal.
   sheet: "grid min-h-full grid-cols-[232px_minmax(0,1fr)] text-[#1C2F4D] max-[760px]:grid-cols-[minmax(0,1fr)]",
@@ -598,9 +598,8 @@ const BoxGlyph = () => (
   </svg>
 );
 
-// Places on the campaign card. In every four tiles the 1st and 4th carry a blue edge, the 2nd and 3rd a coral one;
-// odd tiles lift on card hover.
-const CAMPAIGN_TILES = [["편의점", "POS 화면"], ["택배", "호프테이프"], ["동네 앱", "실시간 공유"], ["결제 단말기", "실종경보"], ["인터넷뱅킹", "이체 화면"], ["기내 모니터", "나이 변환"]] as const;
+// Places on the campaign card.
+const CAMPAIGN_PLACES = ["편의점", "택배", "동네 앱", "결제 단말기", "인터넷뱅킹", "기내 모니터"] as const;
 
 // Story cards near the end of the home page; each opens a full guide instead of leaving the page.
 export default function HomeStory() {
@@ -625,7 +624,7 @@ export default function HomeStory() {
             <span className={ui.cardTags}><span className={ui.cardTag}>AI 나이 예측</span><span className={ui.cardTag}>공식 정보 연결</span></span>
             <span className={ui.cardMore}>자세히 보기 <ArrowRightIcon size={15} className={ui.cardMoreIcon} /></span>
           </span>
-          <span aria-hidden="true" className={ui.splitFace}>
+          <span aria-hidden="true" className={`${ui.picture} ${ui.splitFace}`}>
             <span className={ui.splitHalf}><Image src={SERVICE_PAST} alt="" fill sizes="190px" className={`object-cover object-[center_30%] ${ui.zoomImage}`} /></span>
             <span className={ui.splitRight}><Image src={SERVICE_AGED} alt="" fill sizes="190px" className={`object-cover object-[center_30%] ${ui.zoomImage}`} /></span>
             <span className={ui.splitLine} />
@@ -642,28 +641,22 @@ export default function HomeStory() {
             <span className={ui.cardTags}><span className={ui.cardTag}>QR 굿즈</span><span className={ui.cardTag}>리워드 펀딩</span></span>
             <span className={ui.cardMore}>자세히 보기 <ArrowRightIcon size={15} className={ui.cardMoreIcon} /></span>
           </span>
-          <span aria-hidden="true" className={ui.supportVisual}>
+          <span aria-hidden="true" className={`${ui.picture} ${ui.supportVisual}`}>
             <Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="260px" className={`object-cover object-[30%_52%] ${ui.zoomImage}`} />
             <span className={ui.supportTag}>Remember A Child</span>
           </span>
         </button>
         <button ref={campaignRef} type="button" aria-haspopup="dialog" onClick={() => setOpen("campaign")} className={`${ui.card} ${ui.cardCampaign}`}>
-          <span className={`${ui.cardCopy} ${ui.cardCopyCampaign}`}>
+          <span className={ui.cardCopy}>
             <span className={ui.cardLabel}><span aria-hidden="true" className={ui.cardIcon}><UsersIcon size={18} /></span>03 · 함께하는 캠페인</span>
             <span className={ui.cardTitle}>일상 곳곳에서, 한 번 더 보게 합니다</span>
             <span className={ui.cardText}>편의점 계산대, 택배 상자, 결제 화면, 기내 모니터까지. 실종아동의 얼굴을 일상에서 다시 보게 하는 캠페인들을 소개합니다.</span>
-            <span className={ui.cardTags}><span className={ui.cardTag}>원본 ↔ 나이 변환 비교</span><span className={ui.cardTag}>일상 속 노출</span></span>
+            <span className={ui.campaignPlaces}>
+              {CAMPAIGN_PLACES.map(place => <span key={place} className={ui.campaignPlace}>{place}</span>)}
+            </span>
             <span className={ui.cardMore}>자세히 보기 <ArrowRightIcon size={15} className={ui.cardMoreIcon} /></span>
           </span>
-          <span aria-hidden="true" className={ui.campaignVisual}>
-            {CAMPAIGN_TILES.map(([place, how], index) => (
-              <span key={place} className={`${ui.campaignTile} ${index % 4 === 0 || index % 4 === 3 ? "border-l-brand" : "border-l-[#F28B82]"} ${index % 2 === 0 ? "group-hover/card:[transform:translateY(-2px)]" : ""}`}>
-                <strong className="text-[13.5px] font-extrabold text-brand-dark">{place}</strong>
-                <small className="mt-0.5 text-[11.5px] font-semibold text-subtle">{how}</small>
-              </span>
-            ))}
-          </span>
-          <span aria-hidden="true" className={ui.campaignPhoto}>
+          <span aria-hidden="true" className={ui.picture}>
             <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="280px" className={`object-cover object-[center_40%] ${ui.zoomImage}`} />
             <span className={ui.supportTag}>실종아동네컷</span>
           </span>

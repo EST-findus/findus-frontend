@@ -32,7 +32,7 @@ const factTerm = "flex items-center gap-1 text-[11px] font-bold text-[#7A8BA0] [
 const factValue = "mt-0.5 truncate text-[14px] font-extrabold tracking-[-.2px] text-brand-dark tabular-nums";
 
 /** 실종된 해부터 지금까지 지난 햇수. 나이로 먼저 계산하고, 없으면 실종 연도로 계산한다. */
-function yearsApart(person: MissingPerson): number | null {
+export function yearsApart(person: MissingPerson): number | null {
   if (person.currentAge !== null && person.ageAtMissing !== null) return Math.max(0, person.currentAge - person.ageAtMissing);
   const year = Number(person.missingDate.slice(0, 4));
   return Number.isFinite(year) && year > 0 ? Math.max(0, new Date().getFullYear() - year) : null;
@@ -42,7 +42,7 @@ function yearsApart(person: MissingPerson): number | null {
  * 홈 '함께 찾고 있는 아이들' 카드. 위쪽 절반씩 실종 당시 사진과 AI 예상 모습을 나란히 두고,
  * 가운데에 헤어져 있던 햇수를 띄운다. 아래에는 이름·성별, 실종 지역·일자 칸, 상세보기·목격 제보·공유가 온다.
  */
-export default function HomeChildCard({ person, onOpenDetail, onReport, onShare }: { person: MissingPerson; onOpenDetail: PersonAction; onReport: PersonAction; onShare: PersonAction }) {
+export default function HomeChildCard({ person, onOpenDetail, onReport, onShare, feature = false }: { person: MissingPerson; onOpenDetail: PersonAction; onReport: PersonAction; onShare: PersonAction; feature?: boolean }) {
   const live = person.source === "api";
   const hasAiPhoto = Boolean(person.photos.aged);
   const years = yearsApart(person);
@@ -50,8 +50,8 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare 
   const openDetail = (event: React.MouseEvent<HTMLButtonElement>) => onOpenDetail(person, event.currentTarget);
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[20px] border border-[#E3EAF3] bg-white shadow-[0_2px_10px_rgba(23,59,112,.05)] [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease,border-color_.25s_ease] hover:[transform:translateY(-4px)] hover:border-[#C9DAEE] hover:shadow-[0_18px_36px_rgba(23,59,112,.11)] motion-reduce:[transition:none] motion-reduce:hover:[transform:none]" aria-labelledby={`home-child-${person.id}`}>
-      <div className="relative grid h-[232px] grid-cols-[1fr_1fr] gap-0.5 bg-white max-sm:h-[208px]">
+    <article className={`flex h-full flex-col overflow-hidden border border-[#E3EAF3] bg-white [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease,border-color_.25s_ease] hover:border-[#C9DAEE] motion-reduce:[transition:none] ${feature ? "rounded-3xl shadow-[0_18px_40px_rgba(23,59,112,.1)]" : "rounded-[20px] shadow-[0_2px_10px_rgba(23,59,112,.05)] hover:[transform:translateY(-4px)] hover:shadow-[0_18px_36px_rgba(23,59,112,.11)] motion-reduce:hover:[transform:none]"}`} aria-labelledby={`home-child-${person.id}`}>
+      <div className={`relative grid grid-cols-[1fr_1fr] gap-0.5 bg-white ${feature ? "h-[340px] max-sm:h-[240px]" : "h-[232px] max-sm:h-[208px]"}`}>
         <button type="button" className={`${photo} bg-[#E6EBF1]`} aria-label={`${person.name} 상세정보 열기`} onClick={openDetail}>
           {live
             ? <StoredPhoto fit="cover" urls={(person.images ?? []).map(image => image.url)} alt={`${person.name} 등록 사진`} sizes="(min-width: 1100px) 200px, (min-width: 640px) 25vw, 50vw" />
@@ -78,8 +78,10 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare 
         <div className="absolute top-2.5 right-2.5 z-2"><FavoriteButton personId={person.id} name={person.name} variant="icon" /></div>
       </div>
 
-      <div className="flex flex-1 flex-col px-[18px] py-4 max-sm:px-4 max-sm:pt-3.5 max-sm:pb-2.5">
-        <h3 id={`home-child-${person.id}`} className="flex items-center gap-2 text-[20px] font-[850] tracking-[-.5px] text-brand-dark">{person.name}<small className="rounded-full bg-[#F1F5FA] px-2 py-0.5 text-[11.5px] font-bold tracking-normal text-muted">{formatGender(person.gender)}</small></h3>
+      <div className={`flex flex-1 flex-col ${feature ? "px-[26px] pt-[22px] pb-5 max-sm:px-[18px] max-sm:pt-4 max-sm:pb-3.5" : "px-[18px] py-4 max-sm:px-4 max-sm:pt-3.5 max-sm:pb-2.5"}`}>
+        {feature && years !== null && <p className="mb-2 inline-flex items-center gap-[7px] text-[13px] font-extrabold text-[#B4473F]"><span aria-hidden="true" className="size-[7px] animate-home-dot-pulse rounded-full bg-[#F28B82] motion-reduce:animate-none" />{years}년째 기다리는 중</p>}
+        <h3 id={`home-child-${person.id}`} className={`flex items-center gap-2 font-[850] tracking-[-.5px] text-brand-dark ${feature ? "text-[26px] max-sm:text-[22px]" : "text-[20px]"}`}>{person.name}<small className="rounded-full bg-[#F1F5FA] px-2 py-0.5 text-[11.5px] font-bold tracking-normal text-muted">{formatGender(person.gender)}</small></h3>
+        {feature && person.features && person.features !== "정보 없음" && <p className="mt-2 line-clamp-2 text-[14px] leading-[1.65] break-keep text-[#4A5D75]">{person.features}</p>}
         {/* 실종 지역과 날짜를 같은 칸 모양으로 나란히 둔다. 모든 카드가 같은 자리에 같은 정보를 보여준다. */}
         <dl className="mt-3 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] overflow-hidden rounded-xl border border-[#E7ECF2] bg-[#F9FAFC]">
           <div className={factCell}><dt className={factTerm}><PinGlyph />실종 지역</dt><dd className={factValue}>{person.region || "정보 없음"}</dd></div>
@@ -91,7 +93,7 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare 
           <button type="button" className={iconButton} aria-label={`${person.name} 정보 공유하기`} title="공유하기" aria-haspopup="dialog" onClick={event => onShare(person, event.currentTarget)}><ShareIcon size={18} /></button>
         </div>
       </div>
-      <p className="border-t border-[#EEF2F7] px-[18px] pt-2.5 pb-3 text-[11.5px] text-[#7A8BA0] max-sm:px-4">출처: 경찰청 · AI 예상 이미지는 실제 모습과 다를 수 있습니다</p>
+      <p className={`border-t border-[#EEF2F7] pt-2.5 pb-3 text-[11.5px] text-[#7A8BA0] ${feature ? "px-[26px]" : "px-[18px] max-sm:px-4"}`}>출처: 경찰청 · AI 예상 이미지는 실제 모습과 다를 수 있습니다</p>
     </article>
   );
 }

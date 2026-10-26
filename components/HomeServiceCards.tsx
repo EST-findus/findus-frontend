@@ -18,7 +18,7 @@ const tone = {
 };
 
 const tile = [
-  "group/tile relative isolate flex min-h-[68px] min-w-0 cursor-pointer items-center gap-3 overflow-hidden rounded-[18px] border border-white/82 bg-white/74 py-[11px] pr-3 pl-[13px] text-left text-brand-dark",
+  "group/tile relative isolate flex min-h-[76px] min-w-0 cursor-pointer items-center gap-3 overflow-hidden rounded-[18px] border border-white/82 bg-white/74 py-3.5 pr-3.5 pl-[15px] text-left text-brand-dark",
   "shadow-[inset_0_1px_0_rgba(255,255,255,.9),0_1px_2px_rgba(23,59,112,.04),0_10px_26px_rgba(23,59,112,.07)] backdrop-blur-[14px] backdrop-saturate-[1.1]",
   "[transition:transform_.35s_cubic-bezier(.2,.7,.2,1),background-color_.3s_ease,box-shadow_.35s_ease,border-color_.3s_ease]",
   "before:absolute before:inset-0 before:-z-1 before:bg-[radial-gradient(130%_110%_at_0%_50%,var(--tone-softer),transparent_62%)] before:opacity-0 before:[transition:opacity_.35s_ease] before:content-['']",
@@ -125,8 +125,8 @@ export default function HomeServiceCards() {
   return (
     <>
       <nav className="w-full max-w-[500px] animate-[fade-in_.9s_cubic-bezier(.2,.7,.2,1)_.45s_backwards] max-[1000px]:max-w-[560px] max-[720px]:max-w-none motion-reduce:animate-none!" aria-label="주요 서비스 바로가기">
-        <p className="mb-2 ml-0.5 flex items-center gap-2 text-[13px] font-bold tracking-[-.1px] text-[#3D5877] before:h-0.5 before:w-4 before:rounded-[2px] before:bg-brand before:opacity-60 before:content-['']">어떤 도움이 필요하신가요?</p>
-        <div className="grid grid-cols-2 gap-2" data-tile-grid>
+        <p className="mb-3 ml-0.5 flex items-center gap-2 text-[13px] font-bold tracking-[-.1px] text-[#3D5877] before:h-0.5 before:w-4 before:rounded-[2px] before:bg-brand before:opacity-60 before:content-['']">어떤 도움이 필요하신가요?</p>
+        <div className="grid grid-cols-2 gap-3 max-[720px]:gap-2.5" data-tile-grid>
           {/* 실종아동 찾기 화면으로 가서 검색창에 바로 커서를 둔다. */}
           <Link href="/search?focus=search" className={`${tile} ${tone.navy} ${tileInDelays[0]}`}>
             <TileBody icon={<SearchGlyph />} eyebrow="검색 바로가기" title="실종아동 검색" />
