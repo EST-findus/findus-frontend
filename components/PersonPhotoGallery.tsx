@@ -3,6 +3,7 @@ import {useState} from 'react';
 import type {MissingPerson} from '@/lib/types';
 import {formatAge} from '@/lib/format';
 import StoredPhoto from './StoredPhoto';
+import {logAiImageLoadFail} from './AiStylePhoto';
 import {ScanFaceIcon} from './Icons';
 
 export default function PersonPhotoGallery({person,comparison=false}:{person:MissingPerson;comparison?:boolean}) {
@@ -28,7 +29,7 @@ export default function PersonPhotoGallery({person,comparison=false}:{person:Mis
         <figure className="min-w-0">
           <figcaption className="mb-2 flex items-center gap-1 text-xs font-bold text-muted"><span className="rounded bg-brand/10 px-1 text-[10px]">AI</span> 예상 모습</figcaption>
           <div className="relative mx-auto aspect-3/4 w-full max-w-80 overflow-hidden rounded-lg border border-dashed border-brand/20 bg-brand-soft/40">
-            {person.photos.aged ? <StoredPhoto urls={[person.photos.aged]} alt={person.name+' AI 예상 모습'} fallback={false}/> : <div role="img" aria-label={person.name+' AI 예상 모습 준비 중'} className="flex h-full flex-col items-center justify-center gap-3 px-2 text-center text-muted">
+            {person.photos.aged ? <StoredPhoto urls={[person.photos.aged]} alt={person.name+' AI 예상 모습'} fallback={false} onFail={src=>logAiImageLoadFail(src)}/> : <div role="img" aria-label={person.name+' AI 예상 모습 준비 중'} className="flex h-full flex-col items-center justify-center gap-3 px-2 text-center text-muted">
               <ScanFaceIcon size={32} strokeWidth={1.3}/><strong className="text-xs">AI 예상 모습 준비 중</strong><span className="text-[11px] break-keep">생성된 이미지가 아직 없습니다</span>
             </div>}
           </div>
