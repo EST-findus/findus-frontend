@@ -49,16 +49,16 @@ export function matchesFilters(person: MissingPerson, filters: SearchFilters): b
   return true;
 }
 
+const BY_SORT: Record<SortKey, (a: MissingPerson, b: MissingPerson) => number> = {
+  recent: (a, b) => b.missingDate.localeCompare(a.missingDate),
+  oldest: (a, b) => a.missingDate.localeCompare(b.missingDate),
+  name: (a, b) => a.name.localeCompare(b.name, "ko"),
+};
+
+/** AI 예상 모습이 있는 아동을 먼저 보여주고, 그 안에서 고른 정렬을 따른다. */
 export function sortPersons(persons: MissingPerson[], sort: SortKey): MissingPerson[] {
-  const sorted = [...persons];
-  switch (sort) {
-    case "recent":
-      return sorted.sort((a, b) => b.missingDate.localeCompare(a.missingDate));
-    case "oldest":
-      return sorted.sort((a, b) => a.missingDate.localeCompare(b.missingDate));
-    case "name":
-      return sorted.sort((a, b) => a.name.localeCompare(b.name, "ko"));
-  }
+  const hasAi = (p: MissingPerson) => (p.photos.aged ? 0 : 1);
+  return [...persons].sort((a, b) => hasAi(a) - hasAi(b) || BY_SORT[sort](a, b));
 }
 
 /** 데이터에 있는 시·도만 가나다순으로 */
