@@ -241,7 +241,7 @@ function ServiceGuide() {
       title="서비스 소개"
       sections={sections}
       ending={<>
-        <Image src="/images/home-family-walk.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={styles.endingPhoto} />
+        <Image src="/images/home-closing-sky.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={styles.endingPhoto} />
         <p className={`${pen.className} ${styles.endingNote}`}>기억은 사라지지 않습니다.<br />다시 만날 그날을 위해, 오늘도.</p>
       </>}
     />
@@ -265,9 +265,15 @@ function SupportGuide() {
             <p className={styles.body}>이 사례는 우리에게 한 가지 가능성을 보여주었습니다. 실종 정보가 사람들의 일상 속에서 한 번 더 발견된다면, 누군가에게는 가족을 다시 만날 기회가 될 수 있다는 것을요.</p>
             <p className={styles.lead}>우리는 이 가능성을 우리의 일상에서도 이어가고 싶습니다.</p>
           </div>
-          <figure className={styles.supportPhoto}>
-            <Image src="/images/support-children-background.png" alt="햇살 아래 손을 잡고 뛰어가는 아이들 · AI 캠페인 이미지" fill sizes="(max-width: 640px) 100vw, 320px" />
-            <figcaption className={`${pen.className} ${styles.handNote}`}>한 번 더 발견되는 일이, 다시 만나는 길이 됩니다.</figcaption>
+          {/* 편의점 결제 화면을 재현한 예시. 실제 당사자 사진은 쓰지 않는다. */}
+          <figure className={styles.cuStory} aria-label="편의점 결제 화면에 뜬 실종아동 정보 (재현 예시)">
+            <div className={styles.posScreen} aria-hidden="true">
+              <div className={styles.posBar}><span className={styles.posLogo}><Image src="/images/partners/cu.png" alt="" fill sizes="40px" unoptimized /></span><span>재현 예시 화면</span></div>
+              <div className={styles.posBody}>
+                <span className={styles.posPhoto}><Image src="/images/mock-persons/MC-1999-0341/past.jpg" alt="" fill sizes="80px" /></span>
+                <span className={styles.posCopy}><strong>실종아동을 찾습니다</strong><small>2000년 · 당시 4세</small><small>보신 분은 182로 연락 주세요</small></span>
+              </div>
+            </div>
           </figure>
         </div>
           <ol className={`${styles.timeline} ${styles.blockGap}`} aria-label="CU 실종아동 찾기 캠페인 상봉 사례">
@@ -368,7 +374,7 @@ function SupportGuide() {
       tone="coral"
       sections={sections}
       ending={<>
-        <Image src="/images/support-children-background.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={styles.endingPhoto} />
+        <Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={`${styles.endingPhoto} ${styles.endingPhotoSide}`} />
         <p className={`${pen.className} ${styles.endingNote}`}>굿즈를 만드는 일에서 시작해,<br />한 아이를 기억하는 일로.</p>
       </>}
     />
@@ -378,28 +384,39 @@ function SupportGuide() {
 // 일상 속에서 실종아동을 다시 보게 하는 국내 캠페인 모음. 보도 기사를 바탕으로 정리했다.
 const CAMPAIGNS = {
   store: [
-    { title: "CU · 아이CU", text: "전국 CU 점포에서 길 잃은 아이를 보호하고 경찰에 인계해요. POS 화면에 장기 실종아동 사진을 띄워 20년 만의 상봉 사례도 있어요.", source: "파이낸셜뉴스" },
-    { title: "우체국 · 한진 · 경찰청 '호프테이프'", text: "택배 포장 테이프에 실종 당시 사진과 나이 변환 예상 모습을 함께 인쇄했어요. 한진은 이 캠페인 등으로 사회공헌 시상에서 상을 받기도 했어요.", source: "사이언스타임즈 · 메트로서울" },
-    { title: "티르티르 택배 라벨", text: "뷰티 브랜드 티르티르는 택배 상자 안쪽에 실종 당시 사진과 현재 추정 사진을 비교하는 라벨을 붙였어요.", source: "메트로서울" },
-    { title: "인생네컷 × 경찰청 '실종아동네컷'", text: "인생네컷과 경찰청이 함께한 장기 실종아동 찾기 캠페인이에요. 네 컷 사진 프레임에 아이들의 어린 시절 모습과 특징을 담았어요.", source: "캠페인 포스터" },
+    { title: "CU · 아이CU", text: "전국 CU 점포에서 길 잃은 아이를 보호하고 경찰에 인계해요. POS 화면에 장기 실종아동 사진을 띄워 20년 만의 상봉 사례도 있어요.", source: "파이낸셜뉴스", logos: ["/images/partners/cu.png"] },
+    { title: "우체국 · 한진 · 경찰청 '호프테이프'", text: "택배 포장 테이프에 실종 당시 사진과 나이 변환 예상 모습을 함께 인쇄했어요. 한진은 이 캠페인 등으로 사회공헌 시상에서 상을 받기도 했어요.", source: "사이언스타임즈 · 메트로서울", logos: ["/images/partners/epost.png", "/images/partners/hanjin.png"] },
+    { title: "티르티르 택배 라벨", text: "뷰티 브랜드 티르티르는 택배 상자 안쪽에 실종 당시 사진과 현재 추정 사진을 비교하는 라벨을 붙였어요.", source: "메트로서울", logos: ["/images/partners/tirtir.svg"] },
+    { title: "인생네컷 × 경찰청 '실종아동네컷'", text: "인생네컷과 경찰청이 함께한 장기 실종아동 찾기 캠페인이에요. 네 컷 사진 프레임에 아이들의 어린 시절 모습과 특징을 담았어요.", source: "캠페인 포스터", photo: "/images/campaign-four-frame.webp" },
   ],
   app: [
-    { title: "당근 × 경찰청 실종 정보 실시간 공유", text: "안전Dream에 공개된 실종 정보가 당근 앱에 실시간으로 올라가고, 발견되면 자동 삭제돼요.", source: "뉴시스" },
-    { title: "토스 × 대전경찰청 결제 단말기 실종경보", text: "실종경보 발령 시 지역 가맹점의 토스 결제 단말기에 실종 정보를 띄우는 협약이에요. 대전에서 먼저 시작해요.", source: "토스피드" },
-    { title: "NH농협은행 인터넷뱅킹 실종아동 찾기", text: "2016년부터 이체 화면에 실종아동 사진과 정보를 노출해 왔어요. 10년째 이어진 장수 캠페인이에요.", source: "스마트투데이" },
+    { title: "당근 × 경찰청 실종 정보 실시간 공유", text: "안전Dream에 공개된 실종 정보가 당근 앱에 실시간으로 올라가고, 발견되면 자동 삭제돼요.", source: "뉴시스", logos: ["/images/partners/daangn.svg"] },
+    { title: "토스 × 대전경찰청 결제 단말기 실종경보", text: "실종경보 발령 시 지역 가맹점의 토스 결제 단말기에 실종 정보를 띄우는 협약이에요. 대전에서 먼저 시작해요.", source: "토스피드", logos: ["/images/partners/toss.png"] },
+    { title: "NH농협은행 인터넷뱅킹 실종아동 찾기", text: "2016년부터 이체 화면에 실종아동 사진과 정보를 노출해 왔어요. 10년째 이어진 장수 캠페인이에요.", source: "스마트투데이", logos: ["/images/partners/nh.png"] },
   ],
   more: [
     { title: "에어서울 기내 모니터 실종아동 찾기", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", source: "아이뉴스24" },
-    { title: "KB국민은행 · 실종 예방 협력", text: "자녀 지문을 등록하고 사전신고증을 내면 어린이 적금에 우대이율을 주는 상품이 있었어요. 올해 실종아동의 날 행사에서 KB국민은행과 NH농협은행이 경찰청장 감사장을 받았어요.", source: "데일리안 · 다자비" },
+    { title: "KB국민은행 · 실종 예방 협력", text: "자녀 지문을 등록하고 사전신고증을 내면 어린이 적금에 우대이율을 주는 상품이 있었어요. 올해 실종아동의 날 행사에서 KB국민은행과 NH농협은행이 경찰청장 감사장을 받았어요.", source: "데일리안 · 다자비", logos: ["/images/partners/kb.png", "/images/partners/nh.png"] },
   ],
 } as const;
 
-function CampaignList({ items, icon }: { items: readonly { title: string; text: string; source: string }[]; icon: ReactNode }) {
+type CampaignItem = { title: string; text: string; source: string; logos?: readonly string[]; photo?: string };
+
+// Each campaign leads with what it is: the organisations' own logos, a campaign photo, or a plain icon.
+function CampaignList({ items, icon }: { items: readonly CampaignItem[]; icon: ReactNode }) {
   return (
     <ul className={`${styles.features} ${styles.campaignList}`}>
       {items.map(item => (
         <li key={item.title}>
-          <span aria-hidden="true" className={styles.featureIcon}>{icon}</span>
+          {item.photo ? (
+            <span aria-hidden="true" className={`${styles.campaignMark} ${styles.campaignMarkPhoto}`}><Image src={item.photo} alt="" fill sizes="120px" /></span>
+          ) : item.logos?.length ? (
+            <span aria-hidden="true" className={styles.campaignMark}>
+              {item.logos.map(logo => <span key={logo} className={styles.campaignLogo}><Image src={logo} alt="" fill sizes="100px" unoptimized /></span>)}
+            </span>
+          ) : (
+            <span aria-hidden="true" className={`${styles.campaignMark} ${styles.campaignMarkIcon}`}>{icon}</span>
+          )}
           <div><strong>{item.title}</strong><span>{item.text}</span><em className={styles.campaignSource}>출처: {item.source}</em></div>
         </li>
       ))}
@@ -414,10 +431,38 @@ function CampaignGuide() {
       label: "FindUs와 닮은 사례",
       content: (
         <>
-          <p className={styles.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
-          <h3 className={styles.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
-          <p className={styles.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
-          <p className={styles.body}>호프테이프와 에어서울 캠페인은 모두 실종 당시 사진과 나이 변환으로 만든 현재 추정 모습을 나란히 보여주었습니다. 호프테이프에는 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주로 만든 현재 추정 모습, 실종 장소와 신체 특징이 담겼습니다.</p>
+          <div className={styles.purpose}>
+            <div>
+              <p className={styles.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
+              <h3 className={styles.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
+              <p className={styles.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
+            </div>
+            <figure className={styles.supportPhoto}>
+              <Image src="/images/campaign-four-frame.webp" alt="네 컷 사진 프레임에 실종아동의 어린 시절 모습을 담은 실종아동네컷 캠페인" fill sizes="(max-width: 640px) 100vw, 230px" />
+              <figcaption className={`${pen.className} ${styles.handNote}`}>사진 한 장이, 다시 보는 계기가 됩니다.</figcaption>
+            </figure>
+          </div>
+          {/* 두 사례를 '원본 → 현재 추정' 사진 한 쌍과 함께 카드로 보여준다. 사진은 AI로 만든 가상 인물 예시다. */}
+          <ul className={styles.caseRow}>
+            {[
+              { name: "호프테이프", where: "우체국 · 한진 · 경찰청", text: "택배 포장 테이프에 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주, 실종 장소와 신체 특징을 담았어요.", past: "/images/mock-persons/MC-1994-0627/past.jpg", aged: "/images/mock-persons/MC-1994-0627/aged.jpg" },
+              { name: "에어서울 기내 모니터", where: "에어서울", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", past: "/images/mock-persons/MC-2004-0302/past.jpg", aged: "/images/mock-persons/MC-2004-0302/aged.jpg" },
+            ].map(item => (
+              <li key={item.name} className={styles.caseCard}>
+                <div className={styles.casePair} aria-hidden="true">
+                  <span><Image src={item.past} alt="" fill sizes="96px" /><em>당시</em></span>
+                  <i><ArrowRightIcon size={14} /></i>
+                  <span><Image src={item.aged} alt="" fill sizes="96px" /><em className={styles.caseAi}>현재 추정</em></span>
+                </div>
+                <div>
+                  <p className={styles.caseWhere}>{item.where}</p>
+                  <strong>{item.name}</strong>
+                  <p className={styles.caseText}>{item.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className={styles.caseNote}>카드 속 사진은 이해를 돕기 위해 AI로 만든 가상 인물 예시입니다.</p>
           <p className={styles.lead}>원본과 AI 예상 모습을 나란히 비교하는 방식은, 이미 현장에서 검증된 방법입니다.</p>
         </>
       ),
@@ -443,7 +488,7 @@ function CampaignGuide() {
       tone="navy"
       sections={sections}
       ending={<>
-        <Image src="/images/home-family-together.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={styles.endingPhoto} />
+        <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={`${styles.endingPhoto} ${styles.endingPhotoSide}`} />
         <p className={`${pen.className} ${styles.endingNote}`}>일상의 한 장면이,<br />다시 만나는 길이 됩니다.</p>
       </>}
     />
