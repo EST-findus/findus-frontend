@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowRightIcon } from "./Icons";
 import DnaGuideButton from "./DnaGuideButton";
 import { GuidePopup, type GuidePopupId } from "./GuideSteps";
-import { HOME_SEARCH_INPUT_ID } from "./HomeChildren";
 import styles from "./HomeServiceCards.module.css";
 
 // Two-tone tile icons: a soft filled shape (`.iconFill`) under a 1.8px line, both in the tile's tone colour.
@@ -76,15 +75,6 @@ function TileBody({ icon, eyebrow, title }: { icon: ReactNode; eyebrow: string; 
   );
 }
 
-// Jumps to the children list search below and puts the cursor in it.
-function focusHomeSearch() {
-  const input = document.getElementById(HOME_SEARCH_INPUT_ID);
-  if (!input) return;
-  const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  input.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "center" });
-  input.focus({ preventScroll: true });
-}
-
 // The AI guide link under the hero's AI example, in the same tile style as the shortcuts.
 export function HomeAiGuideLink() {
   return (
@@ -104,9 +94,10 @@ export default function HomeServiceCards() {
       <nav className={styles.panel} aria-label="주요 서비스 바로가기">
         <p className={styles.heading}>어떤 도움이 필요하신가요?</p>
         <div className={styles.grid}>
-          <button type="button" onClick={focusHomeSearch} className={`${styles.tile} ${styles.toneNavy}`}>
+          {/* 실종아동 찾기 화면으로 가서 검색창에 바로 커서를 둔다. */}
+          <Link href="/search?focus=search" className={`${styles.tile} ${styles.toneNavy}`}>
             <TileBody icon={<SearchGlyph />} eyebrow="검색 바로가기" title="실종아동 검색" />
-          </button>
+          </Link>
           <button
             type="button"
             aria-haspopup="dialog"

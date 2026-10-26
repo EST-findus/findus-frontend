@@ -3,7 +3,7 @@
 .sectionBox { position:relative; }
 .section a:focus-visible,.section button:focus-visible,.section select:focus-visible { outline:2px solid #3978B8; outline-offset:3px; }
 
-.heading { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:14px 24px; margin-bottom:14px; }
+.heading { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:14px 24px; margin-bottom:22px; }
 .headingCopy { min-width:0; }
 .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:5px 12px; border-radius:999px; background:#EAF2F9; color:#3978B8; font-size:12px; font-weight:700; letter-spacing:.02em; }
 .eyebrow > span { width:6px; height:6px; border-radius:50%; background:#F28B82; animation:dotPulse 2.4s ease-out infinite; }
@@ -15,25 +15,7 @@
 .allLink:hover { color:#173B70; background-size:calc(100% - 24px) 1px; }
 .allLink:hover svg { transform:translateX(4px); }
 
-.headingTools { grid-column:1 / -1; }
-.homeSearch { display:flex; align-items:center; gap:10px; width:100%; }
-.searchInput { display:flex; flex:1; align-items:center; gap:12px; min-width:0; height:46px; padding:0 16px; border:1px solid #D4E1F0; border-radius:12px; background:#F8FAFD; color:#62748C; transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease; }
-.searchInput:hover { border-color:#B9CDE6; }
-.searchInput:focus-within { border-color:#3978B8; background:#FFFFFF; box-shadow:0 0 0 4px rgba(57,120,184,.1); }
-.searchInput svg { flex:none; width:19px; height:19px; }
-.searchInput input { width:100%; min-width:0; height:100%; border:0; outline:0; background:transparent; color:#173B70; font:inherit; font-size:15px; }
-.searchInput input::placeholder { color:#7A8BA0; }
-.searchInput input::-webkit-search-cancel-button { cursor:pointer; }
-.homeSearch > button { flex:0 0 128px; height:46px; border:0; border-radius:12px; background:#3978B8; color:#FFFFFF; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 6px 16px rgba(57,120,184,.2); transition:background-color .2s ease,transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s ease; }
-.homeSearch > button:hover { background:#2F66A0; transform:translateY(-1px); box-shadow:0 10px 22px rgba(57,120,184,.26); }
 
-.toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; padding:6px 0 0; }
-.toolbar > p { color:#5C6F86; font-size:13px; }
-.toolbar strong { margin-right:2px; color:#173B70; font-size:15px; font-weight:800; }
-.toolbar > div { display:flex; align-items:center; gap:9px; }
-.toolbar label { color:#5C6F86; font-size:12px; }
-.toolbar select { height:38px; padding:0 30px 0 12px; border:1px solid #DCE5F0; border-radius:10px; background:#FFFFFF; color:#3D5877; font-size:13px; cursor:pointer; transition:border-color .2s ease; }
-.toolbar select:hover { border-color:#B9CDE6; }
 
 .carousel { position:relative; }
 .viewport { position:relative; overflow:hidden; margin:-14px -12px -28px; padding:14px 12px 28px; }
@@ -48,31 +30,6 @@
 @keyframes cardsExitLeft { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(calc(-100% - 24px)); } }
 @keyframes cardsExitRight { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(calc(100% + 24px)); } }
 
-/* The card markup is shared with the search page, so these rules only restyle it inside the home carousel. */
-.comparisonCard.comparisonCard { border:1px solid #E3EAF3; border-radius:18px; background:#FFFFFF; box-shadow:0 2px 8px rgba(23,59,112,.04); transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,border-color .25s ease; }
-.comparisonCard.comparisonCard:hover { transform:translateY(-4px); border-color:#C9DAEE; box-shadow:0 18px 36px rgba(23,59,112,.1); }
-.comparisonCard.comparisonCard > div:first-child { padding:12px 12px 8px; }
-.comparisonCard.comparisonCard header { margin-bottom:6px; }
-.comparisonCard.comparisonCard figcaption { min-height:20px; margin-bottom:4px; }
-.comparisonCard.comparisonCard figure > p { margin-top:4px; }
-.comparisonCard.comparisonCard > div:first-child > p { margin:2px 0 4px; font-size:10px; }
-.comparisonCard.comparisonCard dl { padding-top:6px; }
-.comparisonCard.comparisonCard h3 { font-size:20px; letter-spacing:-.4px; }
-.comparisonCard.comparisonCard figure { padding:6px; }
-.comparisonCard.comparisonCard figure > button,
-.comparisonCard.comparisonCard figure > [role=img] { height:110px; border-radius:10px; }
-.comparisonCard.comparisonCard figure > button img { transition:transform .6s cubic-bezier(.2,.7,.2,1); }
-.comparisonCard.comparisonCard figure > button:hover img { transform:scale(1.05); }
-.comparisonCard.comparisonCard dl { border-top-color:#EEF2F7; }
-.comparisonCard.comparisonCard > div:last-child { grid-template-columns:minmax(0,1fr) 44px; gap:0 8px; padding:0 12px 6px; }
-.comparisonCard.comparisonCard > div:last-child > button { min-height:36px; border-color:transparent; border-radius:10px; background:transparent; color:#5C6F86; transition:background-color .2s ease,color .2s ease; }
-.comparisonCard.comparisonCard > div:last-child > button:first-child { grid-column:1 / -1; background:#3978B8; color:#FFFFFF; font-size:14px; font-weight:700; }
-.comparisonCard.comparisonCard > div:last-child > button:first-child:hover { background:#173B70; }
-.comparisonCard.comparisonCard > div:last-child > button:first-child svg { transition:transform .25s cubic-bezier(.2,.7,.2,1); }
-.comparisonCard.comparisonCard > div:last-child > button:first-child:hover svg { transform:translateX(4px); }
-.comparisonCard.comparisonCard > div:last-child > button:nth-child(2) { justify-content:flex-start; padding-inline:2px; font-size:12.5px; }
-.comparisonCard.comparisonCard > div:last-child > button:nth-child(2):hover { color:#3978B8; }
-.comparisonCard.comparisonCard > div:last-child > button:last-child:hover { background:#EAF2F9; color:#3978B8; }
 
 .empty { padding:56px 20px; color:#6C7F94; font-size:14px; text-align:center; }
 .paginationRow { position:relative; min-height:40px; margin-top:8px; }
@@ -91,8 +48,6 @@
 
 @media(width<1100px) {
   .cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .comparisonCard.comparisonCard figure > button,
-  .comparisonCard.comparisonCard figure > [role=img] { height:126px; }
   .paginationRow { display:flex; flex-direction:column; align-items:center; gap:10px; }
   .demo { position:static; transform:none; }
 }
@@ -102,17 +57,7 @@
   .heading h2 { margin-top:12px; font-size:23px; }
   .description { font-size:13px; }
   .allLink { justify-self:start; padding:4px 0; font-size:13px; }
-  .homeSearch { gap:8px; }
-  .searchInput { height:44px; gap:10px; padding-inline:14px; border-radius:12px; }
-  .searchInput input { font-size:14px; }
-  .homeSearch > button { flex-basis:92px; height:44px; border-radius:12px; font-size:14px; }
-  .toolbar > p { font-size:12px; }
-  .toolbar strong { font-size:13px; }
-  .toolbar label { display:none; }
-  .toolbar select { max-width:150px; font-size:12px; }
   .cards { grid-template-columns:1fr; gap:14px; }
-  .comparisonCard.comparisonCard figure > button,
-  .comparisonCard.comparisonCard figure > [role=img] { height:126px; }
   .pagination { gap:12px; }
   .pagination button { width:44px; height:44px; }
   .pagination .rotationControl { padding-inline:6px; font-size:11px; }
@@ -120,6 +65,4 @@
 }
 @media(prefers-reduced-motion:reduce) {
   .enterRight,.enterLeft,.exitLeft,.exitRight { animation:none; }
-  .comparisonCard.comparisonCard,.comparisonCard.comparisonCard figure > button img,.searchInput,.homeSearch > button,.allLink,.allLink svg { transition:none; }
-  .comparisonCard.comparisonCard:hover { transform:none; }
 }

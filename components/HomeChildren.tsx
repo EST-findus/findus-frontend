@@ -4,19 +4,16 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import Link from "next/link";
 import type { MissingPerson, SortKey } from "@/lib/types";
 import { DEFAULT_FILTERS, filterPersons } from "@/lib/filter";
-import ChildComparisonCard from "./ChildComparisonCard";
-import CountUp from "./CountUp";
+import HomeChildCard from "./HomeChildCard";
 import DetailModal from "./DetailModal";
 import ReportGuideModal from "./ReportGuideModal";
 import ShareModal from "./ShareModal";
-import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "./Icons";
+import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
 import styles from "./HomeChildren.module.css";
-
-// The hero's search shortcut scrolls to and focuses this input.
-export const HOME_SEARCH_INPUT_ID = "home-children-search";
 
 // Long enough to read a name and region before the cards move on.
 const AUTO_ADVANCE_MS = 6000;
+const SORT: SortKey = "recent";
 
 const subscribe = (notify: () => void) => {
   const media = window.matchMedia("(max-width: 639px)");
@@ -49,8 +46,6 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const [visible, setVisible] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useSyncExternalStore(subscribeMotion, motionSnapshot, serverSnapshot);
-  const [sort, setSort] = useState<SortKey>("recent");
-  const [query, setQuery] = useState("");
   const [detail, setDetail] = useState<MissingPerson | null>(null);
   const [report, setReport] = useState<MissingPerson | null>(null);
   const [share, setShare] = useState<MissingPerson | null>(null);
@@ -58,7 +53,8 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const mobile = useSyncExternalStore(subscribe, mobileSnapshot, serverSnapshot);
   const desktop = useSyncExternalStore(subscribeDesktop, desktopSnapshot, serverSnapshot);
   const pageSize = mobile ? 1 : desktop ? 3 : 2;
-  const results = useMemo(()=>filterPersons(persons,{query,filters:DEFAULT_FILTERS,sort}),[persons,query,sort]);
+  // 검색과 정렬은 실종아동 찾기 화면에서 한다. 홈은 최근 실종 순으로 카드만 넘겨 보여준다.
+  const results = useMemo(()=>filterPersons(persons,{query:"",filters:DEFAULT_FILTERS,sort:SORT}),[persons]);
   const pages = Math.ceil(results.length / pageSize);
   const current = Math.min(page,Math.max(0,pages-1));
   const start = current * pageSize;
@@ -93,7 +89,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
     return () => window.clearTimeout(timer);
   }, [playing,reducedMotion,hovered,focused,inView,visible,detail,report,share,pages,outgoing,current,move]);
 
-  const renderCard = (person: MissingPerson) => <ChildComparisonCard key={person.id} person={person} comparison actionVariant="home" className={styles.comparisonCard} onOpenDetail={(person,element)=>{setTrigger(element);setDetail(person);}} onReport={(person,element)=>{setTrigger(element);setReport(person);}} onShare={(person,element)=>{setTrigger(element);setShare(person);}} />;
+  const renderCard = (person: MissingPerson) => <HomeChildCard key={person.id} person={person} onOpenDetail={(person,element)=>{setTrigger(element);setDetail(person);}} onReport={(person,element)=>{setTrigger(element);setReport(person);}} onShare={(person,element)=>{setTrigger(element);setShare(person);}} />;
   return <section className={styles.section} aria-labelledby="home-children-title">
     <div className={`page-container ${styles.sectionBox}`}>
       <header className={styles.heading} data-reveal="stagger">
@@ -103,21 +99,11 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
           <p className={styles.description}>경찰청에 공개된 실종아동 정보입니다. 기억나는 얼굴이 있다면 상세 정보를 확인해 주세요.</p>
         </div>
         <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} /></Link>
-        <div className={styles.headingTools}>
-          <form className={styles.homeSearch} role="search" onSubmit={event=>{event.preventDefault();setPage(0);setOutgoing(null);}}>
-            <label className={styles.searchInput}><SearchIcon size={19} /><input id={HOME_SEARCH_INPUT_ID} type="search" value={query} onChange={event=>{setQuery(event.target.value);setPage(0);setOutgoing(null);}} placeholder="이름이나 실종 지역을 입력해주세요" aria-label="실종아동 검색" autoComplete="off" /></label>
-            <button type="submit">검색하기</button>
-          </form>
-        </div>
       </header>
-      <div className={styles.toolbar}>
-        <p><strong><CountUp value={results.length} />명</strong>의 정보를 함께 살펴보고 있어요.</p>
-        <div><label htmlFor="home-children-sort">정렬</label><select id="home-children-sort" value={sort} onChange={event=>{setSort(event.target.value as SortKey);setPage(0);setOutgoing(null);}}><option value="recent">실종 연도 최신순</option><option value="oldest">실종 연도 오래된순</option><option value="name">이름순</option></select></div>
-      </div>
       <div ref={carouselRef} data-reveal className={styles.carousel} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
         <div className={styles.viewport} id="home-comparison-cards" aria-roledescription="슬라이드" aria-label="아동 비교 카드">
           {outgoing && <div className={`${styles.cards} ${styles.outgoing} ${direction === "next" ? styles.exitLeft : styles.exitRight}`} inert aria-hidden="true">{outgoing.map(renderCard)}</div>}
-          <div key={`${sort}-${current}-${pageSize}`} className={`${styles.cards} ${outgoing ? direction === "next" ? styles.enterRight : styles.enterLeft : ""}`}>{results.slice(start,end).map(renderCard)}</div>
+          <div key={`${current}-${pageSize}`} className={`${styles.cards} ${outgoing ? direction === "next" ? styles.enterRight : styles.enterLeft : ""}`}>{results.slice(start,end).map(renderCard)}</div>
         </div>
         {results.length === 0 && <p className={styles.empty}>현재 표시할 아동 정보가 없습니다. 전체 검색에서 다시 확인해 주세요.</p>}
         <div className={styles.paginationRow}>

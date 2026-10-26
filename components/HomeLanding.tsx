@@ -3,7 +3,7 @@ import { Nanum_Pen_Script, Noto_Serif_KR } from "next/font/google";
 import Image from "next/image";
 import type { MissingPerson } from "@/lib/types";
 import HomeChildren from "./HomeChildren";
-import HomeFeaturedChild from "./HomeFeaturedChild";
+import HomeFeaturedPopup from "./HomeFeaturedPopup";
 import { ArrowRightIcon } from "./Icons";
 import styles from "./HomeLanding.module.css";
 import HomeServiceCards, { HomeAiGuideLink } from "./HomeServiceCards";
@@ -41,11 +41,12 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
         <HomeAiGuideLink />
         </div>
         <div className={styles.heroSide}>
-          {featured && <HomeFeaturedChild person={featured} />}
           <HomeServiceCards />
         </div>
       </div>
     </section>
+
+    {featured && <HomeFeaturedPopup person={featured} />}
 
     <HomeChildren persons={persons} />
 

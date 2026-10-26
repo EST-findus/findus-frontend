@@ -20,7 +20,7 @@ const POLAROID = "/images/mock-persons/MC-2001-0812/past.jpg";
 type Section = { id: string; label: string; content: ReactNode };
 
 /* Two-pane guide shown inside a bare Modal: a numbered sidebar that follows the reading position, and the sections. */
-function GuideSheet({ title, sections, ending }: { title: string; sections: Section[]; ending: ReactNode }) {
+function GuideSheet({ title, sections, ending, tone = "brand" }: { title: string; sections: Section[]; ending: ReactNode; tone?: "brand" | "coral" }) {
   const sheetRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(sections[0].id);
 
@@ -58,20 +58,33 @@ function GuideSheet({ title, sections, ending }: { title: string; sections: Sect
     setActive(id);
   };
 
+  const activeIndex = Math.max(0, sections.findIndex(section => section.id === active));
+
   return (
-    <div ref={sheetRef} className={styles.sheet}>
+    <div ref={sheetRef} className={styles.sheet} data-tone={tone}>
       <aside className={styles.sheetNav}>
         <nav aria-label={`${title} 목차`}>
+          <p className={styles.sheetNavEyebrow}><span aria-hidden="true" />FINDUS GUIDE</p>
           <p className={styles.sheetNavTitle}>{title}</p>
+          {/* 지금 읽는 위치: 막대와 숫자로 보여준다. */}
+          <div className={styles.sheetProgress} aria-hidden="true">
+            <span className={styles.sheetProgressBar}><span style={{ width: `${((activeIndex + 1) / sections.length) * 100}%` }} /></span>
+            <span className={styles.sheetProgressText}><strong>{activeIndex + 1}</strong> / {sections.length}</span>
+          </div>
           <ol>
             {sections.map((section, index) => (
-              <li key={section.id}>
+              <li key={section.id} data-state={index < activeIndex ? "done" : index === activeIndex ? "active" : "next"}>
                 <button type="button" aria-current={active === section.id ? "true" : undefined} onClick={() => goTo(section.id)}>
-                  <span>{String(index + 1).padStart(2, "0")}.</span>{section.label}
+                  <span className={styles.sheetStep}>{String(index + 1).padStart(2, "0")}</span>
+                  <span className={styles.sheetStepLabel}>{section.label}</span>
                 </button>
               </li>
             ))}
           </ol>
+          <a href="tel:182" className={styles.sheetHelp}>
+            <span aria-hidden="true" className={styles.sheetHelpIcon}><PhoneIcon size={16} strokeWidth={2} /></span>
+            <span><small>제보·상담이 필요하다면</small><strong>경찰청 182</strong></span>
+          </a>
         </nav>
       </aside>
       <div className={styles.sheetBody}>
@@ -352,6 +365,7 @@ function SupportGuide() {
   return (
     <GuideSheet
       title="후원 안내"
+      tone="coral"
       sections={sections}
       ending={<>
         <Image src="/images/support-children-background.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={styles.endingPhoto} />
@@ -368,28 +382,42 @@ export default function HomeStory() {
   const supportRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <section className={`page-container ${styles.section}`} aria-label="서비스 소개와 후원 안내">
+    <section className={`page-container ${styles.section}`} aria-labelledby="home-story-title">
+      <header className={styles.storyHead} data-reveal>
+        <p className={styles.storyKicker}><span aria-hidden="true" />FindUs가 함께하는 일</p>
+        <h2 id="home-story-title">기술은 기억을 잇고, 관심은 만남을 만듭니다.</h2>
+        <p>AI로 시간이 흐른 얼굴을 다시 그리고, 시민의 작은 관심을 공식 제보로 이어갑니다.</p>
+      </header>
       <div className={styles.cards} data-reveal="stagger">
         <button ref={serviceRef} type="button" aria-haspopup="dialog" onClick={() => setOpen("service")} className={`${styles.card} ${styles.cardService}`}>
           <span className={styles.cardCopy}>
-            <span className={styles.cardTitle}><span aria-hidden="true" className={styles.cardIcon}><MonitorGlyph /></span>서비스 소개</span>
-            <span className={styles.cardText}>AI 나이 예측 기술로, <br />실종아동의 지금 모습을 그려보고 <br />더 많은 사람에게 알리는 서비스입니다.</span>
+            <span className={styles.cardLabel}><span aria-hidden="true" className={styles.cardIcon}><MonitorGlyph /></span>01 · 서비스 소개</span>
+            <span className={styles.cardTitle}>잊혀 가는 얼굴을, 지금의 모습으로</span>
+            <span className={styles.cardText}>AI 나이 예측 기술로 실종아동의 지금 모습을 그려보고, 더 많은 사람에게 알리는 서비스입니다.</span>
+            <span className={styles.cardTags}><span>AI 나이 예측</span><span>공식 정보 연결</span></span>
             <span className={styles.cardMore}>자세히 보기 <ArrowRightIcon size={15} /></span>
           </span>
           <span aria-hidden="true" className={styles.splitFace}>
-            <span className={styles.splitHalf}><Image src={SERVICE_PAST} alt="" fill sizes="170px" /></span>
-            <span className={`${styles.splitHalf} ${styles.splitRight}`}><Image src={SERVICE_AGED} alt="" fill sizes="170px" /></span>
+            <span className={styles.splitHalf}><Image src={SERVICE_PAST} alt="" fill sizes="190px" /></span>
+            <span className={`${styles.splitHalf} ${styles.splitRight}`}><Image src={SERVICE_AGED} alt="" fill sizes="190px" /></span>
             <span className={styles.splitLine} />
             <span className={styles.scanCorners} />
+            <span className={`${styles.splitTag} ${styles.splitTagLeft}`}>당시</span>
+            <span className={`${styles.splitTag} ${styles.splitTagRight}`}>AI 예상</span>
           </span>
         </button>
         <button ref={supportRef} type="button" aria-haspopup="dialog" onClick={() => setOpen("support")} className={`${styles.card} ${styles.cardSupport}`}>
           <span className={styles.cardCopy}>
-            <span className={styles.cardTitle}><span aria-hidden="true" className={styles.cardIcon}><HeartIcon size={20} /></span>후원 안내</span>
-            <span className={styles.cardText}>편의점에서 발견한 사진 한 장이 <br />20년 만의 가족 상봉으로 이어졌습니다. <br />한 아이를 기억하는 QR 굿즈를 함께 만들어요.</span>
+            <span className={styles.cardLabel}><span aria-hidden="true" className={styles.cardIcon}><HeartIcon size={18} /></span>02 · 후원 안내</span>
+            <span className={styles.cardTitle}>한 장의 사진이, 다시 만남으로</span>
+            <span className={styles.cardText}>편의점에서 발견한 사진 한 장이 20년 만의 가족 상봉으로 이어졌습니다. 한 아이를 기억하는 QR 굿즈를 함께 만들어요.</span>
+            <span className={styles.cardTags}><span>QR 굿즈</span><span>리워드 펀딩</span></span>
             <span className={styles.cardMore}>자세히 보기 <ArrowRightIcon size={15} /></span>
           </span>
-          <span aria-hidden="true" className={styles.supportVisual}><Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="260px" /></span>
+          <span aria-hidden="true" className={styles.supportVisual}>
+            <Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="260px" />
+            <span className={styles.supportTag}>Remember A Child</span>
+          </span>
         </button>
       </div>
 
