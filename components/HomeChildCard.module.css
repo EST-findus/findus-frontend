@@ -1,0 +1,56 @@
+/* Home "함께 찾고 있는 아이들" card, in the site palette:
+   공공 블루 #3978B8, 라이트 블루 #EAF2F9, 웜 코랄 #F28B82, white. */
+.card { display:flex; height:100%; flex-direction:column; overflow:hidden; border:1px solid #E3EAF3; border-radius:20px; background:#FFFFFF; box-shadow:0 2px 10px rgba(23,59,112,.05); transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease,border-color .25s ease; }
+.card:hover { transform:translateY(-4px); border-color:#C9DAEE; box-shadow:0 18px 36px rgba(23,59,112,.11); }
+
+/* Photo pair, edge to edge, split down the middle by a thin white line. */
+.media { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:2px; height:232px; background:#FFFFFF; }
+.past,.aged { position:relative; display:block; overflow:hidden; padding:0; border:0; cursor:pointer; }
+.past { background:#E6EBF1; }
+.aged { background:#EAF2F9; }
+.past img,.aged img { transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.past:hover img,.aged:hover img { transform:scale(1.05); }
+.past:focus-visible,.aged:focus-visible { outline:2px solid #3978B8; outline-offset:-3px; }
+
+.badge { position:absolute; z-index:1; bottom:10px; padding:4px 10px; border-radius:999px; background:rgba(23,32,48,.72); color:#FFFFFF; font-size:12px; font-weight:700; letter-spacing:-.1px; white-space:nowrap; backdrop-filter:blur(4px); }
+.badgeLeft { left:10px; }
+.badgeRight { right:10px; }
+.aiChip { position:absolute; z-index:1; top:10px; left:10px; display:inline-flex; align-items:center; gap:4px; padding:4px 9px; border-radius:7px; background:#3978B8; color:#FFFFFF; font-size:11.5px; font-weight:800; }
+
+/* AI image not ready yet: a calm placeholder that says what is coming. */
+.pending { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:16px 12px 34px; cursor:default; text-align:center; }
+.aiChipSoft { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border:1px solid #BFD3EC; border-radius:7px; background:#FFFFFF; color:#3978B8; font-size:11.5px; font-weight:800; }
+.pending strong { margin-top:4px; color:#173B70; font-size:14.5px; font-weight:800; line-height:1.4; letter-spacing:-.3px; word-break:keep-all; }
+.pendingSub { color:#5C6F86; font-size:12px; }
+.pendingRing { position:absolute; bottom:-62px; left:50%; width:132px; height:132px; margin-left:-66px; border:2px dashed #BFD3EC; border-radius:50%; animation:ringTurn 26s linear infinite; pointer-events:none; }
+@keyframes ringTurn { to { rotate:360deg; } }
+
+/* Years apart, floating on the seam. */
+.years { position:absolute; z-index:2; top:50%; left:50%; display:inline-flex; align-items:center; gap:3px; padding:7px 13px; transform:translate(-50%,-50%); border-radius:999px; background:#FFFFFF; color:#173B70; font-size:13px; font-weight:800; box-shadow:0 6px 16px rgba(23,59,112,.18); white-space:nowrap; pointer-events:none; }
+.years svg { color:#F28B82; }
+.favorite { position:absolute; z-index:2; top:10px; right:10px; }
+
+.body { display:flex; flex:1; flex-direction:column; padding:16px 18px 12px; }
+.name { display:flex; align-items:baseline; gap:6px; color:#173B70; font-size:20px; font-weight:850; letter-spacing:-.5px; }
+.name small { color:#62748C; font-size:13px; font-weight:600; letter-spacing:0; }
+.meta { margin-top:6px; color:#4A5D75; font-size:13.5px; }
+.actions { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; padding-top:14px; }
+.detail { display:inline-flex; align-items:center; gap:2px; padding:6px 0; color:#3978B8; font-size:14.5px; font-weight:800; cursor:pointer; }
+.detail svg { transition:transform .25s cubic-bezier(.2,.7,.2,1); }
+.detail:hover svg { transform:translateX(3px); }
+.iconActions { display:flex; align-items:center; gap:4px; }
+.iconActions button { display:grid; width:38px; height:38px; place-items:center; border-radius:50%; color:#3D5877; cursor:pointer; transition:background-color .2s ease,color .2s ease; }
+.iconActions button:hover { background:#EAF2F9; color:#3978B8; }
+.detail:focus-visible,.iconActions button:focus-visible { outline:2px solid #3978B8; outline-offset:2px; border-radius:8px; }
+.note { padding:10px 18px 12px; border-top:1px solid #EEF2F7; color:#7A8BA0; font-size:11.5px; }
+
+@media(width<640px) {
+  .media { height:208px; }
+  .body { padding:14px 16px 10px; }
+  .note { padding-inline:16px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .card,.past img,.aged img,.detail svg { transition:none; }
+  .card:hover,.past:hover img,.aged:hover img { transform:none; }
+  .pendingRing { animation:none; }
+}
