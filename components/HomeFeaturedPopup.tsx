@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { MissingPerson } from "@/lib/types";
 import HomeFeaturedChild from "./HomeFeaturedChild";
+import { PhoneIcon } from "./Icons";
 import Modal from "./Modal";
 import styles from "./HomeFeaturedChild.module.css";
 
@@ -62,6 +63,14 @@ export default function HomeFeaturedPopup({ person }: { person: MissingPerson })
   return (
     <Modal title="지금 함께 찾고 있는 아이" eyebrow="함께 찾아주세요" accent="coral" size="narrow" onClose={() => setOpen(false)}>
       <HomeFeaturedChild person={person} variant="popup" />
+      {/* The first thing a visitor sees, so someone who has just lost a child finds where to call right here. */}
+      <aside className={styles.urgent} aria-label="긴급 신고 안내">
+        <p><strong>지금 아이를 잃어버렸나요?</strong>망설이지 말고 바로 112에 신고하세요. 실종 상담은 182에서 도와드려요.</p>
+        <div className={styles.urgentCalls}>
+          <a href="tel:112" className={styles.urgentPrimary}><PhoneIcon size={14} strokeWidth={2.2} aria-hidden="true" />112 긴급 신고</a>
+          <a href="tel:182" className={styles.urgentSecondary}><PhoneIcon size={14} strokeWidth={2.2} aria-hidden="true" />182 실종 상담</a>
+        </div>
+      </aside>
       <div className={styles.popupFoot}>
         <button type="button" onClick={hideToday}>오늘 하루 보지 않기</button>
         <button type="button" onClick={() => setOpen(false)}>닫기</button>

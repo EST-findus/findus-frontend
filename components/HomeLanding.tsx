@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { MissingPerson } from "@/lib/types";
 import HomeChildren from "./HomeChildren";
 import HomeFeaturedPopup from "./HomeFeaturedPopup";
-import { ArrowRightIcon } from "./Icons";
+import { ArrowRightIcon, PhoneIcon, SparklesIcon } from "./Icons";
 import styles from "./HomeLanding.module.css";
 import HomeServiceCards from "./HomeServiceCards";
 import HomeStory from "./HomeStory";
@@ -37,20 +37,23 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
             <div className={styles.heroPhotoImage}><Image src="/images/mock-persons/MC-2008-0915/aged.jpg" alt="AI로 만든 가상 인물의 현재 추정 모습" fill sizes="(max-width: 640px) 42vw, 240px" /></div>
             <figcaption><span>AI</span> 예상 모습</figcaption>
           </figure>
-          <p className={styles.heroPhotoNote}>가상 인물 예시 · 실제 모습과 다를 수 있습니다</p>
         </div>
-        {/* The AI guide sits beside the example it explains, centred on the photos so it reads as the next step after the arrow. */}
-        <Link href="/help?tab=ai" className={styles.heroAiLink}>
-          <span>책임 있는 AI</span>
-          <strong>AI 나이 예측은 어떻게 하나요? <ArrowRightIcon size={14} /></strong>
-        </Link>
+        {/* Under the example: the caveat first, then the guide that explains it, read in that order. */}
+        <div className={styles.heroAiNote}>
+          <p className={styles.heroPhotoNote}>가상 인물 예시 · 실제 모습과 다를 수 있습니다</p>
+          <Link href="/help?tab=ai" className={styles.heroAiLink}><SparklesIcon size={15} aria-hidden="true" /><span>AI 나이 예측은 어떻게 하나요?</span><ArrowRightIcon size={14} strokeWidth={2.4} aria-hidden="true" /></Link>
+        </div>
         </div>
         </div>
       </div>
     </section>
 
     {/* The four shortcuts run in one row across the hero's bottom edge, so the campaign child above stays clear. */}
-    <div className={`page-container ${styles.quick}`}><HomeServiceCards /></div>
+    {/* The popup carries the full emergency box; once it is closed, this quiet line keeps the numbers on the page. */}
+    <div className={`page-container ${styles.quick}`}>
+      <HomeServiceCards />
+      <p className={styles.urgentLine}><PhoneIcon size={14} strokeWidth={2.2} aria-hidden="true" />지금 아이를 잃어버렸다면 바로 <a href="tel:112">112 긴급 신고</a><span aria-hidden="true">·</span><a href="tel:182">182 실종 상담</a></p>
+    </div>
 
     {featured && <HomeFeaturedPopup person={featured} />}
 

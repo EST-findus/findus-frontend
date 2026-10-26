@@ -11,9 +11,9 @@
 .photos > :nth-child(3) { animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) .8s backwards; }
 .report { animation:fadeIn .5s ease .95s backwards; }
 .top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.label { display:inline-flex; align-items:center; gap:6px; color:#3978B8; font-size:11px; font-weight:700; }
+.label { display:inline-flex; align-items:center; gap:6px; color:#3978B8; font-size:12px; font-weight:700; }
 .label > span { width:6px; height:6px; border-radius:50%; background:#F28B82; animation:dotPulse 2.4s ease-out infinite; }
-.source { color:#8B9AAD; font-size:10px; white-space:nowrap; }
+.source { color:#62748C; font-size:11.5px; white-space:nowrap; }
 .name { display:flex; align-items:baseline; gap:6px; margin:4px 0 6px; color:#173B70; font-size:16px; font-weight:800; letter-spacing:-.3px; }
 .name small { color:#62748C; font-size:12px; font-weight:500; }
 
@@ -63,7 +63,19 @@ button.photo:focus-visible,.report:focus-visible { outline:2px solid #3978B8; ou
 .more { display:flex; align-items:center; justify-content:center; gap:4px; height:44px; border:1px solid #3978B8; border-radius:10px; background:#3978B8; color:#FFFFFF; font-size:14px; font-weight:800; cursor:pointer; transition:background-color .2s ease,transform .25s cubic-bezier(.2,.7,.2,1); animation:fadeIn .5s ease .95s backwards; }
 .more:hover { background:#2F66A0; transform:translateY(-1px); }
 .more:focus-visible { outline:2px solid #3978B8; outline-offset:2px; }
-.popupFoot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:18px -28px -28px; padding:12px 20px; border-top:1px solid #EEF2F7; background:#F9FAFC; border-radius:0 0 16px 16px; }
+/* Emergency band under the featured child: a full-width soft coral section between the child and the footer row,
+   its top rule splitting "help find this child" from "if your own child is missing". */
+.urgent { display:grid; gap:10px; margin:20px -28px 0; padding:16px 28px 18px; border-top:1px solid #F1D3CE; background:#FEF4F3; }
+.urgent > p { color:#5A3A37; font-size:13px; line-height:1.6; word-break:keep-all; }
+.urgent strong { display:block; color:#B4473F; font-size:14px; font-weight:800; }
+.urgentCalls { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.urgentCalls a { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:9px 10px; border-radius:999px; font-size:13.5px; font-weight:800; white-space:nowrap; transition:background-color .2s ease,border-color .2s ease; }
+.urgentCalls a:focus-visible { outline:2px solid #C9483F; outline-offset:2px; }
+.urgentPrimary { background:#C9483F; color:#FFFFFF; }
+.urgentPrimary:hover { background:#A83A32; }
+.urgentSecondary { border:1px solid #EBC3BE; background:#FFFFFF; color:#B4473F; }
+.urgentSecondary:hover { border-color:#C9483F; }
+.popupFoot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0 -28px -28px; padding:12px 20px; border-top:1px solid #EEF2F7; background:#F9FAFC; border-radius:0 0 16px 16px; }
 .popupFoot button { padding:6px 8px; border-radius:8px; color:#62748C; font-size:13px; font-weight:600; cursor:pointer; transition:background-color .2s ease,color .2s ease; }
 .popupFoot button:hover { background:#EAF2F9; color:#173B70; }
 .popupFoot button:last-child { color:#173B70; font-weight:700; }
@@ -72,8 +84,12 @@ button.photo:focus-visible,.report:focus-visible { outline:2px solid #3978B8; ou
 @media(width<720px) {
   .card { width:100%; background:rgba(255,255,255,.88); }
   .popup { background:transparent; }
-  .popupFoot { margin-inline:-20px; }
   .photo { height:110px; }
+}
+/* The modal's side padding drops to 20px below 640px, so the full-width rows follow it. */
+@media(width<640px) {
+  .urgent { margin-inline:-20px; padding-inline:20px; }
+  .popupFoot { margin-inline:-20px; }
 }
 @media(prefers-reduced-motion:reduce) {
   .card,.label > span,.name,.photos > *,.report,.arrow svg,.pending::after,.pending svg { animation:none; }

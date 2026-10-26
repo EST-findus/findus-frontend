@@ -29,7 +29,7 @@
 .tile:hover .iconFill { opacity:.3; }
 
 .copy { display:flex; min-width:0; flex:1; flex-direction:column; }
-.eyebrow { color:var(--tone); font-size:11px; font-weight:700; line-height:1.3; opacity:.78; }
+.eyebrow { color:var(--tone); font-size:12px; font-weight:700; line-height:1.3; opacity:.9; }
 .copy > strong { overflow:hidden; margin-top:3px; font-size:15px; font-weight:800; line-height:1.35; letter-spacing:-.3px; white-space:nowrap; text-overflow:ellipsis; }
 
 .arrow { display:flex; flex:none; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; color:var(--tone); opacity:.45; transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease,background-color .3s ease; }
