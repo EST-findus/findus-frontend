@@ -17,7 +17,7 @@ import styles from "./HomeChildren.module.css";
 const AUTO_ADVANCE_MS = 4000;
 const SORT: SortKey = "recent";
 // The list beside the spotlight shows this many children at a time; the highlight moves within the group.
-const GROUP = 4;
+const GROUP = 5;
 const SWIPE_PX = 50;
 
 const subscribeMotion = (notify: () => void) => {
@@ -36,7 +36,7 @@ function Thumb({ person }: { person: MissingPerson }) {
 
 /**
  * 홈 '함께 찾고 있는 아이들'. 왼쪽에 한 아이를 크게(스포트라이트) 보여주고, 오른쪽에 같은 묶음의 다음 아이들을 둔다.
- * 6초마다 다음 아이로 넘어가고, 목록을 누르거나 화살표·스와이프로 직접 고를 수 있다.
+ * 4초마다 다음 아이로 넘어가고, 목록을 누르거나 화살표·스와이프로 직접 고를 수 있다.
  */
 export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const [index, setIndex] = useState(0);
@@ -53,8 +53,12 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const [report, setReport] = useState<MissingPerson | null>(null);
   const [share, setShare] = useState<MissingPerson | null>(null);
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
-  // 검색과 정렬은 실종아동 찾기 화면에서 한다. 홈은 최근 실종 순으로 보여준다.
-  const results = useMemo(()=>filterPersons(persons,{query:"",filters:DEFAULT_FILTERS,sort:SORT}),[persons]);
+  // 검색과 정렬은 실종아동 찾기 화면에서 한다. 홈은 최근 실종 순으로 보여주되,
+  // AI 예상 모습이 준비된 아이를 앞에 두어 첫 화면이 빈 칸으로 시작하지 않게 한다.
+  const results = useMemo(()=>{
+    const sorted = filterPersons(persons,{query:"",filters:DEFAULT_FILTERS,sort:SORT});
+    return [...sorted.filter(p=>p.photos.aged), ...sorted.filter(p=>!p.photos.aged)];
+  },[persons]);
   const total = results.length;
   const current = total ? ((index % total) + total) % total : 0;
   const person = results[current];

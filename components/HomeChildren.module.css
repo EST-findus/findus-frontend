@@ -43,7 +43,7 @@
 .pagination .rotationControl { width:auto; gap:6px; padding:0 12px; border-color:transparent; border-radius:8px; background:transparent; color:#5C6F86; font-size:12px; }
 .pagination .rotationControl:hover:not(:disabled) { border-color:transparent; background:#EEF4FB; color:#173B70; }
 .rotationControl > span:first-child { font-size:14px; }
-.demo { position:absolute; top:50%; right:0; display:flex; align-items:baseline; gap:9px; margin:0; transform:translateY(-50%); color:#62748C; font-size:11px; line-height:1.7; }
+.demo { position:absolute; top:50%; right:0; display:flex; align-items:baseline; gap:9px; margin:0; transform:translateY(-50%); color:#62748C; font-size:12.5px; line-height:1.7; }
 .demo > span:first-child { flex-shrink:0; color:#3D5877; font-weight:650; }
 
 @media(width<1100px) {
@@ -60,8 +60,8 @@
   .cards { grid-template-columns:1fr; gap:14px; }
   .pagination { gap:12px; }
   .pagination button { width:44px; height:44px; }
-  .pagination .rotationControl { padding-inline:6px; font-size:11px; }
-  .demo { align-items:flex-start; gap:7px; font-size:10.5px; text-align:left; }
+  .pagination .rotationControl { padding-inline:6px; font-size:12px; }
+  .demo { align-items:flex-start; gap:7px; font-size:12px; text-align:left; }
 }
 @media(prefers-reduced-motion:reduce) {
   .enterRight,.enterLeft,.exitLeft,.exitRight { animation:none; }
@@ -70,7 +70,8 @@
 /* ───────── Spotlight ─────────
    One child large on the left, the rest of the group listed on the right. Changing child cross-fades:
    the old card fades away while the new one settles in, its text arriving just after the photo. */
-.spotlight { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr); align-items:start; gap:40px; }
+/* Both columns stretch to the row height, so the queue's controls and source note can sit on the card's bottom line. */
+.spotlight { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr); align-items:stretch; gap:40px; }
 .stage { position:relative; min-width:0; touch-action:pan-y; }
 .stageCard { min-width:0; }
 .leaving { position:absolute; inset:0; z-index:0; pointer-events:none; animation:stageOut .55s ease forwards; }
@@ -84,7 +85,7 @@
 @keyframes stagePhoto { from { opacity:0; scale:1.03; } to { opacity:1; scale:1; } }
 @keyframes stageText { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 
-.queue { min-width:0; }
+.queue { display:flex; min-width:0; flex-direction:column; }
 .queueTitle { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:14px; color:#173B70; font-size:16px; font-weight:800; letter-spacing:-.3px; }
 .queueTitle span { color:#62748C; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; }
 .queueBox { position:relative; }
@@ -103,13 +104,15 @@
 .queueText small { overflow:hidden; color:#5C6F86; font-size:12.5px; text-overflow:ellipsis; white-space:nowrap; }
 .queueProgress { position:absolute; left:14px; right:14px; bottom:8px; height:3px; border-radius:999px; background:#3978B8; transform-origin:left; animation:queueFill linear forwards; opacity:.75; }
 @keyframes queueFill { from { transform:scaleX(0); } to { transform:scaleX(1); } }
-.queueNav { display:flex; align-items:center; gap:8px; margin-top:16px; }
+/* Controls and source note are pushed to the bottom and right-aligned; the pause control leads so the round buttons meet the right edge. */
+.queueNav { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-top:auto; padding-top:16px; }
+.queueNav .rotationControl { order:-1; }
 .queueNav button { display:grid; width:40px; height:40px; place-items:center; border:1px solid #DCE6F1; border-radius:50%; background:#FFFFFF; color:#3D5877; cursor:pointer; transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease; }
 .queueNav button:hover { border-color:#3978B8; background:#3978B8; color:#FFFFFF; }
 .queueNav button:active { transform:scale(.95); }
 .queueNav .rotationControl { display:flex; align-items:center; width:auto; gap:6px; padding:0 12px; border-color:transparent; border-radius:8px; background:transparent; color:#5C6F86; font-size:12px; }
 .queueNav .rotationControl:hover { border-color:transparent; background:#EEF4FB; color:#173B70; }
-.queue .demo { position:static; display:grid; gap:2px; margin-top:16px; transform:none; }
+.queue .demo { position:static; display:grid; justify-items:end; gap:2px; margin-top:14px; transform:none; text-align:right; }
 
 @media(width<1000px) {
   .spotlight { grid-template-columns:minmax(0,1fr); gap:24px; }
