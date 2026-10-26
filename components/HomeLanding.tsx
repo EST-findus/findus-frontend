@@ -1,12 +1,13 @@
 "use client";
 import { Nanum_Pen_Script, Noto_Serif_KR } from "next/font/google";
 import Image from "next/image";
+import Link from "next/link";
 import type { MissingPerson } from "@/lib/types";
 import HomeChildren from "./HomeChildren";
 import HomeFeaturedPopup from "./HomeFeaturedPopup";
 import { ArrowRightIcon } from "./Icons";
 import styles from "./HomeLanding.module.css";
-import HomeServiceCards, { HomeAiGuideLink } from "./HomeServiceCards";
+import HomeServiceCards from "./HomeServiceCards";
 import HomeStory from "./HomeStory";
 import { useScrollReveal } from "./useScrollReveal";
 
@@ -23,9 +24,9 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}><span />아이를 기억하는 마음, FindUs</p>
           <h1 id="home-title">다시 그린 얼굴에,<br /><em>우리의 마음을 더하다.</em></h1>
-          <p className={styles.heroLead}>잊혀진 얼굴에 다시 시선을, 기다리는 가족에게 새로운 희망을.</p>
-          <p className={styles.heroDescription}>AI 나이 예측 기술로 시간이 흐른 아이들의 모습을 그려보고, 다시 만날 희망을 이어갑니다.</p>
+          <p className={styles.heroLead}>AI 나이 예측으로 시간이 흐른 아이의 얼굴을 다시 그려,<br />기다리는 가족에게 다시 만날 희망을 이어갑니다.</p>
         </div>
+        <div className={styles.heroExample}>
         <div className={styles.heroPhotos} aria-label="AI로 만든 가상 인물 예시 사진">
           <figure className={styles.heroPhotoCard}>
             <div className={styles.heroPhotoImage}><Image src="/images/mock-persons/MC-2008-0915/past.jpg" alt="AI로 만든 가상 인물의 어린 시절 예시" fill sizes="(max-width: 640px) 42vw, 240px" /></div>
@@ -38,13 +39,18 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
           </figure>
           <p className={styles.heroPhotoNote}>가상 인물 예시 · 실제 모습과 다를 수 있습니다</p>
         </div>
-        <HomeAiGuideLink />
+        {/* The AI guide sits beside the example it explains, centred on the photos so it reads as the next step after the arrow. */}
+        <Link href="/help?tab=ai" className={styles.heroAiLink}>
+          <span>책임 있는 AI</span>
+          <strong>AI 나이 예측은 어떻게 하나요? <ArrowRightIcon size={14} /></strong>
+        </Link>
         </div>
-        <div className={styles.heroSide}>
-          <HomeServiceCards />
         </div>
       </div>
     </section>
+
+    {/* The four shortcuts run in one row across the hero's bottom edge, so the campaign child above stays clear. */}
+    <div className={`page-container ${styles.quick}`}><HomeServiceCards /></div>
 
     {featured && <HomeFeaturedPopup person={featured} />}
 

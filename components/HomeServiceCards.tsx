@@ -54,14 +54,6 @@ const DnaGlyph = () => (
   </TileIcon>
 );
 
-const AiGlyph = () => (
-  <TileIcon>
-    <path className={styles.iconFill} d="M11 3.5 12.9 9 18.5 11l-5.6 2L11 18.5 9.1 13 3.5 11l5.6-2Z" stroke="none" />
-    <path d="M11 3.5 12.9 9 18.5 11l-5.6 2L11 18.5 9.1 13 3.5 11l5.6-2Z" />
-    <path d="M18.5 15.5v4M16.5 17.5h4" />
-  </TileIcon>
-);
-
 function TileBody({ icon, eyebrow, title }: { icon: ReactNode; eyebrow: string; title: string }) {
   return (
     <>
@@ -75,16 +67,7 @@ function TileBody({ icon, eyebrow, title }: { icon: ReactNode; eyebrow: string; 
   );
 }
 
-// The AI guide link under the hero's AI example, in the same tile style as the shortcuts.
-export function HomeAiGuideLink() {
-  return (
-    <Link href="/help?tab=ai" className={`${styles.tile} ${styles.single} ${styles.toneViolet}`}>
-      <TileBody icon={<AiGlyph />} eyebrow="책임 있는 AI" title="AI 연구 안내" />
-    </Link>
-  );
-}
-
-// Four quick shortcuts that sit in the home hero, beside the AI age-progression example.
+// Four quick shortcuts in one row across the home hero's bottom edge.
 export default function HomeServiceCards() {
   const [activeGuide, setActiveGuide] = useState<GuidePopupId | null>(null);
   const guideTriggerRefs = useRef<Record<GuidePopupId, HTMLButtonElement | null>>({ know: null, me: null });
@@ -92,7 +75,6 @@ export default function HomeServiceCards() {
   return (
     <>
       <nav className={styles.panel} aria-label="주요 서비스 바로가기">
-        <p className={styles.heading}>어떤 도움이 필요하신가요?</p>
         <div className={styles.grid}>
           {/* 실종아동 찾기 화면으로 가서 검색창에 바로 커서를 둔다. */}
           <Link href="/search?focus=search" className={`${styles.tile} ${styles.toneNavy}`}>
@@ -114,7 +96,7 @@ export default function HomeServiceCards() {
             ref={(element) => { guideTriggerRefs.current.me = element; }}
             className={`${styles.tile} ${styles.toneCoral}`}
           >
-            <TileBody icon={<FamilyGlyph />} eyebrow="가족 찾기" title="혹시 나?" />
+            <TileBody icon={<FamilyGlyph />} eyebrow="본인 확인" title="내가 실종아동일까?" />
           </button>
           <DnaGuideButton className={`${styles.tile} ${styles.toneGold}`}>
             <TileBody icon={<DnaGlyph />} eyebrow="본인·가족 찾기" title="DNA 검사·상담" />

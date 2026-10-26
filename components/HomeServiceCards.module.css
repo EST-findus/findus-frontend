@@ -1,21 +1,18 @@
-/* Hero shortcuts: frosted tiles over the campaign photo. Each tile carries one calm tone (--tone*)
-   that only comes forward on hover: a tinted wash, a filled icon chip, and a soft light sweep. */
-.panel { width:100%; max-width:500px; animation:panelIn .9s cubic-bezier(.2,.7,.2,1) .45s backwards; }
-.heading { display:flex; align-items:center; gap:8px; margin:0 0 12px 2px; color:#3D5877; font-size:13px; font-weight:700; letter-spacing:-.1px; }
-.heading::before { width:16px; height:2px; content:""; border-radius:2px; background:#3978B8; opacity:.6; }
-.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+/* Hero shortcuts: one row of solid white tiles across the hero's bottom edge, so the text stays sharp over the photo.
+   Each tile carries one calm tone (--tone*) that only comes forward on hover: a tinted wash, a filled icon chip, and a soft light sweep. */
+.panel { width:100%; animation:panelIn .9s cubic-bezier(.2,.7,.2,1) .45s backwards; }
+.grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
 
 .toneNavy { --tone:#1F4B8A; --tone-soft:#E3EAF5; --tone-softer:#F1F5FB; --tone-ring:rgba(31,75,138,.24); }
 .toneBlue { --tone:#3978B8; --tone-soft:#E1ECFB; --tone-softer:#F0F6FE; --tone-ring:rgba(57,120,184,.26); }
 .toneCoral { --tone:#D4675E; --tone-soft:#FDE8E6; --tone-softer:#FEF4F3; --tone-ring:rgba(212,103,94,.24); }
-/* DNA tile: a deeper coral, so it stays apart from the 혹시 나? tile next to it. */
+/* DNA tile: a deeper coral, so it stays apart from the 내가 실종아동일까? tile next to it. */
 .toneGold { --tone:#C25A52; --tone-soft:#FBE1DE; --tone-softer:#FEF2F1; --tone-ring:rgba(194,90,82,.24); }
-.toneViolet { --tone:#4A56A6; --tone-soft:#E6E8F7; --tone-softer:#F3F4FC; --tone-ring:rgba(74,86,166,.24); }
 
-.tile { position:relative; isolation:isolate; display:flex; min-width:0; align-items:center; gap:12px; min-height:76px; overflow:hidden; padding:14px 14px 14px 15px; border:1px solid rgba(255,255,255,.82); border-radius:18px; background:rgba(255,255,255,.74); color:#173B70; text-align:left; cursor:pointer; box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(23,59,112,.04),0 10px 26px rgba(23,59,112,.07); backdrop-filter:blur(14px) saturate(1.1); -webkit-backdrop-filter:blur(14px) saturate(1.1); transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .35s ease,border-color .3s ease; }
+.tile { position:relative; isolation:isolate; display:flex; min-width:0; align-items:center; gap:12px; min-height:84px; overflow:hidden; padding:14px 14px 14px 15px; border:1px solid #E3EAF3; border-radius:18px; background:#FFFFFF; color:#173B70; text-align:left; cursor:pointer; box-shadow:0 1px 2px rgba(23,59,112,.05),0 14px 32px rgba(23,59,112,.10); transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .3s ease,box-shadow .35s ease,border-color .3s ease; }
 .tile::before { position:absolute; z-index:-1; inset:0; content:""; background:radial-gradient(130% 110% at 0% 50%,var(--tone-softer),transparent 62%); opacity:0; transition:opacity .35s ease; }
 .tile::after { position:absolute; z-index:-1; inset:0; content:""; background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%); translate:-120% 0; transition:translate .9s cubic-bezier(.2,.7,.2,1); pointer-events:none; }
-.tile:hover { transform:translateY(-3px); border-color:var(--tone-ring); background:rgba(255,255,255,.9); box-shadow:inset 0 1px 0 #FFFFFF,0 2px 4px rgba(23,59,112,.05),0 18px 36px rgba(23,59,112,.12); }
+.tile:hover { transform:translateY(-3px); border-color:var(--tone-ring); box-shadow:0 2px 4px rgba(23,59,112,.05),0 18px 36px rgba(23,59,112,.12); }
 .tile:hover::before { opacity:1; }
 .tile:hover::after { translate:120% 0; }
 .tile:active { transform:translateY(-1px) scale(.99); }
@@ -25,7 +22,6 @@
 .grid > .tile:nth-child(2) { animation:tileIn .7s cubic-bezier(.2,.7,.2,1) .63s backwards; }
 .grid > .tile:nth-child(3) { animation:tileIn .7s cubic-bezier(.2,.7,.2,1) .71s backwards; }
 .grid > .tile:nth-child(4) { animation:tileIn .7s cubic-bezier(.2,.7,.2,1) .79s backwards; }
-.single { width:min(100%,320px); animation:tileIn .7s cubic-bezier(.2,.7,.2,1) .85s backwards; }
 
 .icon { display:flex; flex:0 0 42px; align-items:center; justify-content:center; width:42px; height:42px; border-radius:14px; background:linear-gradient(150deg,var(--tone-softer),var(--tone-soft)); color:var(--tone); box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),0 2px 6px rgba(23,59,112,.06); transition:background .35s ease,color .35s ease,transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease; }
 .iconFill { fill:currentColor; opacity:.16; transition:opacity .35s ease; }
@@ -43,16 +39,15 @@
 @keyframes tileIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
 
 @media(width<1000px) {
-  .panel { max-width:560px; }
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media(width<720px) {
-  .panel { max-width:none; }
   .grid { gap:10px; }
-  .tile { gap:10px; min-height:70px; padding:12px; border-radius:16px; background:rgba(255,255,255,.88); }
+  .tile { gap:10px; min-height:70px; padding:12px; border-radius:16px; }
   .icon { flex-basis:38px; width:38px; height:38px; border-radius:12px; }
-  .copy > strong { font-size:14px; }
+  /* Two tiles per row leave little width, so titles wrap by word instead of being cut off. */
+  .copy > strong { font-size:14px; white-space:normal; word-break:keep-all; }
   .grid .arrow { display:none; }
-  .single { width:100%; }
 }
 @media(prefers-reduced-motion:reduce) {
   .panel,.tile { animation:none !important; }
