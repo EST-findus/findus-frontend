@@ -1,5 +1,4 @@
 import type { GoodsKind } from "@/lib/funding";
-import styles from "./GoodsStage.module.css";
 
 // 굿즈 일러스트. 원칙: 아이 얼굴은 넣지 않고 QR만 넣는다.
 // 모든 굿즈를 항상 그려 두고 data-on으로 들어오고 나가는 전환을 준다.
@@ -7,6 +6,22 @@ import styles from "./GoodsStage.module.css";
 const NAVY = "#173B70";
 const BRAND = "#3978B8";
 const CORAL = "#F28B82";
+
+// 들어오고 나가는 전환. 굿즈마다 들어오는 방향이 다르다.
+const GOODS = "[transform-box:fill-box] motion-safe:[transition:transform_.7s_cubic-bezier(.34,1.4,.5,1),opacity_.45s_ease] data-[on=false]:pointer-events-none data-[on=false]:opacity-0 motion-safe:data-[on=false]:[transition:transform_.45s_ease-in,opacity_.35s_ease]";
+const GOODS_KIND: Record<GoodsKind, string> = {
+  card: "origin-center data-[on=false]:[transform:scaleX(0)]",
+  keyring: "origin-[50%_100%] data-[on=false]:[transform:translateY(-220px)]",
+  ecobag: "origin-[50%_100%] data-[on=false]:[transform:translateY(140px)_scale(.9)]",
+  tshirt: "origin-[50%_100%] data-[on=false]:[transform:scale(.25)_rotate(-24deg)]",
+  hoodie: "origin-[50%_100%] data-[on=false]:[transform:scale(.55)]",
+  extras: "origin-[50%_100%] data-[on=false]:[transform:translateX(90px)]",
+  numbered: "origin-[50%_100%] data-[on=false]:[transform:translateY(70px)_rotate(20deg)]",
+};
+// 새로 들어온 굿즈는 한 번 더 튄다
+const FRESH = "motion-safe:data-[on=true]:animate-funding-pop";
+// 리워드 카드처럼 작은 곳(data-still)에서는 반복 애니메이션을 끈다.
+const STILL_OFF = "[[data-still]_&]:animate-none";
 
 /** 장식용 QR 무늬 (실제로 읽히는 코드가 아님) */
 function Qr({ x, y, size, color = NAVY }: { x: number; y: number; size: number; color?: string }) {
@@ -24,7 +39,7 @@ function Qr({ x, y, size, color = NAVY }: { x: number; y: number; size: number; 
 
 function Keyring({ variant = "main" }: { variant?: "main" | "mini" }) {
   return (
-    <g className={styles.swing}>
+    <g className={`origin-[50%_0] [transform-box:fill-box] motion-safe:animate-funding-swing ${STILL_OFF}`}>
       <circle cx="0" cy="8" r="8" fill="none" stroke="#9AA9BC" strokeWidth="3" />
       <path d="M0 16v10" stroke="#9AA9BC" strokeWidth="3" />
       <rect x="-22" y="26" width="44" height="56" rx="11" fill={variant === "main" ? "#EAF2F9" : "#FDECEA"} stroke={variant === "main" ? BRAND : CORAL} strokeWidth="2.5" />
@@ -45,7 +60,7 @@ function Tee({ fill = "#F7F9FC", shimmerId }: { fill?: string; shimmerId?: strin
       {shimmerId && (
         <>
           <clipPath id={shimmerId}><rect x={66} y={66} width={38} height={38} /></clipPath>
-          <g clipPath={`url(#${shimmerId})`}><rect className={styles.shimmer} x={40} y={60} width={14} height={60} fill="#fff" opacity=".75" transform="skewX(-20)" /></g>
+          <g clipPath={`url(#${shimmerId})`}><rect className={`motion-safe:animate-funding-shimmer ${STILL_OFF}`} x={40} y={60} width={14} height={60} fill="#fff" opacity=".75" transform="skewX(-20)" /></g>
         </>
       )}
       <text x="85" y="122" textAnchor="middle" fontSize="9" fontWeight="700" fill={BRAND}>반사 QR</text>
@@ -60,7 +75,7 @@ function Hoodie() {
       <path d="M55 8 L18 22 L0 122 L26 128 L36 72 L36 182 L144 182 L144 72 L154 128 L180 122 L162 22 L125 8 C115 34 65 34 55 8 Z" fill="#E6EEF8" stroke={NAVY} strokeWidth="2.5" strokeLinejoin="round" />
       <path d="M80 26 v26 M100 26 v26" stroke={NAVY} strokeWidth="2" strokeLinecap="round" />
       <path d="M58 128 H122 L130 162 H50 Z" fill="none" stroke={NAVY} strokeWidth="2" strokeLinejoin="round" />
-      <path className={styles.stitch} pathLength={1} d="M90 108 C78 100 70 92 70 84 a9 9 0 0 1 20 -5 a9 9 0 0 1 20 5 c0 8 -8 16 -20 24 Z" fill="none" stroke={CORAL} strokeWidth="2.6" strokeLinejoin="round" />
+      <path className="[stroke-dasharray:1] [stroke-dashoffset:1] motion-safe:[transition:stroke-dashoffset_1.4s_ease_.5s] [[data-on=true]_&]:[stroke-dashoffset:0]" pathLength={1} d="M90 108 C78 100 70 92 70 84 a9 9 0 0 1 20 -5 a9 9 0 0 1 20 5 c0 8 -8 16 -20 24 Z" fill="none" stroke={CORAL} strokeWidth="2.6" strokeLinejoin="round" />
       <Qr x={146} y={86} size={20} />
     </g>
   );
@@ -114,13 +129,13 @@ export default function GoodsStage({ kinds, highlight = [], label, className = "
   const hasBag = on("ecobag");
   const crowded = on("hoodie") && on("tshirt");
   const part = (kind: GoodsKind, transform: string, child: React.ReactNode) => (
-    <g className={styles.slot} style={{ transform }}>
-      <g className={`${styles.goods} ${styles[kind]} ${highlight.includes(kind) ? styles.fresh : ""}`} data-on={on(kind)}>{child}</g>
+    <g className="motion-safe:[transition:transform_.8s_cubic-bezier(.2,.8,.2,1)]" style={{ transform }}>
+      <g className={`${GOODS} ${GOODS_KIND[kind]} ${highlight.includes(kind) ? FRESH : ""}`} data-on={on(kind)}>{child}</g>
     </g>
   );
 
   return (
-    <svg viewBox="0 0 560 340" role="img" aria-label={label} className={`${styles.stage} ${still ? styles.still : ""} ${className}`}>
+    <svg viewBox="0 0 560 340" role="img" aria-label={label} data-still={still || undefined} className={`block overflow-visible ${className}`}>
       <ellipse cx="280" cy="318" rx="250" ry="14" fill="#173B70" opacity=".07" />
       {part("card", "translate(30px, 182px)", <ThanksCard />)}
       {part("numbered", "translate(92px, 262px)", <NumberedCard />)}

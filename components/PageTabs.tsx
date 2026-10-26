@@ -2,10 +2,13 @@
 
 import { Suspense, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
-import styles from "./InfoPages.module.css";
+import { tab as tabButton, tabIndicator, tabs as tabList } from "./infoStyles";
 
 export type PageTab = { key: string; label: string };
 type PageTabsProps = { label: string; tabs: PageTab[]; panels: ReactNode[]; hashAliases?: Record<string, string> };
+
+const PANEL =
+  "[&:not([hidden])]:animate-info-fade focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-civic motion-reduce:animate-none!";
 
 /**
  * 페이지 상단 탭. 선택한 탭은 `?tab=` 주소에 남겨 새로고침·공유해도 같은 탭이 열린다.
@@ -54,9 +57,9 @@ function TabsView({ label, tabs, panels, selected, onSelect }: PageTabsProps & {
 
   return (
     <>
-      <div className={`page-container max-w-5xl ${styles.tabsWrap}`}>
-        <div role="tablist" aria-label={label} className={styles.tabs} style={{ "--tab-count": tabs.length, "--tab-index": selected } as CSSProperties}>
-          <span aria-hidden="true" className={styles.tabIndicator} />
+      <div className="page-container max-w-5xl pt-3.5">
+        <div role="tablist" aria-label={label} className={tabList} style={{ "--tab-count": tabs.length, "--tab-index": selected } as CSSProperties}>
+          <span aria-hidden="true" className={tabIndicator} />
           {tabs.map((tab, index) => (
             <button
               key={tab.key}
@@ -78,7 +81,7 @@ function TabsView({ label, tabs, panels, selected, onSelect }: PageTabsProps & {
                 onSelect(next);
                 buttons.current[next]?.focus();
               }}
-              className={styles.tab}
+              className={`${tabButton} text-[15px] max-sm:text-[13px]`}
             >
               {tab.label}
             </button>
@@ -86,7 +89,7 @@ function TabsView({ label, tabs, panels, selected, onSelect }: PageTabsProps & {
         </div>
       </div>
       {panels.map((content, index) => (
-        <div key={index} id={`${id}-panel-${index}`} role="tabpanel" aria-labelledby={`${id}-tab-${index}`} hidden={selected !== index} tabIndex={0} className={styles.panel}>
+        <div key={index} id={`${id}-panel-${index}`} role="tabpanel" aria-labelledby={`${id}-tab-${index}`} hidden={selected !== index} tabIndex={0} className={PANEL}>
           {content}
         </div>
       ))}

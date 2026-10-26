@@ -2,7 +2,6 @@ import Link from "next/link";
 import Reveal from "@/components/funding/Reveal";
 import { ArrowRightIcon, CheckIcon, CloseIcon, ImageIcon, LockIcon, SparklesIcon } from "@/components/Icons";
 import { VERIFY_STATS } from "@/lib/aiDemo";
-import styles from "./AiShowcase.module.css";
 
 export function BigHeading({ id, eyebrow, children, light = false }: { id: string; eyebrow: string; children: React.ReactNode; light?: boolean }) {
   return (
@@ -30,14 +29,14 @@ export function DataSafetySection() {
       <Reveal delay={150} className="mt-10 max-sm:mt-8">
         <div aria-hidden="true" className="grid grid-cols-[auto_1fr_auto_1fr_auto] items-center gap-3 max-sm:gap-2">
           <FlowNode icon={<ImageIcon size={26} />} label="사진" />
-          <span className="relative h-1 rounded-full bg-white/25"><span className={`absolute -top-1 h-3 w-3 rounded-full bg-[#FFD25A] ${styles.flowDot}`} /></span>
+          <span className="relative h-1 rounded-full bg-white/25"><span className={`absolute -top-1 h-3 w-3 rounded-full bg-[#FFD25A] animate-ai-flow motion-reduce:hidden motion-reduce:animate-none`} /></span>
           <FlowNode icon={<LockIcon size={28} />} label="FindUs 서버" strong />
-          <span className="relative h-1 rounded-full bg-white/25"><span className={`absolute -top-1 h-3 w-3 rounded-full bg-[#FFD25A] ${styles.flowDot}`} style={{ animationDelay: "1.4s" }} /></span>
+          <span className="relative h-1 rounded-full bg-white/25"><span className={`absolute -top-1 h-3 w-3 rounded-full bg-[#FFD25A] animate-ai-flow motion-reduce:hidden motion-reduce:animate-none`} style={{ animationDelay: "1.4s" }} /></span>
           <FlowNode icon={<SparklesIcon size={26} />} label="참고 이미지" />
         </div>
         <div aria-hidden="true" className="mt-4 flex flex-col items-center">
           <span className="h-8 w-0 border-l-2 border-dashed border-white/40" />
-          <span className={`flex items-center gap-2 rounded-full border-2 border-dashed border-white/40 px-4 py-2 text-[14px] font-bold text-white/85 ${styles.blocked}`}>
+          <span className={`flex items-center gap-2 rounded-full border-2 border-dashed border-white/40 px-4 py-2 text-[14px] font-bold text-white/85 animate-ai-blocked motion-reduce:animate-none`}>
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white"><CloseIcon size={14} strokeWidth={3} /></span>
             외부 생성형 AI 서비스 · 연결 안 함
           </span>

@@ -14,7 +14,7 @@ import { useAuthReady, useCurrentUser } from "@/lib/useCurrentUser";
 import { ArrowRightIcon, CheckIcon, ChevronLeftIcon, HomeIcon, PencilIcon, ShieldIcon } from "../Icons";
 import Modal from "../Modal";
 import GoodsStage from "./GoodsStage";
-import styles from "./Checkout.module.css";
+import * as styles from "./checkoutStyles";
 
 const STEPS = ["리워드", "정보 입력", "확인·결제"] as const;
 
@@ -34,7 +34,7 @@ const emptyInput = (tierId: TierId): PledgeInput => ({
 function Field({ label, required, children, hint }: { label: string; required?: boolean; children: React.ReactNode; hint?: string }) {
   return (
     <label className={styles.field}>
-      <span className={styles.fieldLabel}>{label}{required && <em aria-hidden="true"> *</em>}</span>
+      <span className={styles.fieldLabel}>{label}{required && <em aria-hidden="true" className={styles.required}> *</em>}</span>
       {children}
       {hint && <span className={styles.fieldHint}>{hint}</span>}
     </label>
@@ -168,7 +168,7 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
         <Link href={campaignPath} className={styles.back}><ChevronLeftIcon size={18} />{campaign.child.name}님을 기억하는 펀딩</Link>
         <ol className={styles.stepper} aria-label="후원 단계">
           {STEPS.map((label, index) => (
-            <li key={label} data-state={index < step ? "done" : index === step ? "current" : "todo"} aria-current={index === step ? "step" : undefined}>
+            <li key={label} className={styles.stepItem} data-state={index < step ? "done" : index === step ? "current" : "todo"} aria-current={index === step ? "step" : undefined}>
               <span className={styles.stepDot}>{index < step ? <CheckIcon size={14} strokeWidth={2.6} /> : index + 1}</span>
               <span>{label}</span>
             </li>
@@ -191,11 +191,11 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
                     const soldOut = left === 0;
                     return (
                       <label key={item.id} className={styles.tier} data-checked={item.id === input.tierId} data-disabled={soldOut}>
-                        <input type="radio" name="tier" value={item.id} checked={item.id === input.tierId} disabled={soldOut}
+                        <input type="radio" name="tier" value={item.id} className={styles.tierInput} checked={item.id === input.tierId} disabled={soldOut}
                           onChange={() => setInput((current) => ({ ...current, tierId: item.id, sizes: current.sizes.slice(0, item.sizeCount) }))} />
                         <GoodsStage kinds={item.stage} label="" idPrefix={`tier-${item.id}`} still className={styles.tierStage} />
                         <span className={styles.tierText}>
-                          <strong>{formatWon(item.price)}</strong>
+                          <strong className={styles.tierPrice}>{formatWon(item.price)}</strong>
                           <span className={styles.tierName}>{item.title}</span>
                           <span className={styles.tierSummary}>{item.summary}</span>
                           {left !== null && <span className={styles.tierLeft}>{soldOut ? "마감" : `${left}개 남음`}</span>}
@@ -229,7 +229,7 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
                   <p className={styles.blockLead}>리워드 없이 금액만 더 보탤 수 있어요.</p>
                   <div className={styles.extra}>
                     <input type="number" inputMode="numeric" min={0} max={EXTRA_MAX} step={1000} value={input.extra || ""} placeholder="0"
-                      onChange={(event) => update("extra", Number(event.target.value) || 0)} aria-label="추가 후원금(원)" className={styles.input} />
+                      onChange={(event) => update("extra", Number(event.target.value) || 0)} aria-label="추가 후원금(원)" className={styles.extraInput} />
                     <span>원</span>
                     {[1000, 5000, 10000].map((amount) => (
                       <button key={amount} type="button" onClick={() => update("extra", Math.min(EXTRA_MAX, input.extra + amount))} className={styles.quick}>+{amount.toLocaleString("ko-KR")}</button>
@@ -264,7 +264,7 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
                       <div className={styles.addressCard}>
                         <HomeIcon size={20} className={styles.addressIcon} />
                         <div className={styles.addressText}>
-                          <p><strong>{selectedAddress.label}</strong>{selectedAddress.isDefault && <span className={styles.addressDefault}>기본</span>}</p>
+                          <p><strong className={styles.addressLabel}>{selectedAddress.label}</strong>{selectedAddress.isDefault && <span className={styles.addressDefault}>기본</span>}</p>
                           <p>{input.recipient} · {input.phone}</p>
                           <p className={styles.addressLine}>{formatAddress({ zipcode: input.zipcode, address: input.address, detail: input.addressDetail })}</p>
                           {input.memo && <p className={styles.addressMemo}>메모: {input.memo}</p>}
@@ -284,7 +284,7 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
                           <Field label="휴대폰" required hint="배송 연락에만 써요."><input type="tel" value={input.phone} onChange={(event) => update("phone", event.target.value)} autoComplete="tel" placeholder="010-0000-0000" className={styles.input} /></Field>
                         </div>
                         <div className={styles.addressSearch}>
-                          <input aria-label="우편번호" value={input.zipcode} readOnly placeholder="우편번호" className={`${styles.input} ${styles.zipcode}`} />
+                          <input aria-label="우편번호" value={input.zipcode} readOnly placeholder="우편번호" className={styles.zipcode} />
                           <AddressSearchButton onSelect={({ zipcode, address }) => { setInput((current) => ({ ...current, zipcode, address })); setError(null); document.getElementById(`${formId}-detail`)?.focus(); }} />
                         </div>
                         <div className={styles.grid}>
@@ -320,8 +320,8 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
                   </label>
                   {tier.needsShipping && (
                     <div className={styles.madeToOrder}>
-                      <p><ShieldIcon size={16} /><strong>주문 제작 상품 안내</strong></p>
-                      <p>이 리워드는 펀딩이 끝난 뒤 후원 수량만큼 만드는 주문 제작 상품이에요. <strong>마감 전까지는 언제든 전액 취소</strong>할 수 있지만, <strong>마감 후에는 단순 변심으로 취소할 수 없어요.</strong> 불량·오배송은 교환하거나 환불해요.</p>
+                      <p className={styles.madeToOrderTitle}><ShieldIcon size={16} /><strong>주문 제작 상품 안내</strong></p>
+                      <p className={styles.madeToOrderText}>이 리워드는 펀딩이 끝난 뒤 후원 수량만큼 만드는 주문 제작 상품이에요. <strong>마감 전까지는 언제든 전액 취소</strong>할 수 있지만, <strong>마감 후에는 단순 변심으로 취소할 수 없어요.</strong> 불량·오배송은 교환하거나 환불해요.</p>
                       <label className={styles.check}>
                         <input type="checkbox" checked={input.agreeMadeToOrder} onChange={(event) => update("agreeMadeToOrder", event.target.checked)} />
                         <span><strong>[필수]</strong> 위 취소 제한을 확인했어요</span>
@@ -337,8 +337,8 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
             )}
 
             {step === 2 && (
-              <div className={styles.review}>
-                <dl>
+              <div>
+                <dl className={styles.reviewList}>
                   <div><dt>리워드</dt><dd>{tier.title} · {formatWon(tier.price)}{input.sizes.length > 0 && ` · 사이즈 ${input.sizes.join(", ")}`}</dd></div>
                   {input.extra > 0 && <div><dt>추가 후원금</dt><dd>{formatWon(input.extra)}</dd></div>}
                   <div><dt>후원자</dt><dd>{input.name} · {input.email}</dd></div>
@@ -363,14 +363,14 @@ export default function CheckoutFlow({ campaignId, initialTier }: { campaignId: 
           <p className={styles.summaryTier}>{tier.title}</p>
           <ul className={styles.summaryItems}>{tier.items.map((item) => <li key={item}>{item}</li>)}</ul>
           <dl className={styles.summaryTotal}>
-            <div><dt>리워드</dt><dd>{formatWon(tier.price)}</dd></div>
-            {input.extra > 0 && <div><dt>추가 후원금</dt><dd>{formatWon(input.extra)}</dd></div>}
-            <div><dt>배송비</dt><dd>무료</dd></div>
-            <div className={styles.summarySum}><dt>최종 후원 금액</dt><dd>{formatWon(total)}</dd></div>
+            <div className={styles.summaryRow}><dt>리워드</dt><dd>{formatWon(tier.price)}</dd></div>
+            {input.extra > 0 && <div className={styles.summaryRow}><dt>추가 후원금</dt><dd>{formatWon(input.extra)}</dd></div>}
+            <div className={styles.summaryRow}><dt>배송비</dt><dd>무료</dd></div>
+            <div className={styles.summarySum}><dt className={styles.summarySumLabel}>최종 후원 금액</dt><dd className={styles.summarySumValue}>{formatWon(total)}</dd></div>
           </dl>
           <div className={styles.actions}>
             {step > 0 && <button type="button" onClick={() => go(step - 1)} className={styles.secondary}>이전</button>}
-            <button type="submit" form={formId} className={styles.primary}>
+            <button type="submit" form={formId} className={`${styles.primary} only:col-span-full`}>
               {step < 2 ? <>다음 <ArrowRightIcon size={16} /></> : <>{formatWon(total)} 결제하기</>}
             </button>
           </div>
