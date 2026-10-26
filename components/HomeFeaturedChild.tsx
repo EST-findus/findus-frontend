@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { formatGender } from "@/lib/format";
+import { formatAge, formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import DetailModal from "./DetailModal";
 import ReportGuideModal from "./ReportGuideModal";
@@ -16,9 +16,11 @@ const MegaphoneIcon = () => (
   </svg>
 );
 
-// A small version of the home list card for one randomly picked child in the hero:
+// A small version of the home list card for one randomly picked child:
 // name, the original photo next to the AI estimate, and a report button.
-export default function HomeFeaturedChild({ person }: { person: MissingPerson }) {
+// The "popup" variant is shown in the first-visit popup: larger photos, a few facts and a detail button.
+export default function HomeFeaturedChild({ person, variant = "hero" }: { person: MissingPerson; variant?: "hero" | "popup" }) {
+  const popup = variant === "popup";
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
   const [detail, setDetail] = useState(false);
   const [report, setReport] = useState(false);
@@ -27,12 +29,12 @@ export default function HomeFeaturedChild({ person }: { person: MissingPerson })
   const openDetail = (event: React.MouseEvent<HTMLButtonElement>) => { setTrigger(event.currentTarget); setDetail(true); };
 
   return (
-    <article className={styles.card} aria-labelledby="home-featured-name">
+    <article className={`${styles.card} ${popup ? styles.popup : ""}`} aria-labelledby="home-featured-name">
       <header className={styles.top}>
-        <p className={styles.label}><span aria-hidden="true" />지금 함께 찾고 있는 아이</p>
+        {popup ? <h3 id="home-featured-name" className={styles.name}>{person.name}<small>{formatGender(person.gender)}</small></h3> : <p className={styles.label}><span aria-hidden="true" />지금 함께 찾고 있는 아이</p>}
         <p className={styles.source}>자료 출처: 경찰청</p>
       </header>
-      <h2 id="home-featured-name" className={styles.name}>{person.name}<small>{formatGender(person.gender)}</small></h2>
+      {!popup && <h2 id="home-featured-name" className={styles.name}>{person.name}<small>{formatGender(person.gender)}</small></h2>}
       <div className={styles.photos}>
         <button type="button" className={styles.photo} aria-label={`${person.name} 상세정보 열기`} onClick={openDetail}>
           {live
@@ -54,9 +56,20 @@ export default function HomeFeaturedChild({ person }: { person: MissingPerson })
           </div>
         )}
       </div>
-      <button type="button" className={styles.report} aria-haspopup="dialog" onClick={event => { setTrigger(event.currentTarget); setReport(true); }}>
-        <MegaphoneIcon />제보하기
-      </button>
+      {popup && (
+        <dl className={styles.facts}>
+          <div><dt>나이</dt><dd>당시 {formatAge(person.ageAtMissing)} · 현재 {formatAge(person.currentAge)}</dd></div>
+          <div><dt>실종 일자</dt><dd>{formatDate(person.missingDate)}</dd></div>
+          <div><dt>실종 지역</dt><dd>{person.missingLocation}</dd></div>
+        </dl>
+      )}
+      {popup && <p className={styles.ask}>혹시 이 아이를 본 적이 있나요? 작은 기억도 다시 만남의 단서가 됩니다.</p>}
+      <div className={popup ? styles.actions : undefined}>
+        <button type="button" className={styles.report} aria-haspopup="dialog" onClick={event => { setTrigger(event.currentTarget); setReport(true); }}>
+          <MegaphoneIcon />제보하기
+        </button>
+        {popup && <button type="button" className={styles.more} aria-haspopup="dialog" onClick={openDetail}>상세정보 보기 <ArrowRightIcon size={14} /></button>}
+      </div>
 
       {detail && <DetailModal person={person} returnFocusTo={trigger} onClose={() => setDetail(false)} onReport={() => { setDetail(false); setReport(true); }} />}
       {report && <ReportGuideModal person={person} returnFocusTo={trigger} onClose={() => setReport(false)} />}
