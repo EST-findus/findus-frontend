@@ -66,3 +66,64 @@
 @media(prefers-reduced-motion:reduce) {
   .enterRight,.enterLeft,.exitLeft,.exitRight { animation:none; }
 }
+
+/* ───────── Spotlight ─────────
+   One child large on the left, the rest of the group listed on the right. Changing child cross-fades:
+   the old card fades away while the new one settles in, its text arriving just after the photo. */
+.spotlight { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr); align-items:start; gap:40px; }
+.stage { position:relative; min-width:0; touch-action:pan-y; }
+.stageCard { min-width:0; }
+.leaving { position:absolute; inset:0; z-index:0; pointer-events:none; animation:stageOut .55s ease forwards; }
+.entering { position:relative; z-index:1; }
+.entering article > div:first-child { animation:stagePhoto .7s cubic-bezier(.2,.7,.2,1) backwards; }
+.entering article > div:nth-child(2) > * { animation:stageText .55s cubic-bezier(.2,.7,.2,1) .18s backwards; }
+.entering article > div:nth-child(2) > :nth-child(2) { animation-delay:.24s; }
+.entering article > div:nth-child(2) > :nth-child(3) { animation-delay:.3s; }
+.entering article > div:nth-child(2) > :nth-child(n+4) { animation-delay:.36s; }
+@keyframes stageOut { to { opacity:0; } }
+@keyframes stagePhoto { from { opacity:0; scale:1.03; } to { opacity:1; scale:1; } }
+@keyframes stageText { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+.queue { min-width:0; }
+.queueTitle { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:14px; color:#173B70; font-size:16px; font-weight:800; letter-spacing:-.3px; }
+.queueTitle span { color:#62748C; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; }
+.queueBox { position:relative; }
+.queueList { position:relative; display:grid; gap:10px; }
+/* The highlight slides to the active row, like the tab indicator elsewhere on the site. */
+.queueMarker { position:absolute; top:0; left:0; right:0; height:88px; border:1px solid #BFD3EC; border-left:4px solid #3978B8; border-radius:16px; background:#EAF2F9; transform:translateY(calc(var(--i) * 98px)); transition:transform .45s cubic-bezier(.2,.7,.2,1); pointer-events:none; }
+.queueList li { position:relative; z-index:1; }
+.queueItem { position:relative; display:flex; width:100%; height:88px; align-items:center; gap:14px; overflow:hidden; padding:10px 14px; border:1px solid #E3EAF3; border-radius:16px; background:transparent; text-align:left; cursor:pointer; transition:background-color .2s ease,border-color .2s ease; }
+.queueItem[aria-current="true"] { border-color:transparent; }
+.queueItem:not([aria-current]):hover { border-color:#C9DAEE; background:#F7FAFE; }
+.queueItem:focus-visible { outline:2px solid #3978B8; outline-offset:2px; }
+.queueThumb { position:relative; flex:none; width:64px; height:64px; overflow:hidden; border-radius:12px; background:#E6EBF1; transition:transform .3s cubic-bezier(.2,.7,.2,1); }
+.queueItem:hover .queueThumb { transform:scale(1.05); }
+.queueText { display:grid; min-width:0; gap:3px; }
+.queueText strong { overflow:hidden; color:#173B70; font-size:16px; font-weight:800; text-overflow:ellipsis; white-space:nowrap; }
+.queueText small { overflow:hidden; color:#5C6F86; font-size:12.5px; text-overflow:ellipsis; white-space:nowrap; }
+.queueProgress { position:absolute; left:14px; right:14px; bottom:8px; height:3px; border-radius:999px; background:#3978B8; transform-origin:left; animation:queueFill linear forwards; opacity:.75; }
+@keyframes queueFill { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+.queueNav { display:flex; align-items:center; gap:8px; margin-top:16px; }
+.queueNav button { display:grid; width:40px; height:40px; place-items:center; border:1px solid #DCE6F1; border-radius:50%; background:#FFFFFF; color:#3D5877; cursor:pointer; transition:background-color .2s ease,border-color .2s ease,color .2s ease,transform .2s ease; }
+.queueNav button:hover { border-color:#3978B8; background:#3978B8; color:#FFFFFF; }
+.queueNav button:active { transform:scale(.95); }
+.queueNav .rotationControl { display:flex; align-items:center; width:auto; gap:6px; padding:0 12px; border-color:transparent; border-radius:8px; background:transparent; color:#5C6F86; font-size:12px; }
+.queueNav .rotationControl:hover { border-color:transparent; background:#EEF4FB; color:#173B70; }
+.queue .demo { position:static; display:grid; gap:2px; margin-top:16px; transform:none; }
+
+@media(width<1000px) {
+  .spotlight { grid-template-columns:minmax(0,1fr); gap:24px; }
+  .queueList { display:flex; gap:10px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; }
+  .queueList li { flex:0 0 220px; }
+  .queueMarker { display:none; }
+  .queueItem[aria-current="true"] { border-color:#BFD3EC; border-left:4px solid #3978B8; background:#EAF2F9; }
+}
+@media(width<640px) {
+  .queueList li { flex-basis:180px; }
+  .queueItem { height:76px; gap:10px; padding:8px 10px; }
+  .queueThumb { width:54px; height:54px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .leaving,.entering article > div,.entering article > div:nth-child(2) > *,.queueProgress { animation:none !important; }
+  .queueMarker,.queueItem,.queueThumb,.queueNav button { transition:none; }
+}

@@ -22,7 +22,7 @@ import styles from "./HomeChildCard.module.css";
 type PersonAction = (person: MissingPerson, trigger: HTMLElement) => void;
 
 /** 실종된 해부터 지금까지 지난 햇수. 나이로 먼저 계산하고, 없으면 실종 연도로 계산한다. */
-function yearsApart(person: MissingPerson): number | null {
+export function yearsApart(person: MissingPerson): number | null {
   if (person.currentAge !== null && person.ageAtMissing !== null) return Math.max(0, person.currentAge - person.ageAtMissing);
   const year = Number(person.missingDate.slice(0, 4));
   return Number.isFinite(year) && year > 0 ? Math.max(0, new Date().getFullYear() - year) : null;
@@ -32,7 +32,7 @@ function yearsApart(person: MissingPerson): number | null {
  * 홈 '함께 찾고 있는 아이들' 카드. 위쪽 절반씩 실종 당시 사진과 AI 예상 모습을 나란히 두고,
  * 가운데에 헤어져 있던 햇수를 띄운다. 아래에는 이름, 지역·실종일, 상세보기·목격 제보·공유가 온다.
  */
-export default function HomeChildCard({ person, onOpenDetail, onReport, onShare }: { person: MissingPerson; onOpenDetail: PersonAction; onReport: PersonAction; onShare: PersonAction }) {
+export default function HomeChildCard({ person, onOpenDetail, onReport, onShare, feature = false }: { person: MissingPerson; onOpenDetail: PersonAction; onReport: PersonAction; onShare: PersonAction; feature?: boolean }) {
   const live = person.source === "api";
   const hasAiPhoto = Boolean(person.photos.aged);
   const years = yearsApart(person);
@@ -40,7 +40,7 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare 
   const openDetail = (event: React.MouseEvent<HTMLButtonElement>) => onOpenDetail(person, event.currentTarget);
 
   return (
-    <article className={styles.card} aria-labelledby={`home-child-${person.id}`}>
+    <article className={`${styles.card} ${feature ? styles.feature : ""}`} aria-labelledby={`home-child-${person.id}`}>
       <div className={styles.media}>
         <button type="button" className={styles.past} aria-label={`${person.name} 상세정보 열기`} onClick={openDetail}>
           {live
@@ -69,7 +69,9 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare 
       </div>
 
       <div className={styles.body}>
+        {feature && years !== null && <p className={styles.waiting}><span aria-hidden="true" />{years}년째 기다리는 중</p>}
         <h3 id={`home-child-${person.id}`} className={styles.name}>{person.name}<small>{formatGender(person.gender)}</small></h3>
+        {feature && person.features && person.features !== "정보 없음" && <p className={styles.featureLine}>{person.features}</p>}
         {/* 실종 지역과 날짜를 같은 칸 모양으로 나란히 둔다. 모든 카드가 같은 자리에 같은 정보를 보여준다. */}
         <dl className={styles.facts}>
           <div><dt><PinGlyph />실종 지역</dt><dd>{person.region || "정보 없음"}</dd></div>
