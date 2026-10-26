@@ -6,6 +6,8 @@ export interface MissingPersonDto {
   occurrenceDate: string | null; age: number | null; ageNow: number | null;
   address: string | null; clothing: string | null; features: string | null;
   photoUrl: string | null; images: MissingImageDto[]; lastSeenAt: string; attribution: string;
+  /** Representative AI photo path, or null/absent when none. */
+  aiPhotoUrl?: string | null;
 }
 interface PageDto { content: MissingPersonDto[]; page: number; size: number; totalElements: number; totalPages: number }
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -29,12 +31,15 @@ export function toMissingPerson(dto: MissingPersonDto): MissingPerson {
     if (!UUID.test(image.id) || image.url !== expected) throw new Error('사진 응답 경로를 확인해 주세요.');
     return {id:image.id,sortOrder:image.sortOrder,url:'/backend'+expected};
   });
+  // Same rule as DB photos: only this child's AI photo endpoint is accepted; anything else is ignored.
+  const aiPhoto = '/api/missing-persons/'+dto.id+'/ai-image/photo';
+  const aged = dto.aiPhotoUrl === aiPhoto ? '/backend'+aiPhoto : '';
   const age = (value: number | null) => typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : null;
   return {id:dto.id,source:'api',sourceId:dto.sourceId,name:text(dto.name),
     gender:dto.sex === '남자' || dto.sex === '남' ? '남' : dto.sex === '여자' || dto.sex === '여' ? '여' : '미상',
     ageAtMissing:age(dto.age),currentAge:age(dto.ageNow),missingDate:normalizeDate(dto.occurrenceDate),
     region:regionFromAddress(dto.address),missingLocation:text(dto.address),features:text(dto.features),clothing:text(dto.clothing),
-    images,photos:{past:images[0]?.url ?? '',aged:'',styles:[]},aiNote:'',
+    images,photos:{past:images[0]?.url ?? '',aged,styles:[]},aiNote:'',
     lastSyncedAt:dto.lastSeenAt,attribution:'자료 출처: 경찰청'};
 }
 async function request(path: string): Promise<Response> {
@@ -60,6 +65,38 @@ export async function fetchMissingPersons(): Promise<MissingPerson[]> {
   }
   if(entries.length!==first.totalElements || new Set(entries.map(p=>p.id)).size!==entries.length) throw new Error('전체 목록을 불러오지 못했습니다. 새로고침해 주세요.');
   return entries.map(toMissingPerson);
+}
+export interface MissingAiImageDto {
+  id: string; targetAge: number; createdAt: string; url: string;
+  styles: {key: string; name: string; url: string}[]; notice: string;
+}
+export interface MissingAiImage { targetAge: number | null; url: string; styles: {key: string; label: string; src: string}[]; notice: string }
+const STYLE_KEY = /^[a-z0-9_]{1,32}$/;
+/** Representative AI photo is optional: any failure hides the AI section instead of breaking the detail page. */
+export async function fetchMissingAiImage(id: string): Promise<MissingAiImage | undefined> {
+  if(!UUID.test(id)) return undefined;
+  try {
+    const response=await request('/api/missing-persons/'+id+'/ai-image');
+    // 404 means no AI photo yet; 401 can be a secured /error dispatch of the same 404.
+    if(response.status===404 || response.status===401) return undefined;
+    if(!response.ok) throw new Error('AI 사진 응답 상태 '+response.status);
+    const dto: MissingAiImageDto=await response.json();
+    const photo='/api/missing-persons/'+id+'/ai-image/photo';
+    if(dto.url!==photo || !Array.isArray(dto.styles)) throw new Error('AI 사진 응답 경로를 확인해 주세요.');
+    // Only DB style endpoints of this child; drop anything else.
+    const styles=dto.styles.filter(s=>STYLE_KEY.test(s.key) && s.url===photo+'?style='+s.key && s.name?.trim())
+      .map(s=>({key:s.key,label:s.name.trim(),src:'/backend'+s.url}));
+    const targetAge=Number.isInteger(dto.targetAge) && dto.targetAge>0 ? dto.targetAge : null;
+    return {targetAge,url:'/backend'+photo,styles,notice:dto.notice?.trim() || 'AI가 만든 예상 모습이며 실제 모습이 아닙니다.'};
+  } catch(error) {
+    console.error('AI 사진을 불러오지 못했습니다.',error);
+    return undefined;
+  }
+}
+export function withAiImage(person: MissingPerson, ai: MissingAiImage | undefined): MissingPerson {
+  if(!ai) return person;
+  return {...person,aiTargetAge:ai.targetAge,aiNote:ai.notice,
+    photos:{...person.photos,aged:ai.url,styles:ai.styles.map(({label,src})=>({label,src}))}};
 }
 export async function fetchMissingPerson(id: string): Promise<MissingPerson | undefined> {
   if(!UUID.test(id)) return undefined;

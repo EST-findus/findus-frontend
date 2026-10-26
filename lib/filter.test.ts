@@ -120,6 +120,22 @@ describe("정렬", () => {
     ]);
   });
 
+  it("AI 예상 모습이 있는 아동을 먼저 두고 그 안에서 고른 정렬을 따른다", () => {
+    const withoutAi = (name: string) => {
+      const p = persons.find((person) => person.name === name)!;
+      return { ...p, photos: { ...p.photos, aged: "" } };
+    };
+    const mixed = persons.map((p) => (p.name === "김민준" || p.name === "박준영" ? withoutAi(p.name) : p));
+    expect(names(sortPersons(mixed, "name"))).toEqual([
+      "오하은",
+      "이서연",
+      "정우진",
+      "한지민",
+      "김민준",
+      "박준영",
+    ]);
+  });
+
   it("원본 배열을 변경하지 않는다", () => {
     const before = names(persons);
     sortPersons(persons, "name");
