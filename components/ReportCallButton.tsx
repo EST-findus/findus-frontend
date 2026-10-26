@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { MISSING_CHILD_CENTER_URL, OFFICIAL_CALLS, SAFE182_URL } from "@/lib/links";
-import actionStyles from "./HeaderActions.module.css";
+import { HEADER_ICON_ACTION } from "./headerActionStyles";
 import { ArrowRightIcon, ArrowUpRightIcon, MessageIcon, PhoneIcon } from "./Icons";
 import InquiryForm from "./InquiryForm";
 import Modal from "./Modal";
@@ -21,7 +21,7 @@ export default function ReportCallButton() {
   return (
     <>
       <button ref={trigger} type="button" aria-label="공식 제보·신고 전화" title="공식 제보·신고 전화" aria-haspopup="dialog" onClick={() => setOpen(true)}
-        className={`${actionStyles.boxedAction} ${actionStyles.call}`}>
+        className={HEADER_ICON_ACTION}>
         <PhoneIcon size={18} strokeWidth={2} className="shrink-0" />
       </button>
       {open && <Modal title={view === "calls" ? "공식 제보·신고 전화" : "서비스 문의"} size="narrow" mobileSheet onClose={close} returnFocusTo={trigger.current}>

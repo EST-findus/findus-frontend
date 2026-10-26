@@ -11,8 +11,42 @@ import { KeptTable } from "./AccountSettings";
 import { ArrowRightIcon, CheckIcon, ChevronLeftIcon, PhoneIcon, SearchIcon, ShieldIcon } from "./Icons";
 import LoginRequired from "./LoginRequired";
 import Modal from "./Modal";
-import styles from "./funding/Checkout.module.css";
-import verify from "./FamilyVerifyFlow.module.css";
+import * as styles from "./funding/checkoutStyles";
+
+/** 가족 인증 화면 전용 클래스. 스텝퍼·입력칸·버튼은 후원 단계와 같은 checkoutStyles를 쓴다. */
+const verify = {
+  layout: "max-w-[46rem] pt-7 pb-24",
+  eyebrow: "mt-[18px] flex items-center gap-1.5 text-[13px] font-extrabold text-coral-ink",
+  lead: "text-[15px] leading-[1.75] break-keep text-ink",
+  mockNote: "rounded-[10px] bg-[#FFF8F7] px-3 py-2.5 text-[12px] leading-[1.6] text-coral-ink",
+  bigButton:
+    "mt-[18px] inline-flex items-center gap-2 rounded-[14px] bg-navy px-[22px] py-4 text-[16px] font-extrabold text-white [transition:background-color_.2s] hover:bg-brand focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-brand",
+  done: "mt-4 flex animate-verify-pop flex-wrap items-center gap-x-2.5 gap-y-2 rounded-xl bg-[#E5F6EC] px-4 py-3.5 text-[14px] text-[#1D6B43] motion-reduce:animate-none [&_span]:text-ink",
+  options: "mt-[18px] grid grid-cols-[1fr_1fr] gap-3 max-sm:grid-cols-[1fr]",
+  option:
+    "flex flex-col items-start gap-2 rounded-[14px] border-[1.5px] border-line bg-white p-[18px] [transition:border-color_.2s,box-shadow_.2s] data-[checked=true]:border-navy data-[checked=true]:shadow-[0_0_0_1px_var(--color-navy)] " +
+    "[&>button]:cursor-pointer [&>label]:cursor-pointer [&>label:focus-within]:outline-2 [&>label:focus-within]:outline-offset-2 [&>label:focus-within]:outline-brand",
+  optionTitle: "text-[15px] font-extrabold",
+  optionText: "flex-1 text-[13px] leading-[1.6] break-keep text-muted",
+  recommend: "ml-1 rounded-full bg-coral-soft px-[7px] py-0.5 text-[11px] font-extrabold text-coral-ink",
+  fileName: "max-w-full truncate text-[13px] font-bold text-navy",
+  never: "mt-3.5 flex items-center gap-1.5 text-[13px] text-muted",
+  search: "mt-3 flex items-center gap-2 rounded-xl border border-line bg-white px-3.5 text-muted focus-within:border-brand focus-within:shadow-[0_0_0_3px_rgb(57_120_184/15%)]",
+  searchInput: "min-h-12 flex-1 border-0 bg-transparent text-[15px] text-ink outline-none",
+  results: "mt-2 overflow-hidden rounded-xl border border-line bg-white [&>li+li]:border-t [&>li+li]:border-line",
+  result: "flex w-full flex-col items-start gap-0.5 px-4 py-3 text-left hover:bg-brand-soft hover:outline-none focus-visible:bg-brand-soft focus-visible:outline-none",
+  resultMeta: "text-[13px] text-muted",
+  empty: "px-4 py-3.5 text-[13px] leading-[1.6] text-muted",
+  relations: "mt-3 flex flex-wrap gap-2",
+  relation:
+    "inline-flex cursor-pointer items-center gap-1.5 rounded-xl border-[1.5px] border-line bg-white px-3.5 py-2.5 text-[14px] font-bold data-[checked=true]:border-navy has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-brand",
+  relationInput: "accent-navy",
+  howList: "mt-3 flex flex-col gap-2 [counter-reset:how]",
+  howItem:
+    "relative rounded-xl bg-surface py-3 pr-3.5 pl-12 text-[14px] leading-[1.6] break-keep [counter-increment:how] [&_strong]:mr-1.5 " +
+    "before:absolute before:top-3 before:left-3.5 before:grid before:size-6 before:place-items-center before:rounded-full before:bg-navy before:text-[12px] before:font-extrabold before:text-white before:content-[counter(how)]",
+  actions: "mt-7 flex justify-end gap-2",
+};
 
 /** 실종아동 검색 결과에 쓰는 최소 정보 (서버에서 넘겨준다) */
 export type ChildOption = Pick<MissingPerson, "id" | "sourceId" | "name" | "missingDate" | "missingLocation" | "ageAtMissing" | "gender">;
@@ -105,7 +139,7 @@ export default function FamilyVerifyFlow({ options }: { options: ChildOption[] }
       <p className={verify.eyebrow}><ShieldIcon size={15} />실종아동 가족 인증</p>
       <ol className={styles.stepper} aria-label="가족 인증 단계">
         {VERIFY_STEPS.map((label, index) => (
-          <li key={label} data-state={index < step ? "done" : index === step ? "current" : "todo"} aria-current={index === step ? "step" : undefined}>
+          <li key={label} className={styles.stepItem} data-state={index < step ? "done" : index === step ? "current" : "todo"} aria-current={index === step ? "step" : undefined}>
             <span className={styles.stepDot}>{index < step ? <CheckIcon size={14} strokeWidth={2.6} /> : index + 1}</span>
             <span>{label}</span>
           </li>
@@ -173,15 +207,15 @@ export default function FamilyVerifyFlow({ options }: { options: ChildOption[] }
                   <>
                     <div className={verify.search}>
                       <SearchIcon size={18} />
-                      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="예: 최준원, 중랑구" aria-label="실종아동 검색" />
+                      <input className={verify.searchInput} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="예: 최준원, 중랑구" aria-label="실종아동 검색" />
                     </div>
                     {query.trim() && (
                       <ul className={verify.results}>
                         {results.length === 0 ? <li className={verify.empty}>찾지 못했어요. 공개되지 않은 아이라면 182에 먼저 공개 여부를 문의해 주세요.</li> : results.map((child) => (
                           <li key={child.id}>
-                            <button type="button" onClick={() => setDraft((current) => ({ ...current, childSourceId: child.sourceId ?? child.id, childPersonId: child.id, childName: child.name }))}>
+                            <button type="button" className={verify.result} onClick={() => setDraft((current) => ({ ...current, childSourceId: child.sourceId ?? child.id, childPersonId: child.id, childName: child.name }))}>
                               <strong>{child.name}</strong>
-                              <span>{formatDate(child.missingDate)} · {child.missingLocation} · 당시 {child.ageAtMissing ?? "?"}세</span>
+                              <span className={verify.resultMeta}>{formatDate(child.missingDate)} · {child.missingLocation} · 당시 {child.ageAtMissing ?? "?"}세</span>
                             </button>
                           </li>
                         ))}
@@ -195,7 +229,7 @@ export default function FamilyVerifyFlow({ options }: { options: ChildOption[] }
                 <div className={verify.relations}>
                   {RELATIONS.map((item) => (
                     <label key={item.id} className={verify.relation} data-checked={draft.relation === item.id}>
-                      <input type="radio" name="relation" checked={draft.relation === item.id} onChange={() => set("relation", item.id)} />{item.label}
+                      <input type="radio" name="relation" className={verify.relationInput} checked={draft.relation === item.id} onChange={() => set("relation", item.id)} />{item.label}
                     </label>
                   ))}
                 </div>
@@ -217,10 +251,10 @@ export default function FamilyVerifyFlow({ options }: { options: ChildOption[] }
               <div className={styles.block}>
                 <h2>이렇게 확인해요</h2>
                 <ol className={verify.howList}>
-                  <li><strong>서류 확인</strong> 가족관계증명서의 이름과 본인확인 결과를 맞춰 봐요.</li>
-                  <li><strong>기관 확인</strong> 아동권리보장원 실종아동전문센터·관할 경찰서에 보호자가 맞는지 확인을 요청해요.</li>
-                  <li><strong>결과 안내</strong> 보통 5~10일(영업일) 걸리고, 마이페이지와 이메일로 알려 드려요. [가정]</li>
-                  <li><strong>서류 파기</strong> 확인이 끝나면 원본을 바로 파기하고, 1년마다 다시 확인해요.</li>
+                  <li className={verify.howItem}><strong>서류 확인</strong> 가족관계증명서의 이름과 본인확인 결과를 맞춰 봐요.</li>
+                  <li className={verify.howItem}><strong>기관 확인</strong> 아동권리보장원 실종아동전문센터·관할 경찰서에 보호자가 맞는지 확인을 요청해요.</li>
+                  <li className={verify.howItem}><strong>결과 안내</strong> 보통 5~10일(영업일) 걸리고, 마이페이지와 이메일로 알려 드려요. [가정]</li>
+                  <li className={verify.howItem}><strong>서류 파기</strong> 확인이 끝나면 원본을 바로 파기하고, 1년마다 다시 확인해요.</li>
                 </ol>
                 <KeptTable />
               </div>

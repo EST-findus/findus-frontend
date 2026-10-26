@@ -34,6 +34,7 @@ export function toMissingPerson(dto: MissingPersonDto): MissingPerson {
   // Same rule as DB photos: only this child's AI photo endpoint is accepted; anything else is ignored.
   const aiPhoto = '/api/missing-persons/'+dto.id+'/ai-image/photo';
   const aged = dto.aiPhotoUrl === aiPhoto ? '/backend'+aiPhoto : '';
+  if(dto.aiPhotoUrl && !aged) console.warn('[AI 사진] 목록의 aiPhotoUrl이 이 아동 경로가 아니라 무시 · '+dto.id+' · 받은 값: '+dto.aiPhotoUrl+' · 기대: '+aiPhoto);
   const age = (value: number | null) => typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : null;
   return {id:dto.id,source:'api',sourceId:dto.sourceId,name:text(dto.name),
     gender:dto.sex === '남자' || dto.sex === '남' ? '남' : dto.sex === '여자' || dto.sex === '여' ? '여' : '미상',
@@ -72,26 +73,41 @@ export interface MissingAiImageDto {
 }
 export interface MissingAiImage { targetAge: number | null; url: string; styles: {key: string; label: string; src: string}[]; notice: string }
 const STYLE_KEY = /^[a-z0-9_]{1,32}$/;
+/** 조회 결과를 원인별로 남긴다. "없음"은 log, 응답 이상은 warn, 조회 실패는 error. */
+const aiLog = {
+  none: (id: string, reason: string) => console.log('[AI 사진] 없음 · '+id+' · '+reason),
+  warn: (id: string, reason: string, detail?: unknown) => console.warn('[AI 사진] 응답 확인 필요 · '+id+' · '+reason, detail ?? ''),
+  fail: (id: string, reason: string, detail?: unknown) => console.error('[AI 사진] 조회 실패 · '+id+' · '+reason, detail ?? ''),
+};
 /** Representative AI photo is optional: any failure hides the AI section instead of breaking the detail page. */
 export async function fetchMissingAiImage(id: string): Promise<MissingAiImage | undefined> {
-  if(!UUID.test(id)) return undefined;
-  try {
-    const response=await request('/api/missing-persons/'+id+'/ai-image');
-    // 404 means no AI photo yet; 401 can be a secured /error dispatch of the same 404.
-    if(response.status===404 || response.status===401) return undefined;
-    if(!response.ok) throw new Error('AI 사진 응답 상태 '+response.status);
-    const dto: MissingAiImageDto=await response.json();
-    const photo='/api/missing-persons/'+id+'/ai-image/photo';
-    if(dto.url!==photo || !Array.isArray(dto.styles)) throw new Error('AI 사진 응답 경로를 확인해 주세요.');
-    // Only DB style endpoints of this child; drop anything else.
-    const styles=dto.styles.filter(s=>STYLE_KEY.test(s.key) && s.url===photo+'?style='+s.key && s.name?.trim())
-      .map(s=>({key:s.key,label:s.name.trim(),src:'/backend'+s.url}));
-    const targetAge=Number.isInteger(dto.targetAge) && dto.targetAge>0 ? dto.targetAge : null;
-    return {targetAge,url:'/backend'+photo,styles,notice:dto.notice?.trim() || 'AI가 만든 예상 모습이며 실제 모습이 아닙니다.'};
-  } catch(error) {
-    console.error('AI 사진을 불러오지 못했습니다.',error);
+  if(!UUID.test(id)) { aiLog.warn(id,'UUID 형식이 아니어서 조회하지 않음'); return undefined; }
+  let response: Response;
+  try { response=await request('/api/missing-persons/'+id+'/ai-image'); }
+  catch(error) { aiLog.fail(id,'백엔드 연결 실패 또는 15초 시간 초과',error); return undefined; }
+  // 404 means no AI photo yet; 401 can be a secured /error dispatch of the same 404.
+  if(response.status===404) { aiLog.none(id,'생성된 AI 사진이 없음 (404)'); return undefined; }
+  if(response.status===401) { aiLog.none(id,'401 응답: 사진이 없거나 인증이 필요함 (백엔드 확인)'); return undefined; }
+  if(!response.ok) {
+    const body=await response.text().catch(()=>'');
+    aiLog.fail(id,'응답 상태 '+response.status,body.slice(0,300));
     return undefined;
   }
+  let dto: MissingAiImageDto;
+  try { dto=await response.json(); }
+  catch(error) { aiLog.fail(id,'응답 JSON 파싱 실패',error); return undefined; }
+  const photo='/api/missing-persons/'+id+'/ai-image/photo';
+  if(!dto || dto.url!==photo) { aiLog.fail(id,'사진 경로가 이 아동의 경로가 아님 (기대: '+photo+')',dto?.url); return undefined; }
+  if(!Array.isArray(dto.styles)) { aiLog.fail(id,'styles가 배열이 아님',dto.styles); return undefined; }
+  // Only DB style endpoints of this child; drop anything else.
+  const valid=(s: MissingAiImageDto['styles'][number])=>STYLE_KEY.test(s?.key) && s.url===photo+'?style='+s.key && !!s.name?.trim();
+  const dropped=dto.styles.filter(s=>!valid(s));
+  if(dropped.length) aiLog.warn(id,'잘못된 스타일 '+dropped.length+'개 제외',dropped);
+  const styles=dto.styles.filter(valid).map(s=>({key:s.key,label:s.name.trim(),src:'/backend'+s.url}));
+  const targetAge=Number.isInteger(dto.targetAge) && dto.targetAge>0 ? dto.targetAge : null;
+  if(targetAge===null) aiLog.warn(id,'targetAge가 올바르지 않아 나이 표시 생략',dto.targetAge);
+  console.log('[AI 사진] 조회 성공 · '+id+' · 스타일 '+styles.length+'개'+(targetAge ? ' · '+targetAge+'세 기준' : ''));
+  return {targetAge,url:'/backend'+photo,styles,notice:dto.notice?.trim() || 'AI가 만든 예상 모습이며 실제 모습이 아닙니다.'};
 }
 export function withAiImage(person: MissingPerson, ai: MissingAiImage | undefined): MissingPerson {
   if(!ai) return person;

@@ -1,7 +1,7 @@
 import GuideSteps from "@/components/GuideSteps";
 import { PlusIcon } from "@/components/Icons";
 import PageHero from "@/components/PageHero";
-import info from "@/components/InfoPages.module.css";
+import { kicker, rise, sectionText, sectionTitle } from "@/components/infoStyles";
 import type { CSSProperties } from "react";
 
 const FAQ = [
@@ -35,6 +35,16 @@ const FAQ = [
   },
 ];
 
+// 자주 묻는 질문: 왼쪽 머리말(넓은 화면에서 따라 내려온다), 오른쪽 접이식 카드
+const FAQ_ITEM =
+  "group rounded-[14px] border border-civic-line bg-white [transition:border-color_.25s_ease,box-shadow_.25s_ease,background-color_.25s_ease] hover:not-open:border-civic-hover open:border-[#BFD3EC] open:bg-[#FAFCFF] open:shadow-[0_10px_24px_rgba(23,59,112,.06)] motion-reduce:transition-none";
+const FAQ_SUMMARY =
+  "flex cursor-pointer list-none items-center justify-between gap-3.5 px-[18px] py-4 text-[15.5px] leading-[1.5] font-bold break-keep text-navy focus-visible:rounded-[14px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-civic max-sm:px-4 max-sm:py-3.5 max-sm:text-[14.5px] [&::-webkit-details-marker]:hidden";
+const FAQ_TOGGLE =
+  "grid size-[30px] flex-none place-items-center rounded-full bg-[#F1F5FA] text-civic-sub [transition:transform_.3s_cubic-bezier(.2,.7,.2,1),background-color_.2s_ease,color_.2s_ease] group-open:[transform:rotate(45deg)] group-open:bg-civic group-open:text-white motion-reduce:transition-none";
+const FAQ_ANSWER =
+  "pt-0 pr-[18px] pb-[18px] pl-[42px] text-[14.5px] leading-[1.75] break-keep text-civic-body group-open:animate-info-open max-sm:pr-4 max-sm:pb-4 max-sm:pl-4 max-sm:text-[14px] motion-reduce:animate-none!";
+
 export default function GuideContent({ embedded = false }: { embedded?: boolean }) {
   const intro = {
     eyebrow: "FindUs 이용 안내",
@@ -45,36 +55,36 @@ export default function GuideContent({ embedded = false }: { embedded?: boolean 
     <>
       {embedded ? (
         // 이용 안내 탭 안에서는 페이지 히어로가 이미 있으니 작은 머리말만 둔다.
-        <div className={`page-container max-w-5xl pt-7 pb-5 max-sm:pt-5 ${info.rise}`}>
-          <p className={info.kicker}>{intro.eyebrow}</p>
-          <h2 className={info.sectionTitle}>{intro.title}</h2>
-          <p className={`${info.sectionText} max-w-180`}>{intro.description}</p>
+        <div className={`page-container max-w-5xl pt-7 pb-5 max-sm:pt-5 ${rise}`}>
+          <p className={kicker}>{intro.eyebrow}</p>
+          <h2 className={sectionTitle}>{intro.title}</h2>
+          <p className={`${sectionText} max-w-180`}>{intro.description}</p>
         </div>
       ) : (
         <PageHero overlap eyebrow={intro.eyebrow} title={intro.title} description={intro.description} />
       )}
 
-      <div className={embedded ? `flow-root pb-4 ${info.rise}` : "flow-root bg-hero pb-8"} style={embedded ? ({ "--d": ".1s" } as CSSProperties) : undefined}>
+      <div className={embedded ? `flow-root pb-4 ${rise}` : "flow-root bg-hero pb-8"} style={embedded ? ({ "--d": ".1s" } as CSSProperties) : undefined}>
         <div className={`page-container ${embedded ? "max-w-5xl" : ""}`}>
           <GuideSteps overlap={!embedded} compact={embedded} />
         </div>
       </div>
 
       <div className={`page-container ${embedded ? "max-w-5xl" : ""}`}>
-      <section id="faq" aria-labelledby="faq-title" className={`${embedded ? "mt-10 max-sm:mt-8" : "mt-24 max-sm:mt-16"} scroll-mt-28 ${info.faq}`}>
-        <div className={info.faqHead}>
-          <p className={info.kicker}>HELP & ANSWERS</p>
-          <h2 id="faq-title" className={info.sectionTitle}>자주 묻는 질문</h2>
-          <p className={info.sectionText}>궁금한 내용을 누르면 답변이 펼쳐집니다. 더 필요한 내용은 공식 기관·정보 탭의 문의로 알려 주세요.</p>
+      <section id="faq" aria-labelledby="faq-title" className={`${embedded ? "mt-10 max-sm:mt-8" : "mt-24 max-sm:mt-16"} scroll-mt-28 grid grid-cols-[260px_minmax(0,1fr)] gap-8 max-[900px]:grid-cols-[minmax(0,1fr)] max-[900px]:gap-[18px]`}>
+        <div className="sticky top-24 self-start max-[900px]:static">
+          <p className={kicker}>HELP & ANSWERS</p>
+          <h2 id="faq-title" className={sectionTitle}>자주 묻는 질문</h2>
+          <p className={sectionText}>궁금한 내용을 누르면 답변이 펼쳐집니다. 더 필요한 내용은 공식 기관·정보 탭의 문의로 알려 주세요.</p>
         </div>
-        <div className={info.faqList}>
+        <div className="grid gap-2.5">
           {FAQ.map((item) => (
-            <details key={item.q} className={info.faqItem}>
-              <summary>
-                <span><span aria-hidden="true" className={info.faqQ}>Q</span>{item.q}</span>
-                <span aria-hidden="true" className={info.faqToggle}><PlusIcon size={15} strokeWidth={2.4} /></span>
+            <details key={item.q} className={FAQ_ITEM}>
+              <summary className={FAQ_SUMMARY}>
+                <span><span aria-hidden="true" className="mr-2 font-extrabold text-civic">Q</span>{item.q}</span>
+                <span aria-hidden="true" className={FAQ_TOGGLE}><PlusIcon size={15} strokeWidth={2.4} /></span>
               </summary>
-              <p>{item.a}</p>
+              <p className={FAQ_ANSWER}>{item.a}</p>
             </details>
           ))}
         </div>

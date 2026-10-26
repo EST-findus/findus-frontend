@@ -11,7 +11,6 @@ import ReportGuideModal from "./ReportGuideModal";
 import ShareModal from "./ShareModal";
 import StoredPhoto from "./StoredPhoto";
 import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
-import styles from "./HomeChildren.module.css";
 
 // Long enough to read a name and region before the spotlight moves on.
 const AUTO_ADVANCE_MS = 6000;
@@ -19,6 +18,20 @@ const SORT: SortKey = "recent";
 // The list beside the spotlight shows this many children at a time; the highlight moves within the group.
 const GROUP = 4;
 const SWIPE_PX = 50;
+
+// Spotlight: one child large on the left, the rest of the group listed on the right. Changing child cross-fades:
+// the old card fades away while the new one settles in, its text arriving just after the photo.
+const entering = [
+  "relative z-1 min-w-0",
+  "[&_article>div:first-child]:animate-home-stage-photo [&_article>div:nth-child(2)>*]:animate-home-stage-text",
+  "[&_article>div:nth-child(2)>:nth-child(2)]:[animation-delay:.24s] [&_article>div:nth-child(2)>:nth-child(3)]:[animation-delay:.3s] [&_article>div:nth-child(2)>:nth-child(n+4)]:[animation-delay:.36s]",
+  "motion-reduce:[&_article>div]:animate-none! motion-reduce:[&_article>div:nth-child(2)>*]:animate-none!",
+].join(" ");
+// The highlight slides to the active row, like the tab indicator elsewhere on the site. Narrow screens scroll the list sideways instead.
+const queueMarker = "pointer-events-none absolute inset-x-0 top-0 h-[88px] rounded-2xl border border-l-4 border-[#BFD3EC] border-l-brand bg-brand-soft [transform:translateY(calc(var(--i)*98px))] [transition:transform_.45s_cubic-bezier(.2,.7,.2,1)] max-[1000px]:hidden motion-reduce:[transition:none]";
+const queueItem = "group/item relative flex h-[88px] w-full cursor-pointer items-center gap-3.5 overflow-hidden rounded-2xl border bg-transparent px-3.5 py-2.5 text-left [transition:background-color_.2s_ease,border-color_.2s_ease] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand max-sm:h-[76px] max-sm:gap-2.5 max-sm:px-2.5 max-sm:py-2 motion-reduce:[transition:none]";
+const navButtonBase = "grid size-10 cursor-pointer place-items-center border [transition:background-color_.2s_ease,border-color_.2s_ease,color_.2s_ease,transform_.2s_ease] active:[transform:scale(.95)] motion-reduce:[transition:none]";
+const navButton = `${navButtonBase} rounded-full border-[#DCE6F1] bg-white text-[#3D5877] hover:border-brand hover:bg-brand hover:text-white`;
 
 const subscribeMotion = (notify: () => void) => {
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -99,57 +112,57 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
     onShare:(p: MissingPerson, el: HTMLElement)=>{setTrigger(el);setShare(p);},
   };
 
-  return <section className={styles.section} aria-labelledby="home-children-title">
-    <div className={`page-container ${styles.sectionBox}`}>
-      <header className={styles.heading} data-reveal="stagger">
-        <div className={styles.headingCopy}>
-          <p className={styles.eyebrow}><span />함께 찾고 있어요</p>
-          <h2 id="home-children-title">지금, 우리가 함께 찾고 있는 아이들</h2>
-          <p className={styles.description}>경찰청에 공개된 실종아동 정보입니다. 기억나는 얼굴이 있다면 상세 정보를 확인해 주세요.</p>
+  return <section className="bg-white pt-24 pb-12 max-sm:pt-14 max-sm:pb-8 [&_select:focus-visible]:outline-2 [&_select:focus-visible]:outline-offset-3 [&_select:focus-visible]:outline-brand" aria-labelledby="home-children-title">
+    <div className="page-container relative">
+      <header className="mb-9 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-6 gap-y-4 max-sm:mb-6 max-sm:grid-cols-[minmax(0,1fr)] max-sm:gap-3" data-reveal="stagger">
+        <div className="min-w-0">
+          <p className="inline-flex items-center gap-2 rounded-full bg-brand-soft px-3 py-[5px] text-[12px] font-bold tracking-[.02em] text-brand"><span className="size-1.5 animate-home-dot-pulse rounded-full bg-[#F28B82]" />함께 찾고 있어요</p>
+          <h2 id="home-children-title" className="mt-3.5 text-[30px] leading-[1.3] font-extrabold tracking-[-.9px] break-keep text-brand-dark max-sm:mt-3 max-sm:text-[23px]">지금, 우리가 함께 찾고 있는 아이들</h2>
+          <p className="mt-2.5 text-[14px] leading-[1.7] break-keep text-muted max-sm:text-[13px]">경찰청에 공개된 실종아동 정보입니다. 기억나는 얼굴이 있다면 상세 정보를 확인해 주세요.</p>
         </div>
-        <Link className={styles.allLink} href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} /></Link>
+        <Link className="group/all inline-flex items-center gap-2 px-0.5 py-2.5 text-[14px] font-bold whitespace-nowrap text-brand [background:linear-gradient(currentColor,currentColor)_left_calc(100%-6px)/0_1px_no-repeat] [transition:background-size_.3s_ease,color_.2s_ease] hover:text-brand-dark hover:[background-size:calc(100%-24px)_1px] max-sm:justify-self-start max-sm:px-0 max-sm:py-1 max-sm:text-[13px]" href="/search">전체 아동 찾아보기 <ArrowRightIcon size={16} className="[transition:transform_.25s_cubic-bezier(.2,.7,.2,1)] group-hover/all:[transform:translateX(4px)]" /></Link>
       </header>
 
       {person ? (
-        <div ref={stageRef} data-reveal className={styles.spotlight} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
-          <div className={styles.stage} id="home-spotlight" aria-roledescription="슬라이드" aria-label="함께 찾고 있는 아이"
+        <div ref={stageRef} data-reveal className="grid grid-cols-[minmax(0,1.55fr)_minmax(280px,1fr)] items-start gap-10 max-[1000px]:grid-cols-[minmax(0,1fr)] max-[1000px]:gap-6" onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
+          <div className="relative min-w-0 touch-pan-y" id="home-spotlight" aria-roledescription="슬라이드" aria-label="함께 찾고 있는 아이"
             onTouchStart={event=>{touchX.current = event.touches[0].clientX;}}
             onTouchEnd={event=>{ if(touchX.current===null) return; const dx = event.changedTouches[0].clientX - touchX.current; touchX.current = null; if(Math.abs(dx) > SWIPE_PX) select(current + (dx < 0 ? 1 : -1)); }}>
-            {leaving && <div className={`${styles.stageCard} ${styles.leaving}`} inert aria-hidden="true"><HomeChildCard person={leaving} feature {...actions} /></div>}
-            <div key={person.id} className={`${styles.stageCard} ${styles.entering}`}><HomeChildCard person={person} feature {...actions} /></div>
+            {leaving && <div className="pointer-events-none absolute inset-0 z-0 min-w-0 animate-home-stage-out motion-reduce:animate-none" inert aria-hidden="true"><HomeChildCard person={leaving} feature {...actions} /></div>}
+            <div key={person.id} className={entering}><HomeChildCard person={person} feature {...actions} /></div>
           </div>
 
-          <aside className={styles.queue} aria-label="다음 아이들">
-            <p className={styles.queueTitle}>함께 기억해 주세요 <span>{current+1} / {total}명</span></p>
-            <div className={styles.queueBox} style={{ "--i": current - groupStart } as CSSProperties}>
-            <span aria-hidden="true" className={styles.queueMarker} />
-            <ol className={styles.queueList}>
+          <aside className="min-w-0" aria-label="다음 아이들">
+            <p className="mb-3.5 flex items-baseline justify-between gap-2.5 text-[16px] font-extrabold tracking-[-.3px] text-brand-dark">함께 기억해 주세요 <span className="text-[13px] font-semibold text-subtle tabular-nums">{current+1} / {total}명</span></p>
+            <div className="relative" style={{ "--i": current - groupStart } as CSSProperties}>
+            <span aria-hidden="true" className={queueMarker} />
+            <ol className="relative grid gap-2.5 max-[1000px]:flex max-[1000px]:overflow-x-auto max-[1000px]:pb-1 max-[1000px]:[scrollbar-width:none]">
               {group.map((item, offset) => {
                 const active = groupStart + offset === current;
                 const years = yearsApart(item);
-                return <li key={item.id}>
-                  <button type="button" aria-current={active ? "true" : undefined} aria-controls="home-spotlight" onClick={()=>select(groupStart+offset)} className={styles.queueItem}>
-                    <span className={styles.queueThumb}><Thumb person={item} /></span>
-                    <span className={styles.queueText}>
-                      <strong>{item.name}</strong>
-                      <small>{item.region || "지역 정보 없음"}{years !== null ? ` · ${years}년째` : ""}</small>
+                return <li key={item.id} className="relative z-1 max-[1000px]:flex-[0_0_220px] max-sm:basis-[180px]">
+                  <button type="button" aria-current={active ? "true" : undefined} aria-controls="home-spotlight" onClick={()=>select(groupStart+offset)} className={`${queueItem} ${active ? "border-transparent max-[1000px]:border-[#BFD3EC] max-[1000px]:border-l-4 max-[1000px]:border-l-brand max-[1000px]:bg-brand-soft" : "border-[#E3EAF3] hover:border-[#C9DAEE] hover:bg-[#F7FAFE]"}`}>
+                    <span className="relative size-16 flex-none overflow-hidden rounded-xl bg-[#E6EBF1] [transition:transform_.3s_cubic-bezier(.2,.7,.2,1)] group-hover/item:[transform:scale(1.05)] max-sm:size-[54px] motion-reduce:[transition:none]"><Thumb person={item} /></span>
+                    <span className="grid min-w-0 gap-[3px]">
+                      <strong className="truncate text-[16px] font-extrabold text-brand-dark">{item.name}</strong>
+                      <small className="truncate text-[12.5px] text-muted">{item.region || "지역 정보 없음"}{years !== null ? ` · ${years}년째` : ""}</small>
                     </span>
-                    {active && autoplay && <span key={current} aria-hidden="true" className={styles.queueProgress} style={{ animationDuration: `${AUTO_ADVANCE_MS}ms` }} />}
+                    {active && autoplay && <span key={current} aria-hidden="true" className="absolute inset-x-3.5 bottom-2 h-[3px] origin-left animate-home-queue-fill rounded-full bg-brand opacity-75 motion-reduce:animate-none" style={{ animationDuration: `${AUTO_ADVANCE_MS}ms` }} />}
                   </button>
                 </li>;
               })}
             </ol>
             </div>
-            <nav className={styles.queueNav} aria-label="함께 찾고 있는 아이 넘기기">
-              <button type="button" aria-label="이전 아이 보기" aria-controls="home-spotlight" onClick={()=>select(current-1)}><ChevronLeftIcon size={18} /></button>
-              <button type="button" aria-label="다음 아이 보기" aria-controls="home-spotlight" onClick={()=>select(current+1)}><ChevronRightIcon size={18} /></button>
-              {!reducedMotion && <button type="button" className={styles.rotationControl} aria-label={playing ? "자동 넘김 일시정지" : "자동 넘김 시작"} aria-pressed={!playing} onClick={()=>setPlaying(!playing)}><span aria-hidden="true">{playing ? "Ⅱ" : "▷"}</span><span>{playing ? "일시정지" : "자동 넘김"}</span></button>}
+            <nav className="mt-4 flex items-center gap-2" aria-label="함께 찾고 있는 아이 넘기기">
+              <button type="button" className={navButton} aria-label="이전 아이 보기" aria-controls="home-spotlight" onClick={()=>select(current-1)}><ChevronLeftIcon size={18} /></button>
+              <button type="button" className={navButton} aria-label="다음 아이 보기" aria-controls="home-spotlight" onClick={()=>select(current+1)}><ChevronRightIcon size={18} /></button>
+              {!reducedMotion && <button type="button" className={`${navButtonBase} w-auto! grid-flow-col gap-1.5 rounded-lg border-transparent bg-transparent px-3 text-[12px] text-muted hover:bg-[#EEF4FB] hover:text-brand-dark`} aria-label={playing ? "자동 넘김 일시정지" : "자동 넘김 시작"} aria-pressed={!playing} onClick={()=>setPlaying(!playing)}><span aria-hidden="true" className="text-[14px]">{playing ? "Ⅱ" : "▷"}</span><span>{playing ? "일시정지" : "자동 넘김"}</span></button>}
             </nav>
-            <p className={styles.demo}><span>자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
+            <p className="mt-4 grid gap-0.5 text-[11px] leading-[1.7] text-subtle max-sm:text-[10.5px]"><span className="font-[650] text-[#3D5877]">자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
           </aside>
           <p className="sr-only" aria-live={autoplay ? "off" : "polite"}>{person.name}, {current+1}번째 아이</p>
         </div>
-      ) : <p className={styles.empty}>현재 표시할 아동 정보가 없습니다. 전체 검색에서 다시 확인해 주세요.</p>}
+      ) : <p className="px-5 py-14 text-center text-[14px] text-[#6C7F94]">현재 표시할 아동 정보가 없습니다. 전체 검색에서 다시 확인해 주세요.</p>}
     </div>
     {detail && <DetailModal person={detail} returnFocusTo={trigger} onClose={()=>setDetail(null)} onReport={p=>{setDetail(null);setReport(p);}} />}
     {report && <ReportGuideModal person={report} returnFocusTo={trigger} onClose={()=>setReport(null)} />}

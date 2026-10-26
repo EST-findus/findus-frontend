@@ -4,12 +4,18 @@ import Image from "next/image";
 import { useEffect, useState, type CSSProperties } from "react";
 import { DEMO_IMAGE, DEMO_PHOTOS, DEMO_STEPS, FACE_BOX, FEATURE_LINES, FEATURE_POINTS, FIVE_POINTS } from "@/lib/aiDemo";
 import { useCountUp, useInView, useReducedMotion } from "@/lib/useMotion";
-import styles from "./AiShowcase.module.css";
 
 const STEP_MS = 6500;
 const BRAND = "#2468C5";
 const ACCENT = "#FFD25A";
 const FOCUS = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+// 기본 스타일이 '완성된 장면'이고 애니메이션은 그 장면으로 들어가는 과정만 그린다. 동작 줄이기를 켜면 완성된 장면이 그대로 보인다.
+const SCAN = "opacity-0 animate-ai-scan motion-reduce:animate-none";
+const DRAW = "[stroke-dasharray:1] [stroke-dashoffset:0] animate-ai-draw motion-reduce:animate-none";
+const POP = "origin-center [transform-box:fill-box] animate-ai-pop motion-reduce:animate-none";
+const FADE = "animate-ai-fade motion-reduce:animate-none";
+const BAR = "origin-bottom [transform-box:fill-box] animate-ai-grow motion-reduce:animate-none";
+const LAYER = "[transition:opacity_.6s_ease] motion-reduce:[transition:none]";
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 /** 사진 한 장이 AI 예상 모습이 되는 과정을 단계별 애니메이션으로 보여준다. */
@@ -33,13 +39,13 @@ export default function AiPipelineDemo() {
   return (
     <div ref={ref} className="grid grid-cols-1 items-start gap-10 md:grid-cols-[minmax(0,420px)_minmax(0,1fr)] max-md:gap-6">
       <figure className="mx-auto w-full max-w-105 md:sticky md:top-24">
-        <div className={styles.stage}>
-          <div className={styles.zoom} data-zoomed={current.key === "align"}>
+        <div className="relative isolate aspect-[543/724] overflow-hidden rounded-[28px] bg-[#e9ecea] shadow-[0_24px_48px_rgba(20,40,30,.14)]">
+          <div className="absolute inset-0 origin-[50%_48%] [transition:transform_1.2s_cubic-bezier(.2,.8,.2,1)] data-[zoomed=true]:[transform:scale(1.16)] motion-reduce:[transition:none]" data-zoomed={current.key === "align"}>
             <Image src={DEMO_PHOTOS.past} alt="" fill sizes="420px" className="object-cover" priority />
-            {["age", "hair", "result"].includes(current.key) && <Image key={`aged-${step}`} src={DEMO_PHOTOS.aged} alt="" fill sizes="420px" className={`object-cover ${current.key === "age" ? styles.ageIn : ""}`} />}
+            {["age", "hair", "result"].includes(current.key) && <Image key={`aged-${step}`} src={DEMO_PHOTOS.aged} alt="" fill sizes="420px" className={`object-cover ${current.key === "age" ? "animate-ai-age-in motion-reduce:animate-none" : ""}`} />}
             {current.key === "hair" && DEMO_PHOTOS.styles.slice(1).map((style, i) => (
               <Image key={`${style.key}-${step}-${hairPick}`} src={style.src} alt="" fill sizes="420px"
-                className={`object-cover ${hairPick ? styles.layer : i === 0 ? styles.hairA : styles.hairB}`}
+                className={`object-cover ${hairPick ? LAYER : i === 0 ? "opacity-0 animate-ai-hair-a motion-reduce:animate-none" : "opacity-0 animate-ai-hair-b motion-reduce:animate-none"}`}
                 style={hairPick ? { opacity: hairPick === style.key ? 1 : 0 } : undefined} />
             ))}
             <StageOverlay key={step} stepKey={current.key} />
@@ -83,7 +89,7 @@ export default function AiPipelineDemo() {
                     <span className="block text-[17px] leading-[1.7] break-keep text-ink/85 max-sm:text-[16px]">{item.text}</span>
                     {item.detail && <span className="mt-2 block text-[14px] leading-relaxed break-keep text-muted">{item.detail}</span>}
                   </span>}
-                  {active && <span aria-hidden="true" data-paused={!auto} className={`absolute bottom-0 left-0 h-1 w-full bg-brand ${styles.progress}`} style={{ "--ms": `${STEP_MS}ms` } as CSSProperties} />}
+                  {active && <span aria-hidden="true" data-paused={!auto} className={`absolute bottom-0 left-0 h-1 w-full bg-brand origin-left animate-ai-progress data-[paused=true]:animate-none data-[paused=true]:[transform:scaleX(0)] motion-reduce:animate-none motion-reduce:[transform:scaleX(0)]`} style={{ "--ms": `${STEP_MS}ms` } as CSSProperties} />}
                 </button>
               </li>
             );
@@ -107,19 +113,19 @@ function AgeBadge() {
 function StageOverlay({ stepKey }: { stepKey: string }) {
   const [x, y, w, h] = FACE_BOX;
   return (
-    <svg aria-hidden="true" viewBox={`0 0 ${DEMO_IMAGE.width} ${DEMO_IMAGE.height}`} preserveAspectRatio="xMidYMid slice" className={styles.overlay}>
+    <svg aria-hidden="true" viewBox={`0 0 ${DEMO_IMAGE.width} ${DEMO_IMAGE.height}`} preserveAspectRatio="xMidYMid slice" className="pointer-events-none absolute inset-0 size-full">
       {stepKey === "detect" && <>
-        <rect className={styles.scan} x="0" y="150" width={DEMO_IMAGE.width} height="4" fill={ACCENT} />
-        <rect className={styles.draw} style={delay(500)} pathLength={1} x={x} y={y} width={w} height={h} rx="18" fill="none" stroke={ACCENT} strokeWidth="4" />
-        <text className={styles.fade} style={delay(1200)} x={x} y={y - 12} fill={ACCENT} fontSize="22" fontWeight="800">얼굴</text>
-        {FIVE_POINTS.map(([cx, cy], i) => <circle key={i} className={styles.pop} style={delay(1400 + i * 180)} cx={cx} cy={cy} r="9" fill={ACCENT} stroke="#fff" strokeWidth="3" />)}
+        <rect className={SCAN} x="0" y="150" width={DEMO_IMAGE.width} height="4" fill={ACCENT} />
+        <rect className={DRAW} style={delay(500)} pathLength={1} x={x} y={y} width={w} height={h} rx="18" fill="none" stroke={ACCENT} strokeWidth="4" />
+        <text className={FADE} style={delay(1200)} x={x} y={y - 12} fill={ACCENT} fontSize="22" fontWeight="800">얼굴</text>
+        {FIVE_POINTS.map(([cx, cy], i) => <circle key={i} className={POP} style={delay(1400 + i * 180)} cx={cx} cy={cy} r="9" fill={ACCENT} stroke="#fff" strokeWidth="3" />)}
       </>}
 
       {stepKey === "align" && <>
-        <line className={styles.draw} pathLength={1} x1="40" y1="316" x2="503" y2="316" stroke={ACCENT} strokeWidth="3" />
-        <text className={styles.fade} style={delay(700)} x="44" y="304" fill={ACCENT} fontSize="20" fontWeight="800">눈높이 수평</text>
-        <rect className={styles.draw} style={delay(900)} pathLength={1} x="96" y="176" width="350" height="350" fill="none" stroke="#fff" strokeWidth="4" />
-        <text className={styles.fade} style={delay(1700)} x="271" y="556" textAnchor="middle" fill="#fff" fontSize="22" fontWeight="800">1024 × 1024</text>
+        <line className={DRAW} pathLength={1} x1="40" y1="316" x2="503" y2="316" stroke={ACCENT} strokeWidth="3" />
+        <text className={FADE} style={delay(700)} x="44" y="304" fill={ACCENT} fontSize="20" fontWeight="800">눈높이 수평</text>
+        <rect className={DRAW} style={delay(900)} pathLength={1} x="96" y="176" width="350" height="350" fill="none" stroke="#fff" strokeWidth="4" />
+        <text className={FADE} style={delay(1700)} x="271" y="556" textAnchor="middle" fill="#fff" fontSize="22" fontWeight="800">1024 × 1024</text>
         {FIVE_POINTS.map(([cx, cy], i) => <circle key={i} cx={cx} cy={cy} r="7" fill={ACCENT} stroke="#fff" strokeWidth="2" />)}
       </>}
 
@@ -127,25 +133,25 @@ function StageOverlay({ stepKey }: { stepKey: string }) {
         {FEATURE_LINES.map(([from, to, closed], i) => {
           const pts = FEATURE_POINTS.slice(from, to + 1);
           const d = `M${pts.map(([px, py]) => `${px} ${py}`).join(" L")}${closed ? " Z" : ""}`;
-          return <path key={i} className={styles.draw} style={delay(1500 + i * 120)} pathLength={1} d={d} fill="none" stroke="#fff" strokeOpacity=".85" strokeWidth="2" />;
+          return <path key={i} className={DRAW} style={delay(1500 + i * 120)} pathLength={1} d={d} fill="none" stroke="#fff" strokeOpacity=".85" strokeWidth="2" />;
         })}
-        {FEATURE_POINTS.map(([cx, cy], i) => <circle key={i} className={styles.pop} style={delay(i * 28)} cx={cx} cy={cy} r="4.5" fill={ACCENT} />)}
-        <rect className={styles.fade} style={delay(2000)} x="20" y="604" width="503" height="100" rx="16" fill="rgba(0,0,0,.55)" />
-        <text className={styles.fade} style={delay(2000)} x="40" y="634" fill="#fff" fontSize="18" fontWeight="800">18단계 × 512개 숫자</text>
+        {FEATURE_POINTS.map(([cx, cy], i) => <circle key={i} className={POP} style={delay(i * 28)} cx={cx} cy={cy} r="4.5" fill={ACCENT} />)}
+        <rect className={FADE} style={delay(2000)} x="20" y="604" width="503" height="100" rx="16" fill="rgba(0,0,0,.55)" />
+        <text className={FADE} style={delay(2000)} x="40" y="634" fill="#fff" fontSize="18" fontWeight="800">18단계 × 512개 숫자</text>
         {Array.from({ length: 18 }, (_, i) => {
           const barH = 14 + Math.round(Math.abs(Math.sin(i * 1.7 + 0.4)) * 40);
-          return <rect key={i} className={styles.bar} style={delay(2200 + i * 60)} x={40 + i * 26} y={692 - barH} width="16" height={barH} rx="3" fill={i % 3 === 0 ? ACCENT : BRAND} />;
+          return <rect key={i} className={BAR} style={delay(2200 + i * 60)} x={40 + i * 26} y={692 - barH} width="16" height={barH} rx="3" fill={i % 3 === 0 ? ACCENT : BRAND} />;
         })}
       </>}
 
       {stepKey === "hair" && <>
-        <ellipse className={styles.draw} pathLength={1} cx="278" cy="322" rx="122" ry="152" fill="none" stroke="#fff" strokeWidth="3" />
-        <rect className={styles.fade} style={delay(600)} x="178" y="490" width="200" height="40" rx="20" fill="rgba(0,0,0,.6)" />
-        <text className={styles.fade} style={delay(600)} x="278" y="517" textAnchor="middle" fill="#fff" fontSize="19" fontWeight="800">얼굴은 그대로</text>
-        <text className={styles.fade} style={delay(900)} x="40" y="120" fill={ACCENT} fontSize="22" fontWeight="800">머리만 바꿔요</text>
+        <ellipse className={DRAW} pathLength={1} cx="278" cy="322" rx="122" ry="152" fill="none" stroke="#fff" strokeWidth="3" />
+        <rect className={FADE} style={delay(600)} x="178" y="490" width="200" height="40" rx="20" fill="rgba(0,0,0,.6)" />
+        <text className={FADE} style={delay(600)} x="278" y="517" textAnchor="middle" fill="#fff" fontSize="19" fontWeight="800">얼굴은 그대로</text>
+        <text className={FADE} style={delay(900)} x="40" y="120" fill={ACCENT} fontSize="22" fontWeight="800">머리만 바꿔요</text>
       </>}
 
-      {stepKey === "result" && <g className={styles.stamp}>
+      {stepKey === "result" && <g className="origin-center [transform:rotate(-8deg)] [transform-box:fill-box] animate-ai-stamp motion-reduce:animate-none">
         <rect x="300" y="40" width="210" height="66" rx="12" fill="rgba(255,255,255,.92)" stroke={BRAND} strokeWidth="4" />
         <text x="405" y="70" textAnchor="middle" fill={BRAND} fontSize="24" fontWeight="900">AI 생성</text>
         <text x="405" y="95" textAnchor="middle" fill={BRAND} fontSize="16" fontWeight="800">참고용 이미지</text>

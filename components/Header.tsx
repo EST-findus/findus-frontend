@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SAFE182_URL } from "@/lib/links";
 import HealthCheckButton from "./HealthCheckButton";
-import searchStyles from "./PublicSearch.module.css";
+import { SEARCH_LOGO, SEARCH_PALETTE } from "./searchStyles";
 import HeaderAuth from "./HeaderAuth";
 import HeaderNav from "./HeaderNav";
 import LogoMark from "./LogoMark";
@@ -14,7 +14,7 @@ import { requestFeaturedPopup } from "./HomeFeaturedPopup";
 
 export function Logo({ blue = false }: { blue?: boolean }) {
   return (
-    <span className={`flex items-center gap-2 ${blue ? searchStyles.searchLogo : ""}`}>
+    <span className={`flex items-center gap-2 ${blue ? SEARCH_LOGO : ""}`}>
       <LogoMark size={36} className="shrink-0" />
       <span className="text-[21px] font-extrabold tracking-[-0.4px]">
         <span style={{ color: "#173B70" }}>Find</span>
@@ -30,7 +30,7 @@ export default function Header() {
   const onPublicPage = pathname === "/search" || pathname === "/";
   const hideUtilityBar = onPublicPage || pathname === "/help" || pathname === "/community" || onMyPage || pathname.startsWith("/funding");
   return (
-    <header className={`${onPublicPage ? searchStyles.palette : ""} sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
+    <header className={`${onPublicPage ? SEARCH_PALETTE : ""} sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur ${onMyPage ? "max-md:hidden" : ""}`}>
       {/* 서버 상태·안전Dream 바로가기 줄은 데스크톱에서만 보인다. */}
       {!hideUtilityBar && <div className="border-b border-line bg-surface max-md:hidden">
         <div className="page-container flex items-center gap-4 py-1.5 text-[12px] text-muted">
