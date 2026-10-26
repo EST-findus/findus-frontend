@@ -19,10 +19,12 @@ describe('실제 데이터 변환',()=>{
     expect(person.images?.map(p=>p.id)).toEqual([image1,image2]);expect(person.photos.past).toBe('/backend/api/missing-persons/'+id+'/images/'+image1);
   });
   it('목록의 대표 AI 사진 주소는 이 아동의 경로일 때만 AI 예상 모습으로 쓴다',()=>{
+    const warn=vi.spyOn(console,'warn').mockImplementation(()=>{});
     const photo='/api/missing-persons/'+id+'/ai-image/photo';
     expect(toMissingPerson(fixture({aiPhotoUrl:photo})).photos.aged).toBe('/backend'+photo);
     expect(toMissingPerson(fixture({aiPhotoUrl:null})).photos.aged).toBe('');
     expect(toMissingPerson(fixture({aiPhotoUrl:'https://example.com/ai.png'})).photos.aged).toBe('');
+    expect(warn).toHaveBeenCalledTimes(1);expect(warn.mock.calls[0][0]).toContain('https://example.com/ai.png');warn.mockRestore();
   });
   it('외부 또는 다른 아동의 사진 경로는 사용하지 않는다',()=>{
     expect(()=>toMissingPerson(fixture({images:[{id:image1,sortOrder:0,url:'https://example.com/photo',contentType:'image/png',byteSize:10}]}))).toThrow();
@@ -83,7 +85,7 @@ describe('대표 AI 사진',()=>{
     styles:[{key:'bob',name:'단발',url:photo+'?style=bob'},{key:'long',name:'긴 머리',url:photo+'?style=long'}],notice:'AI가 만든 예상 모습이며 실제 모습이 아닙니다.',...override});
   const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status});
   it('대표 AI 사진과 스타일을 프록시 주소로 변환해 아동 정보에 합친다',async()=>{
-    const fetch=vi.fn().mockResolvedValue(json(ai()));vi.stubGlobal('fetch',fetch);
+    vi.spyOn(console,'log').mockImplementation(()=>{});const fetch=vi.fn().mockResolvedValue(json(ai()));vi.stubGlobal('fetch',fetch);
     const result=await fetchMissingAiImage(id);
     expect(fetch.mock.calls[0][0]).toContain('/api/missing-persons/'+id+'/ai-image');
     expect(result?.url).toBe('/backend'+photo);expect(result?.targetAge).toBe(30);
@@ -93,16 +95,17 @@ describe('대표 AI 사진',()=>{
     expect(person.aiNote).toContain('실제 모습이 아닙니다');expect(person.aiTargetAge).toBe(30);
   });
   it('AI 사진이 없거나 조회에 실패해도 상세 화면을 깨지 않는다',async()=>{
-    vi.spyOn(console,'error').mockImplementation(()=>{});
+    const log=vi.spyOn(console,'log').mockImplementation(()=>{});const error=vi.spyOn(console,'error').mockImplementation(()=>{});vi.spyOn(console,'warn').mockImplementation(()=>{});
     const fetch=vi.fn().mockResolvedValueOnce(new Response('',{status:404})).mockResolvedValueOnce(new Response('',{status:401}))
       .mockResolvedValueOnce(new Response('',{status:500})).mockRejectedValueOnce(new TypeError('network failure'));
     vi.stubGlobal('fetch',fetch);
     for (let i=0;i<4;i++) expect(await fetchMissingAiImage(id)).toBeUndefined();
     expect(await fetchMissingAiImage('invalid')).toBeUndefined();expect(fetch).toHaveBeenCalledTimes(4);
+    expect(log.mock.calls[0][0]).toContain('없음');expect(error.mock.calls[0][0]).toContain('응답 상태 500');expect(error.mock.calls[1][0]).toContain('백엔드 연결 실패');
     const person=toMissingPerson(fixture());expect(withAiImage(person,undefined)).toBe(person);
   });
   it('다른 아동의 사진 경로와 잘못된 스타일은 쓰지 않는다',async()=>{
-    vi.spyOn(console,'error').mockImplementation(()=>{});
+    vi.spyOn(console,'error').mockImplementation(()=>{});vi.spyOn(console,'warn').mockImplementation(()=>{});vi.spyOn(console,'log').mockImplementation(()=>{});
     const other='/api/missing-persons/00000000-0000-4000-8000-000000000002/ai-image/photo';
     vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(json(ai({url:other})))
       .mockResolvedValueOnce(json(ai({styles:[{key:'bob',name:'단발',url:other+'?style=bob'},{key:'Bad Key',name:'x',url:photo+'?style=Bad Key'},{key:'long',name:'긴 머리',url:photo+'?style=long'}]}))));

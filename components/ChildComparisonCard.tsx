@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import StoredPhoto from "./StoredPhoto";
+import { logAiImageLoadFail } from "./AiStylePhoto";
 import { formatAge, formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import FavoriteButton from "./FavoriteButton";
@@ -44,7 +45,7 @@ export default function ChildComparisonCard({ person, onOpenDetail, onReport, on
             <figcaption><span>AI</span> 예상 모습</figcaption>
             {hasAiPhoto ? (
               <button type="button" className={styles.photo} aria-label={`${person.name} 다른 AI 예상 모습 보기`} onClick={openDetail}>
-                <Image src={person.photos.aged} alt={`${person.name} AI 예상 모습 (실제 모습과 다를 수 있음)`} fill sizes="(min-width: 1200px) 240px, (min-width: 640px) 23vw, 42vw" />
+                <Image src={person.photos.aged} alt={`${person.name} AI 예상 모습 (실제 모습과 다를 수 있음)`} fill sizes="(min-width: 1200px) 240px, (min-width: 640px) 23vw, 42vw" onError={() => logAiImageLoadFail(person.photos.aged, person.name)} />
               </button>
             ) : (
               <div className={`${styles.photo} ${styles.aiPending}`} role="img" aria-label={`${person.name} AI 예상 모습 준비 중`}>

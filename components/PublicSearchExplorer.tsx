@@ -34,6 +34,16 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
     url.searchParams.delete("focus");
     window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
   }, []);
+  // AI 사진 조회 상태 확인용: 목록 응답의 aiPhotoUrl 기준으로 있는 아동/없는 아동을 브라우저 콘솔에 남긴다.
+  useEffect(() => {
+    const api = persons.filter((person) => person.source === "api");
+    const withAi = api.filter((person) => person.photos.aged);
+    const withoutAi = api.filter((person) => !person.photos.aged);
+    console.log(`[AI 사진] 검색 목록 ${persons.length}명 중 AI 사진 있음 ${withAi.length}명 · 없음 ${withoutAi.length}명`);
+    if (!persons.length) console.warn("[AI 사진] 목록이 비어 있습니다. 백엔드 응답을 확인하세요.");
+    if (withAi.length) console.table(withAi.map((person) => ({ id: person.id, name: person.name, aiPhoto: person.photos.aged })));
+    if (withoutAi.length) console.log("[AI 사진] 없음 (aiPhotoUrl이 비었거나 이 아동 경로가 아님)", withoutAi.map((person) => ({ id: person.id, name: person.name })));
+  }, [persons]);
   const [page, setPage] = useState(0);
   const pageSize=12;
   const [query, setQuery] = useState("");
