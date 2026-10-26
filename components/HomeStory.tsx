@@ -424,6 +424,97 @@ function CampaignList({ items, icon }: { items: readonly CampaignItem[]; icon: R
   );
 }
 
+const TAPE_PERSON = "/images/mock-persons/MC-1994-0627";
+const MONITOR_PERSON = "/images/mock-persons/MC-2004-0302";
+
+/** 호프테이프 재현: 택배 상자 위를 가로지르는 포장 테이프에 '당시 → 현재 추정' 사진이 이어 인쇄된 모습. */
+function TapeScene() {
+  return (
+    <div className={styles.tapeScene} aria-hidden="true">
+      <div className={styles.tape}>
+        {[0, 1, 2].map(i => (
+          <span key={i} className={styles.tapeCell}>
+            <span className={styles.tapePhoto}><Image src={`${TAPE_PERSON}/past.jpg`} alt="" fill sizes="48px" /></span>
+            <span className={styles.tapePhoto}><Image src={`${TAPE_PERSON}/aged.jpg`} alt="" fill sizes="48px" /></span>
+            <span className={styles.tapeText}><b>실종아동을 찾습니다</b><small>보신 분은 182</small></span>
+          </span>
+        ))}
+      </div>
+      <em className={styles.sceneTag}>재현 예시</em>
+    </div>
+  );
+}
+
+/** 에어서울 재현: 앞 좌석 등받이 모니터에 '당시 → 현재 추정' 사진과 안전Dream QR이 뜬 모습. */
+function MonitorScene() {
+  return (
+    <div className={styles.monitorScene} aria-hidden="true">
+      <div className={styles.monitor}>
+        <p className={styles.monitorHead}>실종아동을 찾습니다</p>
+        <div className={styles.monitorBody}>
+          <span className={styles.monitorPhoto}><Image src={`${MONITOR_PERSON}/past.jpg`} alt="" fill sizes="64px" /><em>당시</em></span>
+          <i><ArrowRightIcon size={11} /></i>
+          <span className={styles.monitorPhoto}><Image src={`${MONITOR_PERSON}/aged.jpg`} alt="" fill sizes="64px" /><em className={styles.caseAi}>현재 추정</em></span>
+          <span className={styles.monitorQr}><span /><small>안전Dream</small></span>
+        </div>
+      </div>
+      <em className={styles.sceneTag}>재현 예시</em>
+    </div>
+  );
+}
+
+// 실종아동네컷 캠페인 영상. 내려받아 다시 올리지 않고 YouTube 공식 퍼가기 플레이어로만 보여주며, 올린 채널을 출처로 밝힌다.
+const CAMPAIGN_VIDEO = {
+  id: "xvB02ibSPiU",
+  title: "2024 인생네컷 × 경찰청 '실종아동네컷' 캠페인 영상",
+  channel: "HYO JIN KIM",
+};
+
+/** The campaign intro. The four-frame photo doubles as the video's play button; the player loads only after a click,
+ *  so opening the guide never contacts YouTube on its own. */
+function CampaignIntro() {
+  const [playing, setPlaying] = useState(false);
+  const watchUrl = `https://www.youtube.com/watch?v=${CAMPAIGN_VIDEO.id}`;
+  return (
+    <>
+      <div className={styles.purpose}>
+        <div>
+          <p className={styles.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
+          <h3 className={styles.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
+          <p className={styles.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
+        </div>
+        <figure className={`${styles.supportPhoto} ${styles.videoFacade}`}>
+          <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 230px" />
+          <button type="button" onClick={() => setPlaying(true)} aria-expanded={playing} aria-controls="campaign-video" aria-label={`${CAMPAIGN_VIDEO.title} 재생 (YouTube)`}>
+            <span className={styles.playIcon} aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span>
+            <span className={styles.playLabel}>{playing ? "아래에서 재생 중" : "캠페인 영상 보기"}</span>
+          </button>
+          <figcaption className={`${pen.className} ${styles.handNote}`}>사진 한 장이, 다시 보는 계기가 됩니다.</figcaption>
+        </figure>
+      </div>
+      <div id="campaign-video">
+        {playing && (
+          <div className={styles.videoBlock}>
+            <div className={styles.videoFrame}>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${CAMPAIGN_VIDEO.id}?autoplay=1&rel=0`}
+                title={CAMPAIGN_VIDEO.title}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+            <p className={styles.videoCredit}>
+              {CAMPAIGN_VIDEO.title} · 영상 출처: YouTube &lsquo;{CAMPAIGN_VIDEO.channel}&rsquo; 채널
+              <a href={watchUrl} target="_blank" rel="noopener noreferrer">YouTube에서 보기 <span aria-hidden="true">↗</span><span className="sr-only">(새 창)</span></a>
+            </p>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
 function CampaignGuide() {
   const sections: Section[] = [
     {
@@ -431,29 +522,16 @@ function CampaignGuide() {
       label: "FindUs와 닮은 사례",
       content: (
         <>
-          <div className={styles.purpose}>
-            <div>
-              <p className={styles.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
-              <h3 className={styles.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
-              <p className={styles.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
-            </div>
-            <figure className={styles.supportPhoto}>
-              <Image src="/images/campaign-four-frame.webp" alt="네 컷 사진 프레임에 실종아동의 어린 시절 모습을 담은 실종아동네컷 캠페인" fill sizes="(max-width: 640px) 100vw, 230px" />
-              <figcaption className={`${pen.className} ${styles.handNote}`}>사진 한 장이, 다시 보는 계기가 됩니다.</figcaption>
-            </figure>
-          </div>
-          {/* 두 사례를 '원본 → 현재 추정' 사진 한 쌍과 함께 카드로 보여준다. 사진은 AI로 만든 가상 인물 예시다. */}
+          <CampaignIntro />
+          {/* 두 사례를 실제 쓰인 자리(택배 테이프, 기내 좌석 모니터)를 재현한 장면으로 보여준다.
+              보도 사진은 쓰지 않고, 장면 속 얼굴은 AI로 만든 가상 인물 예시다. */}
           <ul className={styles.caseRow}>
             {[
-              { name: "호프테이프", where: "우체국 · 한진 · 경찰청", text: "택배 포장 테이프에 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주, 실종 장소와 신체 특징을 담았어요.", past: "/images/mock-persons/MC-1994-0627/past.jpg", aged: "/images/mock-persons/MC-1994-0627/aged.jpg" },
-              { name: "에어서울 기내 모니터", where: "에어서울", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", past: "/images/mock-persons/MC-2004-0302/past.jpg", aged: "/images/mock-persons/MC-2004-0302/aged.jpg" },
+              { name: "호프테이프", where: "우체국 · 한진 · 경찰청", text: "택배 포장 테이프에 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주, 실종 장소와 신체 특징을 담았어요.", scene: <TapeScene /> },
+              { name: "에어서울 기내 모니터", where: "에어서울", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", scene: <MonitorScene /> },
             ].map(item => (
               <li key={item.name} className={styles.caseCard}>
-                <div className={styles.casePair} aria-hidden="true">
-                  <span><Image src={item.past} alt="" fill sizes="96px" /><em>당시</em></span>
-                  <i><ArrowRightIcon size={14} /></i>
-                  <span><Image src={item.aged} alt="" fill sizes="96px" /><em className={styles.caseAi}>현재 추정</em></span>
-                </div>
+                {item.scene}
                 <div>
                   <p className={styles.caseWhere}>{item.where}</p>
                   <strong>{item.name}</strong>
@@ -462,7 +540,7 @@ function CampaignGuide() {
               </li>
             ))}
           </ul>
-          <p className={styles.caseNote}>카드 속 사진은 이해를 돕기 위해 AI로 만든 가상 인물 예시입니다.</p>
+          <p className={styles.caseNote}>카드 속 장면은 이해를 돕기 위해 재현한 예시이며, 얼굴은 AI로 만든 가상 인물입니다.</p>
           <p className={styles.lead}>원본과 AI 예상 모습을 나란히 비교하는 방식은, 이미 현장에서 검증된 방법입니다.</p>
         </>
       ),

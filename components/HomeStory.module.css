@@ -354,23 +354,55 @@
 @media(width<640px) { .endingPhoto.endingPhotoSide { width:70% !important; } }
 
 /* Campaign guide: two case cards, each led by a small 'then → now' photo pair. */
+/* Campaign video: the four-frame photo is the play button, and the YouTube player opens full width under the intro. */
+.videoFacade > button { position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding-bottom:52px; color:#FFFFFF; cursor:pointer; }
+.videoFacade > button:focus-visible { outline:3px solid #3978B8; outline-offset:-3px; border-radius:18px; }
+.playIcon { display:grid; width:52px; height:52px; place-items:center; padding-left:3px; border-radius:50%; background:rgba(23,59,112,.82); box-shadow:0 8px 20px rgba(14,32,62,.3); transition:transform .3s cubic-bezier(.2,.7,.2,1),background-color .2s ease; }
+.playLabel { padding:3px 10px; border-radius:999px; background:rgba(14,32,62,.6); font-size:12.5px; font-weight:700; }
+.videoFacade > button:hover .playIcon { transform:scale(1.08); background:#3978B8; }
+.videoBlock { margin-top:22px; }
+.videoFrame { position:relative; overflow:hidden; aspect-ratio:16 / 9; border-radius:16px; background:#0E203E; box-shadow:0 16px 36px rgba(23,59,112,.14); }
+.videoFrame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.videoCredit { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:4px 12px; margin-top:10px; color:#62748C; font-size:12.5px; line-height:1.6; word-break:keep-all; }
+.videoCredit a { flex:none; color:#2F66A0; font-weight:700; }
+.videoCredit a:hover { text-decoration:underline; text-underline-offset:3px; }
 .caseRow { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:26px; }
 .caseCard { display:flex; flex-direction:column; gap:14px; padding:18px; border:1px solid #E3EAF3; border-radius:18px; background:#FBFCFE; transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .25s ease,box-shadow .3s ease; animation:sheetRise .6s cubic-bezier(.2,.7,.2,1) .15s backwards; }
 .caseCard + .caseCard { animation-delay:.25s; }
 .caseCard:hover { transform:translateY(-3px); border-color:#D2DEEC; box-shadow:0 14px 30px rgba(23,59,112,.08); }
-.casePair { display:flex; align-items:center; gap:10px; }
-.casePair > span { position:relative; flex:1; aspect-ratio:1; max-width:120px; overflow:hidden; border-radius:14px; background:#E6EFF9; }
-.casePair img { object-fit:cover; object-position:center 30%; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
-.caseCard:hover .casePair img { transform:scale(1.05); }
-.casePair em { position:absolute; bottom:8px; left:8px; z-index:1; padding:2px 8px; border-radius:999px; background:rgba(23,32,48,.72); color:#FFFFFF; font-size:11px; font-style:normal; font-weight:700; }
-.casePair .caseAi { background:#3978B8; }
-.casePair > i { display:grid; flex:none; width:28px; height:28px; place-items:center; border-radius:50%; background:#FFFFFF; color:#F28B82; box-shadow:0 4px 10px rgba(23,59,112,.12); }
+/* Case scenes: each campaign shown where it actually ran, recreated in CSS around AI example faces (no press photos). */
+.tapeScene,.monitorScene { position:relative; overflow:hidden; height:150px; border-radius:14px; }
+.sceneTag { position:absolute; top:8px; right:8px; z-index:2; padding:2px 8px; border-radius:999px; background:rgba(23,32,48,.62); color:#FFFFFF; font-size:11px; font-style:normal; font-weight:700; }
+
+/* 호프테이프: kraft cardboard with a center seam, crossed by a printed packing tape. */
+.tapeScene { background:linear-gradient(90deg,transparent calc(50% - 1px),rgba(120,82,40,.28) 50%,transparent calc(50% + 1px)),linear-gradient(160deg,#DDB984,#C79A5F); }
+.tape { position:absolute; top:50%; left:-12%; display:flex; width:124%; transform:translateY(-50%) rotate(-5deg); padding:8px 0; border-block:1px solid rgba(160,120,70,.35); background:rgba(252,248,238,.94); box-shadow:0 6px 14px rgba(80,52,20,.22); }
+.tapeCell { display:flex; flex:none; align-items:center; gap:5px; padding:0 14px; border-right:1px dashed rgba(160,120,70,.45); }
+.tapePhoto { position:relative; width:40px; height:48px; overflow:hidden; border-radius:4px; background:#E6EBF1; }
+.tapePhoto img { object-fit:cover; object-position:center 30%; filter:saturate(.75) contrast(.95); }
+.tapeText { display:grid; margin-left:3px; }
+.tapeText b { color:#B4473F; font-size:11.5px; font-weight:850; white-space:nowrap; }
+.tapeText small { color:#5A4630; font-size:10.5px; white-space:nowrap; }
+
+/* 에어서울: a seat back with its screen showing the pair and a QR code. */
+.monitorScene { display:grid; place-items:center; background:radial-gradient(120% 90% at 50% 0%,#5B6676,#2E3642); }
+.monitor { width:min(88%,280px); padding:8px; border-radius:12px; background:#11161D; box-shadow:0 10px 22px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.06); }
+.monitorHead { padding:4px 8px; border-radius:6px 6px 0 0; background:#173B70; color:#FFFFFF; font-size:11px; font-weight:800; }
+.monitorBody { display:flex; align-items:center; gap:6px; padding:8px; border-radius:0 0 6px 6px; background:#F4F7FB; }
+.monitorBody > i { display:grid; flex:none; color:#F28B82; }
+.monitorPhoto { position:relative; flex:1; max-width:64px; aspect-ratio:1; overflow:hidden; border-radius:6px; background:#E6EBF1; }
+.monitorPhoto img { object-fit:cover; object-position:center 30%; }
+.monitorPhoto em { position:absolute; right:3px; bottom:3px; left:3px; z-index:1; padding:1px 0; border-radius:999px; background:rgba(23,32,48,.72); color:#FFFFFF; font-size:9px; font-style:normal; font-weight:700; text-align:center; }
+.monitorPhoto .caseAi { background:#3978B8; }
+.monitorQr { display:grid; flex:none; justify-items:center; gap:3px; margin-left:auto; }
+.monitorQr > span { width:38px; height:38px; border:3px solid #FFFFFF; outline:1px solid #DCE5F0; background:conic-gradient(#173B70 25%,#FFFFFF 0 50%,#173B70 0 75%,#FFFFFF 0) 0 0 / 8px 8px; }
+.monitorQr small { color:#25508F; font-size:9.5px; font-weight:800; }
 .caseWhere { color:#25508F; font-size:12px; font-weight:700; }
 .caseCard strong { display:block; margin-top:2px; color:#173B70; font-size:17px; font-weight:800; letter-spacing:-.3px; }
 .caseText { margin-top:6px; color:#4A5D75; font-size:13.5px; line-height:1.7; word-break:keep-all; }
 .caseNote { margin-top:10px; color:#7A8BA0; font-size:12.5px; }
 @media(width<640px) { .caseRow { grid-template-columns:minmax(0,1fr); } }
-@media(prefers-reduced-motion:reduce) { .caseCard,.casePair img { animation:none; transition:none; } .caseCard:hover { transform:none; } }
+@media(prefers-reduced-motion:reduce) { .caseCard { animation:none; transition:none; } .caseCard:hover { transform:none; } }
 
 /* Campaign items: a white logo tile (or campaign photo) instead of a generic icon. */
 .features span.campaignMark { position:relative; display:flex; margin-top:0; flex:0 0 120px; height:84px; flex-direction:column; justify-content:center; gap:8px; padding:12px 14px; overflow:hidden; border:1px solid #E3EAF3; border-radius:14px; background:#FFFFFF; transition:border-color .25s ease,transform .3s cubic-bezier(.2,.7,.2,1); }
@@ -403,7 +435,9 @@
 .sheet { --point:#F28B82; --point-strong:#D4675E; --point-ink:#B4473F; --point-soft:#FDECEA; }
 .kicker { display:flex; align-items:center; gap:7px; }
 .kicker::before { flex:none; width:6px; height:6px; border-radius:50%; background:var(--point); content:""; }
-.quote { border-left:3px solid var(--point); }
+/* A short straight bar inside the card, in the guide's own tone, instead of a left border bent by the corner radius. */
+.quote { position:relative; }
+.quote::before { position:absolute; top:22%; bottom:22%; left:0; width:3px; border-radius:0 3px 3px 0; background:var(--tone); content:""; }
 .polaroid .handNote { color:var(--point-ink); }
 .steps li:last-child .stepIcon { background:var(--point-soft); color:var(--point-strong); box-shadow:inset 0 0 0 1px #F6CDC9; }
 .steps li:last-child:hover .stepIcon { background:var(--point-strong); color:#FFFFFF; }
