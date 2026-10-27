@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { formatGender } from "@/lib/format";
+import { formatGender, formatSyncTime } from "@/lib/format";
 import HomeChildCard from "./HomeChildCard";
 import CountUp from "./CountUp";
+import { ArrowRightIcon, PhoneIcon } from "./Icons";
 import { SEARCH_PALETTE } from "./searchStyles";
 import { DEFAULT_FILTERS, filterPersons, listRegions } from "@/lib/filter";
 import type { MissingPerson, SearchFilters, SortKey } from "@/lib/types";
@@ -83,6 +83,11 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
 
   const regions = useMemo(() => listRegions(persons), [persons]);
+  // 가장 최근에 동기화된 시각을 목록 전체의 기준 시각으로 보여 준다.
+  const syncedAt = useMemo(
+    () => persons.reduce<string | undefined>((latest, p) => (p.lastSyncedAt && (!latest || p.lastSyncedAt > latest) ? p.lastSyncedAt : latest), undefined),
+    [persons],
+  );
   const results = useMemo(
     () => filterPersons(persons, { query, filters, sort }),
     [persons, query, filters, sort],
@@ -129,27 +134,27 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
     <div ref={pageRef} className={PAGE}>
       <div className="page-container pt-0">
       <div className="min-w-0">
-      <section className="relative mx-0 min-h-[345px] overflow-hidden rounded-[18px] bg-[linear-gradient(180deg,#F4F8FD_0%,#FFFFFF_100%)] max-[640px]:min-h-[295px] max-[640px]:rounded-[14px]" aria-labelledby="campaign-title">
-        <Image src="/images/search-campaign-hope.png" alt="" fill priority sizes="(min-width: 1280px) 1200px, 100vw" className="animate-search-zoom object-cover object-[75%_38%] opacity-62 saturate-80 [-webkit-mask-image:linear-gradient(90deg,transparent_18%,#000_58%)] [mask-image:linear-gradient(90deg,transparent_18%,#000_58%)] max-[640px]:object-[65%_center] max-[640px]:opacity-40 max-[640px]:[-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_70%)] max-[640px]:[mask-image:linear-gradient(90deg,transparent_0%,#000_70%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(244,248,253,0)_0%,rgba(244,248,253,.35)_72%,rgba(255,255,255,.7)_100%)] max-[640px]:bg-[linear-gradient(180deg,rgba(244,248,253,.1),rgba(255,255,255,.6))]" />
-        <div className="relative px-10 pt-[38px] pb-[88px] max-[800px]:pl-[25px] max-[640px]:px-5 max-[640px]:pt-7 max-[640px]:pb-20">
-          <p className={`${RISE} mb-3 inline-flex w-fit items-center gap-2 rounded-full border border-[rgb(57_120_184/16%)] bg-white/78 px-3 py-[5px] text-[12px] leading-[1.8] font-bold tracking-[.02em] break-keep text-brand backdrop-blur-[6px] before:size-1.5 before:animate-search-dot before:rounded-full before:bg-coral before:content-[''] max-[640px]:max-w-[180px] max-[640px]:text-[11px] motion-reduce:before:animate-none`}>작은 관심으로 함께 만드는 안전한 내일</p>
-          <h1 id="campaign-title" className="mb-4 animate-[search-rise_.85s_cubic-bezier(.2,.7,.2,1)_.08s_backwards] text-[44px] leading-[1.22] font-[850] tracking-[-1.6px] text-navy max-[1100px]:text-[40px] max-[800px]:text-[34px] max-[640px]:text-[31px] max-[640px]:tracking-[-1px]">실종아동을<br /><span className="text-brand">함께 찾아주세요</span></h1>
-          <p className="animate-[search-rise_.85s_cubic-bezier(.2,.7,.2,1)_.16s_backwards] text-[15px] leading-[1.8] break-keep text-muted max-[800px]:text-[13px] max-[640px]:max-w-[230px] max-[640px]:text-[12px]">작은 관심이 한 아이의 내일을 바꿀 수 있습니다.<br />이름, 지역, 나이 등 기억나는 정보로 찾아보세요.</p>
+      {/* 사진 없이 옅은 파란 바탕에 오른쪽으로 잔잔한 검색 물결만 둔다. 아래 실제 아이들의 사진만 얼굴로 남게 한다. */}
+      <section className="relative overflow-hidden rounded-[18px] border border-[#E3EAF3] bg-[linear-gradient(120deg,#F7FAFE_0%,#EAF2F9_100%)] after:pointer-events-none after:absolute after:inset-0 after:bg-[repeating-radial-gradient(circle_at_86%_58%,rgb(57_120_184/10%)_0_1px,transparent_1px_44px)] after:[-webkit-mask-image:linear-gradient(90deg,transparent_45%,#000_80%)] after:[mask-image:linear-gradient(90deg,transparent_45%,#000_80%)] after:content-[''] max-[640px]:rounded-[14px] max-[640px]:after:[-webkit-mask-image:linear-gradient(90deg,transparent_30%,#000_90%)] max-[640px]:after:[mask-image:linear-gradient(90deg,transparent_30%,#000_90%)]" aria-labelledby="campaign-title">
+        <div className="relative z-1 px-10 pt-9 pb-10 max-[800px]:pl-[25px] max-[640px]:px-5 max-[640px]:pt-[26px] max-[640px]:pb-7">
+          <p className={`${RISE} mb-3.5 inline-flex w-fit items-center gap-2 rounded-full border border-[rgb(57_120_184/16%)] bg-white px-3 py-[5px] text-[12px] font-bold tracking-[.02em] text-brand before:size-1.5 before:rounded-full before:bg-brand before:content-[''] max-[640px]:text-[11px]`}>경찰청 공개 실종아동 정보</p>
+          <h1 id="campaign-title" className="mb-3.5 animate-[search-rise_.85s_cubic-bezier(.2,.7,.2,1)_.08s_backwards] text-[40px] leading-[1.22] font-[850] tracking-[-1.4px] text-navy max-[1100px]:text-[36px] max-[800px]:text-[32px] max-[640px]:text-[29px] max-[640px]:tracking-[-1px]">실종아동을<br /><span className="text-brand">함께 찾아주세요</span></h1>
+          <p className="animate-[search-rise_.85s_cubic-bezier(.2,.7,.2,1)_.16s_backwards] text-[15px] leading-[1.8] break-keep text-muted max-[800px]:text-[13px]">작은 관심이 한 아이의 내일을 바꿀 수 있습니다.<br />이름, 지역, 나이 등 기억나는 정보로 찾아보세요.</p>
         </div>
-        <span className="absolute right-5 bottom-[65px] text-[10px] text-white [text-shadow:0_1px_4px_#15314b] max-[640px]:right-3 max-[640px]:bottom-12 max-[640px]:text-[8px]">AI로 제작한 캠페인 이미지</span>
       </section>
       <section className="relative mt-4 max-[640px]:mt-3" aria-labelledby="search-page-title">
         <div className="mx-auto w-full max-w-300">
           <h2 id="search-page-title" className="sr-only" tabIndex={-1}>실종아동 검색</h2>
           <div className={SEARCH_BOX}><SearchPanel query={query} onQueryChange={(value)=>{setQuery(value);setPage(0);}} filters={filters} onFiltersChange={(value)=>{setFilters(value);setPage(0);}} regions={regions} onReset={reset} onSubmit={goToResults} inputId={SEARCH_INPUT_ID} /></div>
           {selected.length > 0 && <div className="mx-[3px] mt-3 mb-0 flex flex-wrap items-center gap-[7px] text-[12px] text-[#6e8095] max-[640px]:text-[11px]" aria-label="선택한 검색 조건" aria-live="polite"><strong className="font-semibold">선택한 조건</strong>{selected.map((label) => <span key={label} className="animate-search-chip-in rounded-[5px] bg-brand-soft px-2 py-[3px]">{label}</span>)}</div>}
+          {/* 얼굴을 막 알아본 사람에게 가장 먼저 필요한 번호를 검색창 바로 아래에 둔다. */}
+          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-[10px] border border-[#F6D9D5] bg-[#FEF7F6] px-3.5 py-2.5 text-[13px] leading-[1.5] text-muted max-[640px]:px-3 max-[640px]:text-[12px] [&>svg]:shrink-0 [&>svg]:text-[#C9483F] [&_a]:font-extrabold [&_a]:text-[#B4473F] [&_a]:underline [&_a]:decoration-[rgba(201,72,63,.35)] [&_a]:underline-offset-3 [&_a:hover]:decoration-[#C9483F]"><PhoneIcon size={15} strokeWidth={2.2} aria-hidden="true" />아이를 지금 목격했다면 바로 <a href="tel:112">112 긴급 신고</a><span aria-hidden="true" className="text-[#D9B5B0]">·</span><a href="tel:182">182 실종아동 제보·상담</a></p>
 
         </div>
       </section>
       <section aria-labelledby="results" className="mx-auto mt-4 w-full max-w-300 rounded-2xl border border-[#E3EAF3] bg-white px-[22px] pt-6 pb-7 shadow-[0_6px_22px_rgba(23,59,112,.035)] max-[640px]:mt-3 max-[640px]:rounded-[13px] max-[640px]:px-[13px] max-[640px]:pt-[18px] max-[640px]:pb-5">
         <header className="mb-3.5 flex items-center justify-between gap-[18px] max-[640px]:mb-3 max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2.5">
-          <h2 id="results" tabIndex={-1} className="flex scroll-mt-[100px] items-center gap-2.5 text-[24px] leading-[1.4] font-extrabold tracking-[-.7px] text-navy outline-none before:size-2 before:flex-none before:rounded-full before:bg-coral before:shadow-[0_0_0_4px_#FEF4F3] before:content-[''] max-[640px]:text-[22px]">현재 찾고 있는 아이들</h2>
+          <h2 id="results" tabIndex={-1} className="flex scroll-mt-[100px] items-center gap-2.5 text-[24px] leading-[1.4] font-extrabold tracking-[-.7px] text-navy outline-none before:size-2 before:flex-none before:rounded-full before:bg-brand before:shadow-[0_0_0_4px_#EAF2F9] before:content-[''] max-[640px]:text-[22px]">현재 찾고 있는 아이들</h2>
           <div className="flex shrink-0 items-center gap-3.5 max-[640px]:w-full max-[640px]:justify-between">
             <p aria-live="polite" className="rounded-full bg-brand-soft px-3 py-1.5 text-[14px] text-[#3D5877]">총 <strong className="font-[750] text-brand"><CountUp value={results.length} /></strong>명</p>
             <label htmlFor="public-search-sort" className="sr-only">정렬</label>
@@ -160,7 +165,7 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
             </select>
           </div>
         </header>
-        <div className="mb-[18px] flex items-center gap-2.5 rounded-xl border border-[#E7ECF2] bg-[#F9FAFC] px-[13px] py-2.5 text-[12px] leading-[1.7] text-[#6b7b8e] max-[640px]:items-start max-[640px]:gap-2 max-[640px]:px-[11px] max-[640px]:text-[11px]"><span className="shrink-0 border-r border-[#d9e2ec] pr-2.5 text-[11px] font-bold text-brand max-[640px]:pr-2 max-[640px]:text-[10px]">자료 출처: 경찰청</span><p>우리 DB에 동기화된 공개 실종아동 정보입니다. 검색과 페이지 이동은 저장된 정보만 조회합니다.</p></div>
+        <div className="mb-[18px] flex items-center gap-2.5 rounded-xl border border-[#E7ECF2] bg-[#F9FAFC] px-[13px] py-2.5 text-[12px] leading-[1.7] text-[#6b7b8e] max-[640px]:items-start max-[640px]:gap-2 max-[640px]:px-[11px] max-[640px]:text-[11px]"><span className="shrink-0 border-r border-[#d9e2ec] pr-2.5 text-[11px] font-bold text-brand max-[640px]:pr-2 max-[640px]:text-[10px]">자료 출처: 경찰청</span><p>경찰청이 공개한 실종아동 정보를 정기적으로 받아 보여 드립니다.{syncedAt && <> 기준: {formatSyncTime(syncedAt)}.</>} 사진과 정보는 공개 당시 기준이라 지금 모습과 다를 수 있습니다.</p></div>
         {results.length > 0 ? (
           <div id="search-card-page" className="grid grid-cols-[1fr] gap-[18px] min-[800px]:grid-cols-2 min-[1100px]:grid-cols-3 sm:max-[800px]:grid-cols-2 sm:max-[800px]:gap-3.5" data-reveal-items>
             {visible.map((person) => (
@@ -185,12 +190,13 @@ export default function PublicSearchExplorer({ persons }: { persons: MissingPers
         </nav>}
       </section>
 
-      <Link href="/help#know" className="mt-[25px] grid min-h-[100px] grid-cols-[130px_minmax(0,1fr)] items-center gap-[18px] rounded-[13px] bg-[linear-gradient(100deg,#fdf2f1,#f8f5f5_60%,#faf1f0)] px-[22px] py-2 [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease] hover:[transform:translateY(-3px)] hover:shadow-[0_14px_30px_rgba(185,78,64,.12)] max-[640px]:grid-cols-[76px_minmax(0,1fr)] max-[640px]:gap-2.5 max-[640px]:p-2.5" aria-label="기억나는 작은 단서, 목격 제보 안내 보기">
-        <Image src="/images/report-hope-hand.png" alt="" width={112} height={74} sizes="(max-width: 640px) 76px, 112px" className="h-24 w-[150px] shrink-0 animate-search-float object-contain max-[800px]:h-[85px] max-[800px]:w-[110px] max-[640px]:h-[68px] max-[640px]:w-[76px]" />
-        <span className="min-w-0 text-center max-[640px]:flex-1">
-          <strong className="block text-[20px] leading-[1.5] font-extrabold tracking-[-.5px] break-keep max-[1100px]:text-[18px] max-[640px]:text-[14px]">기억나는 작은 단서, <span className="text-brand">다시 만나는 희망이 됩니다.</span></strong>
-          <small className="mt-[5px] block text-[13px] text-[#7b8493] max-[640px]:text-[10px]">작은 기억도 소중한 제보가 될 수 있어요.</small>
+      <Link href="/help#know" className="group/report mt-5 flex items-center gap-4 rounded-[14px] border border-[#DCE5F0] bg-[#F5F8FC] px-[22px] py-[18px] [transition:border-color_.2s_ease,background-color_.2s_ease] hover:border-[#A9C4E5] hover:bg-[#EEF4FB] max-[640px]:flex-wrap max-[640px]:gap-3 max-[640px]:p-3.5">
+        <span className="grid size-11 shrink-0 place-items-center rounded-full border border-[#DCE5F0] bg-white text-brand max-[640px]:size-[38px]" aria-hidden="true"><PhoneIcon size={20} /></span>
+        <span className="min-w-0 max-[640px]:flex-1">
+          <strong className="block text-[17px] leading-[1.5] font-extrabold tracking-[-.4px] break-keep text-navy max-[640px]:text-[15px]">기억나는 작은 단서도 제보가 됩니다</strong>
+          <small className="mt-0.5 block text-[13px] break-keep text-muted max-[640px]:text-[12px]">언제, 어디서 봤는지만 알려 주셔도 큰 도움이 돼요.</small>
         </span>
+        <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 text-[14px] font-bold whitespace-nowrap text-brand max-[800px]:text-[13px] max-[640px]:w-full max-[640px]:justify-end">목격 제보 방법 보기<ArrowRightIcon size={15} aria-hidden="true" /></span>
       </Link>
       </div>
       </div>

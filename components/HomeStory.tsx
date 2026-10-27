@@ -64,14 +64,17 @@ const ui = {
   splitTagLeft: "left-3.5 bg-[rgba(23,32,48,.68)]",
   splitTagRight: "right-3.5 bg-brand",
   // Story 02 puts its picture on the right (on top again once the stories stack).
-  supportVisual: "order-1 max-[760px]:order-[-1]",
+  // A breakpoint variant so it outranks the picture's base order-[-1] on the same element.
+  supportVisual: "min-[761px]:order-1",
   // Places the campaigns reach, as a dotted list: blue and coral dots in turn.
   campaignPlaces: "mt-[18px] flex flex-wrap gap-x-3.5 gap-y-1.5 text-[13px] font-bold text-[#3D5877] max-sm:gap-x-3 max-sm:text-[12.5px]",
   campaignPlace: "inline-flex items-center gap-1.5 before:size-[5px] before:rounded-full before:bg-[color:var(--tone)] before:content-[''] even:before:bg-[#F28B82]",
   supportTag: "absolute right-4 bottom-4 z-1 rounded-full bg-white/90 px-[9px] py-[3px] text-[10.5px] font-extrabold tracking-[.02em] text-[#B4473F] shadow-[0_4px_10px_rgba(23,59,112,.1)]",
 
   // Guide sheet inside the bare modal.
-  sheet: "grid min-h-full grid-cols-[232px_minmax(0,1fr)] text-[#1C2F4D] max-[760px]:grid-cols-[minmax(0,1fr)]",
+  // Coral point: a few small warm marks in every guide sheet (section dots, the quote edge, the handwritten note
+  // and the last 'hope' step), so the sheets stay blue but not cold.
+  sheet: "grid min-h-full grid-cols-[232px_minmax(0,1fr)] text-[#1C2F4D] [--point:#F28B82] [--point-strong:#D4675E] [--point-ink:#B4473F] [--point-soft:#FDECEA] max-[760px]:grid-cols-[minmax(0,1fr)]",
   // Side navigation: a quiet reading guide. Steps sit on a thin line, the current one is filled with the tone,
   // steps already read keep a soft tint, and a progress bar shows how far the reader is.
   sheetNav: "border-r border-[#E6EDF5] bg-[#F7F9FC] max-[760px]:sticky max-[760px]:top-0 max-[760px]:z-20 max-[760px]:border-r-0 max-[760px]:border-b",
@@ -97,7 +100,7 @@ const ui = {
   sheetBody: "min-w-0",
   sheetSection: "scroll-mt-2 animate-home-rise border-b border-[#EEF2F7] px-12 pt-10 pb-9 first:bg-[linear-gradient(180deg,#F4F8FD_0%,#FFFFFF_70%)] first:pt-[52px] [&:nth-child(2)]:[animation-delay:.06s] max-[1000px]:px-8 max-[1000px]:pt-[34px] max-[1000px]:pb-[30px] max-[760px]:px-5 max-[760px]:pt-7 max-[760px]:pb-[26px] max-[760px]:first:pt-[30px] motion-reduce:animate-none",
 
-  kicker: "text-[12px] font-bold tracking-[.02em] text-brand",
+  kicker: "flex items-center gap-[7px] text-[12px] font-bold tracking-[.02em] text-brand before:size-1.5 before:flex-none before:rounded-full before:bg-[color:var(--point)] before:content-['']",
   bigTitle: "mt-3 text-[30px] leading-[1.35] font-extrabold tracking-[-.9px] break-keep text-brand-dark max-[760px]:text-[23px]",
   midTitle: "mt-2 text-[22px] leading-[1.4] font-extrabold tracking-[-.5px] break-keep text-brand-dark max-[760px]:text-[19px]",
   lead: "mt-4 text-[16px] leading-[1.65] font-[650] break-keep text-brand",
@@ -109,10 +112,11 @@ const ui = {
   polaroid: "group/polaroid relative m-0 max-[760px]:w-[min(220px,70%)] max-[760px]:justify-self-center",
   polaroidFrame: "rounded-[4px] bg-white px-2.5 pt-2.5 pb-[34px] shadow-[0_18px_40px_rgba(23,59,112,.16),0_2px_6px_rgba(23,59,112,.08)] [transform:rotate(-5deg)] [transition:transform_.5s_cubic-bezier(.2,.7,.2,1)] group-hover/polaroid:[transform:rotate(-2deg)_translateY(-4px)] motion-reduce:[transition:none] motion-reduce:group-hover/polaroid:[transform:none]",
   polaroidPhoto: "relative aspect-[4/5] overflow-hidden bg-[#E6EFF9]",
-  handNote: "mt-4 text-center text-[22px] leading-[1.3] break-keep text-[#2E5A93] [transform:rotate(-3deg)]",
+  handNote: "mt-4 text-center text-[22px] leading-[1.3] break-keep text-[color:var(--point-ink)] [transform:rotate(-3deg)]",
   handNoteOnPhoto: "absolute right-3 bottom-3.5 left-3 z-1 m-0 text-center text-[20px] leading-[1.3] break-keep text-white [text-shadow:0_2px_8px_rgba(0,0,0,.35)] [transform:rotate(-3deg)]",
 
-  quote: "mt-[30px] flex items-center gap-[18px] rounded-2xl border border-[#E1EAF5] bg-white px-6 py-5 shadow-[0_8px_22px_rgba(23,59,112,.06)] first:mt-0 max-[760px]:flex-col max-[760px]:items-start",
+  // A short straight bar inside the card, in the guide's own tone, instead of a left border bent by the corner radius.
+  quote: "relative mt-[30px] flex items-center gap-[18px] rounded-2xl border border-[#E1EAF5] bg-white px-6 py-5 shadow-[0_8px_22px_rgba(23,59,112,.06)] first:mt-0 max-[760px]:flex-col max-[760px]:items-start before:absolute before:top-[22%] before:bottom-[22%] before:left-0 before:w-[3px] before:rounded-r-[3px] before:bg-[color:var(--tone)] before:content-['']",
   quoteMark: "flex size-14 flex-none items-center justify-center border-r border-line pr-[18px] max-[760px]:border-r-0 max-[760px]:pr-0",
   quoteTitle: "block text-[17px] font-extrabold tracking-[-.3px] text-brand-dark",
   quoteText: "mt-1 block text-[13px] leading-[1.6] text-muted",
@@ -124,7 +128,13 @@ const ui = {
   featureText: "mt-1 block text-[13px] leading-[1.6] break-keep text-muted",
   // Campaign guide items: one per row, each with its news source.
   campaignList: "mt-[22px] grid grid-cols-[minmax(0,1fr)] gap-3",
-  campaignSource: "mt-2 inline-block rounded-[6px] bg-[#EEF3FA] px-2 py-0.5 text-[11px] font-bold text-[#3D5877] not-italic",
+  // Each campaign leads with a white tile: the organisations' own logos, a campaign photo, or a plain icon.
+  campaignMark: "relative flex h-[84px] flex-[0_0_120px] flex-col justify-center gap-2 overflow-hidden rounded-[14px] border [transition:border-color_.25s_ease,transform_.3s_cubic-bezier(.2,.7,.2,1)] group-hover/feature:[transform:scale(1.03)] group-hover/feature:border-[#D2DEEC] max-sm:h-[72px] max-sm:basis-24 motion-reduce:[transition:none] motion-reduce:group-hover/feature:[transform:none]",
+  campaignMarkLogo: "border-[#E3EAF3] bg-white px-3.5 py-3 max-sm:p-2.5",
+  campaignMarkPhoto: "border-[#E3EAF3] bg-white p-0",
+  campaignMarkIcon: "items-center border-[#DCE8F4] bg-[#EAF2F9] px-3.5 py-3 text-brand max-sm:p-2.5 [&_svg]:size-7",
+  campaignLogo: "relative block min-h-0 flex-1",
+  campaignSource: "mt-2 inline-block rounded-[6px] bg-[#EEF3FA] px-2 py-0.5 text-[12px] font-bold text-[#3D5877] not-italic",
 
   // CU reunion case as a short four-step timeline.
   timeline: "relative grid grid-cols-4 gap-3 before:absolute before:top-[7px] before:right-[12%] before:left-[12%] before:h-0.5 before:rounded-[2px] before:bg-[linear-gradient(90deg,#B9CDE6,#F6CDC9)] before:content-[''] [&>:nth-child(2)]:[animation-delay:.08s] [&>:nth-child(3)]:[animation-delay:.16s] [&>:nth-child(4)]:[animation-delay:.24s] max-[760px]:grid-cols-[minmax(0,1fr)] max-[760px]:gap-4 max-[760px]:pl-2 max-[760px]:before:top-2 max-[760px]:before:right-auto max-[760px]:before:bottom-2 max-[760px]:before:left-[15px] max-[760px]:before:h-auto max-[760px]:before:w-0.5 max-[760px]:before:bg-[linear-gradient(180deg,#B9CDE6,#F6CDC9)]",
@@ -140,7 +150,10 @@ const ui = {
 
   steps: "mt-[26px] grid grid-cols-4 gap-3 [counter-reset:step] max-[760px]:grid-cols-2 max-[760px]:gap-y-[22px]",
   step: "group/item relative flex flex-col items-center px-1.5 py-1 text-center not-last:after:absolute not-last:after:top-7 not-last:after:-right-3 not-last:after:h-0.5 not-last:after:w-3 not-last:after:rounded-[2px] not-last:after:bg-[#B9CDE6] not-last:after:content-[''] max-[760px]:not-last:after:hidden",
-  stepIcon: "flex size-14 items-center justify-center rounded-full bg-brand-soft text-brand shadow-[inset_0_0_0_1px_#D7E5F5] [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),background-color_.3s_ease,color_.3s_ease] group-hover/item:[transform:translateY(-3px)] group-hover/item:bg-brand group-hover/item:text-white motion-reduce:[transition:none] motion-reduce:group-hover/item:[transform:none]",
+  stepIcon: "flex size-14 items-center justify-center rounded-full [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),background-color_.3s_ease,color_.3s_ease] group-hover/item:[transform:translateY(-3px)] group-hover/item:text-white motion-reduce:[transition:none] motion-reduce:group-hover/item:[transform:none]",
+  stepIconTone: "bg-brand-soft text-brand shadow-[inset_0_0_0_1px_#D7E5F5] group-hover/item:bg-brand",
+  // The last 'hope' step takes the coral point.
+  stepIconHope: "bg-[color:var(--point-soft)] text-[color:var(--point-strong)] shadow-[inset_0_0_0_1px_#F6CDC9] group-hover/item:bg-[color:var(--point-strong)]",
   stepTitle: "mt-3 text-[14.5px] font-extrabold text-brand-dark",
   stepText: "mt-1.5 text-[12.5px] leading-[1.6] break-keep text-muted",
 
@@ -153,12 +166,44 @@ const ui = {
   tiers: "mt-[22px] grid grid-cols-3 gap-2.5 max-[1000px]:grid-cols-2 max-[760px]:grid-cols-[minmax(0,1fr)]",
   tier: "flex flex-col rounded-[14px] border border-[#E6EDF5] bg-[#FBFCFE] p-4 [transition:transform_.3s_cubic-bezier(.2,.7,.2,1),border-color_.25s_ease,box-shadow_.3s_ease] hover:[transform:translateY(-2px)] hover:border-[#EBD3C9] hover:shadow-[0_10px_24px_rgba(23,59,112,.07)] motion-reduce:[transition:none] motion-reduce:hover:[transform:none]",
 
-  sheetEnding: "relative isolate flex min-h-[190px] items-end justify-between gap-4 overflow-hidden px-10 py-7 before:absolute before:inset-0 before:z-0 before:bg-[linear-gradient(180deg,rgba(255,255,255,.85)_0%,rgba(23,59,112,.15)_45%,rgba(14,32,62,.55)_100%)] before:content-[''] [&>:not(img)]:relative [&>:not(img)]:z-1 max-[760px]:flex-col max-[760px]:items-start max-[760px]:px-5 max-[760px]:py-6",
+  // A small, tall photo (data-side: the QR key ring, the four-frame print) sits at its own size on the right and fades into navy.
+  sheetEnding: "relative isolate flex [&:has(>[data-side])]:bg-[#1E3A63] min-h-[190px] items-end justify-between gap-4 overflow-hidden px-10 py-7 before:absolute before:inset-0 before:z-0 before:bg-[linear-gradient(180deg,rgba(255,255,255,.85)_0%,rgba(23,59,112,.15)_45%,rgba(14,32,62,.55)_100%)] before:content-[''] [&>:not(img)]:relative [&>:not(img)]:z-1 max-[760px]:flex-col max-[760px]:items-start max-[760px]:px-5 max-[760px]:py-6",
   // scale crops the thin white border baked into the source photos
   endingPhoto: "-z-1 object-cover object-[center_45%] [transform:scale(1.06)]",
+  endingPhotoSide: "-z-1 left-auto! w-[46%]! object-cover object-[30%_52%] [-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_45%)] [mask-image:linear-gradient(90deg,transparent_0%,#000_45%)] max-sm:w-[70%]!",
   endingNote: "text-[26px] leading-[1.35] text-white [text-shadow:0_2px_10px_rgba(0,0,0,.35)] [transform:rotate(-2deg)] max-[760px]:text-[22px]",
   toTop: "inline-flex flex-none cursor-pointer items-center gap-1.5 rounded-full border border-white/60 bg-white/18 px-3.5 py-2 text-[12.5px] font-bold text-white backdrop-blur-[6px] [transition:background-color_.2s_ease] hover:bg-white/32 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-brand",
   toTopIcon: "[transform:rotate(-90deg)]",
+
+  // Campaign video: the four-frame photo is the play button, and the YouTube player opens full width under the intro.
+  playButton: "absolute inset-0 z-2 flex cursor-pointer flex-col items-center justify-center gap-2 pb-[52px] text-white focus-visible:rounded-[18px] focus-visible:outline-3 focus-visible:-outline-offset-3 focus-visible:outline-brand",
+  playIcon: "grid size-[52px] place-items-center rounded-full bg-[rgba(23,59,112,.82)] pl-[3px] shadow-[0_8px_20px_rgba(14,32,62,.3)] [transition:transform_.3s_cubic-bezier(.2,.7,.2,1),background-color_.2s_ease] group-hover/play:[transform:scale(1.08)] group-hover/play:bg-brand motion-reduce:[transition:none]",
+  playLabel: "rounded-full bg-[rgba(14,32,62,.6)] px-2.5 py-[3px] text-[12.5px] font-bold",
+  videoFrame: "relative mt-[22px] aspect-video overflow-hidden rounded-2xl bg-[#0E203E] shadow-[0_16px_36px_rgba(23,59,112,.14)]",
+  videoCredit: "mt-2.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-[12.5px] leading-[1.6] break-keep text-[#62748C]",
+
+  // Campaign guide: two case cards, each led by a scene recreated where the campaign actually ran.
+  caseRow: "mt-[26px] grid grid-cols-2 gap-3.5 max-sm:grid-cols-[minmax(0,1fr)]",
+  caseCard: "flex animate-[home-rise_.6s_cubic-bezier(.2,.7,.2,1)_.15s_backwards] flex-col gap-3.5 rounded-[18px] border border-[#E3EAF3] bg-[#FBFCFE] p-[18px] [transition:transform_.3s_cubic-bezier(.2,.7,.2,1),border-color_.25s_ease,box-shadow_.3s_ease] hover:[transform:translateY(-3px)] hover:border-[#D2DEEC] hover:shadow-[0_14px_30px_rgba(23,59,112,.08)] [&+&]:[animation-delay:.25s] motion-reduce:animate-none motion-reduce:[transition:none] motion-reduce:hover:[transform:none]",
+  caseWhere: "text-[12px] font-bold text-[#25508F]",
+  caseName: "mt-0.5 block text-[17px] font-extrabold tracking-[-.3px] text-brand-dark",
+  caseText: "mt-1.5 text-[13.5px] leading-[1.7] break-keep text-[#4A5D75]",
+  caseNote: "mt-2.5 text-[12.5px] text-[#7A8BA0]",
+  scene: "relative h-[150px] overflow-hidden rounded-[14px]",
+  sceneTag: "absolute top-2 right-2 z-2 rounded-full bg-[rgba(23,32,48,.62)] px-2 py-0.5 text-[11px] font-bold text-white not-italic",
+  // 호프테이프: kraft cardboard with a center seam, crossed by a printed packing tape.
+  tapeScene: "[background:linear-gradient(90deg,transparent_calc(50%-1px),rgba(120,82,40,.28)_50%,transparent_calc(50%+1px)),linear-gradient(160deg,#DDB984,#C79A5F)]",
+  tape: "absolute top-1/2 left-[-12%] flex w-[124%] border-y border-[rgba(160,120,70,.35)] bg-[rgba(252,248,238,.94)] py-2 shadow-[0_6px_14px_rgba(80,52,20,.22)] [transform:translateY(-50%)_rotate(-5deg)]",
+  tapeCell: "flex flex-none items-center gap-[5px] border-r border-dashed border-[rgba(160,120,70,.45)] px-3.5",
+  tapePhoto: "relative h-12 w-10 overflow-hidden rounded-[4px] bg-[#E6EBF1]",
+  // 에어서울: a seat back with its screen showing the pair and a QR code.
+  monitorScene: "grid place-items-center [background:radial-gradient(120%_90%_at_50%_0%,#5B6676,#2E3642)]",
+  monitor: "w-[min(88%,280px)] rounded-xl bg-[#11161D] p-2 shadow-[0_10px_22px_rgba(0,0,0,.35),inset_0_0_0_1px_rgba(255,255,255,.06)]",
+  monitorPhoto: "relative aspect-square max-w-16 flex-1 overflow-hidden rounded-[6px] bg-[#E6EBF1]",
+  monitorPhotoTag: "absolute inset-x-[3px] bottom-[3px] z-1 rounded-full py-px text-center text-[9px] font-bold text-white not-italic",
+
+  // Support story: a recreated convenience-store POS screen.
+  posScreen: "overflow-hidden rounded-2xl border-[6px] border-[#25303B] bg-white shadow-[0_14px_30px_rgba(23,59,112,.16)] [transform:rotate(-1.5deg)]",
 };
 
 /* Two-pane guide shown inside a bare Modal: a numbered sidebar that follows the reading position, and the sections. */
@@ -166,13 +211,13 @@ function GuideSheet({ title, sections, ending, tone = "brand" }: { title: string
   const sheetRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(sections[0].id);
 
-  const scroller = () => sheetRef.current?.closest<HTMLElement>("[role=dialog]") ?? null;
+  const scroller = () => sheetRef.current?.closest<HTMLElement>("[data-modal-scroll]") ?? null;
   const smooth = () => !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // The active item is the last section whose top has passed a line near the top of the box,
   // or the last section once the box is scrolled to the end (short final sections never reach the line).
   useEffect(() => {
-    const root = sheetRef.current?.closest<HTMLElement>("[role=dialog]");
+    const root = scroller();
     if (!root) return;
     let frame = 0;
     const update = () => {
@@ -225,7 +270,7 @@ function GuideSheet({ title, sections, ending, tone = "brand" }: { title: string
           </ol>
           <a href="tel:182" className={ui.sheetHelp}>
             <span aria-hidden="true" className={ui.sheetHelpIcon}><PhoneIcon size={16} strokeWidth={2} /></span>
-            <span><small className="block text-[11px] font-semibold text-subtle">제보·상담이 필요하다면</small><strong className="mt-px block text-[14px] font-[850]">경찰청 182</strong></span>
+            <span><small className="block text-[12px] font-semibold text-[#62748C]">제보·상담이 필요하다면</small><strong className="mt-px block text-[14px] font-[850]">경찰청 182</strong></span>
           </a>
         </nav>
       </aside>
@@ -266,9 +311,9 @@ function AgePair({ past, aged }: { past: string; aged: string }) {
 function Steps({ items }: { items: { icon: ReactNode; title: string; text: string }[] }) {
   return (
     <ol className={ui.steps}>
-      {items.map(item => (
+      {items.map((item, index) => (
         <li key={item.title} className={ui.step}>
-          <span aria-hidden="true" className={ui.stepIcon}>{item.icon}</span>
+          <span aria-hidden="true" className={`${ui.stepIcon} ${index === items.length - 1 ? ui.stepIconHope : ui.stepIconTone}`}>{item.icon}</span>
           <strong className={ui.stepTitle}>{item.title}</strong>
           <span className={ui.stepText}>{item.text}</span>
         </li>
@@ -383,7 +428,7 @@ function ServiceGuide() {
       title="서비스 소개"
       sections={sections}
       ending={<>
-        <Image src="/images/home-family-walk.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhoto} />
+        <Image src="/images/home-closing-sky.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhoto} />
         <p className={`${pen.className} ${ui.endingNote}`}>기억은 사라지지 않습니다.<br />다시 만날 그날을 위해, 오늘도.</p>
       </>}
     />
@@ -407,9 +452,15 @@ function SupportGuide() {
             <p className={ui.body}>이 사례는 우리에게 한 가지 가능성을 보여주었습니다. 실종 정보가 사람들의 일상 속에서 한 번 더 발견된다면, 누군가에게는 가족을 다시 만날 기회가 될 수 있다는 것을요.</p>
             <p className={ui.lead}>우리는 이 가능성을 우리의 일상에서도 이어가고 싶습니다.</p>
           </div>
-          <figure className={ui.supportPhoto}>
-            <Image src="/images/support-children-background.png" alt="햇살 아래 손을 잡고 뛰어가는 아이들 · AI 캠페인 이미지" fill sizes="(max-width: 640px) 100vw, 320px" className="object-cover object-[55%_40%]" />
-            <figcaption className={`${pen.className} ${ui.handNoteOnPhoto}`}>한 번 더 발견되는 일이, 다시 만나는 길이 됩니다.</figcaption>
+          {/* 편의점 결제 화면을 재현한 예시. 실제 당사자 사진은 쓰지 않는다. */}
+          <figure className="m-0 grid animate-[home-rise_.7s_cubic-bezier(.2,.7,.2,1)_.1s_backwards] gap-2.5 motion-reduce:animate-none" aria-label="편의점 결제 화면에 뜬 실종아동 정보 (재현 예시)">
+            <div className={ui.posScreen} aria-hidden="true">
+              <div className="flex items-center justify-between gap-2 bg-[#EEF1F5] px-2.5 py-1.5 text-[10.5px] font-bold text-[#62748C]"><span className="relative h-[18px] w-[30px]"><Image src="/images/partners/cu.png" alt="" fill sizes="40px" unoptimized className="object-contain" /></span><span>재현 예시 화면</span></div>
+              <div className="flex items-center gap-2.5 p-2.5">
+                <span className="relative aspect-[3/4] w-[62px] flex-none overflow-hidden rounded-[6px] bg-[#E6EBF1]"><Image src="/images/mock-persons/MC-1999-0341/past.jpg" alt="" fill sizes="80px" className="object-cover object-[center_30%] [filter:saturate(.8)]" /></span>
+                <span className="grid gap-0.5"><strong className="text-[13px] font-[850] text-[#B4473F]">실종아동을 찾습니다</strong><small className="text-[11px] text-[#4A5D75]">2000년 · 당시 4세</small><small className="text-[11px] text-[#4A5D75]">보신 분은 182로 연락 주세요</small></span>
+              </div>
+            </div>
           </figure>
         </div>
           <ol className={`${ui.timeline} ${ui.blockGap}`} aria-label="CU 실종아동 찾기 캠페인 상봉 사례">
@@ -510,7 +561,7 @@ function SupportGuide() {
       tone="coral"
       sections={sections}
       ending={<>
-        <Image src="/images/support-children-background.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhoto} />
+        <Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhotoSide} data-side />
         <p className={`${pen.className} ${ui.endingNote}`}>굿즈를 만드는 일에서 시작해,<br />한 아이를 기억하는 일로.</p>
       </>}
     />
@@ -520,32 +571,135 @@ function SupportGuide() {
 // 일상 속에서 실종아동을 다시 보게 하는 국내 캠페인 모음. 보도 기사를 바탕으로 정리했다.
 const CAMPAIGNS = {
   store: [
-    { title: "CU · 아이CU", text: "전국 CU 점포에서 길 잃은 아이를 보호하고 경찰에 인계해요. POS 화면에 장기 실종아동 사진을 띄워 20년 만의 상봉 사례도 있어요.", source: "파이낸셜뉴스" },
-    { title: "우체국 · 한진 · 경찰청 '호프테이프'", text: "택배 포장 테이프에 실종 당시 사진과 나이 변환 예상 모습을 함께 인쇄했어요. 한진은 이 캠페인 등으로 사회공헌 시상에서 상을 받기도 했어요.", source: "사이언스타임즈 · 메트로서울" },
-    { title: "티르티르 택배 라벨", text: "뷰티 브랜드 티르티르는 택배 상자 안쪽에 실종 당시 사진과 현재 추정 사진을 비교하는 라벨을 붙였어요.", source: "메트로서울" },
-    { title: "인생네컷 × 경찰청 '실종아동네컷'", text: "인생네컷과 경찰청이 함께한 장기 실종아동 찾기 캠페인이에요. 네 컷 사진 프레임에 아이들의 어린 시절 모습과 특징을 담았어요.", source: "캠페인 포스터" },
+    { title: "CU · 아이CU", text: "전국 CU 점포에서 길 잃은 아이를 보호하고 경찰에 인계해요. POS 화면에 장기 실종아동 사진을 띄워 20년 만의 상봉 사례도 있어요.", source: "파이낸셜뉴스", logos: ["/images/partners/cu.png"] },
+    { title: "우체국 · 한진 · 경찰청 '호프테이프'", text: "택배 포장 테이프에 실종 당시 사진과 나이 변환 예상 모습을 함께 인쇄했어요. 한진은 이 캠페인 등으로 사회공헌 시상에서 상을 받기도 했어요.", source: "사이언스타임즈 · 메트로서울", logos: ["/images/partners/epost.png", "/images/partners/hanjin.png"] },
+    { title: "티르티르 택배 라벨", text: "뷰티 브랜드 티르티르는 택배 상자 안쪽에 실종 당시 사진과 현재 추정 사진을 비교하는 라벨을 붙였어요.", source: "메트로서울", logos: ["/images/partners/tirtir.svg"] },
+    { title: "인생네컷 × 경찰청 '실종아동네컷'", text: "인생네컷과 경찰청이 함께한 장기 실종아동 찾기 캠페인이에요. 네 컷 사진 프레임에 아이들의 어린 시절 모습과 특징을 담았어요.", source: "캠페인 포스터", photo: "/images/campaign-four-frame.webp" },
   ],
   app: [
-    { title: "당근 × 경찰청 실종 정보 실시간 공유", text: "안전Dream에 공개된 실종 정보가 당근 앱에 실시간으로 올라가고, 발견되면 자동 삭제돼요.", source: "뉴시스" },
-    { title: "토스 × 대전경찰청 결제 단말기 실종경보", text: "실종경보 발령 시 지역 가맹점의 토스 결제 단말기에 실종 정보를 띄우는 협약이에요. 대전에서 먼저 시작해요.", source: "토스피드" },
-    { title: "NH농협은행 인터넷뱅킹 실종아동 찾기", text: "2016년부터 이체 화면에 실종아동 사진과 정보를 노출해 왔어요. 10년째 이어진 장수 캠페인이에요.", source: "스마트투데이" },
+    { title: "당근 × 경찰청 실종 정보 실시간 공유", text: "안전Dream에 공개된 실종 정보가 당근 앱에 실시간으로 올라가고, 발견되면 자동 삭제돼요.", source: "뉴시스", logos: ["/images/partners/daangn.svg"] },
+    { title: "토스 × 대전경찰청 결제 단말기 실종경보", text: "실종경보 발령 시 지역 가맹점의 토스 결제 단말기에 실종 정보를 띄우는 협약이에요. 대전에서 먼저 시작해요.", source: "토스피드", logos: ["/images/partners/toss.png"] },
+    { title: "NH농협은행 인터넷뱅킹 실종아동 찾기", text: "2016년부터 이체 화면에 실종아동 사진과 정보를 노출해 왔어요. 10년째 이어진 장수 캠페인이에요.", source: "스마트투데이", logos: ["/images/partners/nh.png"] },
   ],
   more: [
     { title: "에어서울 기내 모니터 실종아동 찾기", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", source: "아이뉴스24" },
-    { title: "KB국민은행 · 실종 예방 협력", text: "자녀 지문을 등록하고 사전신고증을 내면 어린이 적금에 우대이율을 주는 상품이 있었어요. 올해 실종아동의 날 행사에서 KB국민은행과 NH농협은행이 경찰청장 감사장을 받았어요.", source: "데일리안 · 다자비" },
+    { title: "KB국민은행 · 실종 예방 협력", text: "자녀 지문을 등록하고 사전신고증을 내면 어린이 적금에 우대이율을 주는 상품이 있었어요. 올해 실종아동의 날 행사에서 KB국민은행과 NH농협은행이 경찰청장 감사장을 받았어요.", source: "데일리안 · 다자비", logos: ["/images/partners/kb.png", "/images/partners/nh.png"] },
   ],
 } as const;
 
-function CampaignList({ items, icon }: { items: readonly { title: string; text: string; source: string }[]; icon: ReactNode }) {
+type CampaignItem = { title: string; text: string; source: string; logos?: readonly string[]; photo?: string };
+
+// Each campaign leads with what it is: the organisations' own logos, a campaign photo, or a plain icon.
+function CampaignList({ items, icon }: { items: readonly CampaignItem[]; icon: ReactNode }) {
   return (
     <ul className={ui.campaignList}>
       {items.map(item => (
-        <li key={item.title} className={ui.feature}>
-          <span aria-hidden="true" className={ui.featureIcon}>{icon}</span>
+        <li key={item.title} className={`group/feature ${ui.feature}`}>
+          {item.photo ? (
+            <span aria-hidden="true" className={`${ui.campaignMark} ${ui.campaignMarkPhoto}`}><Image src={item.photo} alt="" fill sizes="120px" className="object-cover object-[center_40%]" /></span>
+          ) : item.logos?.length ? (
+            <span aria-hidden="true" className={`${ui.campaignMark} ${ui.campaignMarkLogo}`}>
+              {item.logos.map(logo => <span key={logo} className={ui.campaignLogo}><Image src={logo} alt="" fill sizes="100px" unoptimized className="object-contain" /></span>)}
+            </span>
+          ) : (
+            <span aria-hidden="true" className={`${ui.campaignMark} ${ui.campaignMarkIcon}`}>{icon}</span>
+          )}
           <div><strong className={ui.featureTitle}>{item.title}</strong><span className={ui.featureText}>{item.text}</span><em className={ui.campaignSource}>출처: {item.source}</em></div>
         </li>
       ))}
     </ul>
+  );
+}
+
+const TAPE_PERSON = "/images/mock-persons/MC-1994-0627";
+const MONITOR_PERSON = "/images/mock-persons/MC-2004-0302";
+
+/** 호프테이프 재현: 택배 상자 위를 가로지르는 포장 테이프에 '당시 → 현재 추정' 사진이 이어 인쇄된 모습. */
+function TapeScene() {
+  return (
+    <div className={`${ui.scene} ${ui.tapeScene}`} aria-hidden="true">
+      <div className={ui.tape}>
+        {[0, 1, 2].map(i => (
+          <span key={i} className={ui.tapeCell}>
+            <span className={ui.tapePhoto}><Image src={`${TAPE_PERSON}/past.jpg`} alt="" fill sizes="48px" className="object-cover object-[center_30%] [filter:saturate(.75)_contrast(.95)]" /></span>
+            <span className={ui.tapePhoto}><Image src={`${TAPE_PERSON}/aged.jpg`} alt="" fill sizes="48px" className="object-cover object-[center_30%] [filter:saturate(.75)_contrast(.95)]" /></span>
+            <span className="ml-[3px] grid"><b className="text-[11.5px] font-[850] whitespace-nowrap text-[#B4473F]">실종아동을 찾습니다</b><small className="text-[10.5px] whitespace-nowrap text-[#5A4630]">보신 분은 182</small></span>
+          </span>
+        ))}
+      </div>
+      <em className={ui.sceneTag}>재현 예시</em>
+    </div>
+  );
+}
+
+/** 에어서울 재현: 앞 좌석 등받이 모니터에 '당시 → 현재 추정' 사진과 안전Dream QR이 뜬 모습. */
+function MonitorScene() {
+  return (
+    <div className={`${ui.scene} ${ui.monitorScene}`} aria-hidden="true">
+      <div className={ui.monitor}>
+        <p className="rounded-t-[6px] bg-[#173B70] px-2 py-1 text-[11px] font-extrabold text-white">실종아동을 찾습니다</p>
+        <div className="flex items-center gap-1.5 rounded-b-[6px] bg-[#F4F7FB] p-2">
+          <span className={ui.monitorPhoto}><Image src={`${MONITOR_PERSON}/past.jpg`} alt="" fill sizes="64px" className="object-cover object-[center_30%]" /><em className={`${ui.monitorPhotoTag} bg-[rgba(23,32,48,.72)]`}>당시</em></span>
+          <i className="grid flex-none text-[#F28B82]"><ArrowRightIcon size={11} /></i>
+          <span className={ui.monitorPhoto}><Image src={`${MONITOR_PERSON}/aged.jpg`} alt="" fill sizes="64px" className="object-cover object-[center_30%]" /><em className={`${ui.monitorPhotoTag} bg-[#3978B8]`}>현재 추정</em></span>
+          <span className="ml-auto grid flex-none justify-items-center gap-[3px]"><span className="size-[38px] border-[3px] border-white outline outline-[#DCE5F0] [background:conic-gradient(#173B70_25%,#FFFFFF_0_50%,#173B70_0_75%,#FFFFFF_0)_0_0/8px_8px]" /><small className="text-[9.5px] font-extrabold text-[#25508F]">안전Dream</small></span>
+        </div>
+      </div>
+      <em className={ui.sceneTag}>재현 예시</em>
+    </div>
+  );
+}
+
+// 실종아동네컷 캠페인 영상. 내려받아 다시 올리지 않고 YouTube 공식 퍼가기 플레이어로만 보여주며, 올린 채널을 출처로 밝힌다.
+const CAMPAIGN_VIDEO = {
+  id: "xvB02ibSPiU",
+  title: "2024 인생네컷 × 경찰청 '실종아동네컷' 캠페인 영상",
+  channel: "HYO JIN KIM",
+};
+
+/** The campaign intro. The four-frame photo doubles as the video's play button; the player loads only after a click,
+ *  so opening the guide never contacts YouTube on its own. */
+function CampaignIntro() {
+  const [playing, setPlaying] = useState(false);
+  const watchUrl = `https://www.youtube.com/watch?v=${CAMPAIGN_VIDEO.id}`;
+  return (
+    <>
+      <div className={ui.purpose}>
+        <div>
+          <p className={ui.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
+          <h3 className={ui.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
+          <p className={ui.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
+        </div>
+        <figure className={ui.supportPhoto}>
+          <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 230px" className="object-cover" />
+          <button type="button" className={`group/play ${ui.playButton}`} onClick={() => setPlaying(true)} aria-expanded={playing} aria-controls="campaign-video" aria-label={`${CAMPAIGN_VIDEO.title} 재생 (YouTube)`}>
+            <span className={ui.playIcon} aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span>
+            <span className={ui.playLabel}>{playing ? "아래에서 재생 중" : "캠페인 영상 보기"}</span>
+          </button>
+          <figcaption className={`${pen.className} ${ui.handNoteOnPhoto}`}>사진 한 장이, 다시 보는 계기가 됩니다.</figcaption>
+        </figure>
+      </div>
+      <div id="campaign-video">
+        {playing && (
+          <div>
+            <div className={ui.videoFrame}>
+              <iframe
+                className="absolute inset-0 size-full border-0"
+                src={`https://www.youtube-nocookie.com/embed/${CAMPAIGN_VIDEO.id}?autoplay=1&rel=0`}
+                title={CAMPAIGN_VIDEO.title}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+            <p className={ui.videoCredit}>
+              {CAMPAIGN_VIDEO.title} · 영상 출처: YouTube &lsquo;{CAMPAIGN_VIDEO.channel}&rsquo; 채널
+              <a href={watchUrl} target="_blank" rel="noopener noreferrer" className="flex-none font-bold text-[#2F66A0] hover:underline hover:underline-offset-3">YouTube에서 보기 <span aria-hidden="true">↗</span><span className="sr-only">(새 창)</span></a>
+            </p>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -556,10 +710,25 @@ function CampaignGuide() {
       label: "FindUs와 닮은 사례",
       content: (
         <>
-          <p className={ui.kicker}>EVERYDAY CAMPAIGNS · 일상 속 실종아동 찾기</p>
-          <h3 className={ui.bigTitle}>길 위에서, 계산대에서, 화면 속에서<br />한 번 더 발견되도록.</h3>
-          <p className={ui.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
-          <p className={ui.body}>호프테이프와 에어서울 캠페인은 모두 실종 당시 사진과 나이 변환으로 만든 현재 추정 모습을 나란히 보여주었습니다. 호프테이프에는 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주로 만든 현재 추정 모습, 실종 장소와 신체 특징이 담겼습니다.</p>
+          <CampaignIntro />
+          {/* 두 사례를 실제 쓰인 자리(택배 테이프, 기내 좌석 모니터)를 재현한 장면으로 보여준다.
+              보도 사진은 쓰지 않고, 장면 속 얼굴은 AI로 만든 가상 인물 예시다. */}
+          <ul className={ui.caseRow}>
+            {[
+              { name: "호프테이프", where: "우체국 · 한진 · 경찰청", text: "택배 포장 테이프에 장기 실종아동 28명의 실종 당시 모습과 경찰의 나이 변환 몽타주, 실종 장소와 신체 특징을 담았어요.", scene: <TapeScene /> },
+              { name: "에어서울 기내 모니터", where: "에어서울", text: "좌석 모니터에 실종 당시 모습과 나이 변환 예상 모습을 함께 보여주고, 안전Dream QR도 띄웠어요.", scene: <MonitorScene /> },
+            ].map(item => (
+              <li key={item.name} className={ui.caseCard}>
+                {item.scene}
+                <div>
+                  <p className={ui.caseWhere}>{item.where}</p>
+                  <strong className={ui.caseName}>{item.name}</strong>
+                  <p className={ui.caseText}>{item.text}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p className={ui.caseNote}>카드 속 장면은 이해를 돕기 위해 재현한 예시이며, 얼굴은 AI로 만든 가상 인물입니다.</p>
           <p className={ui.lead}>원본과 AI 예상 모습을 나란히 비교하는 방식은, 이미 현장에서 검증된 방법입니다.</p>
         </>
       ),
@@ -585,7 +754,7 @@ function CampaignGuide() {
       tone="navy"
       sections={sections}
       ending={<>
-        <Image src="/images/home-family-together.png" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhoto} />
+        <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhotoSide} data-side />
         <p className={`${pen.className} ${ui.endingNote}`}>일상의 한 장면이,<br />다시 만나는 길이 됩니다.</p>
       </>}
     />

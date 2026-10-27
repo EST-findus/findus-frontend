@@ -19,7 +19,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export default function InfoRows({ person, note, compact = false }: InfoRowsProps) {
   return (
-    <dl className={compact ? "flex flex-col gap-1 text-[13px] leading-[1.4] [&>div]:gap-2 [&>div>dt]:w-14 [&>div>dt]:text-[12px] [&_dd]:break-normal" : "flex flex-col gap-1.5 text-[14px] leading-normal"}>
+    <dl className={compact ? "flex flex-col gap-1 text-[13px] leading-[1.4] [&>div]:gap-2 [&>div>dt]:w-14 [&>div>dt]:text-[12px] [&_dd]:break-normal" : "flex flex-col gap-2.5 text-[14.5px] leading-relaxed [&>div>dt]:w-24 [&>div>dt]:pt-px"}>
       <Row label="나이">
         <span className="font-bold text-brand">
           {compact ? "당시" : "실종 당시"} {formatAge(person.ageAtMissing)} · 현재 {person.source === "api" ? "" : "추정 "}{formatAge(person.currentAge)}

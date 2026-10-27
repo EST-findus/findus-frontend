@@ -49,7 +49,8 @@ desktop.ini
 !.vscode/extensions.json
 !.vscode/settings.json
 *.swp
-scripts
+scripts/*
+!scripts/generate-brand-assets.mjs
 
 docs/research/*
 output/

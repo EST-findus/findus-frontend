@@ -18,6 +18,11 @@ describe('실제 데이터 변환',()=>{
     const person=toMissingPerson(fixture({images:[image(image2,1),image(image1,0)]}));
     expect(person.images?.map(p=>p.id)).toEqual([image1,image2]);expect(person.photos.past).toBe('/backend/api/missing-persons/'+id+'/images/'+image1);
   });
+  it('대표(is_main) 사진만 아동 사진으로 쓴다',()=>{
+    const image=(id:string,sortOrder:number)=>({id,sortOrder,url:'/api/missing-persons/'+fixture().id+'/images/'+id,contentType:'image/jpeg',byteSize:10});
+    const person=toMissingPerson(fixture({photoUrl:image(image2,1).url,images:[image(image1,0),image(image2,1)]}));
+    expect(person.images?.map(p=>p.id)).toEqual([image2]);expect(person.photos.past).toBe('/backend'+image(image2,1).url);
+  });
   it('목록의 대표 AI 사진 주소는 이 아동의 경로일 때만 AI 예상 모습으로 쓴다',()=>{
     const warn=vi.spyOn(console,'warn').mockImplementation(()=>{});
     const photo='/api/missing-persons/'+id+'/ai-image/photo';
@@ -111,5 +116,21 @@ describe('대표 AI 사진',()=>{
       .mockResolvedValueOnce(json(ai({styles:[{key:'bob',name:'단발',url:other+'?style=bob'},{key:'Bad Key',name:'x',url:photo+'?style=Bad Key'},{key:'long',name:'긴 머리',url:photo+'?style=long'}]}))));
     expect(await fetchMissingAiImage(id)).toBeUndefined();
     expect((await fetchMissingAiImage(id))?.styles.map(s=>s.key)).toEqual(['long']);
+  });
+  it('대표를 먼저 두고 이 아동의 다른 AI 사진을 탭으로 붙인다',async()=>{
+    vi.spyOn(console,'log').mockImplementation(()=>{});const warn=vi.spyOn(console,'warn').mockImplementation(()=>{});
+    const photos='/api/missing-persons/'+id+'/ai-image/photos/';
+    const a='00000000-0000-4000-8000-0000000000a1',b='00000000-0000-4000-8000-0000000000b1';
+    const node=(nodeId:string,url:string,main=false)=>({id:nodeId,main,targetAge:30,createdAt:'2026-10-26T01:00:00',url});
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValueOnce(json(ai({images:[node(image1,photo,true),node(a,photos+a),
+      node(b,'/api/missing-persons/00000000-0000-4000-8000-000000000002/ai-image/photos/'+b),node(b,photos+b)]})))
+      .mockResolvedValueOnce(json(ai())));
+    const result=await fetchMissingAiImage(id);
+    expect(result?.extras).toEqual([{id:a,label:'AI 사진 2',src:'/backend'+photos+a},{id:b,label:'AI 사진 3',src:'/backend'+photos+b}]);
+    expect(warn.mock.calls[0][0]).toContain('잘못된 AI 사진 1개');
+    const person=withAiImage(toMissingPerson(fixture()),result);
+    expect(person.photos.aged).toBe('/backend'+photo);
+    expect(person.photos.styles.map(s=>s.label)).toEqual(['AI 사진 2','AI 사진 3','단발','긴 머리']);
+    expect((await fetchMissingAiImage(id))?.extras).toEqual([]);   // images가 없는 이전 백엔드
   });
 });

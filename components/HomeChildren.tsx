@@ -13,10 +13,10 @@ import StoredPhoto from "./StoredPhoto";
 import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from "./Icons";
 
 // Long enough to read a name and region before the spotlight moves on.
-const AUTO_ADVANCE_MS = 6000;
+const AUTO_ADVANCE_MS = 4000;
 const SORT: SortKey = "recent";
 // The list beside the spotlight shows this many children at a time; the highlight moves within the group.
-const GROUP = 4;
+const GROUP = 5;
 const SWIPE_PX = 50;
 
 // Spotlight: one child large on the left, the rest of the group listed on the right. Changing child cross-fades:
@@ -49,7 +49,7 @@ function Thumb({ person }: { person: MissingPerson }) {
 
 /**
  * 홈 '함께 찾고 있는 아이들'. 왼쪽에 한 아이를 크게(스포트라이트) 보여주고, 오른쪽에 같은 묶음의 다음 아이들을 둔다.
- * 6초마다 다음 아이로 넘어가고, 목록을 누르거나 화살표·스와이프로 직접 고를 수 있다.
+ * 4초마다 다음 아이로 넘어가고, 목록을 누르거나 화살표·스와이프로 직접 고를 수 있다.
  */
 export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const [index, setIndex] = useState(0);
@@ -66,8 +66,12 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
   const [report, setReport] = useState<MissingPerson | null>(null);
   const [share, setShare] = useState<MissingPerson | null>(null);
   const [trigger, setTrigger] = useState<HTMLElement | null>(null);
-  // 검색과 정렬은 실종아동 찾기 화면에서 한다. 홈은 최근 실종 순으로 보여준다.
-  const results = useMemo(()=>filterPersons(persons,{query:"",filters:DEFAULT_FILTERS,sort:SORT}),[persons]);
+  // 검색과 정렬은 실종아동 찾기 화면에서 한다. 홈은 최근 실종 순으로 보여주되,
+  // AI 예상 모습이 준비된 아이를 앞에 두어 첫 화면이 빈 칸으로 시작하지 않게 한다.
+  const results = useMemo(()=>{
+    const sorted = filterPersons(persons,{query:"",filters:DEFAULT_FILTERS,sort:SORT});
+    return [...sorted.filter(p=>p.photos.aged), ...sorted.filter(p=>!p.photos.aged)];
+  },[persons]);
   const total = results.length;
   const current = total ? ((index % total) + total) % total : 0;
   const person = results[current];
@@ -124,7 +128,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
       </header>
 
       {person ? (
-        <div ref={stageRef} data-reveal className="grid grid-cols-[minmax(0,1.55fr)_minmax(280px,1fr)] items-start gap-10 max-[1000px]:grid-cols-[minmax(0,1fr)] max-[1000px]:gap-6" onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
+        <div ref={stageRef} data-reveal className="grid grid-cols-[minmax(0,1.55fr)_minmax(280px,1fr)] items-stretch gap-10 max-[1000px]:grid-cols-[minmax(0,1fr)] max-[1000px]:gap-6" onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setFocused(true)} onBlurCapture={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);}}>
           <div className="relative min-w-0 touch-pan-y" id="home-spotlight" aria-roledescription="슬라이드" aria-label="함께 찾고 있는 아이"
             onTouchStart={event=>{touchX.current = event.touches[0].clientX;}}
             onTouchEnd={event=>{ if(touchX.current===null) return; const dx = event.changedTouches[0].clientX - touchX.current; touchX.current = null; if(Math.abs(dx) > SWIPE_PX) select(current + (dx < 0 ? 1 : -1)); }}>
@@ -132,7 +136,7 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
             <div key={person.id} className={entering}><HomeChildCard person={person} feature {...actions} /></div>
           </div>
 
-          <aside className="min-w-0" aria-label="다음 아이들">
+          <aside className="flex min-w-0 flex-col" aria-label="다음 아이들">
             <p className="mb-3.5 flex items-baseline justify-between gap-2.5 text-[16px] font-extrabold tracking-[-.3px] text-brand-dark">함께 기억해 주세요 <span className="text-[13px] font-semibold text-subtle tabular-nums">{current+1} / {total}명</span></p>
             <div className="relative" style={{ "--i": current - groupStart } as CSSProperties}>
             <span aria-hidden="true" className={queueMarker} />
@@ -153,12 +157,13 @@ export default function HomeChildren({persons}: {persons: MissingPerson[]}) {
               })}
             </ol>
             </div>
-            <nav className="mt-4 flex items-center gap-2" aria-label="함께 찾고 있는 아이 넘기기">
+            {/* 컨트롤과 출처는 카드 아래선에 맞춰 오른쪽 아래로 보낸다. 일시정지를 앞에 두어 둥근 버튼이 오른쪽 끝에 닿게 한다. */}
+            <nav className="mt-auto flex items-center justify-end gap-2 pt-4" aria-label="함께 찾고 있는 아이 넘기기">
               <button type="button" className={navButton} aria-label="이전 아이 보기" aria-controls="home-spotlight" onClick={()=>select(current-1)}><ChevronLeftIcon size={18} /></button>
               <button type="button" className={navButton} aria-label="다음 아이 보기" aria-controls="home-spotlight" onClick={()=>select(current+1)}><ChevronRightIcon size={18} /></button>
-              {!reducedMotion && <button type="button" className={`${navButtonBase} w-auto! grid-flow-col gap-1.5 rounded-lg border-transparent bg-transparent px-3 text-[12px] text-muted hover:bg-[#EEF4FB] hover:text-brand-dark`} aria-label={playing ? "자동 넘김 일시정지" : "자동 넘김 시작"} aria-pressed={!playing} onClick={()=>setPlaying(!playing)}><span aria-hidden="true" className="text-[14px]">{playing ? "Ⅱ" : "▷"}</span><span>{playing ? "일시정지" : "자동 넘김"}</span></button>}
+              {!reducedMotion && <button type="button" className={`${navButtonBase} order-first w-auto! grid-flow-col gap-1.5 rounded-lg border-transparent bg-transparent px-3 text-[12px] text-muted hover:bg-[#EEF4FB] hover:text-brand-dark`} aria-label={playing ? "자동 넘김 일시정지" : "자동 넘김 시작"} aria-pressed={!playing} onClick={()=>setPlaying(!playing)}><span aria-hidden="true" className="text-[14px]">{playing ? "Ⅱ" : "▷"}</span><span>{playing ? "일시정지" : "자동 넘김"}</span></button>}
             </nav>
-            <p className="mt-4 grid gap-0.5 text-[11px] leading-[1.7] text-subtle max-sm:text-[10.5px]"><span className="font-[650] text-[#3D5877]">자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
+            <p className="mt-3.5 grid justify-items-end gap-0.5 text-right text-[12.5px] leading-[1.7] text-subtle max-sm:text-[12px]"><span className="font-[650] text-[#3D5877]">자료 출처: 경찰청</span><span>DB에 동기화된 공개 실종아동 정보와 원본 사진입니다.</span></p>
           </aside>
           <p className="sr-only" aria-live={autoplay ? "off" : "polite"}>{person.name}, {current+1}번째 아이</p>
         </div>
