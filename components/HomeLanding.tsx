@@ -61,12 +61,12 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
         <div className="grid justify-items-start gap-3.5 max-[720px]:gap-3">
         <div className="relative grid w-[min(100%,270px)] grid-cols-2 items-start gap-4 max-[1000px]:w-[min(100%,300px)] max-[720px]:gap-3.5" aria-label="AI로 만든 가상 인물 예시 사진">
           <figure className={`${heroPhotoCard} animate-[home-photo-in_1s_cubic-bezier(.2,.7,.2,1)_.25s_backwards]`}>
-            <div className={heroPhotoImage}><Image src="/images/mock-persons/MC-2008-0915/past.jpg" alt="AI로 만든 가상 인물의 어린 시절 예시" fill sizes="(max-width: 640px) 42vw, 240px" className={heroPhotoImg} /></div>
+            <div className={heroPhotoImage}><Image src="/images/mock-persons/MC-2008-0915/past.jpg" alt="AI로 만든 가상 인물의 어린 시절 예시" fill sizes="(max-width: 640px) 42vw, 240px" quality={90} className={heroPhotoImg} /></div>
             <figcaption className={heroPhotoCaption}>어린 시절 예시</figcaption>
           </figure>
           <span className="absolute top-[calc(50%-3px)] left-1/2 z-2 grid size-[38px] -translate-1/2 animate-[fade-in_.6s_ease_.7s_backwards] place-items-center rounded-full border border-line bg-white text-brand shadow-[0_6px_16px_rgba(23,59,112,.12)] max-[720px]:size-8" aria-hidden="true"><ArrowRightIcon size={16} /></span>
           <figure className={`${heroPhotoCard} mt-3.5 animate-[home-photo-in_1s_cubic-bezier(.2,.7,.2,1)_.4s_backwards] max-[720px]:mt-[18px]`}>
-            <div className={heroPhotoImage}><Image src="/images/mock-persons/MC-2008-0915/aged.jpg" alt="AI로 만든 가상 인물의 현재 추정 모습" fill sizes="(max-width: 640px) 42vw, 240px" className={heroPhotoImg} /></div>
+            <div className={heroPhotoImage}><Image src="/images/mock-persons/MC-2008-0915/aged.jpg" alt="AI로 만든 가상 인물의 현재 추정 모습" fill sizes="(max-width: 640px) 42vw, 240px" quality={90} className={heroPhotoImg} /></div>
             <figcaption className={heroPhotoCaption}><span className="rounded-md bg-brand px-[7px] py-0.5 text-[10.5px] font-extrabold tracking-[.04em] text-white">AI</span> 예상 모습</figcaption>
           </figure>
         </div>

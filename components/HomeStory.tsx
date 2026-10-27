@@ -64,7 +64,8 @@ const ui = {
   splitTagLeft: "left-3.5 bg-[rgba(23,32,48,.68)]",
   splitTagRight: "right-3.5 bg-brand",
   // Story 02 puts its picture on the right (on top again once the stories stack).
-  supportVisual: "order-1 max-[760px]:order-[-1]",
+  // A breakpoint variant so it outranks the picture's base order-[-1] on the same element.
+  supportVisual: "min-[761px]:order-1",
   // Places the campaigns reach, as a dotted list: blue and coral dots in turn.
   campaignPlaces: "mt-[18px] flex flex-wrap gap-x-3.5 gap-y-1.5 text-[13px] font-bold text-[#3D5877] max-sm:gap-x-3 max-sm:text-[12.5px]",
   campaignPlace: "inline-flex items-center gap-1.5 before:size-[5px] before:rounded-full before:bg-[color:var(--tone)] before:content-[''] even:before:bg-[#F28B82]",
