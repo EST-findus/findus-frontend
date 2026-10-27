@@ -1,6 +1,7 @@
 "use client";
 
-import Image from "next/image";
+import FadeInImage from "./FadeInImage";
+import { useRef } from "react";
 import { formatAge, formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import FavoriteButton from "./FavoriteButton";
@@ -47,21 +48,29 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare,
   const hasAiPhoto = Boolean(person.photos.aged);
   const years = yearsApart(person);
   const missingYear = person.missingDate.slice(0, 4);
+  const detailButton = useRef<HTMLButtonElement>(null);
   const openDetail = (event: React.MouseEvent<HTMLButtonElement>) => onOpenDetail(person, event.currentTarget);
+  // 카드 빈 곳을 눌러도 상세를 연다. 버튼·링크는 각자 동작하고, 글자를 드래그해 고른 경우는 열지 않는다.
+  // 키보드 사용자는 기존 상세보기 버튼으로 열 수 있으므로 포커스는 그 버튼으로 돌려준다.
+  const openFromCard = (event: React.MouseEvent<HTMLElement>) => {
+    if ((event.target as HTMLElement).closest("a, button, input, label, [role=dialog]")) return;
+    if (window.getSelection()?.toString()) return;
+    onOpenDetail(person, detailButton.current ?? event.currentTarget);
+  };
 
   return (
-    <article className={`flex h-full flex-col overflow-hidden border border-[#E3EAF3] bg-white [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease,border-color_.25s_ease] hover:border-[#C9DAEE] motion-reduce:[transition:none] ${feature ? "rounded-3xl shadow-[0_18px_40px_rgba(23,59,112,.1)]" : "rounded-[20px] shadow-[0_2px_10px_rgba(23,59,112,.05)] hover:[transform:translateY(-4px)] hover:shadow-[0_18px_36px_rgba(23,59,112,.11)] motion-reduce:hover:[transform:none]"}`} aria-labelledby={`home-child-${person.id}`}>
+    <article onClick={openFromCard} className={`flex h-full cursor-pointer flex-col overflow-hidden border border-[#E3EAF3] bg-white [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease,border-color_.25s_ease] hover:border-[#C9DAEE] motion-reduce:[transition:none] ${feature ? "rounded-3xl shadow-[0_18px_40px_rgba(23,59,112,.1)]" : "rounded-[20px] shadow-[0_2px_10px_rgba(23,59,112,.05)] hover:[transform:translateY(-4px)] hover:shadow-[0_18px_36px_rgba(23,59,112,.11)] motion-reduce:hover:[transform:none]"}`} aria-labelledby={`home-child-${person.id}`}>
       <div className={`relative grid grid-cols-[1fr_1fr] gap-0.5 bg-white ${feature ? "h-[340px] max-sm:h-[240px]" : "h-[232px] max-sm:h-[208px]"}`}>
         <button type="button" className={`${photo} bg-[#E6EBF1]`} aria-label={`${person.name} 상세정보 열기`} onClick={openDetail}>
           {live
             ? <StoredPhoto fit="cover" urls={(person.images ?? []).map(image => image.url)} alt={`${person.name} 등록 사진`} sizes="(min-width: 1100px) 200px, (min-width: 640px) 25vw, 50vw" />
-            : <Image src={person.photos.past} alt={`${person.name} 실종 당시 모습 (가상 인물·AI 생성 예시)`} fill sizes="(min-width: 1100px) 200px, (min-width: 640px) 25vw, 50vw" />}
+            : <FadeInImage quality={90} src={person.photos.past} alt={`${person.name} 실종 당시 모습 (가상 인물·AI 생성 예시)`} fill sizes="(min-width: 1100px) 200px, (min-width: 640px) 25vw, 50vw" />}
           <span className={`${badge} left-2.5`}>{missingYear}년 · {formatAge(person.ageAtMissing)}</span>
         </button>
 
         {hasAiPhoto ? (
           <button type="button" className={`${photo} bg-brand-soft`} aria-label={`${person.name} AI 예상 모습 보기`} onClick={openDetail}>
-            <Image src={person.photos.aged} alt={`${person.name} AI 예상 모습 (실제 모습과 다를 수 있음)`} fill sizes="(min-width: 1100px) 200px, (min-width: 640px) 25vw, 50vw" />
+            <FadeInImage ai quality={90} src={person.photos.aged} alt={`${person.name} AI 예상 모습 (실제 모습과 다를 수 있음)`} fill sizes="(min-width: 1100px) 200px, (min-width: 640px) 25vw, 50vw" />
             <span className="absolute top-2.5 left-2.5 z-1 inline-flex items-center gap-1 rounded-[7px] bg-brand px-[9px] py-1 text-[11.5px] font-extrabold text-white"><SparklesIcon size={12} strokeWidth={2.2} />AI 예상</span>
             <span className={`${badge} right-2.5`}>현재 · {formatAge(person.currentAge)}</span>
           </button>
@@ -88,7 +97,7 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare,
           <div className={`${factCell} border-l border-[#E7ECF2]`}><dt className={factTerm}><CalendarGlyph />실종 일자</dt><dd className={factValue}>{formatDate(person.missingDate)}</dd></div>
         </dl>
         <div className="mt-auto grid grid-cols-[minmax(0,1fr)_40px_40px] items-center gap-2 pt-3.5">
-          <button type="button" className={`group/detail flex h-10 cursor-pointer items-center justify-center gap-[5px] rounded-[11px] bg-brand-soft text-[14px] font-extrabold text-[#2F66A0] [transition:background-color_.2s_ease,color_.2s_ease] hover:bg-brand hover:text-white motion-reduce:[transition:none] ${focusRing}`} onClick={openDetail}>상세보기 <ArrowRightIcon size={15} strokeWidth={2.4} className="[transition:transform_.25s_cubic-bezier(.2,.7,.2,1)] group-hover/detail:[transform:translateX(3px)] motion-reduce:[transition:none]" /></button>
+          <button ref={detailButton} type="button" className={`group/detail flex h-10 cursor-pointer items-center justify-center gap-[5px] rounded-[11px] bg-brand-soft text-[14px] font-extrabold text-[#2F66A0] [transition:background-color_.2s_ease,color_.2s_ease] hover:bg-brand hover:text-white motion-reduce:[transition:none] ${focusRing}`} onClick={openDetail}>상세보기 <ArrowRightIcon size={15} strokeWidth={2.4} className="[transition:transform_.25s_cubic-bezier(.2,.7,.2,1)] group-hover/detail:[transform:translateX(3px)] motion-reduce:[transition:none]" /></button>
           <button type="button" className={iconButton} aria-label={`${person.name} 목격 제보 안내`} title="목격 제보 안내" aria-haspopup="dialog" onClick={event => onReport(person, event.currentTarget)}><EyeIcon size={19} /></button>
           <button type="button" className={iconButton} aria-label={`${person.name} 정보 공유하기`} title="공유하기" aria-haspopup="dialog" onClick={event => onShare(person, event.currentTarget)}><ShareIcon size={18} /></button>
         </div>

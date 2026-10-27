@@ -8,6 +8,8 @@ import "./globals.css";
 import "./official-palette.css";
 import RoutePalette from "@/components/RoutePalette";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import NavigationLoader from "@/components/loading/NavigationLoader";
+import { Suspense } from "react";
 
 const pretendard = localFont({
   src: "../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
@@ -84,6 +86,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Footer />
         <MobileBottomNav />
         <ServiceWorkerRegister />
+        {/* 페이지를 옮기는 동안 지금 화면 위에 로더를 띄운다. useSearchParams를 쓰므로 Suspense로 감싼다. */}
+        <Suspense><NavigationLoader /></Suspense>
       </body>
     </html>
   );

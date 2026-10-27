@@ -62,6 +62,13 @@
   --animate-home-stage-photo: home-stage-photo 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   --animate-home-stage-text: home-stage-text 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) 0.18s backwards;
   --animate-home-queue-fill: home-queue-fill 6s linear forwards;
+  /* 히어로 배경 3장면 교차 전환. 장면마다 animation-delay를 9s씩 밀어 쓴다. */
+  --animate-home-hero-scene: home-hero-scene 27s ease-in-out infinite both;
+  @keyframes home-hero-scene {
+    0% { opacity: 0; }
+    6%, 33% { opacity: 1; }
+    39%, 100% { opacity: 0; }
+  }
   @keyframes home-reveal-up {
     from { opacity: 0; transform: translateY(22px); }
     to { opacity: 1; transform: none; }
@@ -467,6 +474,58 @@
 @theme inline {
   --animate-info-rise: info-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) backwards;
   --animate-info-row: info-rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i, 0) * 45ms) backwards;
+  --animate-loader-dot: loader-dot 1.2s ease-in-out calc(var(--i, 0) * 0.16s) infinite;
+  --animate-photo-twinkle: photo-twinkle 1.8s ease-in-out var(--d, 0s) infinite;
+}
+
+/* 로딩(components/loading, FadeInImage) — 로고의 하트가 통통 뛰고, 막대가 받아 주며, 타일이 살랑 흔들린다 */
+@theme {
+  --animate-loader-hop: loader-hop 1.1s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  --animate-loader-squish: loader-squish 1.1s ease-in-out infinite;
+  --animate-loader-shadow: loader-shadow 1.1s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  --animate-loader-wobble: loader-wobble 2.2s ease-in-out infinite;
+  /* 사진 자리표시(PhotoSkeleton): 실루엣이 숨 쉬고, 빛 띠가 지나간 뒤 잠시 쉰다 */
+  --animate-photo-breathe: home-breathe 1.8s ease-in-out infinite;
+  --animate-photo-sweep: photo-sweep 1.8s ease-in-out infinite;
+  --animate-photo-in: photo-in 0.5s ease-out;
+  /* 금방 끝나는 이동에서는 깜빡이지 않도록 조금 늦게 나타난다 */
+  --animate-loader-overlay: fade-in 0.2s ease-out 0.12s backwards;
+  @keyframes loader-hop {
+    0%, 100% { transform: translateY(0) scale(1.2, 0.8); }
+    14% { transform: translateY(-2px) scale(0.88, 1.14); }
+    42% { transform: translateY(-15px) rotate(-12deg); }
+    56% { transform: translateY(-15px) rotate(8deg); }
+    80% { transform: translateY(0) scale(1); }
+    88% { transform: translateY(0) scale(1.2, 0.8); }
+  }
+  @keyframes loader-squish {
+    0%, 88%, 100% { transform: scale(1.1, 0.84); }
+    14%, 80% { transform: none; }
+  }
+  @keyframes loader-shadow {
+    0%, 88%, 100% { scale: 1; opacity: 0.22; }
+    42%, 56% { scale: 0.7; opacity: 0.12; }
+  }
+  @keyframes loader-wobble {
+    0%, 100% { rotate: -3deg; }
+    50% { rotate: 3deg; }
+  }
+  @keyframes loader-dot {
+    0%, 60%, 100% { translate: 0 0; opacity: 0.35; }
+    30% { translate: 0 -4px; opacity: 1; }
+  }
+  @keyframes photo-sweep {
+    0% { translate: -120% 0; }
+    60%, 100% { translate: 170% 0; }
+  }
+  @keyframes photo-twinkle {
+    0%, 100% { opacity: 0.2; scale: 0.6; rotate: 0deg; }
+    50% { opacity: 1; scale: 1; rotate: 45deg; }
+  }
+  @keyframes photo-in {
+    from { opacity: 0; scale: 1.03; filter: blur(6px); }
+    to { opacity: 1; scale: 1; filter: none; }
+  }
 }
 
 /* 모든 페이지가 같은 폭·여백을 쓰도록 하는 본문 컨테이너 */
