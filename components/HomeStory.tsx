@@ -291,7 +291,7 @@ function Polaroid({ src, alt, note }: { src: string; alt: string; note: string }
   return (
     <figure className={ui.polaroid}>
       <div className={ui.polaroidFrame}>
-        <div className={ui.polaroidPhoto}><Image src={src} alt={alt} fill sizes="220px" className="object-cover [filter:sepia(.22)_saturate(.85)]" /></div>
+        <div className={ui.polaroidPhoto}><Image quality={90} src={src} alt={alt} fill sizes="220px" className="object-cover [filter:sepia(.22)_saturate(.85)]" /></div>
       </div>
       <figcaption className={`${pen.className} ${ui.handNote}`}>{note}</figcaption>
     </figure>
@@ -301,9 +301,9 @@ function Polaroid({ src, alt, note }: { src: string; alt: string; note: string }
 function AgePair({ past, aged }: { past: string; aged: string }) {
   return (
     <div className={ui.agePair} aria-label="AI로 만든 가상 인물 예시">
-      <figure className={ui.ageFigure}><div className={ui.agePhoto}><Image src={past} alt="가상 인물의 어린 시절 예시" fill sizes="150px" className="object-cover object-[center_30%]" /></div><figcaption className={`${ui.ageCaption} bg-[#2E4A6E]`}>과거 사진</figcaption></figure>
+      <figure className={ui.ageFigure}><div className={ui.agePhoto}><Image quality={90} src={past} alt="가상 인물의 어린 시절 예시" fill sizes="150px" className="object-cover object-[center_30%]" /></div><figcaption className={`${ui.ageCaption} bg-[#2E4A6E]`}>과거 사진</figcaption></figure>
       <span aria-hidden="true" className="animate-home-nudge text-brand motion-reduce:animate-none"><ArrowRightIcon size={18} /></span>
-      <figure className={ui.ageFigure}><div className={ui.agePhoto}><Image src={aged} alt="가상 인물의 AI 예상 모습" fill sizes="150px" className="object-cover object-[center_30%]" /></div><figcaption className={`${ui.ageCaption} bg-brand`}>AI 예측 · 현재 모습</figcaption></figure>
+      <figure className={ui.ageFigure}><div className={ui.agePhoto}><Image quality={90} src={aged} alt="가상 인물의 AI 예상 모습" fill sizes="150px" className="object-cover object-[center_30%]" /></div><figcaption className={`${ui.ageCaption} bg-brand`}>AI 예측 · 현재 모습</figcaption></figure>
     </div>
   );
 }
@@ -428,7 +428,7 @@ function ServiceGuide() {
       title="서비스 소개"
       sections={sections}
       ending={<>
-        <Image src="/images/home-closing-sky.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhoto} />
+        <Image quality={90} src="/images/home-closing-sky.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhoto} />
         <p className={`${pen.className} ${ui.endingNote}`}>기억은 사라지지 않습니다.<br />다시 만날 그날을 위해, 오늘도.</p>
       </>}
     />
@@ -457,7 +457,7 @@ function SupportGuide() {
             <div className={ui.posScreen} aria-hidden="true">
               <div className="flex items-center justify-between gap-2 bg-[#EEF1F5] px-2.5 py-1.5 text-[10.5px] font-bold text-[#62748C]"><span className="relative h-[18px] w-[30px]"><Image src="/images/partners/cu.png" alt="" fill sizes="40px" unoptimized className="object-contain" /></span><span>재현 예시 화면</span></div>
               <div className="flex items-center gap-2.5 p-2.5">
-                <span className="relative aspect-[3/4] w-[62px] flex-none overflow-hidden rounded-[6px] bg-[#E6EBF1]"><Image src="/images/mock-persons/MC-1999-0341/past.jpg" alt="" fill sizes="80px" className="object-cover object-[center_30%] [filter:saturate(.8)]" /></span>
+                <span className="relative aspect-[3/4] w-[62px] flex-none overflow-hidden rounded-[6px] bg-[#E6EBF1]"><Image quality={90} src="/images/mock-persons/MC-1999-0341/past.jpg" alt="" fill sizes="80px" className="object-cover object-[center_30%] [filter:saturate(.8)]" /></span>
                 <span className="grid gap-0.5"><strong className="text-[13px] font-[850] text-[#B4473F]">실종아동을 찾습니다</strong><small className="text-[11px] text-[#4A5D75]">2000년 · 당시 4세</small><small className="text-[11px] text-[#4A5D75]">보신 분은 182로 연락 주세요</small></span>
               </div>
             </div>
@@ -561,7 +561,7 @@ function SupportGuide() {
       tone="coral"
       sections={sections}
       ending={<>
-        <Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhotoSide} data-side />
+        <Image quality={90} src="/images/support-qr-goods-card.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhotoSide} data-side />
         <p className={`${pen.className} ${ui.endingNote}`}>굿즈를 만드는 일에서 시작해,<br />한 아이를 기억하는 일로.</p>
       </>}
     />
@@ -596,7 +596,7 @@ function CampaignList({ items, icon }: { items: readonly CampaignItem[]; icon: R
       {items.map(item => (
         <li key={item.title} className={`group/feature ${ui.feature}`}>
           {item.photo ? (
-            <span aria-hidden="true" className={`${ui.campaignMark} ${ui.campaignMarkPhoto}`}><Image src={item.photo} alt="" fill sizes="120px" className="object-cover object-[center_40%]" /></span>
+            <span aria-hidden="true" className={`${ui.campaignMark} ${ui.campaignMarkPhoto}`}><Image quality={90} src={item.photo} alt="" fill sizes="120px" className="object-cover object-[center_40%]" /></span>
           ) : item.logos?.length ? (
             <span aria-hidden="true" className={`${ui.campaignMark} ${ui.campaignMarkLogo}`}>
               {item.logos.map(logo => <span key={logo} className={ui.campaignLogo}><Image src={logo} alt="" fill sizes="100px" unoptimized className="object-contain" /></span>)}
@@ -621,8 +621,8 @@ function TapeScene() {
       <div className={ui.tape}>
         {[0, 1, 2].map(i => (
           <span key={i} className={ui.tapeCell}>
-            <span className={ui.tapePhoto}><Image src={`${TAPE_PERSON}/past.jpg`} alt="" fill sizes="48px" className="object-cover object-[center_30%] [filter:saturate(.75)_contrast(.95)]" /></span>
-            <span className={ui.tapePhoto}><Image src={`${TAPE_PERSON}/aged.jpg`} alt="" fill sizes="48px" className="object-cover object-[center_30%] [filter:saturate(.75)_contrast(.95)]" /></span>
+            <span className={ui.tapePhoto}><Image quality={90} src={`${TAPE_PERSON}/past.jpg`} alt="" fill sizes="48px" className="object-cover object-[center_30%] [filter:saturate(.75)_contrast(.95)]" /></span>
+            <span className={ui.tapePhoto}><Image quality={90} src={`${TAPE_PERSON}/aged.jpg`} alt="" fill sizes="48px" className="object-cover object-[center_30%] [filter:saturate(.75)_contrast(.95)]" /></span>
             <span className="ml-[3px] grid"><b className="text-[11.5px] font-[850] whitespace-nowrap text-[#B4473F]">실종아동을 찾습니다</b><small className="text-[10.5px] whitespace-nowrap text-[#5A4630]">보신 분은 182</small></span>
           </span>
         ))}
@@ -639,9 +639,9 @@ function MonitorScene() {
       <div className={ui.monitor}>
         <p className="rounded-t-[6px] bg-[#173B70] px-2 py-1 text-[11px] font-extrabold text-white">실종아동을 찾습니다</p>
         <div className="flex items-center gap-1.5 rounded-b-[6px] bg-[#F4F7FB] p-2">
-          <span className={ui.monitorPhoto}><Image src={`${MONITOR_PERSON}/past.jpg`} alt="" fill sizes="64px" className="object-cover object-[center_30%]" /><em className={`${ui.monitorPhotoTag} bg-[rgba(23,32,48,.72)]`}>당시</em></span>
+          <span className={ui.monitorPhoto}><Image quality={90} src={`${MONITOR_PERSON}/past.jpg`} alt="" fill sizes="64px" className="object-cover object-[center_30%]" /><em className={`${ui.monitorPhotoTag} bg-[rgba(23,32,48,.72)]`}>당시</em></span>
           <i className="grid flex-none text-[#F28B82]"><ArrowRightIcon size={11} /></i>
-          <span className={ui.monitorPhoto}><Image src={`${MONITOR_PERSON}/aged.jpg`} alt="" fill sizes="64px" className="object-cover object-[center_30%]" /><em className={`${ui.monitorPhotoTag} bg-[#3978B8]`}>현재 추정</em></span>
+          <span className={ui.monitorPhoto}><Image quality={90} src={`${MONITOR_PERSON}/aged.jpg`} alt="" fill sizes="64px" className="object-cover object-[center_30%]" /><em className={`${ui.monitorPhotoTag} bg-[#3978B8]`}>현재 추정</em></span>
           <span className="ml-auto grid flex-none justify-items-center gap-[3px]"><span className="size-[38px] border-[3px] border-white outline outline-[#DCE5F0] [background:conic-gradient(#173B70_25%,#FFFFFF_0_50%,#173B70_0_75%,#FFFFFF_0)_0_0/8px_8px]" /><small className="text-[9.5px] font-extrabold text-[#25508F]">안전Dream</small></span>
         </div>
       </div>
@@ -671,7 +671,7 @@ function CampaignIntro() {
           <p className={ui.body}>실종아동의 얼굴을 사람들의 일상 속에서 다시 보게 하려는 노력은 이미 여러 곳에서 이어지고 있습니다. 그중 FindUs와 특히 가까운 사례가 둘 있습니다.</p>
         </div>
         <figure className={ui.supportPhoto}>
-          <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 230px" className="object-cover" />
+          <Image quality={90} src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 230px" className="object-cover" />
           <button type="button" className={`group/play ${ui.playButton}`} onClick={() => setPlaying(true)} aria-expanded={playing} aria-controls="campaign-video" aria-label={`${CAMPAIGN_VIDEO.title} 재생 (YouTube)`}>
             <span className={ui.playIcon} aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span>
             <span className={ui.playLabel}>{playing ? "아래에서 재생 중" : "캠페인 영상 보기"}</span>
@@ -754,7 +754,7 @@ function CampaignGuide() {
       tone="navy"
       sections={sections}
       ending={<>
-        <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhotoSide} data-side />
+        <Image quality={90} src="/images/campaign-four-frame.webp" alt="" fill sizes="(max-width: 640px) 100vw, 800px" className={ui.endingPhotoSide} data-side />
         <p className={`${pen.className} ${ui.endingNote}`}>일상의 한 장면이,<br />다시 만나는 길이 됩니다.</p>
       </>}
     />
@@ -794,8 +794,8 @@ export default function HomeStory() {
             <span className={ui.cardMore}>자세히 보기 <ArrowRightIcon size={15} className={ui.cardMoreIcon} /></span>
           </span>
           <span aria-hidden="true" className={`${ui.picture} ${ui.splitFace}`}>
-            <span className={ui.splitHalf}><Image src={SERVICE_PAST} alt="" fill sizes="190px" className={`object-cover object-[center_30%] ${ui.zoomImage}`} /></span>
-            <span className={ui.splitRight}><Image src={SERVICE_AGED} alt="" fill sizes="190px" className={`object-cover object-[center_30%] ${ui.zoomImage}`} /></span>
+            <span className={ui.splitHalf}><Image quality={90} src={SERVICE_PAST} alt="" fill sizes="190px" className={`object-cover object-[center_30%] ${ui.zoomImage}`} /></span>
+            <span className={ui.splitRight}><Image quality={90} src={SERVICE_AGED} alt="" fill sizes="190px" className={`object-cover object-[center_30%] ${ui.zoomImage}`} /></span>
             <span className={ui.splitLine} />
             <span className={ui.scanCorners} />
             <span className={`${ui.splitTag} ${ui.splitTagLeft}`}>당시</span>
@@ -811,7 +811,7 @@ export default function HomeStory() {
             <span className={ui.cardMore}>자세히 보기 <ArrowRightIcon size={15} className={ui.cardMoreIcon} /></span>
           </span>
           <span aria-hidden="true" className={`${ui.picture} ${ui.supportVisual}`}>
-            <Image src="/images/support-qr-goods-card.webp" alt="" fill sizes="260px" className={`object-cover object-[30%_52%] ${ui.zoomImage}`} />
+            <Image quality={90} src="/images/support-qr-goods-card.webp" alt="" fill sizes="260px" className={`object-cover object-[30%_52%] ${ui.zoomImage}`} />
             <span className={ui.supportTag}>Remember A Child</span>
           </span>
         </button>
@@ -826,7 +826,7 @@ export default function HomeStory() {
             <span className={ui.cardMore}>자세히 보기 <ArrowRightIcon size={15} className={ui.cardMoreIcon} /></span>
           </span>
           <span aria-hidden="true" className={ui.picture}>
-            <Image src="/images/campaign-four-frame.webp" alt="" fill sizes="280px" className={`object-cover object-[center_40%] ${ui.zoomImage}`} />
+            <Image quality={90} src="/images/campaign-four-frame.webp" alt="" fill sizes="280px" className={`object-cover object-[center_40%] ${ui.zoomImage}`} />
             <span className={ui.supportTag}>실종아동네컷</span>
           </span>
         </button>

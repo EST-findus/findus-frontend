@@ -38,7 +38,7 @@ function StoryPhoto({ image, available, sizes, className = "", fallbackSrc = nul
   return (
     <figure className={className}>
       <div className={`relative overflow-hidden bg-(--story-sand) [&_img]:object-cover ${FRAME[frame]}`}>
-        {available ? <Image src={image.src} alt={image.alt} fill sizes={sizes} /> : official ? <Image src={fallbackSrc} alt={image.alt} fill sizes={sizes} unoptimized style={{ objectFit: "cover" }} /> : (
+        {available ? <Image quality={90} src={image.src} alt={image.alt} fill sizes={sizes} /> : official ? <Image src={fallbackSrc} alt={image.alt} fill sizes={sizes} unoptimized style={{ objectFit: "cover" }} /> : (
           <div className={PHOTO_EMPTY} role="img" aria-label={`${image.alt} (사진 준비 중)`}>
             <ImageIcon size={26} />
             <span>사진 준비 중</span>
@@ -88,10 +88,10 @@ function PhotoCompare({ available, childPhotoUrl }: { available: (src: string) =
     <div ref={ref} className="w-full">
       <div className="relative aspect-[4/5] overflow-hidden rounded-[6px] bg-(--story-sand) select-none" data-animate={!touched} style={{ "--split": `${split}%` } as React.CSSProperties}>
         <div className="absolute inset-0 [&_img]:object-cover">
-          {available(aged.src) ? <Image src={aged.src} alt={aged.alt} fill sizes="(min-width: 768px) 420px, 90vw" /> : <div className={PHOTO_EMPTY}><ImageIcon size={26} /><span>성인 추정 이미지 준비 중</span><code>aged.jpg</code></div>}
+          {available(aged.src) ? <Image quality={90} src={aged.src} alt={aged.alt} fill sizes="(min-width: 768px) 420px, 90vw" /> : <div className={PHOTO_EMPTY}><ImageIcon size={26} /><span>성인 추정 이미지 준비 중</span><code>aged.jpg</code></div>}
         </div>
         <div className={`absolute inset-0 [clip-path:inset(0_calc(100%_-_var(--split))_0_0)] [&_img]:object-cover ${COMPARE_MOVE}`}>
-          {available(child.src) ? <Image src={child.src} alt={child.alt} fill sizes="(min-width: 768px) 420px, 90vw" /> : childPhotoUrl ? <Image src={childPhotoUrl} alt={child.alt} fill sizes="(min-width: 768px) 420px, 90vw" unoptimized style={{ objectFit: "cover" }} /> : <div className={PHOTO_EMPTY}><ImageIcon size={26} /><span>당시 사진 준비 중</span><code>child.jpg</code></div>}
+          {available(child.src) ? <Image quality={90} src={child.src} alt={child.alt} fill sizes="(min-width: 768px) 420px, 90vw" /> : childPhotoUrl ? <Image src={childPhotoUrl} alt={child.alt} fill sizes="(min-width: 768px) 420px, 90vw" unoptimized style={{ objectFit: "cover" }} /> : <div className={PHOTO_EMPTY}><ImageIcon size={26} /><span>당시 사진 준비 중</span><code>child.jpg</code></div>}
         </div>
         <span className={`absolute inset-y-0 left-(--split) -ml-[1.5px] w-[3px] bg-white shadow-[0_0_0_1px_rgb(0_0_0/8%)] after:absolute after:top-1/2 after:left-1/2 after:grid after:size-[38px] after:place-items-center after:rounded-full after:bg-white after:text-[18px] after:text-(--story-brown) after:shadow-[0_4px_14px_rgb(0_0_0/18%)] after:[translate:-50%_-50%] after:content-['⟷'] ${COMPARE_MOVE}`} aria-hidden="true" />
         <span className={`${COMPARE_TAG} left-3`}>2000 · 당시 사진</span>

@@ -25,7 +25,7 @@ export default function InfoHero({ eyebrow, title, accent, description, image, f
     <header className="page-container max-w-5xl pt-4 max-sm:pt-2.5">
       <section className="relative min-h-[252px] overflow-hidden rounded-[18px] bg-[linear-gradient(180deg,#F4F8FD_0%,#FFFFFF_100%)] max-sm:min-h-[230px] max-sm:rounded-[14px]" aria-labelledby="info-hero-title">
         <div aria-hidden="true" className={`${VISUAL} ${flip ? "[&_img]:[transform:scaleX(-1)]" : ""}`}>
-          <Image src={image} alt="" fill priority sizes="(min-width: 1024px) 680px, 100vw" style={{ objectPosition: imagePosition }} />
+          <Image quality={90} src={image} alt="" fill priority sizes="(min-width: 1024px) 680px, 100vw" style={{ objectPosition: imagePosition }} />
         </div>
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(244,248,253,0)_0%,rgba(244,248,253,.3)_70%,rgba(255,255,255,.72)_100%)]" />
         <div className={COPY}>

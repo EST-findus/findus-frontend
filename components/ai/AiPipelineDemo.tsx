@@ -41,10 +41,10 @@ export default function AiPipelineDemo() {
       <figure className="mx-auto w-full max-w-105 md:sticky md:top-24">
         <div className="relative isolate aspect-[543/724] overflow-hidden rounded-[28px] bg-[#e9ecea] shadow-[0_24px_48px_rgba(20,40,30,.14)]">
           <div className="absolute inset-0 origin-[50%_48%] [transition:transform_1.2s_cubic-bezier(.2,.8,.2,1)] data-[zoomed=true]:[transform:scale(1.16)] motion-reduce:[transition:none]" data-zoomed={current.key === "align"}>
-            <Image src={DEMO_PHOTOS.past} alt="" fill sizes="420px" className="object-cover" priority />
-            {["age", "hair", "result"].includes(current.key) && <Image key={`aged-${step}`} src={DEMO_PHOTOS.aged} alt="" fill sizes="420px" className={`object-cover ${current.key === "age" ? "animate-ai-age-in motion-reduce:animate-none" : ""}`} />}
+            <Image quality={90} src={DEMO_PHOTOS.past} alt="" fill sizes="420px" className="object-cover" priority />
+            {["age", "hair", "result"].includes(current.key) && <Image quality={90} key={`aged-${step}`} src={DEMO_PHOTOS.aged} alt="" fill sizes="420px" className={`object-cover ${current.key === "age" ? "animate-ai-age-in motion-reduce:animate-none" : ""}`} />}
             {current.key === "hair" && DEMO_PHOTOS.styles.slice(1).map((style, i) => (
-              <Image key={`${style.key}-${step}-${hairPick}`} src={style.src} alt="" fill sizes="420px"
+              <Image quality={90} key={`${style.key}-${step}-${hairPick}`} src={style.src} alt="" fill sizes="420px"
                 className={`object-cover ${hairPick ? LAYER : i === 0 ? "opacity-0 animate-ai-hair-a motion-reduce:animate-none" : "opacity-0 animate-ai-hair-b motion-reduce:animate-none"}`}
                 style={hairPick ? { opacity: hairPick === style.key ? 1 : 0 } : undefined} />
             ))}
@@ -58,7 +58,7 @@ export default function AiPipelineDemo() {
             {DEMO_PHOTOS.styles.map((style) => (
               <button key={style.key} type="button" aria-pressed={hairPick === style.key} onClick={() => { setHairPick(style.key); setPlaying(false); }}
                 className={`flex items-center gap-2 rounded-full border py-1 pr-3 pl-1 text-[13px] font-bold transition-colors ${hairPick === style.key ? "border-brand bg-brand text-white" : "border-line bg-card hover:border-brand"} ${FOCUS}`}>
-                <span className="relative h-7 w-7 overflow-hidden rounded-full"><Image src={style.src} alt="" fill sizes="28px" className="object-cover" /></span>{style.label}
+                <span className="relative h-7 w-7 overflow-hidden rounded-full"><Image quality={90} src={style.src} alt="" fill sizes="28px" className="object-cover" /></span>{style.label}
               </button>
             ))}
           </div>

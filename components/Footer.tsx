@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
           <nav className="flex items-center gap-5 max-[1000px]:col-span-full max-[1000px]:justify-end max-[640px]:col-auto max-[640px]:justify-between max-[640px]:gap-4 max-[640px]:px-1" aria-label="공식 기관 바로가기">
             <a href={SAFE182_URL} target="_blank" rel="noopener noreferrer" aria-label="경찰청 안전Dream 공식 사이트 (새 창)" className={AGENCY_LINK}><Image src="/images/agencies/safety-dream.gif" alt="경찰청 안전Dream" width={209} height={36} unoptimized className="h-auto w-[140px] object-contain max-[640px]:w-[124px]" /></a>
-            <a href="https://www.ncrc.or.kr/" target="_blank" rel="noopener noreferrer" aria-label="국가아동권리보장원 공식 사이트 (새 창)" className={AGENCY_LINK}><Image src="/images/agencies/ncrc.png" alt="국가아동권리보장원" width={244} height={24} className="h-auto w-[175px] object-contain max-[640px]:w-[160px]" /></a>
+            <a href="https://www.ncrc.or.kr/" target="_blank" rel="noopener noreferrer" aria-label="국가아동권리보장원 공식 사이트 (새 창)" className={AGENCY_LINK}><Image src="/images/agencies/ncrc.png" alt="국가아동권리보장원" width={244} height={24} unoptimized className="h-auto w-[175px] object-contain max-[640px]:w-[160px]" /></a>
           </nav>
         </div>
         <div className="page-container mt-1.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-[#f0f3f8] pt-[5px] text-[11.5px] text-subtle max-[640px]:mt-4 max-[640px]:flex-col-reverse max-[640px]:items-start max-[640px]:gap-y-2 max-[640px]:pt-3.5 max-[640px]:text-[11px]">
