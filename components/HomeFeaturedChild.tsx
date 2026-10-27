@@ -53,8 +53,8 @@ export default function HomeFeaturedChild({ person, variant = "hero" }: { person
   return (
     <article className={`${cardBase} ${popup ? "w-full" : cardHero}`} aria-labelledby="home-featured-name">
       <header className="flex items-center justify-between gap-2">
-        {popup ? <h3 id="home-featured-name" className={`${name} m-0 text-[20px]`}>{person.name}<small className={nameSmall}>{formatGender(person.gender)}</small></h3> : <p className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand"><span aria-hidden="true" className="size-1.5 animate-home-dot-pulse rounded-full bg-[#F28B82] motion-reduce:animate-none" />지금 함께 찾고 있는 아이</p>}
-        <p className="text-[10px] whitespace-nowrap text-[#8B9AAD]">자료 출처: 경찰청</p>
+        {popup ? <h3 id="home-featured-name" className={`${name} m-0 text-[20px]`}>{person.name}<small className={nameSmall}>{formatGender(person.gender)}</small></h3> : <p className="inline-flex items-center gap-1.5 text-[12px] font-bold text-brand"><span aria-hidden="true" className="size-1.5 animate-home-dot-pulse rounded-full bg-[#F28B82] motion-reduce:animate-none" />지금 함께 찾고 있는 아이</p>}
+        <p className="text-[11.5px] whitespace-nowrap text-[#62748C]">자료 출처: 경찰청</p>
       </header>
       {!popup && <h2 id="home-featured-name" className={`${name} mx-0 mt-1 mb-1.5 text-[16px]`}>{person.name}<small className={nameSmall}>{formatGender(person.gender)}</small></h2>}
       <div className={`grid items-center ${popup ? "mt-3 grid-cols-[minmax(0,1fr)_22px_minmax(0,1fr)] gap-2.5" : "grid-cols-[minmax(0,1fr)_18px_minmax(0,1fr)] gap-1.5"}`}>

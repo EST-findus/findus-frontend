@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { MissingPerson } from "@/lib/types";
 import HomeFeaturedChild from "./HomeFeaturedChild";
+import { PhoneIcon } from "./Icons";
 import Modal from "./Modal";
 
 // 한 번 띄운 뒤에는 같은 창(탭)에서 다시 띄우지 않고, '오늘 하루 보지 않기'를 누르면 그날은 띄우지 않는다.
@@ -10,6 +11,7 @@ const SHOWN_KEY = "findus:featured-popup-shown";
 const HIDE_UNTIL_KEY = "findus:featured-popup-hidden-until";
 const OPEN_DELAY_MS = 900;
 const footButton = "cursor-pointer rounded-lg px-2 py-1.5 text-[13px] [transition:background-color_.2s_ease,color_.2s_ease] hover:bg-brand-soft hover:text-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+const urgentCall = "inline-flex items-center justify-center gap-1.5 rounded-full px-2.5 py-[9px] text-[13.5px] font-extrabold whitespace-nowrap [transition:background-color_.2s_ease,border-color_.2s_ease] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9483F]";
 /** 로고를 누르면 보내는 신호. 홈에 있으면 바로 팝업을 다시 띄운다. */
 export const SHOW_FEATURED_EVENT = "findus:show-featured";
 
@@ -62,7 +64,15 @@ export default function HomeFeaturedPopup({ person }: { person: MissingPerson })
   return (
     <Modal title="지금 함께 찾고 있는 아이" eyebrow="함께 찾아주세요" accent="coral" size="narrow" onClose={() => setOpen(false)}>
       <HomeFeaturedChild person={person} variant="popup" />
-      <div className="-mx-7 mt-[18px] -mb-7 flex items-center justify-between gap-3 rounded-b-2xl border-t border-[#EEF2F7] bg-[#F9FAFC] px-5 py-3 max-[720px]:-mx-5">
+      {/* 방문자가 가장 먼저 보는 창이므로, 방금 아이를 잃어버린 사람이 여기서 바로 신고처를 찾게 한다. */}
+      <aside className="-mx-7 mt-5 grid gap-2.5 border-t border-[#F1D3CE] bg-[#FEF4F3] px-7 pt-4 pb-[18px] max-sm:-mx-5 max-sm:px-5" aria-label="긴급 신고 안내">
+        <p className="text-[13px] leading-[1.6] break-keep text-[#5A3A37]"><strong className="block text-[14px] font-extrabold text-[#B4473F]">지금 아이를 잃어버렸나요?</strong>망설이지 말고 바로 112에 신고하세요. 실종 상담은 182에서 도와드려요.</p>
+        <div className="grid grid-cols-2 gap-2">
+          <a href="tel:112" className={`${urgentCall} bg-[#C9483F] text-white hover:bg-[#A83A32]`}><PhoneIcon size={14} strokeWidth={2.2} aria-hidden="true" />112 긴급 신고</a>
+          <a href="tel:182" className={`${urgentCall} border border-[#EBC3BE] bg-white text-[#B4473F] hover:border-[#C9483F]`}><PhoneIcon size={14} strokeWidth={2.2} aria-hidden="true" />182 실종 상담</a>
+        </div>
+      </aside>
+      <div className="-mx-7 -mb-7 flex items-center justify-between gap-3 rounded-b-2xl border-t border-[#EEF2F7] bg-[#F9FAFC] px-5 py-3 max-sm:-mx-5">
         <button type="button" className={`${footButton} font-semibold text-subtle`} onClick={hideToday}>오늘 하루 보지 않기</button>
         <button type="button" className={`${footButton} font-bold text-brand-dark`} onClick={() => setOpen(false)}>닫기</button>
       </div>
