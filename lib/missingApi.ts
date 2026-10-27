@@ -47,7 +47,8 @@ export function toMissingPerson(dto: MissingPersonDto): MissingPerson {
     lastSyncedAt:dto.lastSeenAt,attribution:'자료 출처: 경찰청'};
 }
 async function request(path: string): Promise<Response> {
-  const base = process.env.BACKEND_URL ?? 'http://localhost:18080';
+  // 브라우저(상세 모달)에서는 CORS를 피하려고 next.config.ts의 /backend 프록시로 보낸다.
+  const base = typeof window === 'undefined' ? process.env.BACKEND_URL ?? 'http://localhost:18080' : '/backend';
   try {
     return await fetch(base.replace(/\/$/,'')+path,{cache:'no-store',signal:AbortSignal.timeout(15000)});
   } catch { throw new Error('아동 정보를 불러오지 못했습니다. 백엔드 연결을 확인하고 다시 시도해 주세요.'); }
