@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import LogoMark from "./LogoMark";
 import { SAFE182_URL } from "@/lib/links";
 import { ShieldIcon } from "./Icons";
-import { SEARCH_LOGO, SEARCH_PALETTE } from "./searchStyles";
+import { SEARCH_PALETTE } from "./searchStyles";
+import Wordmark from "./Wordmark";
 
 // 데스크톱은 본문 속 번호, 모바일은 바로 걸 수 있는 버튼 모양.
 const CALL_LINK = "[&_b]:font-bold [&_b]:text-[#466a94] max-[640px]:inline-flex max-[640px]:min-h-9 max-[640px]:items-center max-[640px]:gap-1.5 max-[640px]:rounded-full max-[640px]:border max-[640px]:border-[#dbe6f2] max-[640px]:bg-[#f5f9fd] max-[640px]:px-3.5 max-[640px]:text-[13px] max-[640px]:text-[#365674]";
@@ -17,7 +17,7 @@ export default function Footer() {
         <div className="page-container grid grid-cols-[1.25fr_1fr_auto] items-center gap-[18px] max-[1000px]:grid-cols-[1fr_1fr] max-[1000px]:gap-2.5 max-[640px]:grid-cols-[1fr] max-[640px]:gap-4">
           <div className="flex items-center gap-3 max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-1">
             <Link href="/" aria-label="FindUs 홈" className="inline-flex shrink-0 items-center gap-[7px] text-navy">
-              <span className={SEARCH_LOGO}><LogoMark size={30} /></span><strong className="text-[18px] font-extrabold tracking-[-.5px] max-[640px]:text-[17px]"><span style={{ color: "#173B70" }}>Find</span><span style={{ color: "#3978B8" }}>Us</span></strong>
+              <Wordmark className="text-[21px] leading-none max-[640px]:text-[20px]" />
             </Link>
             <p className="text-[12.5px] leading-[1.7] break-keep whitespace-nowrap text-subtle max-[640px]:text-[12px] max-[640px]:whitespace-normal">다시 그린 얼굴로, 잊혀 가는 아이를 한 번 더 기억합니다.</p>
           </div>

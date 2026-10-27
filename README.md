@@ -142,7 +142,8 @@ BACKEND_URL=https://<배포된 백엔드 주소>
 
 ### 아이콘과 공유 이미지
 
-- `public/images/findus-mark.svg`: 원본 심볼 (헤더 등에서는 같은 그림의 `components/LogoMark.tsx` 사용)
+- `components/Wordmark.tsx`: 헤더·푸터의 글자 로고 (i의 점 자리에 하트)
+- `public/images/findus-mark.svg`: 정사각형 심볼 타일 (화면 안에서는 같은 그림의 `components/LogoMark.tsx` 사용)
 - `app/favicon.ico`, `app/icon.svg`: 브라우저 탭 아이콘
 - `app/apple-icon.png`: iOS 홈 화면 아이콘 (180×180)
 - `public/images/findus-share.png`: 카카오톡 링크 미리보기 및 Open Graph·Twitter 공유 이미지 (1200×630)
