@@ -4,24 +4,17 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SAFE182_URL } from "@/lib/links";
 import HealthCheckButton from "./HealthCheckButton";
-import { SEARCH_LOGO, SEARCH_PALETTE } from "./searchStyles";
+import { SEARCH_PALETTE } from "./searchStyles";
 import HeaderAuth from "./HeaderAuth";
 import HeaderNav from "./HeaderNav";
-import LogoMark from "./LogoMark";
+import Wordmark from "./Wordmark";
 import { ArrowUpRightIcon } from "./Icons";
 import ReportCallButton from "./ReportCallButton";
 import { requestFeaturedPopup } from "./HomeFeaturedPopup";
 
-export function Logo({ blue = false }: { blue?: boolean }) {
-  return (
-    <span className={`flex items-center gap-2 ${blue ? SEARCH_LOGO : ""}`}>
-      <LogoMark size={36} className="shrink-0" />
-      <span className="text-[21px] font-extrabold tracking-[-0.4px]">
-        <span style={{ color: "#173B70" }}>Find</span>
-        <span style={{ color: "#3978B8" }}>Us</span>
-      </span>
-    </span>
-  );
+// 헤더는 아이콘 없이 글자 로고만 쓴다. 정사각형 심볼(LogoMark)은 파비콘·앱 아이콘 몫.
+export function Logo() {
+  return <Wordmark className="text-[25px] leading-none max-sm:text-[23px]" />;
 }
 
 export default function Header() {
@@ -52,7 +45,7 @@ export default function Header() {
 }
       <div className={`page-container flex h-16 items-center gap-5 max-lg:gap-3 max-sm:gap-2 ${onMyPage ? "max-md:h-13" : ""}`}>
         <Link href="/" aria-label="FindUs 홈" onClick={requestFeaturedPopup} className="inline-flex rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
-          <Logo blue={onPublicPage} />
+          <Logo />
         </Link>
         <HeaderNav />
         <div className="ml-auto flex shrink-0 items-center gap-2 lg:order-last lg:ml-0 max-sm:gap-1.5">
