@@ -11,8 +11,8 @@ export default function AgeCompareSlider() {
   return (
     <figure className="mx-auto w-full max-w-105">
       <div className="relative aspect-[543/724] touch-pan-y overflow-hidden rounded-3xl bg-[#e9ecea] has-[input:focus-visible]:outline-3 has-[input:focus-visible]:outline-offset-3 has-[input:focus-visible]:outline-brand">
-        <Image src={DEMO_PHOTOS.past} alt="" fill sizes="420px" className="object-cover" />
-        <Image src={DEMO_PHOTOS.aged} alt="" fill sizes="420px" className="object-cover" style={{ clipPath: `inset(0 0 0 ${pos}%)` }} />
+        <Image quality={90} src={DEMO_PHOTOS.past} alt="" fill sizes="420px" className="object-cover" />
+        <Image quality={90} src={DEMO_PHOTOS.aged} alt="" fill sizes="420px" className="object-cover" style={{ clipPath: `inset(0 0 0 ${pos}%)` }} />
         <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white shadow-[0_0_0_1px_rgba(0,0,0,.15)]" style={{ left: `${pos}%` }}>
           <span className="absolute top-1/2 left-1/2 flex h-11 w-11 -translate-1/2 items-center justify-center rounded-full bg-white text-[18px] font-extrabold text-brand shadow-lg">↔</span>
         </span>

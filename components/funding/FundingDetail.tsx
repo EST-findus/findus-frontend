@@ -250,7 +250,7 @@ export default function FundingDetail({ campaignId, child, now, availableImages,
       {/* 히어로 */}
       <section className="page-container grid grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-10 pt-4 pb-10 max-lg:grid-cols-1 max-lg:gap-6" aria-labelledby="funding-title">
         <div className="relative min-h-[420px] overflow-hidden rounded-[20px] bg-navy max-lg:min-h-[300px]">
-          <Image src="/images/support-children-background.png" alt="" fill priority sizes="(min-width: 1024px) 640px, 100vw" className="object-cover object-[center_55%] [transform:scale(1.06)] motion-safe:animate-funding-cover-in motion-reduce:[transform:none]" />
+          <Image quality={90} src="/images/support-children-background.png" alt="" fill priority sizes="(min-width: 1024px) 640px, 100vw" className="object-cover object-[center_55%] [transform:scale(1.06)] motion-safe:animate-funding-cover-in motion-reduce:[transform:none]" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(23_59_112/5%)_30%,rgb(23_59_112/88%))]" />
           <div className="absolute inset-x-7 bottom-[30px] text-white">
             <p className="text-[13px] font-bold text-[#B9D9FC]">FindUs 리워드 펀딩 · {campaign.child.name}님을 기억하는</p>
