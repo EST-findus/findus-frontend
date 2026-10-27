@@ -129,7 +129,14 @@ export const LayersIcon = (p: IconProps) => (
   </Svg>
 );
 
-export const CheckIcon = (p: IconProps) => (
+export const HelpCircleIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="8" />
+    <path d="M9.8 9.6a2.3 2.3 0 0 1 4.4.9c0 1.5-2.2 2-2.2 3.3M12 16.6v.01" />
+  </Svg>
+);
+
+export const CheckIcon =(p: IconProps) => (
   <Svg {...p}>
     <path d="m5 12.5 4.5 4.5L19 7.5" />
   </Svg>
