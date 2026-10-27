@@ -5,7 +5,7 @@ import { formatAge, formatDate, formatGender } from "@/lib/format";
 import type { MissingPerson } from "@/lib/types";
 import FavoriteButton from "./FavoriteButton";
 import StoredPhoto from "./StoredPhoto";
-import { ArrowRightIcon, EyeIcon, ShareIcon, SparklesIcon } from "./Icons";
+import { ArrowRightIcon, ClockIcon, EyeIcon, ShareIcon, SparklesIcon } from "./Icons";
 
 const PinGlyph = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -28,7 +28,7 @@ const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-
 // Body: name with a gender chip, two fact cells, then one primary action and two quiet icon buttons.
 const iconButton = `grid size-10 cursor-pointer place-items-center rounded-[11px] border border-[#E3EAF3] bg-white text-[#3D5877] [transition:background-color_.2s_ease,border-color_.2s_ease,color_.2s_ease] hover:border-[#BFD3EC] hover:bg-brand-soft hover:text-brand motion-reduce:[transition:none] ${focusRing}`;
 const factCell = "min-w-0 px-3 py-[9px]";
-const factTerm = "flex items-center gap-1 text-[11px] font-bold text-[#7A8BA0] [&_svg]:flex-none [&_svg]:text-brand";
+const factTerm = "flex items-center gap-1 text-[12px] font-bold text-[#7A8BA0] [&_svg]:flex-none [&_svg]:text-brand";
 const factValue = "mt-0.5 truncate text-[14px] font-extrabold tracking-[-.2px] text-brand-dark tabular-nums";
 
 /** 실종된 해부터 지금까지 지난 햇수. 나이로 먼저 계산하고, 없으면 실종 연도로 계산한다. */
@@ -79,7 +79,7 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare,
       </div>
 
       <div className={`flex flex-1 flex-col ${feature ? "px-[26px] pt-[22px] pb-5 max-sm:px-[18px] max-sm:pt-4 max-sm:pb-3.5" : "px-[18px] py-4 max-sm:px-4 max-sm:pt-3.5 max-sm:pb-2.5"}`}>
-        {feature && years !== null && <p className="mb-2 inline-flex items-center gap-[7px] text-[13px] font-extrabold text-[#B4473F]"><span aria-hidden="true" className="size-[7px] animate-home-dot-pulse rounded-full bg-[#F28B82] motion-reduce:animate-none" />{years}년째 기다리는 중</p>}
+        {feature && years !== null && <p className="mb-2 inline-flex items-center gap-[7px] text-[13px] font-extrabold text-[#B4473F]"><ClockIcon size={15} strokeWidth={2.2} aria-hidden="true" className="flex-none text-[#F28B82]" />{years}년째 기다리는 중</p>}
         <h3 id={`home-child-${person.id}`} className={`flex items-center gap-2 font-[850] tracking-[-.5px] text-brand-dark ${feature ? "text-[26px] max-sm:text-[22px]" : "text-[20px]"}`}>{person.name}<small className="rounded-full bg-[#F1F5FA] px-2 py-0.5 text-[11.5px] font-bold tracking-normal text-muted">{formatGender(person.gender)}</small></h3>
         {feature && person.features && person.features !== "정보 없음" && <p className="mt-2 line-clamp-2 text-[14px] leading-[1.65] break-keep text-[#4A5D75]">{person.features}</p>}
         {/* 실종 지역과 날짜를 같은 칸 모양으로 나란히 둔다. 모든 카드가 같은 자리에 같은 정보를 보여준다. */}
@@ -93,7 +93,7 @@ export default function HomeChildCard({ person, onOpenDetail, onReport, onShare,
           <button type="button" className={iconButton} aria-label={`${person.name} 정보 공유하기`} title="공유하기" aria-haspopup="dialog" onClick={event => onShare(person, event.currentTarget)}><ShareIcon size={18} /></button>
         </div>
       </div>
-      <p className={`border-t border-[#EEF2F7] pt-2.5 pb-3 text-[11.5px] text-[#7A8BA0] ${feature ? "px-[26px]" : "px-[18px] max-sm:px-4"}`}>출처: 경찰청 · AI 예상 이미지는 실제 모습과 다를 수 있습니다</p>
+      <p className={`border-t border-[#EEF2F7] pt-2.5 pb-3 text-[12.5px] text-[#7A8BA0] ${feature ? "px-[26px]" : "px-[18px] max-sm:px-4"}`}>출처: 경찰청 · AI 예상 이미지는 실제 모습과 다를 수 있습니다</p>
     </article>
   );
 }

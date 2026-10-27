@@ -6,6 +6,7 @@ import { ShieldIcon } from "./Icons";
 import { SEARCH_LOGO, SEARCH_PALETTE } from "./searchStyles";
 
 const NOTICE_LINK = "font-bold text-[#466a94]";
+const POLICY_LINK = "font-[650] text-[#466a94] hover:text-navy hover:underline hover:underline-offset-3";
 // 공식 기관 마크는 원래 색과 비율을 그대로 둔다.
 const AGENCY_LINK = "flex min-h-8 items-center py-1";
 
@@ -17,18 +18,26 @@ export default function Footer() {
             <Link href="/" aria-label="FindUs 홈" className="inline-flex shrink-0 items-center gap-[7px] text-navy">
               <span className={SEARCH_LOGO}><LogoMark size={30} /></span><strong className="text-[18px] font-extrabold tracking-[-.5px] max-[640px]:text-[17px]"><span style={{ color: "#173B70" }}>Find</span><span style={{ color: "#3978B8" }}>Us</span></strong>
             </Link>
-            <p className="max-w-[220px] text-[11px] leading-[1.7] break-keep text-subtle max-[640px]:max-w-none max-[640px]:text-[10px]">작은 관심이 한 아이의 내일을 바꿀 수 있습니다.</p>
+            <p className="max-w-[220px] text-[12.5px] leading-[1.7] break-keep text-subtle max-[640px]:max-w-none max-[640px]:text-[12px]">작은 관심이 한 아이의 내일을 바꿀 수 있습니다.</p>
           </div>
           <div className="flex items-start gap-2">
             <ShieldIcon size={18} className="mt-0.5 shrink-0 text-[#2e6cb1]" />
-            <div><strong className="text-[12px] font-[750] text-[#365674]">공식 신고·상담 안내</strong><p className="mt-px text-[10px] leading-[1.5] text-subtle">긴급 신고 <a href="tel:112" className={NOTICE_LINK}>112</a> · 실종 상담 <a href="tel:182" className={NOTICE_LINK}>182</a><br />아동 정보 자료 출처: 경찰청.</p></div>
+            <div><strong className="text-[13px] font-[750] text-[#365674]">공식 신고·상담 안내</strong><p className="mt-px text-[12px] leading-[1.5] text-subtle">긴급 신고 <a href="tel:112" className={NOTICE_LINK}>112</a> · 실종 상담 <a href="tel:182" className={NOTICE_LINK}>182</a><br />아동 정보 자료 출처: 경찰청.</p></div>
           </div>
           <nav className="flex items-center gap-5 max-[1000px]:col-span-full max-[1000px]:justify-end max-[640px]:col-auto max-[640px]:flex-wrap max-[640px]:justify-start max-[640px]:gap-x-5 max-[640px]:gap-y-2.5" aria-label="공식 기관 바로가기">
             <a href={SAFE182_URL} target="_blank" rel="noopener noreferrer" aria-label="경찰청 안전Dream 공식 사이트 (새 창)" className={AGENCY_LINK}><Image src="/images/agencies/safety-dream.gif" alt="경찰청 안전Dream" width={209} height={36} unoptimized className="h-auto w-[140px] object-contain" /></a>
             <a href="https://www.ncrc.or.kr/" target="_blank" rel="noopener noreferrer" aria-label="국가아동권리보장원 공식 사이트 (새 창)" className={AGENCY_LINK}><Image src="/images/agencies/ncrc.png" alt="국가아동권리보장원" width={244} height={24} className="h-auto w-[175px] object-contain max-[640px]:w-[170px]" /></a>
           </nav>
         </div>
-        <div className="page-container mt-1.5 flex justify-between gap-3 border-t border-[#f0f3f8] pt-[5px] text-[10px] text-subtle max-[640px]:text-[9px]"><span>© 2026 FindUs</span><span>기억이 단서가 되어, 다시 만나는 날까지 함께합니다.</span></div>
+        <div className="page-container mt-1.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 border-t border-[#f0f3f8] pt-[5px] text-[11.5px] text-subtle max-[640px]:text-[11px]">
+          <span>© 2026 FindUs</span>
+          {/* 사진이 공개되는 가족이 정정·비공개를 요청할 길을 늘 바닥에 둔다. */}
+          <nav className="flex flex-wrap gap-x-4 gap-y-1" aria-label="서비스 정책">
+            <Link href="/help" className={POLICY_LINK}>이용 안내</Link>
+            <Link href="/help?tab=ai" className={POLICY_LINK}>AI 이용 원칙</Link>
+            <Link href="/mypage/verify" className={POLICY_LINK}>정보 정정·비공개 요청</Link>
+          </nav>
+        </div>
       </footer>
   );
 }

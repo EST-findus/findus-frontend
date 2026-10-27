@@ -23,7 +23,10 @@ interface ModalProps {
   mobileSheet?: boolean;
   accent?: "brand" | "coral";
   eyebrow?: string;
-  /** 제목·여백 없이 내용이 상자 전체를 쓴다. 제목은 화면 낭독기에만 남고, 닫기 버튼은 스크롤해도 따라온다. */
+  /**
+   * 제목·여백 없이 내용이 상자 전체를 쓴다. 제목은 화면 낭독기에만 남는다.
+   * 상자 안쪽의 [data-modal-scroll] 영역만 스크롤되어, 스크롤바가 둥근 모서리와 닫기 버튼에 겹치지 않는다.
+   */
   bare?: boolean;
 }
 
@@ -104,14 +107,14 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className={`relative max-h-[90vh] w-full animate-modal-in overflow-y-auto rounded-2xl border border-line bg-card shadow-modal outline-none motion-reduce:animate-none ${bare ? "max-w-260 overscroll-contain p-0 max-sm:max-h-dvh max-sm:h-dvh max-sm:rounded-none max-sm:border-0" : "p-7"} ${mobileCompact ? "max-md:flex max-md:h-dvh max-md:max-h-dvh max-md:flex-col max-md:overflow-hidden max-md:rounded-none max-md:border-0 max-md:p-0" : "max-sm:px-5"} ${bare ? "" : size === "wide" ? "max-w-240" : size === "narrow" ? "max-w-110" : "max-w-170"} ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""} ${mobileSheet ? "max-sm:max-h-[88dvh] max-sm:animate-sheet-in max-sm:motion-reduce:animate-none max-sm:rounded-t-3xl max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0 max-sm:px-5 max-sm:pt-8 max-sm:pb-[max(20px,env(safe-area-inset-bottom))]" : ""}`}
+        className={`relative max-h-[90vh] w-full animate-modal-in rounded-2xl border border-line bg-card shadow-modal outline-none motion-reduce:animate-none ${bare ? "flex max-w-260 flex-col overflow-hidden p-0 max-sm:max-h-dvh max-sm:h-dvh max-sm:rounded-none max-sm:border-0" : "overflow-y-auto p-7 [scrollbar-color:#CBD6E3_transparent] [scrollbar-width:thin]"} ${mobileCompact ? "max-md:flex max-md:h-dvh max-md:max-h-dvh max-md:flex-col max-md:overflow-hidden max-md:rounded-none max-md:border-0 max-md:p-0" : "max-sm:px-5"} ${bare ? "" : size === "wide" ? "max-w-240" : size === "narrow" ? "max-w-110" : "max-w-170"} ${mobileFullscreen ? "max-sm:h-dvh max-sm:max-h-dvh max-sm:rounded-none max-sm:border-0" : ""} ${mobileSheet ? "max-sm:max-h-[88dvh] max-sm:animate-sheet-in max-sm:motion-reduce:animate-none max-sm:rounded-t-3xl max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0 max-sm:px-5 max-sm:pt-8 max-sm:pb-[max(20px,env(safe-area-inset-bottom))]" : ""}`}
       >
         {mobileSheet && <span aria-hidden="true" className="absolute top-2.5 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-line sm:hidden" />}
         <button
           type="button"
           onClick={onClose}
           aria-label="닫기"
-          className={`${bare ? "sticky top-4 z-30 mr-4 -mb-9 ml-auto bg-card/85 shadow-card backdrop-blur" : "absolute top-5 right-5"} ${mobileCompact ? "z-10 max-md:top-3 max-md:right-4" : ""} flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand`}
+          className={`${bare ? "absolute top-4 right-6 z-30 bg-card/85 shadow-card backdrop-blur" : "absolute top-5 right-5"} ${mobileCompact ? "z-10 max-md:top-3 max-md:right-4" : ""} flex h-9 w-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand`}
         >
           <CloseIcon size={20} />
         </button>
@@ -119,7 +122,11 @@ export default function Modal({ title, onClose, returnFocusTo, children, mobileF
         <h2 id={titleId} className={`${bare ? "sr-only" : ""} mb-5 pr-10 text-[20px] font-extrabold tracking-[-0.3px] break-keep text-ink ${mobileCompact ? "max-md:mb-0 max-md:shrink-0 max-md:border-b max-md:border-line max-md:px-5 max-md:py-4 max-md:pr-16" : ""}`}>
           {title}
         </h2>
-        {children}
+        {bare ? (
+          <div data-modal-scroll className="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-color:#CBD6E3_transparent] [scrollbar-width:thin]">
+            {children}
+          </div>
+        ) : children}
       </div>
     </div>,
     document.body,

@@ -70,10 +70,6 @@
     from { scale: 1; }
     to { scale: 1.07; }
   }
-  @keyframes home-gentle-float {
-    0%, 100% { translate: 0 0; }
-    50% { translate: 0 -7px; }
-  }
   @keyframes home-dot-pulse {
     0% { box-shadow: 0 0 0 0 rgba(242, 139, 130, 0.45); }
     70%, 100% { box-shadow: 0 0 0 7px rgba(242, 139, 130, 0); }
@@ -81,10 +77,6 @@
   @keyframes home-nudge {
     0%, 60%, 100% { translate: 0 0; }
     30% { translate: 3px 0; }
-  }
-  @keyframes home-ai-sweep {
-    0% { translate: -120% 0; }
-    22%, 100% { translate: 120% 0; }
   }
   @keyframes home-photo-in {
     from { opacity: 0; transform: translateY(28px) scale(0.98); }
@@ -291,33 +283,29 @@
 
   /* 실종아동 검색(PublicSearchExplorer)·헤더 계정 메뉴 — 지연이 다른 변형은 animate-[search-rise_...] 로 쓴다 */
   --animate-search-rise: search-rise 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
-  --animate-search-zoom: search-zoom 24s ease-in-out infinite alternate;
-  --animate-search-float: search-float 6s ease-in-out infinite;
   --animate-search-chip-in: search-chip-in 0.3s ease backwards;
-  --animate-search-dot: search-dot 2.4s ease-out infinite;
   --animate-header-menu-in: header-menu-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* 데스크톱 메가메뉴(HeaderNav) — 열 순서 지연은 animate-[mega-col_...] 로 쓴다 */
+  --animate-mega-in: mega-in 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-mega-col: mega-col 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   @keyframes search-rise {
     from { opacity: 0; transform: translateY(18px); }
     to { opacity: 1; transform: none; }
-  }
-  @keyframes search-zoom {
-    from { scale: 1; }
-    to { scale: 1.06; }
-  }
-  @keyframes search-float {
-    0%, 100% { translate: 0 0; }
-    50% { translate: 0 -5px; }
   }
   @keyframes search-chip-in {
     from { opacity: 0; transform: translateY(4px) scale(0.94); }
     to { opacity: 1; transform: none; }
   }
-  @keyframes search-dot {
-    0% { box-shadow: 0 0 0 0 rgba(242, 139, 130, 0.45); }
-    70%, 100% { box-shadow: 0 0 0 7px rgba(242, 139, 130, 0); }
-  }
   @keyframes header-menu-in {
     from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes mega-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes mega-col {
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: none; }
   }
 
