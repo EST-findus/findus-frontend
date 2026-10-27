@@ -31,13 +31,13 @@ export default function MobilePersonDetail({ person, onReport, embedded = false 
         <div className={embedded ? "mx-auto flex w-full max-w-80 justify-center gap-3" : "flex min-h-28 max-h-[30dvh] flex-1 justify-center gap-3"}>
           <figure data-embedded-photo={embedded || undefined} className={embedded ? "flex w-1/2 max-w-36 flex-col text-center max-md:max-w-[clamp(80px,calc(60dvh_-_364px),120px)] min-[600px]:max-md:max-w-28" : "flex min-h-0 w-1/2 max-w-40 flex-col text-center"}>
             <div className={embedded ? "relative aspect-3/4 w-full" : "relative min-h-0 flex-1"}>
-              <Image src={person.photos.past} alt={`${person.name} 실종 당시 사진`} fill sizes="160px" className="rounded-lg object-contain" />
+              <Image quality={90} src={person.photos.past} alt={`${person.name} 실종 당시 사진`} fill sizes="160px" className="rounded-lg object-contain" />
             </div>
             <figcaption className="mt-1 shrink-0 whitespace-nowrap text-[12px] font-bold max-sm:text-[10px]">실종 당시</figcaption>
           </figure>
           <figure data-embedded-photo={embedded || undefined} className={embedded ? "flex w-1/2 max-w-36 flex-col text-center max-md:max-w-[clamp(80px,calc(60dvh_-_364px),120px)] min-[600px]:max-md:max-w-28" : "flex min-h-0 w-1/2 max-w-40 flex-col text-center"}>
             <div className={embedded ? "relative aspect-3/4 w-full" : "relative min-h-0 flex-1"}>
-              <Image src={selectedPhoto.src} alt={`${person.name} AI 예상 모습 (${selectedPhoto.label})`} fill sizes="160px" className="rounded-lg object-contain" />
+              <Image quality={90} src={selectedPhoto.src} alt={`${person.name} AI 예상 모습 (${selectedPhoto.label})`} fill sizes="160px" className="rounded-lg object-contain" />
             </div>
             <figcaption className="mt-1 shrink-0 whitespace-nowrap text-[12px] font-bold max-sm:text-[10px] text-brand">AI 예상 · {selectedPhoto.label}</figcaption>
           </figure>

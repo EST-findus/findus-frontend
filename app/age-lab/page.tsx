@@ -43,7 +43,7 @@ export default function AgeLabPage() {
           {[{ src: SAMPLE.past, label: "올린 사진" }, { src: SAMPLE.aged, label: "AI 30세 예상" }].map((item, i) => (
             <figure key={item.label}>
               <div className={`relative aspect-3/4 overflow-hidden rounded-2xl bg-surface ${i === 1 ? "ring-2 ring-brand/40" : ""}`}>
-                <Image src={item.src} alt="" fill sizes="(min-width: 768px) 220px, 45vw" className="object-cover" />
+                <Image quality={90} src={item.src} alt="" fill sizes="(min-width: 768px) 220px, 45vw" className="object-cover" />
                 {i === 1 && <span className="absolute top-2 right-2 rounded-md bg-white/90 px-2 py-0.5 text-[11px] font-extrabold text-brand">AI 생성</span>}
               </div>
               <figcaption className="mt-2 text-center text-[13px] font-bold">{item.label}</figcaption>

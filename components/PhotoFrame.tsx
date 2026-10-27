@@ -1,4 +1,4 @@
-import Image from "next/image";
+import FadeInImage from "./FadeInImage";
 
 interface PhotoContentProps {
   src: string;
@@ -8,7 +8,7 @@ interface PhotoContentProps {
 
 /** 부모는 relative + 크기를 가져야 한다. */
 export function PhotoContent({ src, alt, sizes }: PhotoContentProps) {
-  return <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />;
+  return <FadeInImage quality={90} src={src} alt={alt} fill sizes={sizes} className="object-cover" />;
 }
 
 interface PhotoFrameProps extends PhotoContentProps {

@@ -42,8 +42,17 @@ const page = [
 // A light veil on the left keeps the copy readable, and the bottom fades into the next section.
 // Narrower screens go back to a softer photo anchored on the right.
 const heroVisual = "pointer-events-none absolute inset-y-0 right-auto left-[-30%] z-0 w-[130%] after:absolute after:inset-0 after:bg-[linear-gradient(90deg,rgba(255,255,255,0)_23%,rgba(255,255,255,.62)_26%,rgba(255,255,255,.3)_45%,rgba(255,255,255,0)_62%),linear-gradient(180deg,rgba(255,255,255,0)_78%,#FFFFFF_100%)] after:content-[''] max-[1000px]:right-0 max-[1000px]:left-auto max-[1000px]:w-[58%] max-[1000px]:after:bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,.35)_72%,#FFFFFF_100%)] max-[720px]:w-full";
-const heroVisualImage = "animate-home-slow-zoom object-cover object-[center_32%] opacity-55 saturate-[.85] max-[1000px]:opacity-62 max-[1000px]:saturate-[.8] max-[1000px]:[-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_38%)] max-[1000px]:[mask-image:linear-gradient(90deg,transparent_0%,#000_38%)] max-[720px]:opacity-28 max-[720px]:[-webkit-mask-image:linear-gradient(180deg,#000_0%,transparent_75%)] max-[720px]:[mask-image:linear-gradient(180deg,#000_0%,transparent_75%)]";
-const heroCopy = "*:animate-[home-reveal-up_.9s_cubic-bezier(.2,.7,.2,1)_backwards] [&>:nth-child(2)]:[animation-delay:.08s] [&>:nth-child(3)]:[animation-delay:.16s] [&>:nth-child(4)]:[animation-delay:.22s]";
+const heroVisualImage = "animate-home-slow-zoom object-cover opacity-55 saturate-[.85] max-[1000px]:opacity-62 max-[1000px]:saturate-[.8] max-[1000px]:[-webkit-mask-image:linear-gradient(90deg,transparent_0%,#000_38%)] max-[1000px]:[mask-image:linear-gradient(90deg,transparent_0%,#000_38%)] max-[720px]:opacity-28 max-[720px]:[-webkit-mask-image:linear-gradient(180deg,#000_0%,transparent_75%)] max-[720px]:[mask-image:linear-gradient(180deg,#000_0%,transparent_75%)]";
+// The hero background tells a small story in three slow scenes — a child waiting, children holding hands, a family walking
+// home together — each crossfading into the next every 9s while it drifts in. The delays are offset so the first scene is
+// already in view on load. With reduced motion only the first scene shows.
+const heroScenes = [
+  { src: "/images/search-campaign-hope.png", alt: "햇살 아래 인형을 안고 있는 아이의 모습", label: "기다리는 마음", position: "object-[center_32%]", delay: "[animation-delay:-1.62s]" },
+  { src: "/images/home-hero-children.webp", alt: "손을 맞잡고 숲길을 달려가는 아이들의 뒷모습", label: "함께 잡은 손", position: "object-[56%_center] max-[1000px]:object-[60%_center]", delay: "[animation-delay:7.38s] opacity-0" },
+  { src: "/images/home-hero-family.webp", alt: "엄마 아빠와 손잡고 햇살 길을 걷는 아이의 뒷모습", label: "다시, 가족의 품으로", position: "object-[center_40%] max-[1000px]:object-[78%_center]", delay: "[animation-delay:16.38s] opacity-0" },
+];
+const heroScene = "absolute inset-0 animate-home-hero-scene";
+const heroCopy ="*:animate-[home-reveal-up_.9s_cubic-bezier(.2,.7,.2,1)_backwards] [&>:nth-child(2)]:[animation-delay:.08s] [&>:nth-child(3)]:[animation-delay:.16s] [&>:nth-child(4)]:[animation-delay:.22s]";
 const heroPhotoCard = "group/photo relative m-0 min-w-0 rounded-[20px] border border-white/90 bg-white/82 p-2 shadow-[0_18px_40px_rgba(23,59,112,.12)] backdrop-blur-[10px] [transition:transform_.35s_cubic-bezier(.2,.7,.2,1),box-shadow_.35s_ease] hover:[transform:translateY(-6px)] hover:shadow-[0_24px_48px_rgba(23,59,112,.16)] max-[720px]:rounded-[18px] max-[720px]:p-[7px]";
 const heroPhotoImage = "relative aspect-square overflow-hidden rounded-[14px] bg-brand-soft max-[720px]:rounded-xl";
 const heroPhotoImg = "object-cover object-[center_30%] [transition:transform_.6s_cubic-bezier(.2,.7,.2,1)] group-hover/photo:[transform:scale(1.04)]";
@@ -61,7 +70,15 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
   const pageRef = useScrollReveal<HTMLDivElement>();
   return <div ref={pageRef} className={page}>
     <section className="relative overflow-hidden bg-white" aria-labelledby="home-title">
-      <div className={heroVisual}><Image src="/images/search-campaign-hope.png" alt="햇살 아래 인형을 안고 있는 아이의 모습 · AI 캠페인 이미지" fill priority sizes="100vw" className={heroVisualImage} /><span className="absolute right-4 bottom-[60px] z-1 text-[11.5px] tracking-[.01em] text-[#8A99AC] opacity-85">AI로 제작한 캠페인 이미지</span></div>
+      <div className={heroVisual}>
+        {heroScenes.map((scene, index) => <div key={scene.src} className={`${heroScene} ${scene.delay}`}><Image quality={90} src={scene.src} alt={`${scene.alt} · AI 캠페인 이미지`} fill priority={index === 0} sizes="100vw" className={`${heroVisualImage} ${scene.position}`} /></div>)}
+        {/* Scene label with three progress bars, crossfading in step with the photos. */}
+        <div className="absolute right-4 bottom-[82px] z-1 grid justify-items-end gap-1.5 max-[720px]:hidden" aria-hidden="true">
+          <span className="relative block h-4 w-40">{heroScenes.map(scene => <span key={scene.label} className={`${heroScene} ${scene.delay} text-right text-[12.5px] font-extrabold tracking-[-.2px] text-brand-dark/70`}>{scene.label}</span>)}</span>
+          <span className="flex gap-1">{heroScenes.map(scene => <span key={scene.label} className="relative h-1 w-6 overflow-hidden rounded-full bg-brand/20"><span className={`${heroScene} ${scene.delay} bg-brand`} /></span>)}</span>
+        </div>
+        <span className="absolute right-4 bottom-[60px] z-1 text-[11.5px] tracking-[.01em] text-[#8A99AC] opacity-85">AI로 제작한 캠페인 이미지</span>
+      </div>
       {/* The bottom padding leaves room for the shortcut row, which overlaps the hero's bottom edge. */}
       <div className="page-container relative z-1 grid min-h-0 grid-cols-[minmax(0,640px)] pt-16 pb-28 max-[1000px]:pt-12 max-[1000px]:pb-24 max-[720px]:grid-cols-[minmax(0,1fr)] max-[720px]:pt-9 max-[720px]:pb-18">
         <div className="grid min-w-0 gap-[26px] max-[1000px]:gap-4">
@@ -112,15 +129,15 @@ export default function HomeLanding({ persons, featured }: { persons: MissingPer
       {/* Same veil as the hero: a soft white wash behind the copy on the left, and the top and bottom edges
           melting into the white page, so the band sits in the page instead of looking pasted on. */}
       <div className="relative h-[clamp(340px,28vw,420px)] bg-white after:pointer-events-none after:absolute after:inset-0 after:z-0 after:bg-[linear-gradient(90deg,rgba(255,255,255,.72)_0%,rgba(255,255,255,.5)_30%,rgba(255,255,255,0)_52%),linear-gradient(180deg,#FFFFFF_0%,rgba(255,255,255,0)_16%,rgba(255,255,255,0)_80%,#FFFFFF_100%)] after:content-[''] max-[720px]:h-auto max-[720px]:bg-transparent max-[720px]:after:hidden">
-        <Image src="/images/home-closing-sky.webp" alt="" fill sizes="100vw" unoptimized className="object-cover object-[62%_42%] opacity-[.62] saturate-[.85] [[data-revealed=in]_&]:animate-home-slow-zoom max-[720px]:relative! max-[720px]:block max-[720px]:aspect-[4/3] max-[720px]:h-auto! max-[720px]:w-full! max-[720px]:object-[66%_40%]" />
+        <Image quality={90} src="/images/home-closing-sky.webp" alt="" fill sizes="100vw" unoptimized className="object-cover object-[62%_42%] opacity-[.62] saturate-[.85] [[data-revealed=in]_&]:animate-home-slow-zoom max-[720px]:relative! max-[720px]:block max-[720px]:aspect-[4/3] max-[720px]:h-auto! max-[720px]:w-full! max-[720px]:object-[66%_40%]" />
         <div className={closingCopy}>
           <p className={`${serif.className} border-l-[1.5px] border-brand pl-3.5 text-[17px] font-medium tracking-[.06em] text-[#25508F] max-[720px]:text-brand`}>함께 기억하는 <strong className="ml-1 text-[25px] font-semibold tracking-[.01em] text-brand-dark">FindUs</strong></p>
           <h2 id="closing-title" className={`${serif.className} mt-4 pl-[15px] text-[23px] leading-[1.42] font-medium tracking-[-.2px] break-keep text-brand-dark`}>AI로 그리는 오늘,<br /><em className="font-semibold text-brand not-italic">가족에게 돌아가는 내일.</em></h2>
           <p className="mt-3 pl-[15px] text-[12.5px] leading-[1.6] break-keep text-[#3D5877] max-[720px]:text-[#4A5D75]">실종 원본 사진을 기반으로 AI가 나이 예측을 통해 미래의 모습을 그립니다.</p>
           <div className="mt-[18px] flex items-center gap-3.5 pl-[15px]" aria-label="AI 나이 예측 예시">
-            <figure className={closingPairFigure}><Image src="/images/home-closing-past.webp" alt="AI로 만든 가상 인물의 어린 시절 예시" width={240} height={224} className={closingPairImage} /><figcaption className={closingPairCaption}>실종 원본</figcaption></figure>
+            <figure className={closingPairFigure}><Image quality={90} src="/images/home-closing-past.webp" alt="AI로 만든 가상 인물의 어린 시절 예시" width={240} height={224} className={closingPairImage} /><figcaption className={closingPairCaption}>실종 원본</figcaption></figure>
             <span aria-hidden="true" className="grid text-brand"><ArrowRightIcon size={14} /></span>
-            <figure className={closingPairFigure}><Image src="/images/home-closing-aged.webp" alt="AI로 만든 가상 인물의 현재 추정 모습" width={240} height={224} className={closingPairImage} /><figcaption className={closingPairCaption}>미래 예측 이미지</figcaption></figure>
+            <figure className={closingPairFigure}><Image quality={90} src="/images/home-closing-aged.webp" alt="AI로 만든 가상 인물의 현재 추정 모습" width={240} height={224} className={closingPairImage} /><figcaption className={closingPairCaption}>미래 예측 이미지</figcaption></figure>
           </div>
           <p className="mt-[18px] pl-[15px] text-[12.5px] font-semibold text-brand-dark before:mb-2 before:block before:h-px before:w-[22px] before:bg-[#9FB6D2] before:content-[''] max-[720px]:text-[#4A5D75] max-[720px]:before:bg-[#C7D6E8]">잊지 않고 기억하며, 다시 만날 희망을 이어갑니다.</p>
         </div>

@@ -4,6 +4,9 @@ const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:18080";
 
 const nextConfig: NextConfig = {
   images: {
+    // 원본 JPEG이 이미 압축돼 있어 기본 품질(75)로 다시 압축하면 얼굴이 뭉개진다. 사진은 90으로 쓰고 AVIF를 우선 내보낸다.
+    formats: ["image/avif", "image/webp"],
+    qualities: [75, 90],
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
   },
   // 공유 이미지(lib/shareImage.tsx)가 런타임에 읽는 폰트·로고를 배포 번들에 포함한다.

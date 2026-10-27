@@ -61,13 +61,13 @@ export default function HomeFeaturedChild({ person, variant = "hero" }: { person
         <button type="button" className={`${photoSize} ${photoBase} bg-[#E6EFF9] ${photoButton} ${fadeUp.first}`} aria-label={`${person.name} 상세정보 열기`} onClick={openDetail}>
           {live
             ? <StoredPhoto fit="cover" urls={(person.images ?? []).map(image => image.url)} alt={`${person.name} 등록 사진`} sizes="120px" />
-            : <Image src={person.photos.past} alt={`${person.name} 실종 당시 모습 (가상 인물·AI 생성 예시)`} fill sizes="120px" />}
+            : <Image quality={90} src={person.photos.past} alt={`${person.name} 실종 당시 모습 (가상 인물·AI 생성 예시)`} fill sizes="120px" />}
           <span className={`${tag} left-1.5 bg-[rgba(23,59,112,.78)]`}>원본</span>
         </button>
         <span aria-hidden="true" className="flex animate-[fade-in_.5s_ease_.85s_backwards] justify-center text-brand motion-reduce:animate-none"><ArrowRightIcon size={15} className="animate-[home-nudge_2.8s_ease-in-out_1.6s_infinite] motion-reduce:animate-none" /></span>
         {hasAiPhoto ? (
           <button type="button" className={`${photoSize} ${photoBase} bg-[#E6EFF9] ${photoButton} ${fadeUp.third}`} aria-label={`${person.name} AI 예상 모습 보기`} onClick={openDetail}>
-            <Image src={person.photos.aged} alt={`${person.name} AI 예상 모습 (실제 모습과 다를 수 있음)`} fill sizes="120px" />
+            <Image quality={90} src={person.photos.aged} alt={`${person.name} AI 예상 모습 (실제 모습과 다를 수 있음)`} fill sizes="120px" />
             <span className={`${tag} right-1.5 bg-brand`}>AI 예상</span>
           </button>
         ) : (
