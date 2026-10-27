@@ -11,7 +11,7 @@ export function logAiImageLoadFail(src:string,label='기본') {
 
 /** 대표 AI 사진과 미리 만들어 둔 머리 스타일. 버튼은 저장된 사진으로 바꾸기만 하고 새로 생성하지 않는다. */
 export default function AiStylePhoto({person}:{person:MissingPerson}) {
-  const choices=[{label:'기본',src:person.photos.aged},...person.photos.styles];
+  const choices=[{label:'대표',src:person.photos.aged},...person.photos.styles];
   const [selected,setSelected]=useState(0);
   const current=choices[selected] ?? choices[0];
   // 버튼을 누르는 순간 바뀌도록 스타일 사진을 미리 받아 둔다. 백엔드가 브라우저 캐시를 허용한다.

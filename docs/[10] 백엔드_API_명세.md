@@ -305,6 +305,13 @@ interface MissingAiImageResponse {
     url: string;       // ".../ai-image/photo?style=bob"
   }[];
   notice: string;      // "AI가 만든 예상 모습이며 실제 모습이 아닙니다."
+  images: {            // 이 아동의 활성 AI 사진 전체. 대표가 첫 항목, 나머지는 만든 순서
+    id: string;
+    main: boolean;
+    targetAge: number;
+    createdAt: string;
+    url: string;       // 대표: ".../ai-image/photo", 나머지: ".../ai-image/photos/{aiImageId}"
+  }[];
 }
 ```
 
@@ -322,7 +329,12 @@ interface MissingAiImageResponse {
 - `image/png`·`image/jpeg`, `Cache-Control: private, max-age=600` (버튼 전환이 빠르도록 10분 캐시)
 - 저장되지 않은 스타일·사진 없음: 404 (본문 없음)
 
-**구현 흐름:** 상세 진입 시 5.1 호출 → 기본 `<img src={'/backend' + url}>` → 스타일 버튼은 `styles`로 그리고, 누르면 `src`만 `'/backend' + style.url`로 교체. 목록 카드에서는 `MissingPersonDto.aiPhotoUrl`만으로 충분합니다.
+### 5.3 `GET /api/missing-persons/{personId}/ai-image/photos/{aiImageId}` — AI 사진 한 장
+
+- 5.1 `images[].url`. 캐시·형식은 5.2와 같음
+- 이 아동의 활성 AI 사진이 아니거나(다른 아동 id, 삭제됨) 공개 중이 아닌 아동: 404
+
+**구현 흐름:** 상세 진입 시 5.1 호출 → 대표 `<img src={'/backend' + url}>` → 탭은 대표 · `images`의 나머지(‘AI 사진 2, 3…’) · `styles` 순서로 그리고, 누르면 `src`만 `'/backend' + style.url`로 교체. 목록 카드에서는 `MissingPersonDto.aiPhotoUrl`만으로 충분합니다.
 
 ---
 

@@ -26,11 +26,14 @@ export function regionFromAddress(address: string | null): string {
 export function toMissingPerson(dto: MissingPersonDto): MissingPerson {
   if (!UUID.test(dto.id) || dto.category !== '010' || !Array.isArray(dto.images)) throw new Error('실종아동 응답 형식을 확인해 주세요.');
   // Use only DB photo endpoints. Upstream session-dependent photoUrl is never displayed.
-  const images = [...dto.images].sort((a,b)=>a.sortOrder-b.sortOrder).map(image=>{
+  const all = [...dto.images].sort((a,b)=>a.sortOrder-b.sortOrder).map(image=>{
     const expected = '/api/missing-persons/'+dto.id+'/images/'+image.id;
     if (!UUID.test(image.id) || image.url !== expected) throw new Error('사진 응답 경로를 확인해 주세요.');
     return {id:image.id,sortOrder:image.sortOrder,url:'/backend'+expected};
   });
+  // Upstream photos mix parents, montages and aged images; backend sets photoUrl to the is_main image, so show only that one.
+  const main = all.find(image=>image.url === '/backend'+dto.photoUrl);
+  const images = main ? [main] : all;
   // Same rule as DB photos: only this child's AI photo endpoint is accepted; anything else is ignored.
   const aiPhoto = '/api/missing-persons/'+dto.id+'/ai-image/photo';
   const aged = dto.aiPhotoUrl === aiPhoto ? '/backend'+aiPhoto : '';
@@ -67,11 +70,18 @@ export async function fetchMissingPersons(): Promise<MissingPerson[]> {
   if(entries.length!==first.totalElements || new Set(entries.map(p=>p.id)).size!==entries.length) throw new Error('전체 목록을 불러오지 못했습니다. 새로고침해 주세요.');
   return entries.map(toMissingPerson);
 }
+export interface MissingAiImageNode { id: string; main: boolean; targetAge: number; createdAt: string; url: string }
 export interface MissingAiImageDto {
   id: string; targetAge: number; createdAt: string; url: string;
   styles: {key: string; name: string; url: string}[]; notice: string;
+  /** All active AI photos of this child, main first. Absent on older backends. */
+  images?: MissingAiImageNode[];
 }
-export interface MissingAiImage { targetAge: number | null; url: string; styles: {key: string; label: string; src: string}[]; notice: string }
+export interface MissingAiImage {
+  targetAge: number | null; url: string; styles: {key: string; label: string; src: string}[]; notice: string;
+  /** 대표를 뺀 이 아동의 다른 AI 사진, 백엔드가 준 순서(만든 순서). */
+  extras: {id: string; label: string; src: string}[];
+}
 const STYLE_KEY = /^[a-z0-9_]{1,32}$/;
 /** 조회 결과를 원인별로 남긴다. "없음"은 log, 응답 이상은 warn, 조회 실패는 error. */
 const aiLog = {
@@ -106,13 +116,21 @@ export async function fetchMissingAiImage(id: string): Promise<MissingAiImage | 
   const styles=dto.styles.filter(valid).map(s=>({key:s.key,label:s.name.trim(),src:'/backend'+s.url}));
   const targetAge=Number.isInteger(dto.targetAge) && dto.targetAge>0 ? dto.targetAge : null;
   if(targetAge===null) aiLog.warn(id,'targetAge가 올바르지 않아 나이 표시 생략',dto.targetAge);
-  console.log('[AI 사진] 조회 성공 · '+id+' · 스타일 '+styles.length+'개'+(targetAge ? ' · '+targetAge+'세 기준' : ''));
-  return {targetAge,url:'/backend'+photo,styles,notice:dto.notice?.trim() || 'AI가 만든 예상 모습이며 실제 모습이 아닙니다.'};
+  // Other AI photos of this child; images is absent on older backends. The main one is already shown as aged.
+  const images=Array.isArray(dto.images) ? dto.images : [];
+  const validImage=(image: MissingAiImageNode)=>UUID.test(image?.id) && image.url===photo.replace(/\/photo$/,'/photos/')+image.id;
+  const others=images.filter(image=>!image?.main && image?.url!==photo);
+  const droppedImages=others.filter(image=>!validImage(image));
+  if(droppedImages.length) aiLog.warn(id,'잘못된 AI 사진 '+droppedImages.length+'개 제외',droppedImages);
+  const extras=others.filter(validImage).map((image,i)=>({id:image.id,label:'AI 사진 '+(i+2),src:'/backend'+image.url}));
+  console.log('[AI 사진] 조회 성공 · '+id+' · 사진 '+(extras.length+1)+'장 · 스타일 '+styles.length+'개'+(targetAge ? ' · '+targetAge+'세 기준' : ''));
+  return {targetAge,url:'/backend'+photo,styles,extras,notice:dto.notice?.trim() || 'AI가 만든 예상 모습이며 실제 모습이 아닙니다.'};
 }
 export function withAiImage(person: MissingPerson, ai: MissingAiImage | undefined): MissingPerson {
   if(!ai) return person;
+  // Tabs: main (aged) first, then other AI photos, then pre-made styles of the main photo.
   return {...person,aiTargetAge:ai.targetAge,aiNote:ai.notice,
-    photos:{...person.photos,aged:ai.url,styles:ai.styles.map(({label,src})=>({label,src}))}};
+    photos:{...person.photos,aged:ai.url,styles:[...ai.extras,...ai.styles].map(({label,src})=>({label,src}))}};
 }
 export async function fetchMissingPerson(id: string): Promise<MissingPerson | undefined> {
   if(!UUID.test(id)) return undefined;

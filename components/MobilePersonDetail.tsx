@@ -18,7 +18,7 @@ export default function MobilePersonDetail({ person, onReport, embedded = false 
     <div data-favorite-api-body={embedded || undefined} className="grid gap-4 min-[600px]:grid-cols-2"><PersonPhotoGallery key={person.id} person={person} comparison={embedded}/><InfoRows compact person={person}/></div>
     <div data-embedded-actions={embedded || undefined} className="mt-4 flex gap-3 border-t border-line pt-3"><button type="button" onClick={e=>onReport(e.currentTarget)} className="flex-1 rounded-xl bg-brand px-3 py-3 font-bold text-white">목격 제보 안내</button><button type="button" onClick={()=>setShareOpen(true)} className="flex-1 rounded-xl border border-line px-3 py-3 font-bold">링크 공유</button></div>
     {shareOpen && <ShareModal person={person} onClose={()=>setShareOpen(false)}/>}</div>;
-  const choices = [{ label: "기본", src: person.photos.aged }, ...person.photos.styles];
+  const choices = [{ label: "대표", src: person.photos.aged }, ...person.photos.styles];
   const selectedPhoto = choices[photoIndex];
 
   return (
