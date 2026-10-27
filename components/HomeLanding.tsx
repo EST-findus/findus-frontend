@@ -1,5 +1,6 @@
 "use client";
-import { Nanum_Pen_Script, Noto_Serif_KR } from "next/font/google";
+import { Nanum_Pen_Script } from "next/font/google";
+import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
 import type { MissingPerson } from "@/lib/types";
@@ -11,7 +12,18 @@ import HomeStory from "./HomeStory";
 import { useScrollReveal } from "./useScrollReveal";
 
 const pen = Nanum_Pen_Script({ weight: "400", subsets: ["latin"], display: "swap", preload: false });
-const serif = Noto_Serif_KR({ weight: ["500", "600"], subsets: ["latin"], display: "swap", preload: false });
+// Self-hosted subset holding only the glyphs of the closing copy: Google serves Noto Serif KR
+// through extensionless /l/font?kit= URLs on some build machines, which breaks next/font/google.
+// Regenerate the files if the serif text changes (css2 API with the `text=` parameter).
+const serif = localFont({
+  src: [
+    { path: "../app/fonts/NotoSerifKR-500-subset.woff2", weight: "500" },
+    { path: "../app/fonts/NotoSerifKR-600-subset.woff2", weight: "600" },
+  ],
+  display: "swap",
+  preload: false,
+  adjustFontFallback: "Times New Roman",
+});
 
 // Home page: calm public-service tone — navy type, one brand blue, soft neutral surfaces.
 // The page re-tones the shared color tokens for everything inside it, and owns the scroll-reveal motion:

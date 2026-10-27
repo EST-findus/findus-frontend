@@ -2,10 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { SEARCH_LOGO, SEARCH_PALETTE } from "./searchStyles";
+import { SEARCH_PALETTE } from "./searchStyles";
 import HeaderAuth from "./HeaderAuth";
 import HeaderNav from "./HeaderNav";
-import LogoMark from "./LogoMark";
+import Wordmark from "./Wordmark";
 import ReportCallButton from "./ReportCallButton";
 import { requestFeaturedPopup } from "./HomeFeaturedPopup";
 
