@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Noto_Sans_KR } from "next/font/google";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import Header from "@/components/Header";
@@ -16,13 +15,6 @@ const pretendard = localFont({
   variable: "--font-pretendard",
   weight: "45 920",
   display: "swap",
-});
-
-const notoSansKr = Noto_Sans_KR({
-  variable: "--font-noto-sans-kr",
-  weight: ["500", "700", "800"],
-  display: "swap",
-  preload: false,
 });
 
 const title = "FindUs | 실종아동 찾기";
@@ -78,7 +70,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="ko">
       <body
-        className={`${pretendard.variable} ${notoSansKr.variable} flex min-h-dvh flex-col bg-page font-sans text-ink antialiased`}
+        className={`${pretendard.variable} flex min-h-dvh flex-col bg-page font-sans text-ink antialiased`}
       >
         <RoutePalette />
         <Header />
