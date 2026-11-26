@@ -3,14 +3,16 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Nanum_Pen_Script } from "next/font/google";
+import localFont from "next/font/local";
 import { CAMPAIGN, formatWon } from "@/lib/funding";
 import { ArrowRightIcon, HeartIcon, PhoneIcon, SearchIcon, SparklesIcon, UsersIcon } from "./Icons";
 import LogoMark from "./LogoMark";
 import Modal from "./Modal";
 
 // Handwritten accents only; the body text stays in the site font.
-const pen = Nanum_Pen_Script({ weight: "400", subsets: ["latin"], display: "swap", preload: false });
+// Self-hosted subset of the handwritten copy only (next/font/google breaks on extensionless Google URLs).
+// Regenerate app/fonts/NanumPenScript-subset.woff2 if the handwritten text changes (css2 API with `text=`).
+const pen = localFont({ src: "../app/fonts/NanumPenScript-subset.woff2", weight: "400", display: "swap", preload: false });
 
 const SERVICE_PAST = "/images/mock-persons/MC-2015-0104/past.jpg";
 const SERVICE_AGED = "/images/mock-persons/MC-2015-0104/aged.jpg";

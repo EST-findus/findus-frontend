@@ -374,7 +374,7 @@
 
 @theme inline {
   --font-sans:
-    var(--font-pretendard), var(--font-noto-sans-kr), -apple-system, BlinkMacSystemFont,
+    var(--font-pretendard), -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 

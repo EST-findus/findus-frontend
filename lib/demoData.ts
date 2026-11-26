@@ -1,6 +1,6 @@
 import type { MissingPerson } from "./types";
 
-// AI 소개 전용 가상 예시입니다. 실제 아동 조회의 대체 데이터로 사용하지 않습니다.
+// AI로 만든 가상 예시입니다. 백엔드에 연결할 수 없을 때 lib/data.ts가 대신 보여 줍니다.
 
 // 가상 인물별로 어린 시절 → 성인 예상 → 동일 얼굴의 스타일 변형을 묶는다.
 const photo = (id: string, variant: string) =>
