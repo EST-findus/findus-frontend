@@ -199,11 +199,10 @@ interface Props {
   campaignId: string;
   child: MissingPerson | null;
   now: string;
-  availableImages: string[];
   raisedOverride?: number;
 }
 
-export default function FundingDetail({ campaignId, child, now, availableImages, raisedOverride }: Props) {
+export default function FundingDetail({ campaignId, child, now, raisedOverride }: Props) {
   // 상세 주소는 서버에서 이미 확인했다. 예시 캠페인도 개발 환경에서는 열리므로 전체에서 찾는다.
   const campaign = CAMPAIGNS.find((item) => item.id === campaignId) ?? CAMPAIGN;
   const funding = useFunding(campaign);
@@ -311,7 +310,7 @@ export default function FundingDetail({ campaignId, child, now, availableImages,
             </div>
           </section>
         )}
-        {campaign.hasStory ? <FundingStory availableImages={availableImages} childPhotoUrl={childPhotoUrl} /> : <ChildStory campaign={campaign} child={child} />}
+        {campaign.hasStory ? <FundingStory childPhotoUrl={childPhotoUrl} /> : <ChildStory campaign={campaign} child={child} />}
       </div>
 
       <div className="page-container grid grid-cols-[minmax(0,1fr)_360px] gap-12 max-lg:grid-cols-1 max-lg:gap-0">

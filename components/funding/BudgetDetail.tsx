@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { CAMPAIGN, CAMPAIGNS, formatManWon, formatWon, type TierId } from "@/lib/funding";
 import {
-  campaignBudget, FIXED_COSTS, listedPartners, PARTNER_ROLES, partnerById, PAYMENT_FEE_RATE, tierBreakdown,
+  campaignBudget, FIXED_COSTS, listedPartners, PARTNERS, PARTNER_ROLES, partnerById, PAYMENT_FEE_RATE, tierBreakdown,
   type ItemTotal, type Partner, type PartnerRole,
 } from "@/lib/fundingBudget";
 import { useFunding } from "@/lib/useFunding";
@@ -95,9 +95,9 @@ function Mark({ partner, size = "sm" }: { partner: Partner | null; size?: "sm" |
   const base = "inline-grid shrink-0 place-items-center overflow-hidden font-extrabold text-navy";
   if (partner?.logo) {
     return (
-      <span className={`${base} bg-white ${size === "lg" ? "h-16 w-full rounded-[10px] text-[22px]" : "h-[30px] w-[76px] rounded-[6px] text-[13px] shadow-[inset_0_0_0_1px_var(--color-line)]"}`}>
-        <Image src={partner.logo.src} alt="" width={partner.logo.width} height={partner.logo.height} unoptimized={partner.logo.src.endsWith(".svg")}
-          className={`h-auto w-auto object-contain ${size === "lg" ? "max-h-9 max-w-[min(70%,180px)]" : "max-h-5 max-w-[62px]"}`} />
+      <span className={`${base} relative bg-white ${size === "lg" ? "h-16 w-full rounded-[10px]" : "h-[30px] w-[76px] rounded-[6px] shadow-[inset_0_0_0_1px_var(--color-line)]"}`}>
+        <Image src={partner.logo.src} alt="" fill unoptimized sizes={size === "lg" ? "180px" : "76px"}
+          className={`object-contain ${size === "lg" ? "px-5 py-3" : "px-2 py-1"}`} />
       </span>
     );
   }
@@ -356,7 +356,19 @@ export default function BudgetDetail({ campaignId, initialTier }: { campaignId: 
           )}
 
           {partners.length === 0 ? (
-            <p className="mt-6 text-[14px] text-subtle">협약을 맺은 곳이 생기면 이곳에 공개해요.</p>
+            <div className="mt-6">
+              <h3 className={tileName}>실종아동 찾기에 참여한 기업·기관 사례</h3>
+              <p className="mt-1 text-[14px] text-subtle">이번 펀딩의 협약 기관은 확정 후 공개해요. 아래는 이전 캠페인 사례예요.</p>
+              <ul className="mt-4 grid grid-cols-3 gap-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
+                {PARTNERS.map((partner) => (
+                  <li key={partner.id} className="rounded-xl border border-line p-4">
+                    <Mark partner={partner} size="lg" />
+                    <h4 className="mt-2 font-bold">{partner.name}</h4>
+                    <p className="mt-1 text-sm text-muted">{partner.why}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : (
             <ul className="mt-7 grid grid-cols-3 gap-px overflow-hidden rounded-[18px] border border-line bg-line max-lg:grid-cols-2 max-md:grid-cols-[1fr]">
               {partners.map((partner) => {

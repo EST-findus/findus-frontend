@@ -1,12 +1,9 @@
 export const dynamic = "force-dynamic";
-import { existsSync } from "node:fs";
-import path from "node:path";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import FundingDetail from "@/components/funding/FundingDetail";
 import { campaignById, type Campaign } from "@/lib/funding";
 import { childrenOf } from "@/lib/fundingChildren";
-import { STORY_IMAGE_PATHS } from "@/lib/fundingStory";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -44,14 +41,12 @@ export default async function FundingPage({ params, searchParams }: Props) {
   const { state } = await searchParams;
   const preview = previewState(campaign, state);
   const child = (await childrenOf([campaign]))[campaign.id] ?? null;
-  const availableImages = campaign.hasStory ? STORY_IMAGE_PATHS.filter((src) => existsSync(path.join(process.cwd(), "public", src))) : [];
   return (
     <main className="flex-1">
       <FundingDetail
         campaignId={campaign.id}
         child={child}
         now={(preview?.now ?? new Date()).toISOString()}
-        availableImages={availableImages}
         raisedOverride={preview?.raised}
       />
     </main>
