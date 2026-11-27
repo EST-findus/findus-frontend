@@ -44,7 +44,7 @@ const serverSnapshot = () => false;
 function Thumb({ person }: { person: MissingPerson }) {
   return person.source === "api"
     ? <StoredPhoto fit="cover" urls={(person.images ?? []).map(image => image.url)} alt="" sizes="72px" />
-    : <Image quality={90} src={person.photos.past} alt="" fill sizes="72px" />;
+    : <Image quality={90} src={person.photos.past} alt="" fill className="object-cover object-center" sizes="72px" />;
 }
 
 /**

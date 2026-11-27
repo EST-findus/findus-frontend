@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useId, useState } from "react";
+import { DEMO_PHOTOS } from "@/lib/aiDemo";
 import { STORY, type StoryImage } from "@/lib/fundingStory";
 import { useCountUp, useInView, useReducedMotion } from "@/lib/useMotion";
-import { ArrowUpRightIcon, ImageIcon, PhoneIcon } from "../Icons";
+import { ArrowUpRightIcon, PhoneIcon } from "../Icons";
 import Reveal from "./Reveal";
 import { storyInner } from "./styles";
 
@@ -14,7 +15,6 @@ const PAPER = "bg-(--story-paper)";
 const STORY_TITLE = "mt-3.5 text-[36px] leading-[1.35] font-extrabold tracking-[-.8px] break-keep max-md:text-[28px]";
 const STORY_BODY = "mt-[18px] text-[17px] leading-[1.9] break-keep";
 const STORY_NOTE = "mt-[22px] text-[13px] leading-[1.6] text-[#7A8590]";
-const PHOTO_EMPTY = "absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-[repeating-linear-gradient(-45deg,#EAE3DA_0_10px,#E4DCD1_10px_20px)] text-[13px] font-bold text-[#8B7B6E] [&_code]:text-[11px] [&_code]:font-medium [&_code]:opacity-80";
 /** 사진 틀. 비율과 모양은 놓이는 자리마다 다르다. */
 const FRAME = {
   default: "aspect-[4/5] rounded-[6px]",
@@ -26,27 +26,19 @@ const COMPARE_MOVE = "[[data-animate=true]_&]:[transition:clip-path_1.6s_cubic-b
 const COMPARE_TAG = "absolute bottom-3 rounded-[6px] bg-[rgb(37_48_59/72%)] px-[9px] py-[5px] text-[12px] font-bold text-white";
 const CLOSING_CALL = "inline-flex items-center gap-2 rounded-xl border border-[#556474] px-4 py-[11px] text-[14px] text-[#E7ECF1] [transition:background-color_.2s] hover:bg-[#334150] [&_strong]:text-[17px] [&_strong]:text-white";
 
-/** 경찰청 공개 사진(실종아동 DB)으로 대신할 때의 캡션 */
-const OFFICIAL_CAPTION = "경찰청 공개 사진 · 자료 출처: 경찰청";
-
-/**
- * 사진 파일이 아직 없으면 자리 표시를 보여준다.
- * fallbackSrc(실종아동 DB의 공식 사진)가 있으면 자리 표시 대신 그 사진을 쓴다.
- */
-function StoryPhoto({ image, available, sizes, className = "", fallbackSrc = null, frame = "default" }: { image: StoryImage; available: boolean; sizes: string; className?: string; fallbackSrc?: string | null; frame?: keyof typeof FRAME }) {
-  const official = !available && !!fallbackSrc;
+function StoryPhoto({ image, sizes, frame, officialUrl }: { image: StoryImage; sizes: string; frame: keyof typeof FRAME; officialUrl?: string | null }) {
+  const [failed, setFailed] = useState<string[]>([]);
+  const isProfile = frame === "profile";
+  const src = [officialUrl, image.src].find((url) => url && !failed.includes(url));
+  const display = src ? image : STORY.waiting[0].image;
   return (
-    <figure className={className}>
-      <div className={`relative overflow-hidden bg-(--story-sand) [&_img]:object-cover ${FRAME[frame]}`}>
-        {available ? <Image quality={90} src={image.src} alt={image.alt} fill sizes={sizes} /> : official ? <Image src={fallbackSrc} alt={image.alt} fill sizes={sizes} unoptimized style={{ objectFit: "cover" }} /> : (
-          <div className={PHOTO_EMPTY} role="img" aria-label={`${image.alt} (사진 준비 중)`}>
-            <ImageIcon size={26} />
-            <span>사진 준비 중</span>
-            <code>{image.src.split("/").at(-1)}</code>
-          </div>
-        )}
+    <figure>
+      <div className={`relative overflow-hidden bg-(--story-sand) ${FRAME[frame]}`}>
+        <Image src={src || display.src} alt={display.alt} fill sizes={sizes} quality={90}
+          unoptimized={isProfile && !!src} className={isProfile ? "object-contain" : "object-cover"}
+          onError={isProfile && src ? () => setFailed((previous) => [...previous, src]) : undefined} />
       </div>
-      <figcaption className="mt-2.5 text-[12px] leading-[1.5] break-keep text-[#7A8590]">{official ? OFFICIAL_CAPTION : image.caption}</figcaption>
+      <figcaption className="mt-2.5 text-[12px] leading-[1.5] break-keep text-[#7A8590]">{display.caption}</figcaption>
     </figure>
   );
 }
@@ -69,7 +61,7 @@ function YearsCounter() {
 }
 
 /** 당시 사진과 추정 이미지를 가르는 와이프 비교. 화면에 들어오면 한 번 저절로 움직인다. */
-function PhotoCompare({ available, childPhotoUrl }: { available: (src: string) => boolean; childPhotoUrl: string | null }) {
+function PhotoCompare() {
   const [ref, inView] = useInView<HTMLDivElement>(0.5);
   const reduced = useReducedMotion();
   const [split, setSplit] = useState(100);
@@ -82,30 +74,27 @@ function PhotoCompare({ available, childPhotoUrl }: { available: (src: string) =
     return () => window.clearTimeout(timer);
   }, [inView, reduced, touched]);
 
-  const child = STORY.childPhoto;
-  const aged = STORY.agedPhoto;
   return (
     <div ref={ref} className="w-full">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[6px] bg-(--story-sand) select-none" data-animate={!touched} style={{ "--split": `${split}%` } as React.CSSProperties}>
+      <div className="relative aspect-[3/4] overflow-hidden rounded-[6px] bg-(--story-sand) select-none" data-animate={!touched} style={{ "--split": `${split}%` } as React.CSSProperties}>
         <div className="absolute inset-0 [&_img]:object-cover">
-          {available(aged.src) ? <Image quality={90} src={aged.src} alt={aged.alt} fill sizes="(min-width: 768px) 420px, 90vw" /> : <div className={PHOTO_EMPTY}><ImageIcon size={26} /><span>성인 추정 이미지 준비 중</span><code>aged.jpg</code></div>}
+          <Image quality={90} src={DEMO_PHOTOS.aged} alt="가상 인물의 성인 예상 모습" fill sizes="(min-width: 768px) 420px, 90vw" />
         </div>
         <div className={`absolute inset-0 [clip-path:inset(0_calc(100%_-_var(--split))_0_0)] [&_img]:object-cover ${COMPARE_MOVE}`}>
-          {available(child.src) ? <Image quality={90} src={child.src} alt={child.alt} fill sizes="(min-width: 768px) 420px, 90vw" /> : childPhotoUrl ? <Image src={childPhotoUrl} alt={child.alt} fill sizes="(min-width: 768px) 420px, 90vw" unoptimized style={{ objectFit: "cover" }} /> : <div className={PHOTO_EMPTY}><ImageIcon size={26} /><span>당시 사진 준비 중</span><code>child.jpg</code></div>}
+          <Image quality={90} src={DEMO_PHOTOS.past} alt="같은 가상 인물의 어린 시절" fill sizes="(min-width: 768px) 420px, 90vw" />
         </div>
         <span className={`absolute inset-y-0 left-(--split) -ml-[1.5px] w-[3px] bg-white shadow-[0_0_0_1px_rgb(0_0_0/8%)] after:absolute after:top-1/2 after:left-1/2 after:grid after:size-[38px] after:place-items-center after:rounded-full after:bg-white after:text-[18px] after:text-(--story-brown) after:shadow-[0_4px_14px_rgb(0_0_0/18%)] after:[translate:-50%_-50%] after:content-['⟷'] ${COMPARE_MOVE}`} aria-hidden="true" />
-        <span className={`${COMPARE_TAG} left-3`}>2000 · 당시 사진</span>
-        <span className={`${COMPARE_TAG} right-3`}>추정 이미지</span>
+        <span className={`${COMPARE_TAG} left-3`}>어린 시절 예시</span>
+        <span className={`${COMPARE_TAG} right-3`}>성인 예시</span>
       </div>
       <label htmlFor={id} className="sr-only">당시 사진과 추정 이미지 비교 위치</label>
       <input id={id} type="range" min={0} max={100} value={split} onChange={(event) => { setTouched(true); setSplit(Number(event.target.value)); }} className="mt-3.5 w-full accent-(--story-brown)" />
-      <p className="mt-2 text-[12px] leading-[1.6] text-[#7A8590]">왼쪽 · {available(child.src) || !childPhotoUrl ? child.caption : OFFICIAL_CAPTION}<br />오른쪽 · {aged.caption}</p>
+      <p className="mt-2 text-[12px] leading-[1.6] text-[#7A8590]">가상 인물로 보는 나이 변화 예시 · FindUs</p>
     </div>
   );
 }
 
-export default function FundingStory({ availableImages, childPhotoUrl = null }: { availableImages: string[]; childPhotoUrl?: string | null }) {
-  const available = (src: string) => availableImages.includes(src);
+export default function FundingStory({ childPhotoUrl }: { childPhotoUrl: string | null }) {
   const { person, day, sighting, waiting } = STORY;
 
   return (
@@ -133,7 +122,7 @@ export default function FundingStory({ availableImages, childPhotoUrl = null }: 
       <section className={`${CHAPTER} ${PAPER}`} aria-labelledby="story-profile">
         <div className={`page-container ${storyInner} grid grid-cols-[280px_minmax(0,1fr)] items-center gap-12 max-lg:grid-cols-1 max-lg:gap-7`}>
           <Reveal className="max-lg:max-w-[260px]">
-            <StoryPhoto image={STORY.childPhoto} available={available(STORY.childPhoto.src)} fallbackSrc={childPhotoUrl} sizes="(min-width: 768px) 280px, 70vw" frame="profile" />
+            <StoryPhoto image={STORY.profilePhoto} officialUrl={childPhotoUrl} sizes="(min-width: 768px) 280px, 70vw" frame="profile" />
           </Reveal>
           <div>
             <Reveal><Eyebrow>02 · PROFILE</Eyebrow></Reveal>
@@ -156,7 +145,7 @@ export default function FundingStory({ availableImages, childPhotoUrl = null }: 
           <Reveal><Eyebrow>03 · LAST REPORTED SIGHTING</Eyebrow></Reveal>
           <Reveal delay={100}><h2 id="story-sighting" className={STORY_TITLE}>마지막 목격 장소로<br />보도된 곳</h2></Reveal>
           <div className="mt-8 grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] items-start gap-9 max-lg:grid-cols-1 max-lg:gap-7">
-            <Reveal delay={150}><StoryPhoto image={sighting.image} available={available(sighting.image.src)} sizes="(min-width: 1024px) 600px, 92vw" frame="wide" /></Reveal>
+            <Reveal delay={150}><StoryPhoto image={sighting.image} sizes="(min-width: 1024px) 600px, 92vw" frame="wide" /></Reveal>
             <Reveal delay={250}>
               <p className={STORY_BODY}>{sighting.text}</p>
               <div className="mt-[22px] border-l-4 border-(--story-brown) bg-[#F0EEEA] px-[22px] py-5">
@@ -178,7 +167,7 @@ export default function FundingStory({ availableImages, childPhotoUrl = null }: 
           <ol className="mt-10 grid grid-cols-3 gap-6 max-lg:grid-cols-1">
             {waiting.map((item, index) => (
               <Reveal as="li" key={item.year} delay={index * 180}>
-                <StoryPhoto image={item.image} available={available(item.image.src)} sizes="(min-width: 1024px) 360px, 80vw" frame="waiting" />
+                <StoryPhoto image={item.image} sizes="(min-width: 1024px) 360px, 80vw" frame="waiting" />
                 <p className="mt-[18px] text-[14px] font-extrabold tracking-[.08em] text-(--story-brown)">{item.year}</p>
                 <h3 className="mt-1 text-[19px] font-extrabold">{item.title}</h3>
                 <p className="mt-2 text-[15px] leading-[1.75] break-keep">{item.text}</p>
@@ -196,10 +185,10 @@ export default function FundingStory({ availableImages, childPhotoUrl = null }: 
             <Reveal delay={100}><h2 id="story-time" className={STORY_TITLE}>사진 밖의 시간을<br />기억합니다</h2></Reveal>
             <Reveal delay={200}>
               <p className={STORY_BODY}>우리가 알고 있는 얼굴은 어린 시절의 사진입니다. 그러나 실종된 한 사람의 삶은 사진이 찍힌 순간에 멈춰 있는 것이 아닙니다.</p>
-              <p className={STORY_BODY}>오른쪽 이미지는 성인이 된 {person.name}님의 실제 사진이 아니라, 나이가 든 모습을 기술적으로 추정해 만든 이미지입니다. 비슷한 사람을 봤다고 생각하더라도 온라인에서 신원을 추측하거나 공개적으로 지목하지 말고 <strong>182</strong>로 직접 전해 주세요.</p>
+              <p className={STORY_BODY}>슬라이더를 움직이면 가상 인물의 어린 시절과 성인 예상 모습을 비교할 수 있습니다. {person.name}님의 공개 사진은 위 프로필에서 확인해 주세요. 비슷한 사람을 봤다고 생각하더라도 온라인에서 신원을 추측하거나 공개적으로 지목하지 말고 <strong>182</strong>로 직접 전해 주세요.</p>
             </Reveal>
           </div>
-          <Reveal delay={150}><PhotoCompare available={available} childPhotoUrl={childPhotoUrl} /></Reveal>
+          <Reveal delay={150}><PhotoCompare /></Reveal>
         </div>
       </section>
 
